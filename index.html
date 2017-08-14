@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+   	<link rel="stylesheet" type="text/css" href="css/own.css"/>
+   	<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+   	<style type="text/css">
+   		html,body{background-color: #efeff4;}
+		.mui-active .mui-icon,
+		.mui-active .mui-tab-label {
+			color: #41cea9;
+		}
+   	</style>
+</head>
+<body class="own-gray-color">
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<h1 id="nav-title" class="mui-title">首页</h1>
+	</header>
+	<nav class="mui-bar mui-bar-tab">
+		<a class="mui-tab-item mui-active" href="barItem/home.html" id="home">
+			<span class="mui-icon iconfont icon-home"></span>
+			<span class="mui-tab-label">首页</span>
+		</a>
+		<a class="mui-tab-item" href="barItem/category.html" id="category">
+			<span class="mui-icon iconfont icon-fenlei"></span>
+			<span class="mui-tab-label">分类</span>
+		</a>
+		<a class="mui-tab-item" href="barItem/cart.html" id="cart">
+			<span class="mui-icon iconfont icon-cart"></span>
+			<span class="mui-tab-label">购物车</span>
+		</a>
+		<a class="mui-tab-item" href="barItem/mine.html" id="mine">
+			<span class="mui-icon iconfont icon-wode"></span>
+			<span class="mui-tab-label">我的</span>
+		</a>
+	</nav>
+	<script type="text/javascript" charset="UTF-8">
+		mui.init()
+		var honey;
+		mui.plusReady(function(){
+			honey={
+				contentPages:['home','category','cart','mine'],
+				contentStyle:{top:'45px',bottom:'51px'},
+				tempPages:{},//缓存页面
+				activeTab:'',//当前访问页面
+				title:document.getElementById('nav-title'),//标题
+				initWebView:function(){//初始化
+					for(var i=0;i<honey.contentPages.length;i++){
+						var content=plus.webview.create('barItem/'+honey.contentPages[i]+'.html',honey.contentPages[i],honey.contentStyle);
+						if(i==0){
+							honey.tempPages[honey.contentPages[i]]=true;
+							honey.activeTab=honey.contentPages[i];
+							plus.webview.currentWebview().append(content)
+						}else{
+							content.hide()
+						}
+					}
+					//选项卡事件
+					mui('.mui-bar-tab').on('tap','a',function(){
+						var id=this.getAttribute('id');
+						if(id!=honey.activeTab){
+							//更换标题
+							honey.title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+							//IOS或者非首次加载直接显示
+							if(mui.os.ios||honey.tempPages[id]){
+								plus.webview.show(id)
+							}else{
+								honey.tempPages[id]=true;
+								plus.webview.show(id,'fade-in',300)
+							}
+							plus.webview.hide(honey.activeTab);
+							honey.activeTab=id;
+						}
+					})
+				},
+			};
+			honey.initWebView()
+		})
+		
+	</script>
+</body>
+</html>
