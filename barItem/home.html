@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont.css" />
+	</head>
+
+	<body>
+		<div id="homeDiv" class="mui-content own-content-padding">
+			<div id="productSlider" class="mui-slider">
+			</div>
+			<div id="recommend" class="mui-table-view mui-grid-view own-gray-color">
+
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../js/mui.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/own.js" charset="UTF-8"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			var honey;
+			mui.plusReady(function() {
+				honey = {
+					slider: mui('#slider'),
+					images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
+					marqueeArray :[], //跑马灯数据数组
+					recommendArray: [], //推荐商品数组
+					autoSlider: function() {
+						honey.initSomeData()
+						honey.setMarquee()
+						honey.setRecommend()
+					},
+					initSomeData: function() {
+						for(var i = 0; i < 20; i++) {
+							var dataItem = {};
+							dataItem.product_price = {
+								default_price: "20.00",
+								list_price: "28.0"
+							};
+							dataItem.product_name = "测试产品 ";
+							dataItem.large_image_url = "../images/cbd.jpg";
+							dataItem.product_id = "13110";
+							honey.recommendArray.push(dataItem);
+						}
+						for(var i = 0; i < 4; i++) {
+							var marqueeItem = {};
+							marqueeItem.contentId = i;
+							marqueeItem.imagerpath = honey.images[i];
+							honey.marqueeArray.push(marqueeItem);
+						}
+					},
+					setMarquee: function() {
+						var sliderMarquee = document.getElementById('productSlider');
+						var sliderGroup = document.createElement('div');
+						sliderGroup.className = 'mui-slider-group mui-slider-loop';
+						sliderMarquee.appendChild(sliderGroup);
+						var sliderIndicator = document.createElement('div');
+						sliderIndicator.className = 'mui-slider-indicator';
+						sliderMarquee.appendChild(sliderIndicator);
+						for(var i = 0; i < honey.marqueeArray.length; i++) {
+							if(0 == i) {
+								var sliderItemDuplicate = document.createElement('div');
+								sliderItemDuplicate.className = 'mui-slider-item mui-slider-item-duplicate';
+								sliderItemDuplicate.innerHTML = '<a href="' + honey.marqueeArray[honey.marqueeArray.length - 1].contentId + '">\
+									<img src="' + honey.marqueeArray[honey.marqueeArray.length - 1].imagerpath + '" />\
+								</a>';
+								sliderGroup.appendChild(sliderItemDuplicate);
+							}
+							var sliderItem = document.createElement('div');
+							sliderItem.className = 'mui-slider-item';
+							sliderItem.innerHTML = '<a href="' + honey.marqueeArray[i].contentId + '">\
+						<img src="' + honey.marqueeArray[i].imagerpath + '" />\
+					</a>';
+							sliderGroup.appendChild(sliderItem);
+							var indicatorItme = document.createElement('div');
+							if(i == 0) {
+								indicatorItme.className = 'mui-indicator mui-active';
+							} else {
+								indicatorItme.className = 'mui-indicator';
+							}
+							sliderIndicator.appendChild(indicatorItme);
+							if(honey.marqueeArray.length - 1 == i) {
+								var sliderItemDuplicate = document.createElement('div');
+								sliderItemDuplicate.className = 'mui-slider-item mui-slider-item-duplicate';
+								sliderItemDuplicate.innerHTML = '<a href="' + honey.marqueeArray[0].contentId + '">\
+							<img src="' + honey.marqueeArray[0].imagerpath + '" />\
+						</a>';
+								sliderGroup.appendChild(sliderItemDuplicate);
+							}
+							slider = mui('.mui-slider').slider({
+								interval: 2000
+							});
+						}
+					},
+					//设置推荐商品
+					setRecommend: function() {
+						var recommend = document.getElementById('recommend');
+						mui.each(recommendArray, function(index, item) {
+							var li = document.createElement('li');
+							li.className = 'mui-table-view-cell mui-media mui-col-xs-6';
+							li.innerHTML = '<a href="' + item.product_id + '">\
+							<div class= "bgDiv">\
+								<img class="mui-media-object" src="' + item.large_image_url + '"/>\
+								<div class="mui-media-body">\
+									<p class="mui-ellipsis-2">' + item.product_name + '</p>\
+									<p class="price-one">¥' + item.product_price.default_price + '</p>\
+									<p class="price-two">¥' + item.product_price.list_price + '</p>\
+								</div>\
+							</div>\
+						</a>';
+							recommend.appendChild(li);
+						});
+					}
+				};
+				honey.autoSlider()
+			})
+		</script>
+	</body>
+
+</html>
