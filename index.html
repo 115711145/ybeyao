@@ -14,11 +14,17 @@
 		.mui-active .mui-tab-label {
 			color: #41cea9;
 		}
+		#nav-title{
+			display: none;
+		}
    	</style>
 </head>
 <body class="own-gray-color">
 	<header class="mui-bar mui-bar-nav own-main-background-color">
-		<h1 id="nav-title" class="mui-title">首页</h1>
+		<div class="mui-input-row mui-search" id="search">
+			<input type="search" id="search-input" class="mui-input-clear" placeholder="友邦大药房">
+		</div>
+		<h1 id="nav-title" class="mui-title"></h1>
 	</header>
 	<nav class="mui-bar mui-bar-tab">
 		<a class="mui-tab-item mui-active" href="barItem/home.html" id="home">
@@ -40,47 +46,90 @@
 	</nav>
 	<script type="text/javascript" charset="UTF-8">
 		mui.init()
-		var honey;
-		mui.plusReady(function(){
-			honey={
-				contentPages:['home','category','cart','mine'],
-				contentStyle:{top:'45px',bottom:'51px'},
-				tempPages:{},//缓存页面
-				activeTab:'',//当前访问页面
-				title:document.getElementById('nav-title'),//标题
-				initWebView:function(){//初始化
-					for(var i=0;i<honey.contentPages.length;i++){
-						var content=plus.webview.create('barItem/'+honey.contentPages[i]+'.html',honey.contentPages[i],honey.contentStyle);
-						if(i==0){
-							honey.tempPages[honey.contentPages[i]]=true;
-							honey.activeTab=honey.contentPages[i];
-							plus.webview.currentWebview().append(content)
-						}else{
-							content.hide()
-						}
+		var honey={
+			barItem:['home','category','cart','mine'],
+			barWebViews:[],
+			contentStyle:{top:'45px',bottom:'51px',scrollIndicator:'none'},
+			title:document.getElementById('nav-title'),//标题
+			search:document.getElementById('search'),
+			//初始化所有bar页面
+		    initWebViews:function(){
+		    	//预加载页面
+				honey.preloadWebViews()
+				//设置状态栏颜色
+				plus.navigator.setStatusBarBackground( "#41cea9" );
+				//设置只支持竖屏幕显示
+				plus.screen.lockOrientation("portrait-primary");
+				//绑定菜单事件
+				honey.bindBaritem()
+				
+				//搜索框事件
+				mui('#search').on('tap','input',function(){
+					alert('aa')
+				})
+			},
+			preloadTemplate:function(){
+				//预加载template
+				var webview =  mui.preload({
+					id:'template',
+					url:'template.html',
+					styles:{
+						top: '-1000px',
 					}
-					//选项卡事件
-					mui('.mui-bar-tab').on('tap','a',function(){
-						var id=this.getAttribute('id');
-						if(id!=honey.activeTab){
-							//更换标题
-							honey.title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
-							//IOS或者非首次加载直接显示
-							if(mui.os.ios||honey.tempPages[id]){
-								plus.webview.show(id)
-							}else{
-								honey.tempPages[id]=true;
-								plus.webview.show(id,'fade-in',300)
-							}
-							plus.webview.hide(honey.activeTab);
-							honey.activeTab=id;
+				});
+				webview.show();
+			},
+			preloadWebViews:function(){//预加载页面
+				honey.mainWebview = plus.webview.currentWebview();
+				for (var i = 0; i < honey.barItem.length; i++) {
+					var id=honey.barItem[i];
+					honey.barWebViews[id] = mui.preload({
+						id:id,
+						url:'barItem/'+id+'.html',
+						styles:{
+							top:'44px',
+							bottom: '51px',
+							left: '0px',
+							bounce: 'vertical',
+							bounceBackground: '#f8f8f8',
+							scrollIndicator:'none'
+						},
+						waiting:{
+							autoShow:false
 						}
-					})
-				},
-			};
-			honey.initWebView()
+					});
+					honey.barWebViews[id].hide();
+					honey.mainWebview.append(honey.barWebViews[id]);
+				}
+				honey.barWebViews[honey.barItem[0]].show();
+				honey.curBarItemWebview = honey.barItem[0];
+			},
+			bindBaritem:function(){//绑定菜单事件
+				mui('.mui-bar-tab').on('tap','.mui-tab-item',function(){
+					var id=this.getAttribute('id');
+					if(id!=honey.curBarItemWebview){
+						//更换标题
+						if(id=='home'){
+							honey.search.style.display="block";
+							honey.title.style.display="none";
+						}else{
+							if(honey.curBarItemWebview=='home'){
+								honey.search.style.display="none";
+								honey.title.style.display="block";
+							}
+							honey.title.innerText = this.querySelector('.mui-tab-label').innerText;
+						}
+						//切换baritemwebview
+						honey.barWebViews[id].show();
+						honey.curBarItemWebview = honey.barItem[id];
+					}
+				});
+			}
+		};
+		mui.plusReady(function(){
+			honey.initWebViews()
 		})
-		
+	
 	</script>
 </body>
 </html>

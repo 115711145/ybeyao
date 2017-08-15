@@ -1,0 +1,37 @@
+{
+	"index.html": {
+		"resources": [
+			"css/own.css",
+			"js/mui.min.js",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"barItem/home.html",
+			"fonts/iconfont.ttf",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"barItem/category.html",
+			"barItem/home.html",
+			"barItem/mine.html",
+			"barItem/cart.html"
+		]
+	},
+	"barItem/home.html": {
+		"resources": [
+			"images/cbd.jpg",
+			"images/muwu.jpg",
+			"images/yuantiao.jpg",
+			"images/shuijiao.jpg",
+			"js/mui.js",
+			"css/own.css",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"js/mui.lazyload.js",
+			"js/mui.lazyload.img.js",
+			"js/own.js",
+			"fonts/mui-icons-extra.ttf",
+			"css/icons-extra.css",
+			"fonts/iconfont.ttf"
+		]
+	}
+}
