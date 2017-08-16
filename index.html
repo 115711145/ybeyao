@@ -33,13 +33,16 @@
 		{
 		    color: #fff;
 		}
+		.mui-input-row .mui-input-speech ~ .mui-icon-speech {
+			color: #fff;
+		}
 
    	</style>
 </head>
 <body class="own-gray-color">
 	<header class="mui-bar mui-bar-nav own-main-background-color">
 		<div class="mui-input-row mui-search" id="search">
-			<input type="search" id="search-input" class="mui-input-clear" placeholder="友邦大药房">
+			<input type="search" id="search-input" class="mui-input-speech mui-input-clear" placeholder="友邦大药房">
 		</div>
 		<h1 id="nav-title" class="mui-title"></h1>
 	</header>
@@ -86,16 +89,38 @@
 					alert('aa')
 				})
 			},
-			preloadTemplate:function(){
-				//预加载template
-				var webview =  mui.preload({
-					id:'template',
-					url:'template.html',
-					styles:{
-						top: '-1000px',
+			preloadDetailView:function(){//加载详情页
+				honey.detailHeader =  mui.preload({
+					id:'goods-header',
+					url:'goods/goods-header.html',
+						styles:{
+						top:'0px',
+						bottom:'0px'
+					},
+					extras:{
+						mtype:'main_first'
 					}
 				});
-				webview.show();
+				honey.detailSubpage =  mui.preload({
+					id:'goods-sub',
+					url:'goods/goods-detail.html',
+					styles:{
+						top: '44px',
+						bottom: '0px',
+						bounce: 'vertical',
+						bounceBackground:'#f8f8f8'
+					},
+					extras:{
+						mtype:'sub_first'
+					}
+				});
+				honey.detailHeader.hide();
+				honey.detailSubpage.hide();
+				//父页面隐藏的时候子页面也隐藏
+				honey.detailHeader.addEventListener('hide',function(){
+					honey.detailSubpage.hide();
+				});
+				honey.detailHeader.append(honey.detailSubpage);
 			},
 			preloadWebViews:function(){//预加载页面
 				honey.mainWebview = plus.webview.currentWebview();
@@ -146,6 +171,7 @@
 		};
 		mui.plusReady(function(){
 			honey.initWebViews()
+			honey.preloadDetailView()
 		})
 	
 	</script>

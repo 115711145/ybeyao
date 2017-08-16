@@ -215,7 +215,10 @@
 				"refer": [
 					"barItem/category.html",
 					"barItem/mine.html",
-					"barItem/cart.html"
+					"barItem/cart.html",
+					"template.html",
+					"goods/goods-header.html",
+					"goods/goods-detail.html"
 				],
 				"priority": 0
 			},
@@ -235,6 +238,42 @@
 					"fonts/mui-icons-extra.ttf",
 					"css/icons-extra.css",
 					"fonts/iconfont.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"template.html": {
+				"resources": [],
+				"refer": [
+					"template-main-third.html",
+					"template-main-second.html",
+					"template-main-first.html"
+				],
+				"priority": 0
+			},
+			"goods/goods-header.html": {
+				"resources": [
+					"css/own.css",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"goods/goods-detail.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"goods/goods-detail.html": {
+				"resources": [
+					"fonts/iconfont.ttf",
+					"css/own.css",
+					"js/own.js",
+					"js/mui.min.js",
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"fonts/mui-icons-extra.ttf",
+					"css/icons-extra.css",
+					"fonts/mui.ttf"
 				],
 				"refer": [],
 				"priority": 0

@@ -5,13 +5,23 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link type="text/css" rel="stylesheet" href="../css/mui.min.css"/>
+		<link type="text/css" rel="stylesheet" href="../css/own.css"/>
 		<link type="text/css" rel="stylesheet" href="../css/iconfont.css" />
+		<style type="text/css">
+			.menu{
+				padding:0 10%;
+			}
+			
+		</style>
 	</head>
-
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title" id="header-title">产品详情</h1>
+			<h1 class="mui-title" id="header-title">
+				<span class="menu">商品</span>
+				<span class="menu">详情</span>
+				<span class="menu">评价</span>
+			</h1>
 			<a id="rightBar" class="mui-icon mui-pull-right"></a>
 		</header>
 
@@ -25,34 +35,19 @@
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript">
 			mui.init({
-				swipeBack: true
+				swipeBack: false,
 			});
-			var honey;
+			var honey={};
 			mui.plusReady(function(){
-				//获取dom
-				honey.self=plus.webview.currentWebview();
-				honey.rightBar=document.getElementById('rightBar');
-				honey.title=document.getElementById('header-title');
-				window.addEventListener('detail',function(options){
-					//修改标题
-					honey.innerText=options.detail.title;
-					honey.detail.id=options.detail.id;
-					honey.aniShow=options.detail.aniShow;
-					honey.href=options.detail.href;
-					honey.isBars=options.detail.isBars;
-					honey.barsIcon=options.detail.barsIcon;
-					honey.extendOptions=options.detail.extendOptions;
-					//显示导航
-					if(honey.isBars){
-						honey.rightBar.style.display="inline";
-						honey.rightBar.className=honey.barsIcon+' mui-pull-right';
-					}else{
-						honey.rightBar.style.display='none';
-					}
-					
-					
+				honey.subpage=plus.webview.getWebviewById('goods-sub');
+				//预加载子页面
+				mui('header').on('tap','.mui-pull-left',function(){
+//					alert('aab')
 				})
-				
+				window.addEventListener('goodsId',function(o){
+					mui.fire(honey.subpage,'showGoods',{id:o.detail.id})
+					honey.subpage.show()
+				})
 			})
 		</script>
 	</body>

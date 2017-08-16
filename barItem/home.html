@@ -78,7 +78,6 @@
 		<div id="homeDiv" class="mui-content own-content-padding">
 			<div id="productSlider" class="mui-slider">
 			</div>
-			<div></div>
 			<div id="menus">
 				<ul class="mui-table-view mui-grid-view mui-grid-12 home-menu">
 		            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-4 ac">
@@ -116,7 +115,6 @@
 		</div>
 
 		<script type="text/javascript" src="../js/mui.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/own.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
@@ -125,75 +123,72 @@
 			});
 //			mui.plusReady(function() {
 			var honey = {
-				images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
-				autoSlider:function(){
-					var len=honey.images.length-1;
-					var group=[], indicator=[];
-					for(var i=0;i<=len;i++){
-						if(i==0){
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img src="'+honey.images[len]+'"></a></div>')
+					images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
+					autoSlider:function(){
+						var len=honey.images.length-1;
+						var group=[], indicator=[];
+						for(var i=0;i<=len;i++){
+							if(i==0){
+								group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
+								<img src="'+honey.images[len]+'"></a></div>')
+							}
+							group.push('<div class="mui-slider-item"><a href="#">\
+							<img src="'+honey.images[i]+'"></a></div>')
+							indicator.push('<div class="mui-indicator'+(i==0?' mui-active':'')+'"></div>')
+							if(i==len){
+								group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
+								<img src="'+honey.images[0]+'"></a></div>')
+							}
 						}
-						group.push('<div class="mui-slider-item"><a href="#">\
-						<img src="'+honey.images[i]+'"></a></div>')
-						indicator.push('<div class="mui-indicator'+(i==0?' mui-active':'')+'"></div>')
-						if(i==len){
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img src="'+honey.images[0]+'"></a></div>')
-						}
-					}
-					document.getElementById('productSlider').innerHTML='<div class="mui-slider-group mui-slider-loop">'+group.join('')
-					+'</div><div class="mui-slider-indicator">'+indicator.join('')+'</div>';
-					honey.slider = mui('.mui-slider').slider({
-						interval:2000
-					});
-				},
-				bindListTap:function(){
-					//添加slider点击事件
-					mui('#productSlider').on('tap','a',function(){
-						alert('a')
-					})
-					//添加每个item点击的监听事件
-					mui('#recommend').on('tap', 'a', function() {
-						var item = this;
-						var itemID = this.getAttribute('href');
-						var extendOptions = {
-							itemID: itemID
-						};
-						pushWebView({
-							webType: 'newWebview_First',
-							id: 'goods-detail',
-							href: 'goods-detail.html',
-							aniShow: getaniShow(),
-							title: "商品详情",
-							isBars: false,
-							barsIcon: '',
-							extendOptions: extendOptions
+						document.getElementById('productSlider').innerHTML='<div class="mui-slider-group mui-slider-loop">'+group.join('')
+						+'</div><div class="mui-slider-indicator">'+indicator.join('')+'</div>';
+						honey.slider = mui('.mui-slider').slider({
+							interval:2000
 						});
-					});
+					},
+					bindListTap:function(){
+						//添加slider点击事件
+						mui('#productSlider').on('tap','a',function(){
+							alert('a')
+						})
+						//添加每个item点击的监听事件
+						mui('#recommend').on('tap', 'a', function() {
+							var id = this.getAttribute('href');
+							if(!honey.detailWebView){
+								honey.detailWebView=plus.webview.getWebviewById('goods-header');
+							}
+							if(!honey.detailSubpage){
+								honey.detailSubpage=plus.webview.getWebviewById('goods-sub');
+							}
+							mui.fire(honey.detailWebView,'goodsId',{id:id})
+							honey.detailWebView.show()
+						});
+					},
+					setRecommend:function(){
+						var recommend=document.getElementById('recommend');
+		//				mui.each(honey.images, function(index, item) {
+						for(var i=0;i<20;i++){
+							var imageUrl='http://www.dcloud.io/hellomui/images/'+(i+1)+'.jpg';
+							var li=document.createElement('li');
+							li.className='mui-table-view-cell mui-media mui-col-xs-6 goods-list';
+							li.innerHTML='<div class="goods-list-item"><a href="'+i+'"><img class="mui-media-object goods-logo" src="../images/muwu.jpg"\
+							data-lazyload="'+imageUrl+'"/>\
+			                <div class="mui-media-body goods-info"><p class="goods-title">幸福就是可以一起睡觉...</p><p><span class="goods-price-one">￥120</span><span class="goods-price-two">￥200</span><p></div></a></div>';
+			                recommend.appendChild(li)
+		               }
+		//				})
+						mui(document).imageLazyload({
+							placeholder: '../images/60x60.gif'
+						});
 				},
-				setRecommend:function(){
-					var recommend=document.getElementById('recommend');
-	//				mui.each(honey.images, function(index, item) {
-					for(var i=0;i<20;i++){
-						var imageUrl='http://www.dcloud.io/hellomui/images/'+(i+1)+'.jpg';
-						var li=document.createElement('li');
-						li.className='mui-table-view-cell mui-media mui-col-xs-6 goods-list';
-						li.innerHTML='<div class="goods-list-item"><a href="'+i+'"><img class="mui-media-object goods-logo" src="../images/muwu.jpg"\
-						data-lazyload="'+imageUrl+'"/>\
-		                <div class="mui-media-body goods-info"><p class="goods-title">幸福就是可以一起睡觉...</p><p><span class="goods-price-one">￥120</span><span class="goods-price-two">￥200</span><p></div></a></div>';
-		                recommend.appendChild(li)
-	               }
-	//				})
-					mui(document).imageLazyload({
-						placeholder: '../images/60x60.gif'
-					});
-				}
 			};
 //			})
-		honey.autoSlider()
-		honey.setRecommend()
-		honey.bindListTap()
+		mui.plusReady(function(){
+			honey.autoSlider()
+			honey.setRecommend()
+			honey.bindListTap()
+		})
+		
 		</script>
 	</body>
 

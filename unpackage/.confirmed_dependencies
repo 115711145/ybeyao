@@ -13,7 +13,10 @@
 			"barItem/category.html",
 			"barItem/home.html",
 			"barItem/mine.html",
-			"barItem/cart.html"
+			"barItem/cart.html",
+			"template.html",
+			"goods/goods-header.html",
+			"goods/goods-detail.html"
 		]
 	},
 	"barItem/home.html": {
@@ -32,6 +35,39 @@
 			"fonts/mui-icons-extra.ttf",
 			"css/icons-extra.css",
 			"fonts/iconfont.ttf"
+		]
+	},
+	"template.html": {
+		"refer": [
+			"template-main-third.html",
+			"template-main-second.html",
+			"template-main-first.html"
+		]
+	},
+	"goods/goods-header.html": {
+		"resources": [
+			"css/own.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"goods/goods-detail.html"
+		],
+		"refer": [
+			"goods/goods-detail.html"
+		]
+	},
+	"goods/goods-detail.html": {
+		"resources": [
+			"fonts/iconfont.ttf",
+			"css/own.css",
+			"js/own.js",
+			"js/mui.min.js",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"fonts/mui-icons-extra.ttf",
+			"css/icons-extra.css",
+			"fonts/mui.ttf"
 		]
 	}
 }
