@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css"  />
+		<style type="text/css">
+			p{
+				color: #fefefe;
+			}
+			.quan-con-padding{
+				margin-top: 10px;
+				padding-bottom: 60px;
+			}
+			.quan{
+				height: 80px;
+				position: relative;
+				margin: 10px 20px;
+				background: url(../images/yhq1.jpg) no-repeat center;
+				background-size: 100%;
+				background-position :0 97%;
+			}
+			.no-get{
+				background: url(../images/yhq2.jpg) no-repeat center;
+				background-size: 100%;
+				background-position :0 97%;
+			}
+			.no-get span,.no-get p{
+				color: #efefef;
+			}
+			.quan .quan-con{
+				position: relative;
+			}
+			.quan .quan-con .title{
+				width: 65%;
+			}
+			.quan .quan-con .title .number{
+				margin: 15px 0 0 10px;
+			}
+			.quan .quan-con .title font{
+				font-size: 35px;
+				margin: 5px;
+			}
+			.quan .quan-con .title span{
+				font-size:14px
+			}
+			.quan .quan-con .title .use-time{
+				font-size: 12px;
+				margin: 10px 0 0 20px;
+			}
+			.quan .quan-con .getquan{
+				width: 35%;
+				margin-top: 30px;
+				text-align: center;
+			}
+			.quan .quan-con .getquan p{
+				font-size: 14px;
+			}
+			.fl{
+				float: left;
+			}
+			.fr{
+				float: right;
+			}
+			.btn{
+				height: 50px;
+				text-align: center;
+				font-size: 20px;
+				line-height: 45px;
+				color: #fff;
+				background: #34A542;
+				border: 1px solid #34A542;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content quan-con-padding">
+			<div class="quan no-get">
+				<div class="quan-con">
+					<div class="fl title">
+						<p class="number"><font>5</font><span>元优惠券</span></p>
+						<p class="use-time">使用时间：2017-01-01</p>
+					</div>
+					<div class="fr getquan">
+						<p>立即领取</p>
+					</div>
+				</div>
+			</div>
+			<div class="quan">
+				<div class="quan-con">
+					<div class="fl title">
+						<p class="number"><font>20</font><span>元优惠券</span></p>
+						<p class="use-time">使用时间：2017-01-01</p>
+					</div>
+					<div class="fr getquan">
+						<p>立即领取</p>
+					</div>
+				</div>
+			</div>
+			<div class="quan">
+				<div class="quan-con">
+					<div class="fl title">
+						<p class="number"><font>50</font><span>元优惠券</span></p>
+						<p class="use-time">使用时间：2017-01-01</p>
+					</div>
+					<div class="fr getquan">
+						<p>立即领取</p>
+					</div>
+				</div>
+			</div>
+			<div class="quan">
+				<div class="quan-con">
+					<div class="fl title">
+						<p class="number"><font>100</font><span>元优惠券</span></p>
+						<p class="use-time">使用时间：2017-01-01</p>
+					</div>
+					<div class="fr getquan">
+						<p>立即领取</p>
+					</div>
+				</div>
+			</div>
+			<div class="quan">
+				<div class="quan-con">
+					<div class="fl title">
+						<p class="number"><font>200</font><span>元优惠券</span></p>
+						<p class="use-time">使用时间：2017-01-01</p>
+					</div>
+					<div class="fr getquan">
+						<p>立即领取</p>
+					</div>
+				</div>
+			</div>
+			<div class="quan">
+				<div class="quan-con">
+					<div class="fl title">
+						<p class="number"><font>500</font><span>元优惠券</span></p>
+						<p class="use-time">使用时间：2017-01-01</p>
+					</div>
+					<div class="fr getquan">
+						<p>立即领取</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab footer-bar">
+			<div class="btn">完成</div>
+		</nav>
+		<script type="text/javascript" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: false,
+			});
+			var honey={};
+			mui.plusReady(function(){
+				window.addEventListener('getQuan',function(o){
+					mui.scrollTo(0,1);
+				})
+				mui('.quan').on('tap','.getquan',function(){
+					var p=this.parentNode.parentNode;
+					var cls=p.getAttribute('class')+' no-get';
+					p.setAttribute('class',cls)
+				})
+				mui('.footer-bar').on('tap','.btn',function(){
+					if(!honey.maskHeader){
+						honey.maskHeader=plus.webview.getWebviewById('mask-header');
+					}
+					if(!honey.detailQuan){
+						honey.detailQuan=plus.webview.getWebviewById('goods-quan');
+					}
+					honey.detailQuan.hide('slide-out-bottom',500)
+				})
+			})
+		</script>
+	</body>
+</html>
