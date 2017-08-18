@@ -11,20 +11,53 @@
 			.menu{
 				padding:0 10%;
 			}
+			.footer-bar a{
+				padding: 0 5px;
+				color:#333;
+				font-size: 12px;
+				margin-top: 10px;
+				width: 20%;
+				text-align: center;
+				float: left;
+			}
+			.footer-bar .mui-icon{
+				font-size: 16px;
+				color: 16px;
+				display: block;
+				padding: 0;
+				color: #666;
+			}
+			.footer-bar .add-cart,.footer-bar .buy-now{
+				margin: 0;
+				width: 30%;
+				display: inline-block;
+				height: 50px;
+			}
+			.footer-bar  .add-cart{
+				background: #F0AD4E;
+				color: #fff;
+				line-height: 50px;
+				font-size: 14px;
+			}
+			.footer-bar .buy-now{
+				background: #DC2F2F;
+				line-height: 50px;
+				font-size: 14px;
+				color: #fff;
+			}
+			.footer-bar .add-cart:active,.footer-bar .buy-now:active{
+				background: #ccc;
+			}
 			
 		</style>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title" id="header-title">
-				<span class="menu">商品</span>
-				<span class="menu">详情</span>
-				<span class="menu">评价</span>
-			</h1>
+			<h1 class="mui-title" id="header-title"></h1>
 			<a id="rightBar" class="mui-icon mui-pull-right"></a>
 		</header>
-
+		
 		<div class="loader">
 			<a>
 				<span class="mui-spinner"></span>
@@ -32,12 +65,30 @@
 			<br />
 			<span>加载中...</span>
 		</div>
+		<nav class="mui-bar mui-bar-tab footer-bar">
+			<a>
+				<span class="mui-icon mui-icon-chat"></span>
+				<span class="mui-tab-label">咨询</span>
+			</a>
+			<a>
+				<span class="mui-icon mui-icon-star"></span>
+				<span class="mui-tab-label">收藏</span>
+			</a>
+			<a class="add-cart">
+				加入购物车
+			</a>
+			<a class="buy-now">
+				立即购买
+			</a>
+		</nav>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript">
 			mui.init({
 				swipeBack: false,
 			});
-			var honey={};
+			var honey={
+				title:document.getElementById('header-title')
+			};
 			mui.plusReady(function(){
 				honey.subpage=plus.webview.getWebviewById('goods-sub');
 				//预加载子页面
@@ -45,6 +96,7 @@
 //					alert('aab')
 				})
 				window.addEventListener('goodsId',function(o){
+					honey.title.innerHTML=o.detail.title;
 					mui.fire(honey.subpage,'showGoods',{id:o.detail.id})
 					honey.subpage.show()
 				})

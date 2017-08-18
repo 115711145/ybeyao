@@ -65,6 +65,7 @@
 		</a>
 	</nav>
 	<script type="text/javascript" src="js/mui.min.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="js/common.js" charset="UTF-8"></script>
 	<script type="text/javascript" charset="UTF-8">
 		mui.init()
 		var honey={
@@ -90,37 +91,40 @@
 				})
 			},
 			preloadDetailView:function(){//加载详情页
-				honey.detailHeader =  mui.preload({
-					id:'goods-header',
-					url:'goods/goods-header.html',
-						styles:{
-						top:'0px',
-						bottom:'0px'
-					},
-					extras:{
-						mtype:'main_first'
-					}
-				});
-				honey.detailSubpage =  mui.preload({
-					id:'goods-sub',
-					url:'goods/goods-detail.html',
-					styles:{
-						top: '44px',
-						bottom: '0px',
-						bounce: 'vertical',
-						bounceBackground:'#f8f8f8'
-					},
-					extras:{
-						mtype:'sub_first'
-					}
-				});
-				honey.detailHeader.hide();
-				honey.detailSubpage.hide();
-				//父页面隐藏的时候子页面也隐藏
-				honey.detailHeader.addEventListener('hide',function(){
-					honey.detailSubpage.hide();
-				});
-				honey.detailHeader.append(honey.detailSubpage);
+				preloadGodosDetail()
+//				honey.detailHeader =  mui.preload({
+//					id:'goods-header',
+//					url:'goods/goods-header.html',
+//						styles:{
+//						top:'0px',
+//						bottom:'0px'
+//					},
+//					extras:{
+//						mtype:'main_first'
+//					}
+//				});
+//				
+//				honey.detailSubpage =  mui.preload({
+//					id:'goods-sub',
+//					url:'goods/goods-detail.html',
+//					styles:{
+//						top: '44px',
+//						bottom: '51px',
+//						bounce: 'vertical',
+//						bounceBackground:'#f8f8f8',
+//						scrollIndicator:'none'
+//					},
+//					extras:{
+//						mtype:'sub_first'
+//					}
+//				});
+//				honey.detailHeader.hide();
+//				honey.detailSubpage.hide();
+//				//父页面隐藏的时候子页面也隐藏
+//				honey.detailHeader.addEventListener('hide',function(){
+//					honey.detailSubpage.hide();
+//				});
+//				honey.detailHeader.append(honey.detailSubpage);
 			},
 			preloadWebViews:function(){//预加载页面
 				honey.mainWebview = plus.webview.currentWebview();

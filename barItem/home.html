@@ -154,14 +154,15 @@
 						//添加每个item点击的监听事件
 						mui('#recommend').on('tap', 'a', function() {
 							var id = this.getAttribute('href');
+							var title=this.querySelector('.goods-title').innerText;
 							if(!honey.detailWebView){
 								honey.detailWebView=plus.webview.getWebviewById('goods-header');
 							}
 							if(!honey.detailSubpage){
 								honey.detailSubpage=plus.webview.getWebviewById('goods-sub');
 							}
-							mui.fire(honey.detailWebView,'goodsId',{id:id})
-							honey.detailWebView.show()
+							mui.fire(honey.detailWebView,'goodsId',{id:id,title:title})
+							honey.detailWebView.show('slide-in-right',300)
 						});
 					},
 					setRecommend:function(){
