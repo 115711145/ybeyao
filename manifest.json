@@ -222,7 +222,9 @@
 					"goods/goods-detail.html",
 					"goods/goods-quan.html",
 					"goods/goods-quan-header.html",
-					"goods/mask-header.html"
+					"goods/mask-header.html",
+					"goods/detail.html",
+					"goods/goods-param.html"
 				],
 				"priority": 0
 			},
@@ -263,7 +265,9 @@
 					"css/iconfont.css",
 					"css/mui.min.css",
 					"goods/goods-detail.html",
-					"fonts/iconfont.ttf"
+					"fonts/iconfont.ttf",
+					"images/addcart.jpg",
+					"images/buynow.jpg"
 				],
 				"refer": [],
 				"priority": 0
@@ -308,6 +312,33 @@
 			"goods/goods-quan-header.html": {
 				"resources": [
 					"goods/goods-quan.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"goods/detail.html": {
+				"resources": [
+					"images/cbd.jpg",
+					"images/muwu.jpg",
+					"images/buynow.jpg",
+					"fonts/mui.ttf",
+					"images/addcart.jpg",
+					"images/shuijiao.jpg",
+					"css/icons-extra.css",
+					"images/quan.png",
+					"css/own.css",
+					"fonts/mui-icons-extra.ttf",
+					"js/mui.min.js",
+					"css/iconfont.css",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"goods/goods-param.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css"
 				],
 				"refer": [],
 				"priority": 0

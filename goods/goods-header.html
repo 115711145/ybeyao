@@ -34,13 +34,16 @@
 				height: 50px;
 			}
 			.footer-bar  .add-cart{
-				background: #F0AD4E;
+				background: url(../images/addcart.jpg) no-repeat center;
+				background-size: 100%;
 				color: #fff;
 				line-height: 50px;
 				font-size: 14px;
+				border-right:1px solid #dedede;
 			}
 			.footer-bar .buy-now{
-				background: #DC2F2F;
+				background: url(../images/buynow.jpg) no-repeat center;
+				background-size: 100%;
 				line-height: 50px;
 				font-size: 14px;
 				color: #fff;
@@ -57,7 +60,6 @@
 			<h1 class="mui-title" id="header-title"></h1>
 			<a id="rightBar" class="mui-icon mui-pull-right"></a>
 		</header>
-		
 		<div class="loader">
 			<a>
 				<span class="mui-spinner"></span>
@@ -90,15 +92,17 @@
 				title:document.getElementById('header-title')
 			};
 			mui.plusReady(function(){
-				honey.subpage=plus.webview.getWebviewById('goods-sub');
+				if(!honey.detailSubpage){
+					honey.detailSubpage=plus.webview.getWebviewById('goods-detail');
+				}
 				//预加载子页面
 				mui('header').on('tap','.mui-pull-left',function(){
 //					alert('aab')
 				})
 				window.addEventListener('goodsId',function(o){
 					honey.title.innerHTML=o.detail.title;
-					mui.fire(honey.subpage,'showGoods',{id:o.detail.id})
-					honey.subpage.show()
+					mui.fire(honey.detailSubpage,'showGoods',{id:o.detail.id})
+					honey.detailSubpage.show()
 				})
 			})
 		</script>
