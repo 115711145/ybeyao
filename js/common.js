@@ -1,4 +1,4 @@
-function preloadGodosDetail(){
+function preloadGoodsDetail(){
 	honey.detailHeader =  mui.preload({
 		id:'goods-header',
 		url:'goods/goods-header.html',
@@ -13,7 +13,7 @@ function preloadGodosDetail(){
 	honey.detailHeader.hide()
 	
 	honey.detailSubpage =  mui.preload({
-		id:'goods-sub',
+		id:'goods-detail',
 		url:'goods/goods-detail.html',
 		styles:{
 			top: '44px',
@@ -47,24 +47,41 @@ function preloadGodosDetail(){
 			top:'220px',
 			bottom:0,
 			scrollIndicator:'none',
+			bounceBackground:'#f8f8f8',
 		},
 	})
 	honey.detailQuan.hide()
 	
+	honey.detailParam=mui.preload({
+		id:'goods-param',
+		url:'goods/goods-param.html',
+		styles:{
+			top:'220px',
+			bottom:0,
+			scrollIndicator:'none',
+			bounceBackground:'#f8f8f8',
+		},
+	})
+	honey.detailParam.hide()
+	
+	honey.detailParam.addEventListener('hide',function(){
+		honey.maskHeader.hide()
+	})
+	
 	honey.detailQuan.addEventListener('hide',function(){
 		honey.maskHeader.hide()
-	});
-	honey.maskHeader.addEventListener('hide',function(){
-		honey.detailQuan.hide('slide-in-bottom',500)
-	});
-	honey.maskHeader.addEventListener('show',function(){
-		honey.detailQuan.show('slide-in-bottom',500)
 	});
 	//父页面隐藏的时候子页面也隐藏
 	honey.detailHeader.addEventListener('hide',function(){
 		honey.detailSubpage.hide();
 		honey.maskHeader.hide()
 		honey.detailQuan.hide()
+		honey.detailParam.hide()
 	});
+	
+	honey.detailHeader.addEventListener('show',function(){
+		honey.detailSubpage.show();
+	})
+	
 	honey.detailHeader.append(honey.detailSubpage)
 }

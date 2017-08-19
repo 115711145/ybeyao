@@ -69,8 +69,8 @@
 				font-size: 20px;
 				line-height: 45px;
 				color: #fff;
-				background: #34A542;
-				border: 1px solid #34A542;
+				background: #41CEA9;
+				border: 1px solid #41CEA9;
 			}
 		</style>
 	</head>
@@ -158,8 +158,12 @@
 				})
 				mui('.quan').on('tap','.getquan',function(){
 					var p=this.parentNode.parentNode;
-					var cls=p.getAttribute('class')+' no-get';
-					p.setAttribute('class',cls)
+					var cls=p.getAttribute('class');
+					if(cls!='quan no-get'){
+						p.setAttribute('class','quan no-get')
+					}else{
+						mui.toast('已经领取过')
+					}
 				})
 				mui('.footer-bar').on('tap','.btn',function(){
 					if(!honey.maskHeader){
@@ -169,6 +173,7 @@
 						honey.detailQuan=plus.webview.getWebviewById('goods-quan');
 					}
 					honey.detailQuan.hide('slide-out-bottom',500)
+					honey.maskHeader.hide()
 				})
 			})
 		</script>

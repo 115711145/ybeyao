@@ -83,7 +83,7 @@
 				line-height: 15px;
 			}
 			.express p span{
-				width: 40%;
+				width: 30%;
 				display: inline-block;
 			}
 			.mui-table-view {
@@ -109,7 +109,7 @@
 				border-bottom: 1px solid #ddd;
 			}
 			.service .mui-icon-checkmarkempty{
-				color: #34A542;
+				color: #41CEA9;
 				font-size:15px;
 			}
 			.service p{
@@ -143,10 +143,10 @@
 				width: 80%;
 			}
 			.service .point icon{
-				border: 1px solid #34A542;
+				border: 1px solid #41CEA9;
 				padding: 1px 3px;
 				border-radius: 3px;
-				color: #34A542;
+				color: #41CEA9;
 				font-size: 10px;
 				margin-right: 5px;
 			}
@@ -171,20 +171,6 @@
 			.evaluate .evaluate-content{
 				background: #fff;
 			} 
-			.evaluate .evaluate-content .evaluate-content-tag{
-				padding: 10px;
-				text-align: center;
-			}
-			.evaluate .evaluate-content .evaluate-content-tag span{
-				display: inline-block;
-				width: 18%;
-				/*border: 1px solid #ccc;
-				border-radius: 5px;*/
-			}
-			.evaluate .evaluate-content .evaluate-content-tag span p{
-				color: #FF6633;
-				font-size: 14px;
-			}
 			.evaluate .evaluate-list{
 				border: 1px solid #DEDEDE;
 				padding: 0;
@@ -240,14 +226,16 @@
 				padding: 3px 8px;
 				color: #333;
 			}
-			.choose-type .mui-btn:active{
+			.user-do .mui-btn:active{
 				background: none;
 				color: #333;
 			}
-			
 			.mui-btn-active{
-				color: #FF5053;
-				border-color: #FF5053;
+				color: #41CEA9;
+				border-color: #41CEA9;
+			}
+			.evaluate-more{
+				text-align: center;
 			}
 		</style>
 	</head>
@@ -270,7 +258,11 @@
 						<p class="goods-price goods-price-two">价格 <span>￥300</span></p>
 					</div>
 					<div class="express">
-						<p><span>快递:<font>0.00</font></span><span>销量:<font>123</font>笔</span></p>
+						<p>
+							<span>快递:<font>0.00</font></span>
+							<span>销量:<font>123</font>笔</span>
+							<span>库存:<font>123</font></span>
+						</p>
 					</div>
 				</div>
 				<div class="user-do choose-type">
@@ -297,7 +289,7 @@
 					</div>					
 				</div>
 				<div class="preferential">
-					<div class="service">
+					<div class="service" id="attr-express">
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>破损无忧</p>
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>配送到家</p>
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>药店自提</p>
@@ -312,7 +304,7 @@
 						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
 					</div>
 				</div>
-				<div class="parameter">
+				<div class="parameter" id="param">
 					<div class="service">
 						<p>产品参数</p>
 						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
@@ -322,13 +314,6 @@
 			<div class="evaluate" id="evaluate">
 				<div class="evaluate-title"><span class="mui-icon mui-icon-chatbubble"></span>评价</div>
 				<div class="evaluate-content" id="evaluate-content">
-					<div class="evaluate-content-tag">
-						<span><p>全部</p><p>0</p></span>
-						<span><p>好评</p><p>123100</p></span>
-						<span><p>中评</p><p>0</p></span>
-						<span><p>差评</p><p>0</p></span>
-						<span><p>有图</p><p>0</p></span>
-					</div>
 					<ul class="evaluate-list">
 						<li class="evaluate-list-item">
 							<p>
@@ -354,68 +339,7 @@
 									<img class="photos" data-preview-src="" data-preview-group="2" src="../images/shuijiao.jpg"/>
 								</div>
 							</p>
-						</li>
-						<li class="evaluate-list-item">
-							<p>
-								<span class="user-name"><img src="../images/cbd.jpg"/><span>匿名用户</span></span>
-								<span class="user-star">
-									<i class="mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon-starhalf"></i>
-								</span>
-								<span class="user-time">2017-01-01</span>
-							</p>
-							<p>
-								分管控了数据顾客零食就赶快来数据打开感动死了就接口里金刚骷髅岛技术更抗裂砂浆啊分管控了数据顾客零食就赶
-								快来数据打开感动死了就接口里金刚骷髅岛技术更抗裂砂浆啊分管控了数据顾客零食就赶快来数据打开感动死了就
-								接口里金刚骷髅岛技术更抗裂砂浆啊分管控了数据顾客零食就赶快来数据打开感动死了就接口里金刚骷髅岛技术
-								更抗裂砂浆啊分管控了数据顾客零食就赶快来数据打开感动死了就接口里金刚骷髅岛技术更抗裂砂浆啊
-							</p>
-							<p>
-								<div class="user-photo">
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg" />
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-								</div>
-							</p>
-						</li>
-						<li class="evaluate-list-item">
-							<p>
-								<span class="user-name"><img src="../images/cbd.jpg"/><span>匿名用户</span></span>
-								<span class="user-star">
-									<i class="mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon-star-filled"></i>
-									<i class="mui-icon mui-icon-starhalf"></i>
-								</span>
-								<span class="user-time">2017-01-01</span>
-							</p>
-							<p>
-								分管控了数据顾客零食就赶快来数据打开感动死了就接口里金刚骷髅岛技术更抗裂砂浆啊分管控了数据顾客零食就赶
-								快来数据打开感动死了就接口里金刚骷髅岛技术更抗裂砂浆啊分管控了数据顾客零食就赶快来数据打开感动死了就
-								接口里金刚骷髅岛技术更抗裂砂浆啊分管控了数据顾客零食就赶快来数据打开感动死了就接口里金刚骷髅岛技术
-								更抗裂砂浆啊分管控了数据顾客零食就赶快来数据打开感动死了就接口里金刚骷髅岛技术更抗裂砂浆啊
-							</p>
-							<p>
-								<div class="user-photo">
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg" />
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/muwu.jpg"/>
-									<img class="photos" data-preview-src="" data-preview-group="1" src="../images/shuijiao.jpg"/>
-								</div>
-							</p>
+							<p class="evaluate-more">查看全部评论</p>
 						</li>
 					</ul>
 				</div>
@@ -429,8 +353,14 @@
 				swipeBack: false
 			});
 			var honey={
-				id:document.getElementById('goods-id'),
-				buyNum:document.getElementById('buy-num'),
+				d:{
+					attrExpress:document.getElementById('attr-express'),
+					id:document.getElementById('goods-id'),
+					buyNum:document.getElementById('buy-num'),
+					attrQuan:document.getElementById('quan'),
+					share:document.getElementById('share'),
+					param:document.getElementById('param')
+				},
 				images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
 				autoSlider:function(){
 					honey.self=plus.webview.currentWebview();
@@ -459,7 +389,7 @@
 			};
 			mui.plusReady(function(){
 				honey.autoSlider()
-				document.getElementById('share').addEventListener('tap',function(){
+				honey.d.share.addEventListener('tap',function(){
 					var y=document.getElementById('attr').clientHeight+220;
 					mui.scrollTo(y,1);
 				})
@@ -467,7 +397,29 @@
 					mui.previewImage()
 				})
 				
-				document.getElementById('quan').addEventListener('tap',function(){
+				mui('.choose-type').on('tap','.mui-btn',function(){
+					if(!honey.chooseActive){
+						honey.chooseActive=mui('.mui-btn-active')[0];
+					}
+					honey.chooseActive.setAttribute('class','mui-btn');
+					honey.chooseActive=this;
+					honey.chooseActive.setAttribute('class','mui-btn mui-btn-active')
+				})
+				
+				
+				honey.d.param.addEventListener('tap',function(){
+					if(!honey.maskHeader){
+						honey.maskHeader=plus.webview.getWebviewById('mask-header');
+					}
+					if(!honey.detailParam){
+						honey.detailParam=plus.webview.getWebviewById('goods-param');
+					}
+					mui.fire(honey.detailParam,'getQuan',{id:1})
+					honey.maskHeader.show()
+					honey.detailParam.show('slide-in-bottom',500)
+				})
+				
+				honey.d.attrQuan.addEventListener('tap',function(){
 					if(!honey.maskHeader){
 						honey.maskHeader=plus.webview.getWebviewById('mask-header');
 					}
@@ -476,8 +428,10 @@
 					}
 					mui.fire(honey.detailQuan,'getQuan',{id:1})
 					honey.maskHeader.show()
+					honey.detailQuan.show('slide-in-bottom',500)
 				})
-				honey.buyNum.addEventListener('change',function(){
+				
+				honey.d.buyNum.addEventListener('change',function(){
 					if(this.value<1){
 						this.value=1
 					}
@@ -494,7 +448,7 @@
 				var view = new plus.nativeObj.ImageSlider('test',data);
 				plus.webview.currentWebview().append(view);
 				mui.scrollTo(0,10);
-				honey.buyNum.value=1;
+				honey.d.buyNum.value=1;
 			})
 		</script>
 	</body>
