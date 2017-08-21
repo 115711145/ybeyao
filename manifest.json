@@ -243,7 +243,9 @@
 					"js/own.js",
 					"fonts/mui-icons-extra.ttf",
 					"css/icons-extra.css",
-					"fonts/iconfont.ttf"
+					"fonts/iconfont.ttf",
+					"css/iconfont/iconfont.css",
+					"css/iconfont/iconfont.ttf"
 				],
 				"refer": [],
 				"priority": 0
@@ -304,7 +306,9 @@
 					"images/yhq.jpg",
 					"images/yhq1.jpg",
 					"images/yhq2.jpg",
-					"fonts/mui.ttf"
+					"fonts/mui.ttf",
+					"images/quan1.jpg",
+					"images/quan2.jpg"
 				],
 				"refer": [],
 				"priority": 0

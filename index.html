@@ -144,7 +144,13 @@
 			honey.initWebViews()
 			honey.preloadDetailView()
 		})
-	
+		window.addEventListener('goHome',function(){
+			if(!honey.home){
+				honey.home=plus.webview.currentWebview();
+			}
+			honey.home.show();
+			honey.barWebViews.home.show()
+		})
 	</script>
 </body>
 </html>

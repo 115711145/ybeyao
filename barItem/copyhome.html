@@ -7,7 +7,8 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
-		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
 		<style type="text/css">
 			#productSlider img{
 				height: 150px;
@@ -19,20 +20,19 @@
 				border-top-right-radius: 3px;
 				border-top-left-radius: 3px;
 			}
-			#recommend {
-				
+			
+			.mui-table-view-cell {
+				margin-bottom: 10px;
 			}
-			#recommend .mui-table-view-cell {
-			}
-			#recommend .goods-list-item {
+			
+			.goods-list-item {
 				border: 1px solid #eee;
 				border-radius: 3px;
-				background: #fff;
+				background-color: white;
 				width: 100%;
 			}
-			#recommend .goods-list-item img{
-				height: 100px;
-				border-radius: 3px;
+			.goods-list-item img{
+				height: 100px !important;
 			}
 			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
 				margin-top: 2px;
@@ -69,30 +69,25 @@
 			}
 			.home-menu{
 				color: green !important;
-				padding: 2px;
+				padding: 0;
 				text-align: center;
+				background: #ccc;
+				margin: 5px 0;
 			}
 			.home-menu li{
-				border: 1px solid green;
-				display: inline-block;
-				width: 30%;
-				margin: 10px 5px;
-				float: left;
-			}
-			.mui-table-view.mui-grid-9{
-			     background-color: #fff;
-			}
-			#menus{
 				margin: 0;
 				padding: 0;
+				background: #fff;
+				display: inline-block;
+				margin-bottom: 3px;
+				width: 32.8%;
 			}
-			#menus .mui-media{
-				padding: 0;
-				line-height: 20px;
-				height: 60px;
+			.home-menu-item-left{
+				float: left;
 			}
-			#menus .mui-icon{
-				font-size: 20px;
+			.home-menu-item-right{
+				float: right;
+				border-right: 0;
 			}
 		</style>
 	</head>
@@ -102,28 +97,32 @@
 			<div id="productSlider" class="mui-slider">
 			</div>
 			<div id="menus">
-				<ul class="mui-table-view mui-grid-view mui-grid-9">
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-		            	<a href="#">
-		                    <span class="mui-icon iconfont icon-jiating"></span>
-		                    <div class="mui-media-body">家庭常备</div></a>
+				<ul class="home-menu">
+		            <li class="home-menu-item home-menu-item-left">
+	                    <span class="mui-icon iconfont icon-fenlei "></span>
+	                    <div class="mui-media-body">家庭常备</div>
 		            </li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-yybj"></span>
-		                    <div class="mui-media-body">营养保健</div></a></li>
-                    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-	                    <span class="mui-icon iconfont icon-yiliaoqixie"></span>
-	                    <div class="mui-media-body">医疗器械</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-yingyouer"></span>
-		                    <div class="mui-media-body">儿童专区</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-nanshi"></span>
-		                    <div class="mui-media-body">男性专区</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-nvshi"></span>
-		                    <div class="mui-media-body">女性专区</div></a></li>
-		        </ul>
+		            <li class="home-menu-item home-menu-item-center">
+	                    <span class="mui-icon iconfont icon-fenlei "></span>
+	                    <div class="mui-media-body">家庭常备</div>
+		            </li>
+		            <li class="home-menu-item home-menu-item-right">
+	                    <span class="mui-icon iconfont icon-fenlei "></span>
+	                    <div class="mui-media-body">家庭常备</div>
+		            </li>
+		             <li class="home-menu-item home-menu-item-left">
+	                    <span class="mui-icon iconfont icon-fenlei "></span>
+	                    <div class="mui-media-body">家庭常备</div>
+		            </li>
+		            <li class="home-menu-item home-menu-item-center">
+	                    <span class="mui-icon iconfont icon-fenlei "></span>
+	                    <div class="mui-media-body">家庭常备</div>
+		            </li>
+		            <li class="home-menu-item home-menu-item-right">
+	                    <span class="mui-icon iconfont icon-fenlei "></span>
+	                    <div class="mui-media-body">家庭常备</div>
+		            </li>
+		        </ul> 
 			</div>
 			<div class="mui-content">
 			    <h5 style="background-color:#efeff4;padding:5px 15px">推荐产品</h5>

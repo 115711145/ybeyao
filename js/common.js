@@ -1,4 +1,4 @@
-function preloadGoodsDetail(){
+function preloadGoodsDetail(extras){
 	honey.detailHeader =  mui.preload({
 		id:'goods-header',
 		url:'goods/goods-header.html',
@@ -6,9 +6,7 @@ function preloadGoodsDetail(){
 			top:'0px',
 			bottom:'0px'
 		},
-		extras:{
-			mtype:'main_first'
-		}
+		extras:extras
 	})
 	honey.detailHeader.hide()
 	
@@ -22,9 +20,7 @@ function preloadGoodsDetail(){
 			bounceBackground:'#f8f8f8',
 			scrollIndicator:'none'
 		},
-		extras:{
-			mtype:'sub_first'
-		}
+		extras:extras
 	})
 	honey.detailSubpage.hide()
 	
