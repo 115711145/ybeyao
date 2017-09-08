@@ -42,7 +42,22 @@
 			"css/icons-extra.css",
 			"fonts/iconfont.ttf",
 			"css/iconfont/iconfont.css",
-			"css/iconfont/iconfont.ttf"
+			"css/iconfont/iconfont.ttf",
+			"images/ertong.jpg",
+			"images/laoren.jpg",
+			"images/liangxing.jpg",
+			"images/muying.jpg",
+			"images/baojian.jpg",
+			"images/youhuiquan.jpg",
+			"images/xinnao.jpg",
+			"images/pifu.jpg",
+			"images/liangxing.png",
+			"images/muying.png",
+			"images/ertong.png",
+			"images/laoren.png",
+			"images/baojian.png",
+			"images/yiliaoqx.png",
+			"images/youhuiquan.png"
 		]
 	},
 	"template.html": {
