@@ -9,9 +9,10 @@
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 		<style type="text/css">
-			#productSlider img{
+			#productSlider img {
 				height: 150px;
 			}
+			
 			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-object {
 				line-height: auto;
 				max-width: auto;
@@ -19,32 +20,50 @@
 				border-top-right-radius: 3px;
 				border-top-left-radius: 3px;
 			}
-			#recommend {
+			#recommend{
+				margin: 5px 5px 0 5px;
+				background: #efefef;
 				
 			}
-			#recommend .mui-table-view-cell {
+			.mui-table-view{
+				margin: 0 !important;
+				padding: 0;
+				background: none;
 			}
+			.mui-table-view:after,#recommend .mui-table-view:before{
+				border: 0;
+				height: 0;
+				background-color: #fff;
+			}
+			#recommend .goods-list{
+				padding: 3px 0px 3px 10px;
+			}
+			
 			#recommend .goods-list-item {
-				border: 1px solid #eee;
 				border-radius: 3px;
 				background: #fff;
-				width: 100%;
+				border: 1px solid #efefef;
+				padding-top: 5px;
 			}
-			#recommend .goods-list-item img{
+			
+			#recommend .goods-list-item img {
+				width: 95%;
 				height: 100px;
-				border-radius: 3px;
+				/*border-radius: 3px;*/
 			}
-			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+			
+			#recommend .mui-table-view-cell .mui-media-body {
 				margin-top: 2px;
-				margin-bottom: 5px;
+				margin-bottom: 0px;
 				height: auto;
 			}
 			
-			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body p {
+			#recommend .mui-table-view-cell .mui-media-body p {
 				white-space: pre;
 				color: #555;
 			}
-			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body .goods-price-one {
+			
+			#recommend .mui-table-view-cell .mui-media-body .goods-price-one {
 				margin-top: 12px;
 				float: left;
 				font-size: 1.1em;
@@ -52,8 +71,7 @@
 				color: red;
 				margin-bottom: 10px;
 			}
-			
-			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body .goods-price-two {
+			#recommend .mui-table-view-cell .mui-media-body .goods-price-two {
 				margin-top: 12px;
 				float: right;
 				font-size: 1.1em;
@@ -63,36 +81,73 @@
 			.mui-content a.active {
 				color: green;
 			}
-			.mui-content .mui-media-body{
+			
+			.mui-content .mui-media-body {
 				color: #666 !important;
 				font-size: 13px !important;
 			}
-			.home-menu{
+			
+			.home-menu {
 				color: green !important;
 				padding: 2px;
 				text-align: center;
 			}
-			.home-menu li{
+			
+			.home-menu li {
 				border: 1px solid green;
 				display: inline-block;
 				width: 30%;
 				margin: 10px 5px;
 				float: left;
 			}
-			.mui-table-view.mui-grid-9{
-			     background-color: #fff;
-			}
-			#menus{
-				margin: 0;
+			
+			#menus {
+				margin: 8px 5px 3px 5px;
 				padding: 0;
+				background: none;
+				text-align: center;
 			}
-			#menus .mui-media{
+			#menus .mui-grid-view{
+				border: none;
+				background-color: #fff;
+				border-radius: 1px;
+			}
+			#menus .mui-media {
 				padding: 0;
-				line-height: 20px;
+				line-height: 14px;
+				border: 0;
+				height: 80px;
+			}
+			.yb-ad1{
+				margin: 8px 5px;
+				position: relative;
+				height: 130px;
+				background: #fff;
+				border-radius: 1px;
+			}
+			.yb-ad1 img{
+				width: 100%;
+				border-radius: 1px;
+			}
+			.ad-left{
+				float: left;
+				width: 49%;
+			}
+			.ad-left img{
+				height: 120px;
+				border-right: 1px solid #ccc;
+			}
+			.ad-right{
+				float: left;
+				width: 49%;
+			}
+			.ad-right img{
 				height: 60px;
+				display: block
 			}
-			#menus .mui-icon{
-				font-size: 20px;
+			.ad-right img:first-child{
+				height: 60px;
+				border-bottom: 1px solid #ccc;
 			}
 		</style>
 	</head>
@@ -103,33 +158,72 @@
 			</div>
 			<div id="menus">
 				<ul class="mui-table-view mui-grid-view mui-grid-9">
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-		            	<a href="#">
-		                    <span class="mui-icon iconfont icon-jiating"></span>
-		                    <div class="mui-media-body">家庭常备</div></a>
-		            </li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-yybj"></span>
-		                    <div class="mui-media-body">营养保健</div></a></li>
-                    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-	                    <span class="mui-icon iconfont icon-yiliaoqixie"></span>
-	                    <div class="mui-media-body">医疗器械</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-yingyouer"></span>
-		                    <div class="mui-media-body">儿童专区</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-nanshi"></span>
-		                    <div class="mui-media-body">男性专区</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-		                    <span class="mui-icon iconfont icon-nvshi"></span>
-		                    <div class="mui-media-body">女性专区</div></a></li>
-		        </ul>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/laoren.png" height="40"/></span>
+							<div class="mui-media-body">老人</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/ertong.png" height="40"/></span>
+							<div class="mui-media-body">儿童</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/liangxing.png" height="40"/></span>
+							<div class="mui-media-body">两性</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/muying.png" height="40"/></span>
+							<div class="mui-media-body">母婴</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/baojian.png" height="40"/></span>
+							<div class="mui-media-body">养生保健</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/pifu.jpg" height="40"/></span>
+							<div class="mui-media-body">皮肤护理</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/yiliaoqx.png" height="40"/></span>
+							<div class="mui-media-body">医疗器械</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
+						<a href="#">
+							<span><img src="../images/youhuiquan.png" height="40"/></span>
+							<div class="mui-media-body">优惠券</div>
+						</a>
+					</li>
+				</ul>
 			</div>
-			<div class="mui-content">
-			    <h5 style="background-color:#efeff4;padding:5px 15px">推荐产品</h5>
-			    <ul class="mui-table-view mui-grid-view" id="recommend">
-			    	
-			    </ul>    
+			<div class="yb-ad1">
+				<p class="ad-left">
+					<img src="../images/ad1.jpg" />
+				</p>
+				<p class="ad-right">
+					<img src="../images/ad2.jpg" />
+					<img src="../images/ad3.jpg" />
+				</p>
+			</div>
+			<div class="mui-content" id="recommend">
+				<ul class="mui-table-view mui-grid-view">
+
+				</ul>
+			</div>
+			<div class="yb-ad1">
+				<img src="../images/ad.jpg" />
 			</div>
 		</div>
 
@@ -140,75 +234,80 @@
 			mui.init({
 				swipeBack: true //启用右滑关闭功能
 			});
-//			mui.plusReady(function() {
+			//			mui.plusReady(function() {
 			var honey = {
-					images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
-					autoSlider:function(){
-						var len=honey.images.length-1;
-						var group=[], indicator=[];
-						for(var i=0;i<=len;i++){
-							if(i==0){
-								group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img src="'+honey.images[len]+'"></a></div>')
-							}
-							group.push('<div class="mui-slider-item"><a href="#">\
-							<img src="'+honey.images[i]+'"></a></div>')
-							indicator.push('<div class="mui-indicator'+(i==0?' mui-active':'')+'"></div>')
-							if(i==len){
-								group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img src="'+honey.images[0]+'"></a></div>')
-							}
+				images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
+				autoSlider: function() {
+					var len = honey.images.length - 1;
+					var group = [],
+						indicator = [];
+					for(var i = 0; i <= len; i++) {
+						if(i == 0) {
+							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
+								<img src="' + honey.images[len] + '"></a></div>')
 						}
-						document.getElementById('productSlider').innerHTML='<div class="mui-slider-group mui-slider-loop">'+group.join('')
-						+'</div><div class="mui-slider-indicator">'+indicator.join('')+'</div>';
-						honey.slider = mui('.mui-slider').slider({
-							interval:5000
-						});
-					},
-					bindListTap:function(){
-						//添加slider点击事件
-						mui('#productSlider').on('tap','a',function(){
-							alert('a')
+						group.push('<div class="mui-slider-item"><a href="#">\
+							<img src="' + honey.images[i] + '"></a></div>')
+						indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
+						if(i == len) {
+							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
+								<img src="' + honey.images[0] + '"></a></div>')
+						}
+					}
+					document.getElementById('productSlider').innerHTML = '<div class="mui-slider-group mui-slider-loop">' + group.join('') +
+						'</div><div class="mui-slider-indicator">' + indicator.join('') + '</div>';
+					honey.slider = mui('.mui-slider').slider({
+						interval: 5000
+					});
+				},
+				bindListTap: function() {
+					//添加slider点击事件
+					mui('#productSlider').on('tap', 'a', function() {
+						alert('a')
+					})
+					//添加每个item点击的监听事件
+					mui('#recommend').on('tap', 'a', function() {
+						var id = this.getAttribute('href');
+						var title = this.querySelector('.goods-title').innerText;
+						if(!honey.detailWebView) {
+							honey.detailWebView = plus.webview.getWebviewById('goods-header');
+						}
+						if(!honey.detailSubpage) {
+							honey.detailSubpage = plus.webview.getWebviewById('goods-detail');
+						}
+						mui.fire(honey.detailWebView, 'goodsId', {
+							id: id,
+							title: title
 						})
-						//添加每个item点击的监听事件
-						mui('#recommend').on('tap', 'a', function() {
-							var id = this.getAttribute('href');
-							var title=this.querySelector('.goods-title').innerText;
-							if(!honey.detailWebView){
-								honey.detailWebView=plus.webview.getWebviewById('goods-header');
-							}
-							if(!honey.detailSubpage){
-								honey.detailSubpage=plus.webview.getWebviewById('goods-detail');
-							}
-							mui.fire(honey.detailWebView,'goodsId',{id:id,title:title})
-							honey.detailWebView.show('slide-in-right',300)
-						});
-					},
-					setRecommend:function(){
-						var recommend=document.getElementById('recommend');
-		//				mui.each(honey.images, function(index, item) {
-						for(var i=0;i<20;i++){
-							var imageUrl='http://www.dcloud.io/hellomui/images/'+(i+1)+'.jpg';
-							var li=document.createElement('li');
-							li.className='mui-table-view-cell mui-media mui-col-xs-6 goods-list';
-							li.innerHTML='<div class="goods-list-item"><a href="'+i+'"><img class="mui-media-object goods-logo" src="../images/muwu.jpg"\
-							data-lazyload="'+imageUrl+'"/>\
+						honey.detailWebView.show('slide-in-right', 300)
+					});
+				},
+				setRecommend: function() {
+					var recommend = document.getElementById('recommend');
+					var li=[];
+					//				mui.each(honey.images, function(index, item) {
+					for(var i = 0; i < 4; i++) {
+						var imageUrl = 'http://www.dcloud.io/hellomui/images/' + (i + 1) + '.jpg';
+//						var li = document.createElement('li');
+						var innerHTML = '<div class="goods-list-item"><a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/muwu.jpg"\
+							data-lazyload="' + imageUrl + '"/>\
 			                <div class="mui-media-body goods-info"><p class="goods-title">幸福就是可以一起睡觉...</p><p><span class="goods-price-one">￥120</span><span class="goods-price-two">￥200</span><p></div></a></div>';
-			                recommend.appendChild(li)
-		               }
-		//				})
-						mui(document).imageLazyload({
-							placeholder: '../images/60x60.gif'
-						});
+						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">'+innerHTML+'</li>');
+//						recommend.appendChild(li)
+					}
+					recommend.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
+					//				})
+					mui(document).imageLazyload({
+						placeholder: '../images/60x60.gif'
+					});
 				},
 			};
-//			})
-		mui.plusReady(function(){
-			honey.autoSlider()
-			honey.setRecommend()
-			honey.bindListTap()
-		})
-		
+			//			})
+			mui.plusReady(function() {
+				honey.autoSlider()
+				honey.setRecommend()
+				honey.bindListTap()
+			})
 		</script>
 	</body>
 
