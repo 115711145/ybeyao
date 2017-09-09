@@ -20,62 +20,64 @@
 				border-top-right-radius: 3px;
 				border-top-left-radius: 3px;
 			}
-			#recommend{
-				margin: 5px 5px 0 5px;
-				background: #efefef;
-				
+			.recommend{
+				margin: 5px 3px;
+				padding: 0px;
 			}
-			.mui-table-view{
-				margin: 0 !important;
-				padding: 0;
+			.recommend .mui-table-view{
+				margin: 0px !important;
+				padding: 0 !important;
 				background: none;
 			}
-			.mui-table-view:after,#recommend .mui-table-view:before{
+			.mui-table-view:after,.recommend .mui-table-view:before{
 				border: 0;
 				height: 0;
 				background-color: #fff;
 			}
-			#recommend .goods-list{
-				padding: 3px 0px 3px 10px;
+			.recommend .goods-list{
+				margin: 0 !important;
+				padding: 2px 4px !important;
 			}
 			
-			#recommend .goods-list-item {
+			.recommend .goods-list-item {
 				border-radius: 3px;
 				background: #fff;
-				border: 1px solid #efefef;
-				padding-top: 5px;
+				padding-top: 3px;
 			}
 			
-			#recommend .goods-list-item img {
-				width: 95%;
-				height: 100px;
-				/*border-radius: 3px;*/
+			.recommend .goods-list-item img {
+				width: 100%;
+				max-height: 100px;
+				border-radius: 3px;
 			}
 			
-			#recommend .mui-table-view-cell .mui-media-body {
+			.recommend .mui-table-view-cell .mui-media-body {
 				margin-top: 2px;
 				margin-bottom: 0px;
-				height: auto;
+				height: 50px !important;
 			}
 			
-			#recommend .mui-table-view-cell .mui-media-body p {
+			.recommend .mui-table-view-cell .mui-media-body p {
 				white-space: pre;
 				color: #555;
+				padding: 0 5px;
+				white-space:nowrap; 
+			    text-overflow:ellipsis; 
+			    overflow:hidden;
 			}
 			
-			#recommend .mui-table-view-cell .mui-media-body .goods-price-one {
+			.recommend .mui-table-view-cell .mui-media-body .goods-price-one {
 				margin-top: 12px;
 				float: left;
 				font-size: 1.1em;
-				margin-left: 7%;
 				color: red;
 				margin-bottom: 10px;
 			}
-			#recommend .mui-table-view-cell .mui-media-body .goods-price-two {
+			.recommend .mui-table-view-cell .mui-media-body .goods-price-two {
 				margin-top: 12px;
 				float: right;
 				font-size: 1.1em;
-				margin-right: 7%;
+				margin-right: 5px;
 				text-decoration: line-through;
 			}
 			.mui-content a.active {
@@ -128,6 +130,7 @@
 			.yb-ad1 img{
 				width: 100%;
 				border-radius: 1px;
+				max-height: 130px;
 			}
 			.ad-left{
 				float: left;
@@ -217,17 +220,19 @@
 					<img src="../images/ad3.jpg" />
 				</p>
 			</div>
-			<div class="mui-content" id="recommend">
-				<ul class="mui-table-view mui-grid-view">
-
-				</ul>
+			<div class="mui-content recommend" id="recommend">
+				
 			</div>
 			<div class="yb-ad1">
 				<img src="../images/ad.jpg" />
 			</div>
+			<div class="mui-content recommend" id="hot">
+				
+			</div>
 		</div>
 
 		<script type="text/javascript" src="../js/mui.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
@@ -236,7 +241,7 @@
 			});
 			//			mui.plusReady(function() {
 			var honey = {
-				images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
+				images: ['../images/s1.jpg', '../images/s2.jpg', '../images/s3.jpg'],
 				autoSlider: function() {
 					var len = honey.images.length - 1;
 					var group = [],
@@ -266,7 +271,7 @@
 						alert('a')
 					})
 					//添加每个item点击的监听事件
-					mui('#recommend').on('tap', 'a', function() {
+					mui('.recommend').on('tap', 'a', function() {
 						var id = this.getAttribute('href');
 						var title = this.querySelector('.goods-title').innerText;
 						if(!honey.detailWebView) {
@@ -283,24 +288,50 @@
 					});
 				},
 				setRecommend: function() {
-					var recommend = document.getElementById('recommend');
+					mui.ajax(apiurl,{
+						data:{m:'index_goods'},
+						type:'post',
+						dataType:'json',
+						success:function(ret){ 
+							if(ret.code==0){
+								honey.showGoods(ret.data.recommend,'recommend')
+								honey.showGoods(ret.data.hot,'hot')
+							}
+						},
+						error:function(ret){
+							alert('error')
+							alert(JSON.stringify(ret)) 
+						} 
+					})
+//					var recommend = document.getElementById('recommend');
+//					var li=[];
+//					for(var i = 0; i < 4; i++) {
+//						var imageUrl = 'http://www.dcloud.io/hellomui/images/' + (i + 1) + '.jpg';
+//						var innerHTML = '<div class="goods-list-item"><a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/muwu.jpg"\
+//							data-lazyload="' + imageUrl + '"/>\
+//			                <div class="mui-media-body goods-info"><p class="goods-title">幸福就是可以一起睡觉...</p><p><span class="goods-price-one">￥120</span><span class="goods-price-two">￥200</span><p></div></a></div>';
+//						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">'+innerHTML+'</li>');
+//					}
+//					recommend.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
+				},
+				showGoods:function(data,id){
+					var dom = document.getElementById(id);
 					var li=[];
-					//				mui.each(honey.images, function(index, item) {
-					for(var i = 0; i < 4; i++) {
-						var imageUrl = 'http://www.dcloud.io/hellomui/images/' + (i + 1) + '.jpg';
-//						var li = document.createElement('li');
-						var innerHTML = '<div class="goods-list-item"><a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/muwu.jpg"\
-							data-lazyload="' + imageUrl + '"/>\
-			                <div class="mui-media-body goods-info"><p class="goods-title">幸福就是可以一起睡觉...</p><p><span class="goods-price-one">￥120</span><span class="goods-price-two">￥200</span><p></div></a></div>';
-						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">'+innerHTML+'</li>');
-//						recommend.appendChild(li)
-					}
-					recommend.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
-					//				})
-					mui(document).imageLazyload({
+					mui.each(data,function(i,v){
+						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">\
+						<div class="goods-list-item">\
+							<a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/logo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpeg"/>\
+			                <div class="mui-media-body goods-info">\
+			                <p class="goods-title">'+v.goods_name +'</p>\
+			                <p><span class="goods-price-one">￥'+v.shop_price+'</span><span class="goods-price-two">￥'+v.market_price+'</span><p>\
+			                </div></a>\
+		                </div></li>');
+					})
+					dom.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
+					mui('#'+id).imageLazyload({
 						placeholder: '../images/60x60.gif'
 					});
-				},
+				}
 			};
 			//			})
 			mui.plusReady(function() {

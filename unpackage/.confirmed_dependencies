@@ -57,7 +57,16 @@
 			"images/laoren.png",
 			"images/baojian.png",
 			"images/yiliaoqx.png",
-			"images/youhuiquan.png"
+			"images/youhuiquan.png",
+			"images/pifu.png",
+			"images/ad.jpg",
+			"images/ad3.jpg",
+			"images/ad2.jpg",
+			"images/ad1.jpg",
+			"js/common.js",
+			"images/s3.jpg",
+			"images/s2.jpg",
+			"images/s1.jpg"
 		]
 	},
 	"template.html": {

@@ -1,3 +1,7 @@
+var apiurl="http://192.168.11.226/api/app/data";
+var apihost="http://192.168.11.226";
+
+
 function preloadGoodsDetail(extras){
 	honey.detailHeader =  mui.preload({
 		id:'goods-header',
