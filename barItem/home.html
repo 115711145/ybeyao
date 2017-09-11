@@ -134,7 +134,7 @@
 			}
 			.ad-left{
 				float: left;
-				width: 49%;
+				width: 50%;
 			}
 			.ad-left img{
 				height: 120px;
@@ -142,7 +142,7 @@
 			}
 			.ad-right{
 				float: left;
-				width: 49%;
+				width: 50%;
 			}
 			.ad-right img{
 				height: 60px;
@@ -213,18 +213,18 @@
 			</div>
 			<div class="yb-ad1">
 				<p class="ad-left">
-					<img src="../images/ad1.jpg" />
+					<img src="../images/ad1.jpg" class="adImg2"/>
 				</p>
 				<p class="ad-right">
-					<img src="../images/ad2.jpg" />
-					<img src="../images/ad3.jpg" />
+					<img src="../images/ad2.jpg" class="adImg3"/>
+					<img src="../images/ad3.jpg" class="adImg3"/>
 				</p>
 			</div>
 			<div class="mui-content recommend" id="recommend">
 				
 			</div>
 			<div class="yb-ad1">
-				<img src="../images/ad.jpg" />
+				<img src="../images/ad.jpg" class="adImg4"/>
 			</div>
 			<div class="mui-content recommend" id="hot">
 				
@@ -241,22 +241,47 @@
 			});
 			//			mui.plusReady(function() {
 			var honey = {
-				images: ['../images/s1.jpg', '../images/s2.jpg', '../images/s3.jpg'],
-				autoSlider: function() {
-					var len = honey.images.length - 1;
-					var group = [],
+				/**
+				 * 自动加载广告
+				 */
+				autoAd:function(){
+					mui.ajax(apiurl,{
+						data:{m:'ad_list'},
+						type:'post',
+						dataType:'json',
+						success:function(ret){
+							if(ret.code==0){
+								honey.showSlider(ret.data[1]);
+								honey.showAdImges(ret.data[2],2)
+								honey.showAdImges(ret.data[3],3)
+								honey.showAdImges(ret.data[4],4)
+							}
+						},
+						error:function(ret){
+							alert('error')
+							alert(JSON.stringify(ret)) 
+						} 
+					})
+				},
+				/**
+				 * 轮播图
+				 * @param {Object} adList
+				 */
+				showSlider: function(adList) {
+					var len=adList.length,
+					    group = [],
 						indicator = [];
 					for(var i = 0; i <= len; i++) {
 						if(i == 0) {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img src="' + honey.images[len] + '"></a></div>')
+								<img type="'+adList[len-1].ad_link_type+'" link="'+adList[len-1].ad_link_id+'" src="' + apihost+adList[len-1].ad_code + '"></a></div>')
 						}
-						group.push('<div class="mui-slider-item"><a href="#">\
-							<img src="' + honey.images[i] + '"></a></div>')
+						i<len&&group.push('<div class="mui-slider-item"><a href="#">\
+							<img type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" src="' + apihost+adList[i].ad_code + '"></a></div>')
 						indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
 						if(i == len) {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img src="' + honey.images[0] + '"></a></div>')
+								<img type="'+adList[0].ad_link_type+'" link="'+adList[0].ad_link_id+'"  src="' + apihost+adList[0].ad_code + '"></a></div>')
 						}
 					}
 					document.getElementById('productSlider').innerHTML = '<div class="mui-slider-group mui-slider-loop">' + group.join('') +
@@ -264,6 +289,17 @@
 					honey.slider = mui('.mui-slider').slider({
 						interval: 5000
 					});
+				},
+				/**
+				 * 显示广告图
+				 * @param {Object} ad  广告数组
+				 * @param {Object} obj 广告位置id
+				 */
+				showAdImges:function(ad,number){
+					var obj=mui('.adImg'+number);
+					for(var i=0;i<obj.length;i++){
+						ad[i]&&obj[i].setAttribute('src',apihost+ad[i].ad_code)
+					}
 				},
 				bindListTap: function() {
 					//添加slider点击事件
@@ -294,8 +330,8 @@
 						dataType:'json',
 						success:function(ret){ 
 							if(ret.code==0){
-								honey.showGoods(ret.data.recommend,'recommend')
-								honey.showGoods(ret.data.hot,'hot')
+								honey.showGoodsList(ret.data.recommend,'recommend')
+								honey.showGoodsList(ret.data.hot,'hot')
 							}
 						},
 						error:function(ret){
@@ -314,7 +350,12 @@
 //					}
 //					recommend.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
 				},
-				showGoods:function(data,id){
+				/**
+				 * 显示商品列表
+				 * @param {Object} data
+				 * @param {Object} id
+				 */
+				showGoodsList:function(data,id){
 					var dom = document.getElementById(id);
 					var li=[];
 					mui.each(data,function(i,v){
@@ -323,7 +364,7 @@
 							<a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/logo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpeg"/>\
 			                <div class="mui-media-body goods-info">\
 			                <p class="goods-title">'+v.goods_name +'</p>\
-			                <p><span class="goods-price-one">￥'+v.shop_price+'</span><span class="goods-price-two">￥'+v.market_price+'</span><p>\
+			                <p><span class="goods-price-one">￥'+v.shop_price+'</span><p>\
 			                </div></a>\
 		                </div></li>');
 					})
@@ -335,7 +376,7 @@
 			};
 			//			})
 			mui.plusReady(function() {
-				honey.autoSlider()
+				honey.autoAd()
 				honey.setRecommend()
 				honey.bindListTap()
 			})

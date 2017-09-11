@@ -3,6 +3,7 @@ var apihost="http://192.168.11.226";
 
 
 function preloadGoodsDetail(extras){
+	//商品详情头部
 	honey.detailHeader =  mui.preload({
 		id:'goods-header',
 		url:'goods/goods-header.html',
@@ -13,7 +14,7 @@ function preloadGoodsDetail(extras){
 		extras:extras
 	})
 	honey.detailHeader.hide()
-	
+	//商品详情内容
 	honey.detailSubpage =  mui.preload({
 		id:'goods-detail',
 		url:'goods/goods-detail.html',
@@ -27,7 +28,7 @@ function preloadGoodsDetail(extras){
 		extras:extras
 	})
 	honey.detailSubpage.hide()
-	
+	//遮罩层头部
 	honey.maskHeader=mui.preload({
 		id:'mask-header',
 		url:'goods/mask-header.html',
@@ -40,6 +41,7 @@ function preloadGoodsDetail(extras){
 	
 	honey.maskHeader.hide();
 	
+	//优惠券内容页面
 	honey.detailQuan=mui.preload({
 		id:'goods-quan',
 		url:'goods/goods-quan.html',
@@ -51,7 +53,7 @@ function preloadGoodsDetail(extras){
 		},
 	})
 	honey.detailQuan.hide()
-	
+	//产品参数页面
 	honey.detailParam=mui.preload({
 		id:'goods-param',
 		url:'goods/goods-param.html',
