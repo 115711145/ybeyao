@@ -290,12 +290,11 @@
 				</div>
 				<div class="preferential">
 					<div class="service" id="attr-express">
-						<p><span class="mui-icon mui-icon-checkmarkempty"></span>破损无忧</p>
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>配送到家</p>
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>药店自提</p>
 						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
 					</div>
-					<div class="service" id="quan">
+					<div class="service" id="quan" style="display: none;">
 						<p class="quan"><img src="../images/quan.png"/><span>领取优惠券</span></p>
 						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
 					</div>
@@ -350,7 +349,16 @@
 		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
-				swipeBack: false
+				swipeBack: false,
+				subpages:[{
+					url:'goods-detail-bottom.html',
+					id:'goods-detail-bottom',
+					styles:{
+						bottom:0,
+						height:'51px',
+						bounceBackground:'#f8f8f8'
+					}
+				}]
 			});
 			var honey={
 				d:{
