@@ -162,49 +162,49 @@
 			<div id="menus">
 				<ul class="mui-table-view mui-grid-view mui-grid-9">
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="laoren">
 							<span><img src="../images/laoren.png" height="40"/></span>
 							<div class="mui-media-body">老人</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="ertong">
 							<span><img src="../images/ertong.png" height="40"/></span>
 							<div class="mui-media-body">儿童</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="liangxing">
 							<span><img src="../images/liangxing.png" height="40"/></span>
 							<div class="mui-media-body">两性</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="muying">
 							<span><img src="../images/muying.png" height="40"/></span>
 							<div class="mui-media-body">母婴</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="baojian">
 							<span><img src="../images/baojian.png" height="40"/></span>
 							<div class="mui-media-body">养生保健</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="pifu">
 							<span><img src="../images/pifu.png" height="40"/></span>
 							<div class="mui-media-body">皮肤护理</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="qixie">
 							<span><img src="../images/yiliaoqx.png" height="40"/></span>
 							<div class="mui-media-body">医疗器械</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#">
+						<a href="#" cate="quan">
 							<span><img src="../images/youhuiquan.png" height="40"/></span>
 							<div class="mui-media-body">优惠券</div>
 						</a>
@@ -220,14 +220,18 @@
 					<img src="../images/ad3.jpg" class="adImg3"/>
 				</p>
 			</div>
-			<div class="mui-content recommend" id="recommend">
-				
+			<div class="mui-content recommend">
+				<ul class="mui-table-view mui-grid-view" id="recommend">
+					
+				</ul>
 			</div>
 			<div class="yb-ad1">
 				<img src="../images/ad.jpg" class="adImg4"/>
 			</div>
-			<div class="mui-content recommend" id="hot">
-				
+			<div class="mui-content recommend">
+				<ul class="mui-table-view mui-grid-view" id="hot">
+					
+				</ul>
 			</div>
 		</div>
 
@@ -323,15 +327,18 @@
 						honey.detailWebView.show('slide-in-right', 300)
 					});
 				},
-				setRecommend: function() {
+				/**
+				 * 获取首页商品
+				 */
+				loadGoods: function() {
 					mui.ajax(apiurl,{
 						data:{m:'index_goods'},
 						type:'post',
 						dataType:'json',
 						success:function(ret){ 
 							if(ret.code==0){
-								honey.showGoodsList(ret.data.recommend,'recommend')
-								honey.showGoodsList(ret.data.hot,'hot')
+								showGoodsList(ret.data.recommend,'recommend')
+								showGoodsList(ret.data.hot,'hot')
 							}
 						},
 						error:function(ret){
@@ -355,29 +362,48 @@
 				 * @param {Object} data
 				 * @param {Object} id
 				 */
-				showGoodsList:function(data,id){
-					var dom = document.getElementById(id);
-					var li=[];
-					mui.each(data,function(i,v){
-						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">\
-						<div class="goods-list-item">\
-							<a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/logo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpeg"/>\
-			                <div class="mui-media-body goods-info">\
-			                <p class="goods-title">'+v.goods_name +'</p>\
-			                <p><span class="goods-price-one">￥'+v.shop_price+'</span><p>\
-			                </div></a>\
-		                </div></li>');
+//				showGoodsList:function(data,id){
+//					var dom = document.getElementById(id);
+//					var li=[];
+//					mui.each(data,function(i,v){
+//						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">\
+//						<div class="goods-list-item">\
+//							<a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/logo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpeg"/>\
+//			                <div class="mui-media-body goods-info">\
+//			                <p class="goods-title">'+v.goods_name +'</p>\
+//			                <p><span class="goods-price-one">￥'+v.shop_price+'</span><p>\
+//			                </div></a>\
+//		                </div></li>');
+//					})
+//					dom.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
+//					mui('#'+id).imageLazyload({
+//						placeholder: '../images/60x60.gif'
+//					});
+//				},
+				/**
+				 * 绑定图标菜单触摸事件
+				 */
+				bindIconMenuTap:function(){
+					mui('#menus').on('tap','a',function(){
+						var cate=this.getAttribute('cate');
+						if(cate=='quan'){
+							alert('优惠券')
+						}else{
+//							openWin("../goods/goods-list-header.html","goods-list-header",{cate:cate},{top:0,bottom:'51px'})
+							mui.fire(honey.goodsListHeader,'cateId',{name:cate,id:cate})
+							honey.goodsListHeader.show('slide-in-right',300)
+						}
 					})
-					dom.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
-					mui('#'+id).imageLazyload({
-						placeholder: '../images/60x60.gif'
-					});
-				}
+				},
 			};
 			//			})
 			mui.plusReady(function() {
+				if(!honey.goodsListHeader){
+					honey.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
+				}
 				honey.autoAd()
-				honey.setRecommend()
+				honey.bindIconMenuTap()
+				honey.loadGoods()
 				honey.bindListTap()
 			})
 		</script>

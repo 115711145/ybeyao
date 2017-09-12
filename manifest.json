@@ -224,7 +224,10 @@
 					"goods/goods-quan-header.html",
 					"goods/mask-header.html",
 					"goods/detail.html",
-					"goods/goods-param.html"
+					"goods/goods-param.html",
+					"public/footer.html",
+					"goods/goods-list.html",
+					"goods/goods-list-header.html"
 				],
 				"priority": 0
 			},
@@ -271,7 +274,9 @@
 					"images/s2.jpg",
 					"images/s1.jpg"
 				],
-				"refer": [],
+				"refer": [
+					"goods/goods-list-header.html"
+				],
 				"priority": 0
 			},
 			"template.html": {
@@ -316,7 +321,8 @@
 					"js/mui.zoom.js",
 					"js/mui.previewimage.js",
 					"js/jquery.js",
-					"css/previewimage.css"
+					"css/previewimage.css",
+					"goods/goods-detail-bottom.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -366,6 +372,66 @@
 			"goods/goods-param.html": {
 				"resources": [
 					"js/mui.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"public/footer.html": {
+				"resources": [
+					"fonts/iconfont.ttf",
+					"css/own.css",
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"js/common.js",
+					"js/mui.min.js",
+					"barItem/home.html"
+				],
+				"refer": [
+					"barItem/category.html",
+					"barItem/mine.html",
+					"barItem/cart.html"
+				],
+				"priority": 0
+			},
+			"goods/goods-list-header.html": {
+				"resources": [
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"goods/goods-list.html",
+					"css/own.css",
+					"css/iconfont.css",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"goods/goods-list.html": {
+				"resources": [
+					"js/mui.zoom.js",
+					"js/mui.previewimage.js",
+					"js/mui.min.js",
+					"css/own.css",
+					"css/previewimage.css",
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"css/icons-extra.css",
+					"js/common.js",
+					"fonts/mui.ttf",
+					"js/mui.lazyload.js",
+					"js/mui.lazyload.img.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"goods/goods-detail-bottom.html": {
+				"resources": [
+					"images/buynow.jpg",
+					"images/addcart.jpg",
+					"css/own.css",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/iconfont.css",
 					"css/mui.min.css"
 				],
 				"refer": [],
