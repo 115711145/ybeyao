@@ -162,49 +162,49 @@
 			<div id="menus">
 				<ul class="mui-table-view mui-grid-view mui-grid-9">
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="laoren">
+						<a href="#" cate="1" name="老人">
 							<span><img src="../images/laoren.png" height="40"/></span>
 							<div class="mui-media-body">老人</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="ertong">
+						<a href="#" cate="2" name="儿童">
 							<span><img src="../images/ertong.png" height="40"/></span>
 							<div class="mui-media-body">儿童</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="liangxing">
+						<a href="#" cate="3" name="两性">
 							<span><img src="../images/liangxing.png" height="40"/></span>
 							<div class="mui-media-body">两性</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="muying">
+						<a href="#" cate="4" name="母婴">
 							<span><img src="../images/muying.png" height="40"/></span>
 							<div class="mui-media-body">母婴</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="baojian">
+						<a href="#" cate="5" name="养生保健">
 							<span><img src="../images/baojian.png" height="40"/></span>
 							<div class="mui-media-body">养生保健</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="pifu">
+						<a href="#" cate="6" name="皮肤护理">
 							<span><img src="../images/pifu.png" height="40"/></span>
 							<div class="mui-media-body">皮肤护理</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="qixie">
+						<a href="#" cate="7" name="医疗器械">
 							<span><img src="../images/yiliaoqx.png" height="40"/></span>
 							<div class="mui-media-body">医疗器械</div>
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="quan">
+						<a href="#" cate="8" name="优惠券">
 							<span><img src="../images/youhuiquan.png" height="40"/></span>
 							<div class="mui-media-body">优惠券</div>
 						</a>
@@ -239,6 +239,8 @@
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
 				swipeBack: true //启用右滑关闭功能
@@ -310,10 +312,11 @@
 					mui('#productSlider').on('tap', 'a', function() {
 						alert('a')
 					})
+					
 					//添加每个item点击的监听事件
 					mui('.recommend').on('tap', 'a', function() {
-						var id = this.getAttribute('href');
-						var title = this.querySelector('.goods-title').innerText;
+						var goods_id = this.getAttribute('goods_id');
+//						var title = this.querySelector('.goods-title').innerText;
 						if(!honey.detailWebView) {
 							honey.detailWebView = plus.webview.getWebviewById('goods-header');
 						}
@@ -321,8 +324,7 @@
 							honey.detailSubpage = plus.webview.getWebviewById('goods-detail');
 						}
 						mui.fire(honey.detailWebView, 'goodsId', {
-							id: id,
-							title: title
+							goods_id:goods_id
 						})
 						honey.detailWebView.show('slide-in-right', 300)
 					});
@@ -385,12 +387,13 @@
 				 */
 				bindIconMenuTap:function(){
 					mui('#menus').on('tap','a',function(){
+						var name=this.getAttribute('name');
 						var cate=this.getAttribute('cate');
-						if(cate=='quan'){
+						if(cate=='8'){
 							alert('优惠券')
 						}else{
 //							openWin("../goods/goods-list-header.html","goods-list-header",{cate:cate},{top:0,bottom:'51px'})
-							mui.fire(honey.goodsListHeader,'cateId',{name:cate,id:cate})
+							mui.fire(honey.goodsListHeader,'cateId',{name:name,cate:cate})
 							honey.goodsListHeader.show('slide-in-right',300)
 						}
 					})

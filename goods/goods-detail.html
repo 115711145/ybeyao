@@ -10,241 +10,16 @@
 		<link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
 		<link rel="stylesheet" type="text/css" href="../css/own.css" />
 		<link rel="stylesheet" type="text/css" href="../css/previewimage.css" />
-		<style type="text/css">
-			body,p{
-				padding: 0;
-				margin: 0;
-				font-size: 12px;
-			}
-			.detail-content-padding{
-				padding-top:220px;
-			}
-			.goods-title{
-				padding: 5px 10px;
-				line-height: 25px;
-				color: #555;
-			}
-			.goods-title h5{
-				line-height: 20px;
-				color: #000;
-				font-size: 14px;
-			}
-			.fl{
-				float: left;
-			}
-			.title{
-				max-width: 70%;
-			}
-			.fr{
-				float: right;
-			}
-			.icon{
-				padding:5px 5px 0 10px;
-			}
-			.goods-title .fr a{
-				color: #666;
-			}
-			.share{
-				font-size: 14px;
-				padding: 0px 3px;
-			}
-			.goods-attr{
-				clear: both;
-			}
-			.goods-attr .price{
-				width: 50%;
-				padding: 0 10px;
-			}
-			.goods-attr .stock{
-				padding: 0 10px;
-				width: 50%;
-			}
-			.goods-attr .goods-price{
-				line-height: 18px;
-				margin: 0;
-			}
-			.goods-attr .goods-price .icon-money{
-				font-size: 13px;
-			}
-			.goods-attr .goods-price-one{
-				color: #ff6633;
-				font-size: 20px;
-			}
-			.goods-attr .goods-price-two{
-				font-size: 12px;
-			}
-			.goods-attr .goods-price-two span{
-				text-decoration: line-through;	
-			}
-			.express p{
-				margin: 0;
-				padding: 5px 10px;
-				font-size: 12px;	
-				line-height: 15px;
-			}
-			.express p span{
-				width: 30%;
-				display: inline-block;
-			}
-			.mui-table-view {
-				margin: 5px 0;
-				background: #F8F8F8;
-				border: 1px solid #F8F8F8;
-			}
-			.mui-table-view .mui-table-view-cell{
-				padding: auto 0;
-			}
-			.mui-table-view .mui-table-view-cell .mui-navigate-right{
-				border:0 !important;
-			}
-			.preferential{
-				background: #dedede;
-				padding-bottom: 8px;
-			}
-			.preferential div:active,.parameter div:active{
-				background: #dedede;
-			}
-			.service{
-				background: #eee;
-				border-bottom: 1px solid #ddd;
-			}
-			.service .mui-icon-checkmarkempty{
-				color: #41CEA9;
-				font-size:15px;
-			}
-			.service p{
-				display: inline-block;
-				font-size: 12px;
-				line-height: 14px;
-				width: 25%;
-				padding: 10px;
-				position: relative;
-			}
-			.service p.fr{
-				width: 15%;
-			}
-			.service p.quan{
-				width: 80%;	
-			}
-			.service p.quan span{
-				margin-left: 46px;
-			}
-			.service p.quan img{
-				position: absolute;
-				margin-right: 5px;
-				max-height: 14px;
-			}
-			.service .mui-icon-arrowright{
-				font-size: 14px;
-				color: #aaa;
-				float: right;
-			}
-			.service .point{
-				width: 80%;
-			}
-			.service .point icon{
-				border: 1px solid #41CEA9;
-				padding: 1px 3px;
-				border-radius: 3px;
-				color: #41CEA9;
-				font-size: 10px;
-				margin-right: 5px;
-			}
-			.parameter .service{
-				background: #fff;
-			}
-			.parameter .service p{
-				color: #333;
-			}
-			.evaluate{
-				background: #dedede;
-			}
-			.evaluate .evaluate-title{
-				text-align: center;
-				color: #888;
-			}
-			.evaluate .evaluate-title .mui-icon{
-				color: #888;
-				font-size: 14px;
-				margin:0 2px;
-			}
-			.evaluate .evaluate-content{
-				background: #fff;
-			} 
-			.evaluate .evaluate-list{
-				border: 1px solid #DEDEDE;
-				padding: 0;
-				list-style: none;
-				background: #dedede;
-				margin: 0;
-			}
-			.evaluate .evaluate-list .evaluate-list-item{
-				background: #fff;
-				margin: 5px 0;
-				padding: 10px;
-			}
-			.evaluate .evaluate-list .user-name img{
-				border: 1px solid #fff;
-				width:20px;
-				height:20px;
-				border-radius:20px;
-				position: absolute;
-			}
-			.evaluate .evaluate-list .user-name span{
-				margin-left: 25px;
-			}
-			.evaluate .evaluate-list .user-star i{
-				font-size: 14px;
-				color: #F0AD4E;
-			}
-			.evaluate .evaluate-list .user-time{
-				float: right;
-			}
-			.evaluate .evaluate-list .user-photo img{
-				width: 18%;
-				margin: 0 2px;
-				border: 1px solid #eee;
-				border-radius: 5px;
-			}
-			.user-do{
-				padding: 5px 0 5px 10px;
-				background: #fff;
-			}
-			.user-do span{
-				font-size: 12px;
-				margin: 10px;
-				color: #333;
-				display: inline-block;
-				margin: 5px 0 0 0;
-			}
-			.user-do .mui-numbox{
-				min-width: 120px;
-				height: 25px;
-				color: #666;
-			}
-			.mui-btn{
-				padding: 3px 8px;
-				color: #333;
-			}
-			.user-do .mui-btn:active{
-				background: none;
-				color: #333;
-			}
-			.mui-btn-active{
-				color: #41CEA9;
-				border-color: #41CEA9;
-			}
-			.evaluate-more{
-				text-align: center;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="../css/goods-detail.css" />
 	</head>
-
 	<body>
-		<div id="detailcontent" class="mui-content  detail-content-padding">
+		<header class="mui-bar mui-bar-nav hide" id="header">
+			<span>商品</span> <span>商品</span> <span>商品</span> 
+		</header>
+		<div id="detailcontent" class="mui-content  detail-content-padding" style="padding-top: 220px;">
 			<div id="attr">
 				<div class="goods-title">
-					<div class="fl title"><h5>这里是标题这里是标题这里是这里是标题这里是标题这里是</h5></div>
+					<div class="fl title"><h5 id="goods_title">这里是标题这里是标题这里是这里是标题这里是标题这里是</h5></div>
 					<div class="fr icon">
 						<a href="#" id="share">
 		                    <span class="mui-icon-extra mui-icon-extra-share fl"></span>
@@ -254,19 +29,20 @@
 				</div>
 				<div class="goods-attr">
 					<div class="price">
-						<p class="goods-price goods-price-one"><span class="icon-money">￥</span><span class="price-number">200</span></p>
-						<p class="goods-price goods-price-two">价格 <span>￥300</span></p>
+						<p class="goods-price goods-price-one"><span class="icon-money">￥</span><span id="shop_price">200</span></p>
+						<p class="goods-price goods-price-two" id="market_price">价格 <span>￥300</span></p>
 					</div>
 					<div class="express">
 						<p>
 							<span>快递:<font>0.00</font></span>
-							<span>销量:<font>123</font>笔</span>
-							<span>库存:<font>123</font></span>
+							<span style="text-align: center;">销量:<font id="sale_num">123</font>笔</span>
+							<span style="text-align: right;">库存:<font id="store">123</font></span>
 						</p>
 					</div>
 				</div>
-				<div class="user-do choose-type">
-					<span>选择属性：</span>
+				<div class="user-do choose-type" id="spec">
+					<!--<p>
+					<span>套餐</span>
 					<button type="button" class="mui-btn mui-btn-active">
 						套餐一
 					</button>
@@ -279,9 +55,10 @@
 					<button type="button" class="mui-btn">
 						套餐四
 					</button>
+					</p>-->
 				</div>
-				<div class="user-do">
-					<span>购买数量：</span>
+				<div class="user-do" id="buy-number">
+					<span>数量</span>
 					<div class="mui-numbox">
 						<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
 						<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num"/>
@@ -292,21 +69,34 @@
 					<div class="service" id="attr-express">
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>配送到家</p>
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>药店自提</p>
-						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
-					</div>
-					<div class="service" id="quan" style="display: none;">
-						<p class="quan"><img src="../images/quan.png"/><span>领取优惠券</span></p>
-						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
+						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 					</div>
 					<div class="service">
-						<p class="point"><icon>积分</icon>购买可得<font>49</font>积分</p>
-						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
+						<p class="point"><icon>积分</icon>购买可得<font id="give_integral">0</font>积分</p>
+						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 					</div>
 				</div>
 				<div class="parameter" id="param">
-					<div class="service">
-						<p>产品参数</p>
-						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
+					<div class="attr-table">
+						<div class="service">
+							<p>规格参数</p>
+							<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
+						</div>
+						<table id="goods-attr-table">
+							<tr>
+								<td>场地</td>
+								<td>个忘记改卡尔继往开来</td>
+							</tr>
+							<tr>
+								<td>场地</td>
+								<td>个忘记改卡尔继往开来</td>
+							</tr>
+							<tr>
+								<td>场地</td>
+								<td>个忘记改卡尔继往开来</td>
+							</tr>
+						</table>
+						
 					</div>
 				</div>
 			</div>
@@ -316,7 +106,7 @@
 					<ul class="evaluate-list">
 						<li class="evaluate-list-item">
 							<p>
-								<span class="user-name"><img src="../images/cbd.jpg"/><span>匿名用户</span></span>
+								<span class="user-name"><img src="../images/cbd.jpg"/><font>匿名用户</font></span>
 								<span class="user-star">
 									<i class="mui-icon mui-icon-star-filled"></i>
 									<i class="mui-icon mui-icon-star-filled"></i>
@@ -344,59 +134,123 @@
 				</div>
 			</div>
 		</div>
+		<nav class="mui-bar mui-bar-tab footer-bar">
+			<a>
+				<span class="mui-icon mui-icon-chat"></span>
+				<span class="mui-tab-label">咨询</span>
+			</a>
+			<a>
+				<span class="mui-icon mui-icon-star"></span>
+				<span class="mui-tab-label">收藏</span>
+			</a>
+			<a class="add-cart">
+				加入购物车
+			</a>
+			<a class="buy-now">
+				立即购买
+			</a>
+		</nav>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
 				swipeBack: false,
-				subpages:[{
-					url:'goods-detail-bottom.html',
-					id:'goods-detail-bottom',
-					styles:{
-						bottom:0,
-						height:'51px',
-						bounceBackground:'#f8f8f8'
-					}
-				}]
+//				subpages:[{
+//					url:'goods-detail-bottom.html',
+//					id:'goods-detail-bottom',
+//					styles:{
+//						bottom:0,
+//						height:'51px',
+//						bounceBackground:'#f8f8f8'
+//					}
+//				}]
 			});
 			var honey={
 				d:{
 					attrExpress:document.getElementById('attr-express'),
 					id:document.getElementById('goods-id'),
 					buyNum:document.getElementById('buy-num'),
-					attrQuan:document.getElementById('quan'),
 					share:document.getElementById('share'),
-					param:document.getElementById('param')
+					param:document.getElementById('param'),
+					title:document.getElementById('goods_title'),//标题
+					price:document.getElementById('shop_price'),//价格
+					m_price:document.getElementById('market_price'),//市场价格
+					spec:document.getElementById('spec'),//规格属性
+					store:document.getElementById('store'),
+					giveIntegral:document.getElementById('give_integral'),
+					table:document.getElementById('goods-attr-table'),
 				},
-				images: ['../images/shuijiao.jpg', '../images/muwu.jpg', '../images/cbd.jpg', '../images/yuantiao.jpg'],
-				autoSlider:function(){
-					honey.self=plus.webview.currentWebview();
-					/*
-					var len=honey.images.length-1;
-					var group=[], indicator=[];
-					for(var i=0;i<=len;i++){
-						if(i==0){
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img src="'+honey.images[len]+'"></a></div>')
+				goods:{},
+				ajaxGetData:function(){
+					mui.ajax(apiurl,{
+					data:{m:'goods_info',goods_id:honey.goods.goods_id},
+					type:'post',
+					dataType:'json',
+					success:function(ret){ 
+						if(ret.code==0){
+							var data=ret.data;
+							//标题
+							honey.d.title.innerText=data.base.goods_name;
+							//商品图片
+							var img=[{src:apihost+data.base.original_img}];
+							mui.each(data.images, function(i,v) {
+								if(v.image_url!=data.base.original_img){
+									img.push({src:apihost+v.image_url})
+								}
+							});
+							honey.imageSliderView.setImages(img)
+							//是否有规格属性
+							if(data.spec){
+								var price_key=[];
+								var spec_html=[];
+								mui.each(data.spec, function(i,v) {
+									var html=[];
+									for(var j=0;j<data.spec[i].length;j++){
+										var v=data.spec[i][j];
+										if(j==0){
+											price_key.push(v.item_id)
+										}
+										html.push('<button type="button" item_id="'+v.item_id+'" class="mui-btn'+(j==0?' mui-btn-active':'')+'">'+v.item+'</button>');
+									}
+									spec_html.push('<p class="goods_spec"><span>'+i+'</span>'+html.join('')+'</p>')
+								});
+								var k=price_key.length>1?price_key.join('_'):price_key[0];
+								honey.spec_price=data.spec_price;
+								honey.d.price.innerText=honey.goods.price=honey.spec_price[k].price;//价格
+								honey.d.store.innerText=honey.goods.store=honey.spec_price[k].store_count;//库存
+								honey.d.spec.innerHTML=spec_html.join('');
+								honey.d.spec.setAttribute('style','')
+							}else{
+								honey.d.spec.setAttribute('style','display:none')
+								honey.d.price.innerText=honey.goods.price=data.base.shop_price;
+								honey.d.store.innerText=honey.goods.store=data.base.store_count;
+							}
+							if(honey.goods.store==0){
+								honey.d.buyNum.value=0
+							}
+							//积分
+							honey.d.giveIntegral.innerText=data.base.give_integral;
+							var goodsAttr=[];
+							mui.each(data.attr,function(i,v){
+								goodsAttr.push('<tr><td>'+v.attr_name+'</td><td>'+v.attr_value+'</td></tr>');
+							})
+							honey.d.table.innerHTML=goodsAttr.join('');
+							//
+							
+						}else if(ret.code==2){
+							mui.toast(ret.msg)
 						}
-						group.push('<div class="mui-slider-item"><a href="#">\
-						<img src="'+honey.images[i]+'"></a></div>')
-						indicator.push('<div class="mui-indicator'+(i==0?' mui-active':'')+'"></div>')
-						if(i==len){
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img src="'+honey.images[0]+'"></a></div>')
-						}
-					}
-					document.getElementById('productSlider').innerHTML='<div class="mui-slider-group mui-slider-loop">'+group.join('')
-					+'</div><div class="mui-slider-indicator">'+indicator.join('')+'</div>';
-					honey.slider = mui('.mui-slider').slider({
-						interval:2000
-					});*/
-				},
+					},
+					error:function(ret){
+						alert(JSON.stringify(ret))
+						mui.toast('数据加载失败')
+					} 
+				})
+				}
 			};
 			mui.plusReady(function(){
-				honey.autoSlider()
 				honey.d.share.addEventListener('tap',function(){
 					var y=document.getElementById('attr').clientHeight+220;
 					mui.scrollTo(y,1);
@@ -406,58 +260,63 @@
 				})
 				
 				mui('.choose-type').on('tap','.mui-btn',function(){
-					if(!honey.chooseActive){
-						honey.chooseActive=mui('.mui-btn-active')[0];
+					//判断是否已选择
+					if(!this.hasClass('mui-btn-active')){
+						var p=this.parentElement.querySelectorAll('.mui-btn-active')[0];
+						this.classList.add('mui-btn-active')
+						p.classList.remove('mui-btn-active')
+						var btn=mui('.mui-btn-active');
+						var price_key=[];
+						mui.each(btn, function(i,v) {
+							price_key.push(v.getAttribute('item_id'))
+						});
+						var k=price_key.length>1?price_key.join('_'):price_key[0];
+						honey.goods.price=honey.spec_price[k].price;//价格
+						honey.goods.store=honey.spec_price[k].store_count;//库存
+						honey.d.price.innerText=honey.goods.price;
+						honey.d.store.innerText=honey.goods.store;
+						if(honey.goods.store==0){
+							honey.d.buyNum.value=0
+						}else{
+							honey.d.buyNum.value==0&&(honey.d.buyNum.value=1);
+						}
 					}
-					honey.chooseActive.setAttribute('class','mui-btn');
-					honey.chooseActive=this;
-					honey.chooseActive.setAttribute('class','mui-btn mui-btn-active')
-				})
-				
-				
-				honey.d.param.addEventListener('tap',function(){
-					if(!honey.maskHeader){
-						honey.maskHeader=plus.webview.getWebviewById('mask-header');
-					}
-					if(!honey.detailParam){
-						honey.detailParam=plus.webview.getWebviewById('goods-param');
-					}
-					mui.fire(honey.detailParam,'getQuan',{id:1})
-					honey.maskHeader.show()
-					honey.detailParam.show('slide-in-bottom',500)
-				})
-				
-				honey.d.attrQuan.addEventListener('tap',function(){
-					if(!honey.maskHeader){
-						honey.maskHeader=plus.webview.getWebviewById('mask-header');
-					}
-					if(!honey.detailQuan){
-						honey.detailQuan=plus.webview.getWebviewById('goods-quan');
-					}
-					mui.fire(honey.detailQuan,'getQuan',{id:1})
-					honey.maskHeader.show()
-					honey.detailQuan.show('slide-in-bottom',500)
 				})
 				
 				honey.d.buyNum.addEventListener('change',function(){
 					if(this.value<1){
 						this.value=1
 					}
+					if(this.value>honey.goods.store){
+						this.value=honey.goods.store
+					}
 				})
 			})
 			window.addEventListener('showGoods',function(o){
-				var data={
-					top:'0px',
-					left:'0px',
-					height:'220px',
-					width:'100%',
-					position:'static',
-					images:[{src:honey.images[o.detail.id]},{src:honey.images[o.detail.id]},{src:honey.images[o.detail.id]}]};
-				var view = new plus.nativeObj.ImageSlider('test',data);
-				plus.webview.currentWebview().append(view);
+				honey.goods.goods_id=o.detail.goods_id;
+				if(!honey.goodsDetail){
+					honey.goodsDetail=plus.webview.currentWebview();
+				}
+				if(!honey.imageSliderView){
+					var data={
+						top:'0px',
+						left:'0px',
+						height:'220px',
+						width:'100%',
+						position:'static',
+						images:[{src:'../images/yblogo.png'}]
+					};
+					honey.imageSliderView = new plus.nativeObj.ImageSlider('test',data);
+					honey.goodsDetail.append(honey.imageSliderView);
+				}else{
+					honey.imageSliderView.setImages([{src:'../images/yblogo.png'}]);
+				}
 				mui.scrollTo(0,10);
 				honey.d.buyNum.value=1;
+				honey.ajaxGetData()
+				honey.goodsDetail.show()
 			})
+			
 		</script>
 	</body>
 

@@ -272,7 +272,10 @@
 					"js/common.js",
 					"images/s3.jpg",
 					"images/s2.jpg",
-					"images/s1.jpg"
+					"images/s1.jpg",
+					"images/yblogo.png",
+					"js/mui.zoom.js",
+					"js/mui.previewimage.js"
 				],
 				"refer": [
 					"goods/goods-list-header.html"
@@ -322,7 +325,11 @@
 					"js/mui.previewimage.js",
 					"js/jquery.js",
 					"css/previewimage.css",
-					"goods/goods-detail-bottom.html"
+					"goods/goods-detail-bottom.html",
+					"images/buynow.jpg",
+					"images/addcart.jpg",
+					"js/common.js",
+					"css/goods-detail.css"
 				],
 				"refer": [],
 				"priority": 0
@@ -419,7 +426,8 @@
 					"js/common.js",
 					"fonts/mui.ttf",
 					"js/mui.lazyload.js",
-					"js/mui.lazyload.img.js"
+					"js/mui.lazyload.img.js",
+					"images/yblogo.png"
 				],
 				"refer": [],
 				"priority": 0
