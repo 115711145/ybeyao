@@ -76,6 +76,11 @@
 				margin-right: 5px;
 				text-decoration: line-through;
 			}
+			#no-item{
+				text-align: center;
+				color: #999;
+				width: 100%;
+			}
 		</style>
 	</head>
 
@@ -83,31 +88,8 @@
 		<div id="content" class="mui-content  detail-content-padding">
 			<div class="mui-content recommend">
 				<ul class="mui-table-view mui-grid-view" id="list">
-					
 				</ul>
 			</div>
-					<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-			<div class="mui-scroll">
-				<!--数据列表-->
-				<ul class="mui-table-view mui-table-view-chevron">
-					<li class="mui-table-view-cell">
-						<a href="" class="mui-navigate-right">Item 1</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a href="" class="mui-navigate-right">Item 2</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a href="" class="mui-navigate-right">Item 3</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a href="" class="mui-navigate-right">Item 4</a>
-					</li>
-					<li class="mui-table-view-cell">
-						<a href="" class="mui-navigate-right">Item 5</a>
-					</li>
-				</ul>
-			</div>
-		</div>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
@@ -117,68 +99,62 @@
 				swipeBack: false,
 				pullRefresh: {
 					container: '#content',
-					down: {
-						callback: pulldownRefresh //下拉刷新具体业务实现
-					},
 					up: {
+						auto:false,
+						height:80,
 						contentrefresh: '正在加载...',
-						callback: pullupRefresh //上拉加载具体业务实现
+						contentnomore:'已经到底啦',
+						callback: ajaxGetData //上拉加载具体业务实现
 					}
 				}
 			});
 			var count=0;
 			mui.ready(function(){
 				honey.content=mui('#content')
+				honey.list=document.getElementById('list')
 			})
 			mui.plusReady(function() {
 				if(!honey.goodsListHeader) {
 					honey.goodsListHeader = plus.webview.getWebviewById('goods-list-header');
 				}
+				mui('#list').on('tap','a',function(){
+					alert('aa')
+				})
 			})
 			
 			window.addEventListener('showGoodsList',function(e){
-//				honey.page=1;
-//				honey.total=0;
-//				ajaxGetData()
+				honey.list.innerHTML='';
+				honey.content.pullRefresh().refresh(true);
+				honey.page=1;
+				honey.total=0;
+				honey.cate=e.detail.cate;
+				ajaxGetData()
 			})
 			
-			
-//			function pullupRefresh() {
-//				honey.page=1;
-//				honey.total=0;
-//				ajaxGetData()
-//				honey.content.pullRefresh().endPulldownToRefresh()
-//			}
-			
-//			function pulldownRefresh(){
-//				ajaxGetData()
-//				mui('#content').pullRefresh().endPullupToRefresh(false);
-//				honey.content.pullRefresh().endPullupToRefresh()
-//			}
-			
-			function ajaxGetData(){
+			function ajaxGetData(o){
 				mui.ajax(apiurl,{
-					data:{m:'goods_list',page:honey.page,size:honey.pageSize},
+					data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate},
 					type:'post',
 					dataType:'json',
 					success:function(ret){ 
 						if(ret.code==0){
-							alert(honey.page)
-							honey.page+=1;
-							honey.total=ret.total;
-							if(honey.page*honey.size>=honey.total){
-								honey.end=true;
+							if(honey.page==1 && ret.data.length==0){
+								var obj=document.getElementById('list');
+								obj.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
+							}else{
+								showGoodsList(ret.data,'list',(honey.page>1))
 							}
-							alert(JSON.stringify(ret))
+							honey.total=ret.total;
+							honey.content.pullRefresh().endPullupToRefresh((honey.page*honey.pageSize>=ret.total))
+							honey.page+=1;
 						}
 					},
 					error:function(ret){
-						alert('error')
+						alert(JSON.stringify(ret))
+						mui.toast('数据加载失败')
 					} 
 				})
 			}
-			
-			
 			
 		</script>
 	</body>

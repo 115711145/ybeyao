@@ -76,7 +76,7 @@
 			})
 			window.addEventListener('cateId',function(o){
 				honey.title.innerHTML=o.detail.name;
-				mui.fire(honey.goodsList,'showGoodsList',{id:o.detail.id})
+				mui.fire(honey.goodsList,'showGoodsList',{cate:o.detail.cate})
 				honey.goodsList.show()
 			})
 		</script>

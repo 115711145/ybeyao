@@ -3,8 +3,19 @@ var apihost="http://192.168.11.226";
 var honey={
 	page:1,
 	total:0,
-	pageSize:10
+	pageSize:10,
 }
+
+Element.prototype.hasClass = function(className){
+    var i,len,temp = this.className.split(" ");
+    for(i = 0,len = temp.length; i < len; i++){
+        if(className == temp[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
 function preloadGoodsDetail(extras){
 	//商品详情头部
 	honey.detailHeader =  mui.preload({
@@ -99,19 +110,20 @@ function preloadGoodsDetail(extras){
  * @param boole append 是否追加
  */
 function showGoodsList(data,id,append){
-	var dom = document.getElementById(id);
-	var li=[];
+	var obj = document.getElementById(id);
+//	!append&&(obj.innerHTML='')
 	mui.each(data,function(i,v){
-		li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">\
-		<div class="goods-list-item">\
-		<a href="#" number="' + i + '"><img class="mui-media-object goods-logo" src="../images/logo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpeg"/>\
+		var li=document.createElement('li');
+		li.className="mui-table-view-cell mui-media mui-col-xs-6 goods-list";
+		li.innerHTML='<div class="goods-list-item">\
+		<a href="#" number="' + i + '" goods_id="'+v.goods_id+'"><img class="mui-media-object goods-logo" src="../images/yblogo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpg"/>\
             <div class="mui-media-body goods-info">\
             <p class="goods-title">'+v.goods_name +'</p>\
             <p><span class="goods-price-one">￥'+v.shop_price+'</span><p>\
             </div></a>\
-        </div></li>');
+        </div>';
+        obj.appendChild(li);
 	})
-	append?dom.insertAdjacentHTML('afterend',li.join('')):dom.innerHTML=li.join('');
 	mui('#'+id).imageLazyload({
 		placeholder: '../images/60x60.gif'
 	});
@@ -150,7 +162,6 @@ function preloadGoodsListWin(){
 	})
 	
 	honey.goodsListHeader.append(honey.goodsList)
-	
 }
 
 
