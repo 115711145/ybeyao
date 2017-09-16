@@ -4,6 +4,7 @@ var honey={
 	page:1,
 	total:0,
 	pageSize:10,
+	contentnomore:'亲，已经到底了哦！'
 }
 
 Element.prototype.hasClass = function(className){
@@ -116,7 +117,7 @@ function showGoodsList(data,id,append){
 		var li=document.createElement('li');
 		li.className="mui-table-view-cell mui-media mui-col-xs-6 goods-list";
 		li.innerHTML='<div class="goods-list-item">\
-		<a href="#" number="' + i + '" goods_id="'+v.goods_id+'"><img class="mui-media-object goods-logo" src="../images/yblogo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpg"/>\
+		<a href="#" number="' + i + '" goods_id="'+v.goods_id+'"><img class="mui-media-object goods-logo" src="../images/default.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpg"/>\
             <div class="mui-media-body goods-info">\
             <p class="goods-title">'+v.goods_name +'</p>\
             <p><span class="goods-price-one">￥'+v.shop_price+'</span><p>\
@@ -184,4 +185,15 @@ function openWin(url,winId,data,styles){
 	      title:'正在加载...',//等待对话框上显示的提示内容
 	    }
 	})
+}
+
+/**
+ * 滚动
+ * @param string id 选择器
+ * @param int time 时间
+ * @param boolean isGoodsDetail 是否为商品详情页
+ */
+function mySrcollTo(id,time,isGoodsDetail){
+	var y=(id?document.getElementById(id).clientHeight:0)+(isGoodsDetail?190:0);
+	mui.scrollTo(y,(time?time:10));
 }
