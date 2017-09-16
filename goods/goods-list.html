@@ -78,7 +78,7 @@
 			}
 			#no-item{
 				text-align: center;
-				color: #999;
+				color: #DD4F43;
 				width: 100%;
 			}
 		</style>
@@ -99,11 +99,13 @@
 				swipeBack: false,
 				pullRefresh: {
 					container: '#content',
+					down: {
+						callback: refresh
+					},
 					up: {
 						auto:false,
 						height:80,
-						contentrefresh: '正在加载...',
-						contentnomore:'已经到底啦',
+						contentnomore:honey.contentnomore,
 						callback: ajaxGetData //上拉加载具体业务实现
 					}
 				}
@@ -118,7 +120,17 @@
 					honey.goodsListHeader = plus.webview.getWebviewById('goods-list-header');
 				}
 				mui('#list').on('tap','a',function(){
-					alert('aa')
+					var goods_id = this.getAttribute('goods_id');
+					if(!honey.detailWebView) {
+						honey.detailWebView = plus.webview.getWebviewById('goods-header');
+					}
+					if(!honey.detailSubpage) {
+						honey.detailSubpage = plus.webview.getWebviewById('goods-detail');
+					}
+					mui.fire(honey.detailWebView, 'goodsId', {
+						goods_id:goods_id
+					})
+					honey.detailWebView.show('slide-in-right', 300)
 				})
 			})
 			
@@ -131,29 +143,42 @@
 				ajaxGetData()
 			})
 			
+			function refresh(){
+				honey.list.innerHTML='';
+				honey.content.pullRefresh().refresh(true);
+				honey.page=1;
+				honey.total=0;
+				ajaxGetData()
+			}
+			
 			function ajaxGetData(o){
-				mui.ajax(apiurl,{
-					data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate},
-					type:'post',
-					dataType:'json',
-					success:function(ret){ 
-						if(ret.code==0){
-							if(honey.page==1 && ret.data.length==0){
-								var obj=document.getElementById('list');
-								obj.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
-							}else{
-								showGoodsList(ret.data,'list',(honey.page>1))
+				if(honey.page>1 &&(honey.page*honey.pageSize>=honey.total)){
+					honey.content.pullRefresh().endPullupToRefresh(true)
+				}else{
+					mui.ajax(apiurl,{
+						data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate},
+						type:'post',
+						dataType:'json',
+						success:function(ret){ 
+							if(ret.code==0){
+								if(honey.page==1 && ret.data.length==0){
+									var obj=document.getElementById('list');
+									obj.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
+								}else{
+									showGoodsList(ret.data,'list',(honey.page>1))
+								}
+								honey.total=ret.total;
+								honey.content.pullRefresh().endPullupToRefresh((honey.page*honey.pageSize>=ret.total))
+								honey.content.pullRefresh().endPulldownToRefresh();
+								honey.page+=1;
 							}
-							honey.total=ret.total;
-							honey.content.pullRefresh().endPullupToRefresh((honey.page*honey.pageSize>=ret.total))
-							honey.page+=1;
-						}
-					},
-					error:function(ret){
-						alert(JSON.stringify(ret))
-						mui.toast('数据加载失败')
-					} 
-				})
+						},
+						error:function(ret){
+							alert(JSON.stringify(ret))
+							mui.toast('数据加载失败')
+						} 
+					})
+				}
 			}
 			
 		</script>

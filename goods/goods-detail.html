@@ -14,7 +14,7 @@
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav hide" id="header">
-			<span>商品</span> <span>商品</span> <span>商品</span> 
+			<span class="active" index="1">商品</span> <span index="2">详情</span> <span index="3">评论</span> 
 		</header>
 		<div id="detailcontent" class="mui-content  detail-content-padding" style="padding-top: 220px;">
 			<div id="attr">
@@ -83,18 +83,6 @@
 							<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 						</div>
 						<table id="goods-attr-table">
-							<tr>
-								<td>场地</td>
-								<td>个忘记改卡尔继往开来</td>
-							</tr>
-							<tr>
-								<td>场地</td>
-								<td>个忘记改卡尔继往开来</td>
-							</tr>
-							<tr>
-								<td>场地</td>
-								<td>个忘记改卡尔继往开来</td>
-							</tr>
 						</table>
 						
 					</div>
@@ -106,7 +94,7 @@
 					<ul class="evaluate-list">
 						<li class="evaluate-list-item">
 							<p>
-								<span class="user-name"><img src="../images/cbd.jpg"/><font>匿名用户</font></span>
+								<span class="user-name"><img src="../images/profile.png"/><font>匿名用户</font></span>
 								<span class="user-star">
 									<i class="mui-icon mui-icon-star-filled"></i>
 									<i class="mui-icon mui-icon-star-filled"></i>
@@ -181,6 +169,7 @@
 					store:document.getElementById('store'),
 					giveIntegral:document.getElementById('give_integral'),
 					table:document.getElementById('goods-attr-table'),
+					topMenu:document.getElementById('header').querySelectorAll('span')[0],
 				},
 				goods:{},
 				ajaxGetData:function(){
@@ -252,9 +241,29 @@
 			};
 			mui.plusReady(function(){
 				honey.d.share.addEventListener('tap',function(){
-					var y=document.getElementById('attr').clientHeight+220;
-					mui.scrollTo(y,1);
+					mySrcollTo('attr',1,1)
+//					var y=document.getElementById('attr').clientHeight+220;
+//					mui.scrollTo(y,1);
 				})
+				
+				mui('#header').on('tap','span',function(){
+					honey.d.topMenu.className='';
+					this.className="active";
+					honey.d.topMenu=this;
+					var index=this.getAttribute('index');
+					switch(index){
+						case '1'://回到顶部
+							mySrcollTo()
+							break;
+						case '2':
+							mySrcollTo('param')
+							break;
+						case '3':
+							mySrcollTo('attr')
+							break;
+					}
+				})
+				
 				mui('.user-photo').on('tap','img',function(){
 					mui.previewImage()
 				})
@@ -304,14 +313,15 @@
 						height:'220px',
 						width:'100%',
 						position:'static',
-						images:[{src:'../images/yblogo.png'}]
+						images:[{src:'../images/default.png'}]
 					};
 					honey.imageSliderView = new plus.nativeObj.ImageSlider('test',data);
 					honey.goodsDetail.append(honey.imageSliderView);
 				}else{
-					honey.imageSliderView.setImages([{src:'../images/yblogo.png'}]);
+					honey.imageSliderView.setImages([{src:'../images/default.png'}]);
 				}
-				mui.scrollTo(0,10);
+				mySrcollTo()
+//				mui.scrollTo(0,10);
 				honey.d.buyNum.value=1;
 				honey.ajaxGetData()
 				honey.goodsDetail.show()

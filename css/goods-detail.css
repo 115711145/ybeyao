@@ -9,13 +9,24 @@ p {
 	filter:alpha(opacity=60);  
 	-moz-opacity:0.6;  
 	opacity: 0.6;  
-	height: 44px;
+	height: 30px;
 	width: 100%;
+	padding: 0;
 }
 #header span{
-	color: red;
-	
+	color: #fff;
+	float: left;
+	padding: 4px 0;
+	text-align: center;
+	width: 33.3%;
 }
+
+#header .active{
+	color: #ff6633;
+	border-bottom: 2px solid #ff6633;
+}
+
+
 
 .detail-content-padding {
 	padding-top: 220px;
@@ -416,8 +427,7 @@ p {
 }
 #goods-attr-table td{
 	border: 1px solid #eee;
-	padding: 5px 0;
-	text-indent: 3px;
+	padding: 5px;
 }
 .hide{
 	/*display: none;*/
