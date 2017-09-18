@@ -27,7 +27,6 @@ p {
 }
 
 
-
 .detail-content-padding {
 	padding-top: 220px;
 	margin-bottom: 51px;
@@ -209,14 +208,15 @@ p {
 
 .evaluate .evaluate-title {
 	text-align: center;
-	color: #41CEA9;
-	line-height: 14px;
+	color: #666;
+	line-height: 25px;
 	padding-top: 2px;
+	height: 25px;
 	border: none;
 }
 
 .evaluate .evaluate-title .mui-icon {
-	color: #41CEA9;
+	color: #666;
 	font-size: 14px;
 	margin: 0 2px;
 }
@@ -226,17 +226,20 @@ p {
 }
 
 .evaluate .evaluate-list {
-	border: 1px solid #DEDEDE;
-	padding: 0;
 	list-style: none;
-	background: #dedede;
-	margin: 0;
-}
-
-.evaluate .evaluate-list {
-	background: #fff;
+	background: #DEDEDE;
 	margin: 3px 0;
+	padding: 0;
+}
+.evaluate .evaluate-list li{
+	background: #fff;
+	/*border-top: 1px solid #DEDEDE;
+	border-bottom: 1px solid #DEDEDE;*/
 	padding: 5px;
+	margin-top: 2px;
+}
+.evaluate .evaluate-list li:first-child{
+	border-top: 2px solid #DEDEDE
 }
 
 .evaluate .evaluate-list .evaluate-list-item p {
@@ -254,7 +257,6 @@ p {
 }
 
 .evaluate .evaluate-list .user-name {
-	width: 25%;
 	text-align: left;
 }
 
@@ -263,7 +265,6 @@ p {
 }
 
 .evaluate .evaluate-list .user-star {
-	width: 50%;
 	display: inline-block;
 	position: relative;
 	top: -2px
@@ -276,8 +277,8 @@ p {
 
 .evaluate .evaluate-list .user-time {
 	text-align: right;
-	display: inline-block;
-	width: 25%;
+	float:right;
+	margin-top:3px ;
 }
 
 .evaluate .evaluate-list .user-photo img {
@@ -344,6 +345,8 @@ p {
 
 .evaluate-more {
 	text-align: center;
+	color: #666;
+	padding-bottom: 10px;
 }
 
 .footer-bar a {
@@ -431,4 +434,28 @@ p {
 }
 .hide{
 	/*display: none;*/
+}
+/*#statistics{
+	padding: 3px 5px;
+	margin-top: 5px;
+	border-top: 1px solid #eee;
+}
+#statistics span{
+	width: 19%;
+	display: inline-block;
+	color:#41CEA9;
+	text-align: center;
+}*/
+
+#remark{
+	padding: 5px 10px;
+	background: #fff;
+}
+.remark .service p{
+	color: #000;
+}
+
+#content-text img{
+	max-width: 98% !important;
+	padding: 2%;
 }

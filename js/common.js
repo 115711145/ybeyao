@@ -126,11 +126,48 @@ function showGoodsList(data,id,append){
         obj.appendChild(li);
 	})
 	mui('#'+id).imageLazyload({
-		placeholder: '../images/60x60.gif'
+		placeholder: '../images/default.gif'
 	});
 }
 
 
+function showCommentList(list,id){
+	var obj=mui('#'+id);
+	mui.each(list, function(i,v) {
+		var li=document.createElement('li');
+		li.className="evaluate-list-item";
+		var str=[];
+		str.push('<p><span class="user-name"><img src="../images/profile.png" data-lazyload="'+v.head_pic+'"/><font>'
+		+(v.is_anonymous?"匿名用户":v.nickname)+'</font></span>'
+		+getCommentStar(((v.deliver_rank+v.goods_rank+v.service_rank)/3).toFixed(2))
+		+'<span class="user-time">'+getYmdTime(v.add_time)+'</span></p><p class="comment-content">'+v.content+'</p>')
+		if(v.img && v.img.length>0){
+			str.push('<p><div class="user-photo">');
+			for(var j=0;j<v.img.length;j++){
+				str.push('<img class="photos" data-lazyload="'+apihost+v.img[j]+'"  data-preview-src="'+apihost+v.img[j]+'" data-preview-group="'+i+'"  />')
+			}
+			str.push('</div></p>')
+		}
+		li.innerHTML=str.join('');
+		document.getElementById(id).appendChild(li)
+	});
+	document.body.removeAttribute('data-imagelazyload');
+	obj.imageLazyload({
+		placeholder: '../images/default.png'
+	});
+	
+	mui('.user-photo').off('tap','img').on('tap','img',function(){
+		mui.previewImage()
+	})
+}
+
+function getCommentStar(s){
+	var star=[];
+	for(var i=0;i<5;i++){
+		star.push('<i class="mui-icon mui-icon '+(s>i?(s<(i+1)?'mui-icon-starhalf':'mui-icon-star-filled'):'mui-icon-star')+'"></i>')
+	}
+	return '<span class="user-star">'+star.join('')+'</span>';
+}
 
 /**
  * 预加载商品列表
@@ -194,6 +231,31 @@ function openWin(url,winId,data,styles){
  * @param boolean isGoodsDetail 是否为商品详情页
  */
 function mySrcollTo(id,time,isGoodsDetail){
-	var y=(id?document.getElementById(id).clientHeight:0)+(isGoodsDetail?190:0);
+	var y=(id?document.getElementById(id).offsetTop:0)+(isGoodsDetail?190:0);
 	mui.scrollTo(y,(time?time:10));
 }
+
+/**
+ * 根据PHP时间戳获取年月日时间
+ * @param time
+ * @returns {String}
+ */
+function getYmdTime(time,showTime){
+	if(time > 0){
+		time=time*1000;
+		var dateStr = new Date(time);
+		return dateStr.getFullYear() + '-' + (dateStr.getMonth()+1) +'-' + dateStr.getDate() 
+		+ (showTime?(' '+ dateStr.getHours() + ':' + dateStr.getMinutes() + ':' + (dateStr.getSeconds()>9?dateStr.getSeconds():'0'+dateStr.getSeconds())):"");
+	}else{
+		return '末知时间';
+	}
+}
+String.prototype.replaceAll = function(s1, s2) {
+	return this.replace(new RegExp(s1, "gm"), s2);
+}
+
+function escape2Html(str) { 
+	var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'}; 
+	return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];}); 
+} 
+
