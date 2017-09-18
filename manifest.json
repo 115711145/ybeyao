@@ -331,7 +331,10 @@
 					"images/addcart.jpg",
 					"js/common.js",
 					"css/goods-detail.css",
-					"images/profile.png"
+					"images/profile.png",
+					"js/mui.lazyload.js",
+					"js/mui.lazyload.img.js",
+					"images/default.png"
 				],
 				"refer": [],
 				"priority": 0

@@ -12,8 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="../css/previewimage.css" />
 		<link rel="stylesheet" type="text/css" href="../css/goods-detail.css" />
 	</head>
-	<body>
-		<header class="mui-bar mui-bar-nav hide" id="header">
+	<body id="body">
+		<header class="mui-bar mui-bar-nav" id="header">
 			<span class="active" index="1">商品</span> <span index="2">详情</span> <span index="3">评论</span> 
 		</header>
 		<div id="detailcontent" class="mui-content  detail-content-padding" style="padding-top: 220px;">
@@ -35,8 +35,8 @@
 					<div class="express">
 						<p>
 							<span>快递:<font>0.00</font></span>
-							<span style="text-align: center;">销量:<font id="sale_num">123</font>笔</span>
-							<span style="text-align: right;">库存:<font id="store">123</font></span>
+							<span style="text-align: center;">销量:<font id="sale_num">0</font>笔</span>
+							<span style="text-align: right;">库存:<font id="store">0</font></span>
 						</p>
 					</div>
 				</div>
@@ -79,20 +79,46 @@
 				<div class="parameter" id="param">
 					<div class="attr-table">
 						<div class="service">
-							<p>规格参数</p>
+							<p>产品参数</p>
 							<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 						</div>
 						<table id="goods-attr-table">
 						</table>
-						
 					</div>
 				</div>
 			</div>
+			<div class="remark">
+				<div class="attr-table">
+					<div class="service">
+						<p>商品简介</p>
+						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
+					</div>
+				</div>
+				<p id="remark">
+				</p>
+			</div>
+			<div class="remark" id="goods-content">
+				<div class="attr-table">
+					<div class="service">
+						<p>详情</p>
+						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
+					</div>
+				</div>
+				<div id="content-text">
+				</div>
+			</div>
 			<div class="evaluate" id="evaluate">
-				<div class="evaluate-title"><span class="mui-icon mui-icon-chatbubble"></span>评价</div>
-				<div class="evaluate-content" id="evaluate-content">
-					<ul class="evaluate-list">
-						<li class="evaluate-list-item">
+				<div class="evaluate-title"><span class="mui-icon mui-icon-chatbubble"></span>评价(<span id="c0">0</span>)</div>
+				<!--<div id="statistics">
+					<span>全部(<font>0</font>)</span>
+					<span>好评(<font>0</font>)</span>
+					<span>中评(<font>0</font>)</span>
+					<span>差评(<font>0</font>)</span>
+					<span>有图(<font>0</font>)</span>
+				</div>-->
+				<div class="evaluate-content">
+					<ul class="evaluate-list" id="evaluate-list">
+						<!--<li class="evaluate-list-item">
 							<p>
 								<span class="user-name"><img src="../images/profile.png"/><font>匿名用户</font></span>
 								<span class="user-star">
@@ -116,9 +142,9 @@
 									<img class="photos" data-preview-src="" data-preview-group="2" src="../images/shuijiao.jpg"/>
 								</div>
 							</p>
-							<p class="evaluate-more">查看全部评论</p>
-						</li>
+						</li>-->
 					</ul>
+					<p class="evaluate-more" id="evaluate-more">查看全部评论</p>
 				</div>
 			</div>
 		</div>
@@ -140,6 +166,8 @@
 		</nav>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
@@ -167,83 +195,124 @@
 					m_price:document.getElementById('market_price'),//市场价格
 					spec:document.getElementById('spec'),//规格属性
 					store:document.getElementById('store'),
+					saleNum:document.getElementById('sale_num'),
 					giveIntegral:document.getElementById('give_integral'),
 					table:document.getElementById('goods-attr-table'),
+					topSpan:document.getElementById('header').querySelectorAll('span'),
 					topMenu:document.getElementById('header').querySelectorAll('span')[0],
+//					statistics:document.getElementById('statistics').querySelectorAll('font'),
+					c0:document.getElementById('c0'),
+					evaluate:document.getElementById('evaluate'),
+					evaluateList:document.getElementById('evaluate-list'),
+					evaluateMore:document.getElementById('evaluate-more'),
+					header:document.getElementById('header'),
+					remark:document.getElementById('remark'),
+					goodsContent:document.getElementById('goods-content'),
+					content:document.getElementById('content-text'),
 				},
 				goods:{},
+				scrollMenu:true,
 				ajaxGetData:function(){
 					mui.ajax(apiurl,{
-					data:{m:'goods_info',goods_id:honey.goods.goods_id},
-					type:'post',
-					dataType:'json',
-					success:function(ret){ 
-						if(ret.code==0){
-							var data=ret.data;
-							//标题
-							honey.d.title.innerText=data.base.goods_name;
-							//商品图片
-							var img=[{src:apihost+data.base.original_img}];
-							mui.each(data.images, function(i,v) {
-								if(v.image_url!=data.base.original_img){
-									img.push({src:apihost+v.image_url})
-								}
-							});
-							honey.imageSliderView.setImages(img)
-							//是否有规格属性
-							if(data.spec){
-								var price_key=[];
-								var spec_html=[];
-								mui.each(data.spec, function(i,v) {
-									var html=[];
-									for(var j=0;j<data.spec[i].length;j++){
-										var v=data.spec[i][j];
-										if(j==0){
-											price_key.push(v.item_id)
-										}
-										html.push('<button type="button" item_id="'+v.item_id+'" class="mui-btn'+(j==0?' mui-btn-active':'')+'">'+v.item+'</button>');
+						data:{m:'goods_info',goods_id:honey.goods.goods_id},
+						type:'post',
+						dataType:'json',
+						success:function(ret){ 
+							if(ret.code==0){
+								var data=ret.data;
+								//标题
+								honey.d.title.innerText=data.base.goods_name;
+								//商品图片
+								var img=[{src:apihost+data.base.original_img}];
+								mui.each(data.images, function(i,v) {
+									if(v.image_url!=data.base.original_img){
+										img.push({src:apihost+v.image_url})
 									}
-									spec_html.push('<p class="goods_spec"><span>'+i+'</span>'+html.join('')+'</p>')
 								});
-								var k=price_key.length>1?price_key.join('_'):price_key[0];
-								honey.spec_price=data.spec_price;
-								honey.d.price.innerText=honey.goods.price=honey.spec_price[k].price;//价格
-								honey.d.store.innerText=honey.goods.store=honey.spec_price[k].store_count;//库存
-								honey.d.spec.innerHTML=spec_html.join('');
-								honey.d.spec.setAttribute('style','')
-							}else{
-								honey.d.spec.setAttribute('style','display:none')
-								honey.d.price.innerText=honey.goods.price=data.base.shop_price;
-								honey.d.store.innerText=honey.goods.store=data.base.store_count;
+								honey.imageSliderView.setImages(img)
+								//是否有规格属性
+								if(data.spec){
+									var price_key=[];
+									var spec_html=[];
+									mui.each(data.spec, function(i,v) {
+										var html=[];
+										for(var j=0;j<data.spec[i].length;j++){
+											var v=data.spec[i][j];
+											if(j==0){
+												price_key.push(v.item_id)
+											}
+											html.push('<button type="button" item_id="'+v.item_id+'" class="mui-btn'+(j==0?' mui-btn-active':'')+'">'+v.item+'</button>');
+										}
+										spec_html.push('<p class="goods_spec"><span>'+i+'</span>'+html.join('')+'</p>')
+									});
+									var k=price_key.length>1?price_key.join('_'):price_key[0];
+									honey.spec_price=data.spec_price;
+									honey.d.price.innerText=honey.goods.price=honey.spec_price[k].price;//价格
+									honey.d.store.innerText=honey.goods.store=honey.spec_price[k].store_count;//库存
+									honey.d.spec.innerHTML=spec_html.join('');
+									honey.d.spec.setAttribute('style','')
+								}else{
+									honey.d.spec.setAttribute('style','display:none')
+									honey.d.price.innerText=honey.goods.price=data.base.shop_price;
+									honey.d.store.innerText=honey.goods.store=data.base.store_count;
+								}
+								if(honey.goods.store==0){
+									honey.d.buyNum.value=0
+								}
+								//销量
+								honey.d.saleNum.innerText=data.base.sale_num;
+								//积分
+								honey.d.giveIntegral.innerText=data.base.give_integral;
+								//产品参数
+								var goodsAttr=[];
+								mui.each(data.attr,function(i,v){
+									goodsAttr.push('<tr><td>'+v.attr_name+'</td><td>'+v.attr_value+'</td></tr>');
+								})
+								honey.d.table.innerHTML=goodsAttr.join('');
+								//评价
+								if(data.comment){
+									honey.commentMore=true;
+									honey.d.evaluateMore.innerText="查看更多评论";
+									data.comment.statistics&&(honey.d.c0.innerText=data.comment.statistics.c0);
+									data.comment.list&&showCommentList(data.comment.list,'evaluate-list');
+								}else{
+									honey.commentMore=false;
+									honey.d.evaluateMore.innerText="此商品暂无评论";
+								}
+								//简介
+								honey.d.remark.innerText=data.base.goods_remark;
+								//详情
+								data.base.goods_content=escape2Html(data.base.goods_content)
+								honey.d.content.innerHTML=data.base.goods_content;
+								var img=honey.d.content.querySelectorAll('img');
+								if(img.length>0){
+									mui.each(img, function(i,v) {
+										var s=apihost+v.getAttribute('src')
+										v.setAttribute('src',apihost+v.getAttribute('src'))
+									});
+								}
+							}else if(ret.code==2){//商品不存在或以下架
+								mui.toast(ret.msg)
 							}
-							if(honey.goods.store==0){
-								honey.d.buyNum.value=0
-							}
-							//积分
-							honey.d.giveIntegral.innerText=data.base.give_integral;
-							var goodsAttr=[];
-							mui.each(data.attr,function(i,v){
-								goodsAttr.push('<tr><td>'+v.attr_name+'</td><td>'+v.attr_value+'</td></tr>');
-							})
-							honey.d.table.innerHTML=goodsAttr.join('');
-							//
-							
-						}else if(ret.code==2){
-							mui.toast(ret.msg)
-						}
-					},
-					error:function(ret){
-						alert(JSON.stringify(ret))
-						mui.toast('数据加载失败')
-					} 
-				})
-				}
+						},
+						error:function(ret){
+							alert(JSON.stringify(ret))
+							mui.toast('数据加载失败')
+						} 
+					})
+				},
 			};
 			mui.plusReady(function(){
 				honey.d.share.addEventListener('tap',function(){
 					mySrcollTo('attr',1,1)
 //					var y=document.getElementById('attr').clientHeight+220;
 //					mui.scrollTo(y,1);
+				})
+				
+				honey.d.evaluateMore.addEventListener('tap',function(){
+					if(honey.commentMore){
+						alert('more')
+					}
 				})
 				
 				mui('#header').on('tap','span',function(){
@@ -255,19 +324,18 @@
 						case '1'://回到顶部
 							mySrcollTo()
 							break;
-						case '2':
-							mySrcollTo('param')
+						case '2'://详情
+							mySrcollTo('goods-content')
 							break;
-						case '3':
-							mySrcollTo('attr')
+						case '3'://评论
+							mySrcollTo('evaluate')
 							break;
 					}
 				})
 				
-				mui('.user-photo').on('tap','img',function(){
-					mui.previewImage()
-				})
-				
+				/**
+				 * 选择规格事件
+				 */
 				mui('.choose-type').on('tap','.mui-btn',function(){
 					//判断是否已选择
 					if(!this.hasClass('mui-btn-active')){
@@ -292,15 +360,25 @@
 					}
 				})
 				
+				/**
+				 * 选择数量事件
+				 */
 				honey.d.buyNum.addEventListener('change',function(){
 					if(this.value<1){
 						this.value=1
 					}
 					if(this.value>honey.goods.store){
 						this.value=honey.goods.store
+						if(honey.goods.store==0){
+							mui.toast('该商品已售罄')
+						}
 					}
 				})
 			})
+			
+			/**
+			 * 显示商品事件
+			 */
 			window.addEventListener('showGoods',function(o){
 				honey.goods.goods_id=o.detail.goods_id;
 				if(!honey.goodsDetail){
@@ -321,10 +399,40 @@
 					honey.imageSliderView.setImages([{src:'../images/default.png'}]);
 				}
 				mySrcollTo()
-//				mui.scrollTo(0,10);
+				honey.d.evaluateList.innerHTML='';
 				honey.d.buyNum.value=1;
 				honey.ajaxGetData()
 				honey.goodsDetail.show()
+			})
+			
+			/**
+			 * 滚动事件
+			 */
+			document.addEventListener('scroll',function(){
+				if(honey.scrollMenu){
+					honey.scrollMenu=false;
+					var h1=window.innerHeight;
+					var h=document.body.scrollTop+220;
+					var s1=honey.d.goodsContent.offsetTop;
+					var s2=honey.d.evaluate.offsetTop;
+					var i=0;
+					if(h>=s2){
+						i=2;
+					}else if(h>=s1){
+						i=1;
+					}
+					honey.d.topMenu.className='';
+					honey.d.topMenu=honey.d.topSpan[i];
+					honey.d.topMenu.className="active";
+					if((h+220)>h1){
+						honey.d.header.setAttribute('style','')
+					}else{
+						honey.d.header.setAttribute('style','display:none')
+					}
+					setTimeout(function(){
+						honey.scrollMenu=true;
+					},200)
+				}
 			})
 			
 		</script>
