@@ -73,7 +73,8 @@
 			"images/yblogo.png",
 			"js/mui.zoom.js",
 			"js/mui.previewimage.js",
-			"images/default.png"
+			"images/default.png",
+			"css/home.css"
 		],
 		"refer": [
 			"goods/goods-list-header.html"
@@ -96,7 +97,9 @@
 			"goods/goods-detail.html",
 			"fonts/iconfont.ttf",
 			"images/addcart.jpg",
-			"images/buynow.jpg"
+			"images/buynow.jpg",
+			"css/icons-extra.css",
+			"fonts/mui-icons-extra.ttf"
 		],
 		"refer": [
 			"goods/goods-detail.html"
@@ -129,7 +132,10 @@
 			"images/profile.png",
 			"js/mui.lazyload.js",
 			"js/mui.lazyload.img.js",
-			"images/default.png"
+			"images/default.png",
+			"images/bg_buynow.png",
+			"images/bg_addcart.png",
+			"images/kuqi.png"
 		],
 		"refer": [
 			"goods/goods-detail-bottom.html"
