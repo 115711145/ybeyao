@@ -16,14 +16,14 @@
 		<header class="mui-bar mui-bar-nav" id="header">
 			<span class="active" index="1">商品</span> <span index="2">详情</span> <span index="3">评论</span> 
 		</header>
-		<div id="detailcontent" class="mui-content  detail-content-padding" style="padding-top: 220px;">
+		<div id="detailcontent" class="mui-content  detail-content-padding">
 			<div id="attr">
 				<div class="goods-title">
 					<div class="fl title"><h5 id="goods_title">这里是标题这里是标题这里是这里是标题这里是标题这里是</h5></div>
 					<div class="fr icon">
 						<a href="#" id="share">
 		                    <span class="mui-icon-extra mui-icon-extra-share fl"></span>
-		                    <span class="fr share">分享</span>
+		                    <span class="fr">分享</span>
 		            	</a>
 					</div>
 				</div>
@@ -76,6 +76,16 @@
 						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 					</div>
 				</div>
+				<div class="remark">
+					<div class="attr-table">
+						<div class="service">
+							<p>产品简介</p>
+							<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
+						</div>
+					</div>
+					<p id="remark">暂无简介
+					</p>
+				</div>
 				<div class="parameter" id="param">
 					<div class="attr-table">
 						<div class="service">
@@ -86,16 +96,6 @@
 						</table>
 					</div>
 				</div>
-			</div>
-			<div class="remark">
-				<div class="attr-table">
-					<div class="service">
-						<p>商品简介</p>
-						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
-					</div>
-				</div>
-				<p id="remark">
-				</p>
 			</div>
 			<div class="remark" id="goods-content">
 				<div class="attr-table">
@@ -109,13 +109,6 @@
 			</div>
 			<div class="evaluate" id="evaluate">
 				<div class="evaluate-title"><span class="mui-icon mui-icon-chatbubble"></span>评价(<span id="c0">0</span>)</div>
-				<!--<div id="statistics">
-					<span>全部(<font>0</font>)</span>
-					<span>好评(<font>0</font>)</span>
-					<span>中评(<font>0</font>)</span>
-					<span>差评(<font>0</font>)</span>
-					<span>有图(<font>0</font>)</span>
-				</div>-->
 				<div class="evaluate-content">
 					<ul class="evaluate-list" id="evaluate-list">
 						<!--<li class="evaluate-list-item">
@@ -148,6 +141,10 @@
 				</div>
 			</div>
 		</div>
+		<div id="no-content">
+			<p><img src="../images/kuqi.png"/></p>
+			<p id="no-content-text">很抱歉,此商品已下架或不存在!</p>
+		</div>
 		<nav class="mui-bar mui-bar-tab footer-bar">
 			<a>
 				<span class="mui-icon mui-icon-chat"></span>
@@ -173,15 +170,6 @@
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
 				swipeBack: false,
-//				subpages:[{
-//					url:'goods-detail-bottom.html',
-//					id:'goods-detail-bottom',
-//					styles:{
-//						bottom:0,
-//						height:'51px',
-//						bounceBackground:'#f8f8f8'
-//					}
-//				}]
 			});
 			var honey={
 				d:{
@@ -200,7 +188,6 @@
 					table:document.getElementById('goods-attr-table'),
 					topSpan:document.getElementById('header').querySelectorAll('span'),
 					topMenu:document.getElementById('header').querySelectorAll('span')[0],
-//					statistics:document.getElementById('statistics').querySelectorAll('font'),
 					c0:document.getElementById('c0'),
 					evaluate:document.getElementById('evaluate'),
 					evaluateList:document.getElementById('evaluate-list'),
@@ -209,6 +196,9 @@
 					remark:document.getElementById('remark'),
 					goodsContent:document.getElementById('goods-content'),
 					content:document.getElementById('content-text'),
+					noContent:document.getElementById('no-content'),
+					noContentTxt:document.getElementById('no-content-text'),
+					detailcontent:document.getElementById('detailcontent'),
 				},
 				goods:{},
 				scrollMenu:true,
@@ -217,8 +207,13 @@
 						data:{m:'goods_info',goods_id:honey.goods.goods_id},
 						type:'post',
 						dataType:'json',
+						timeout:2000,
 						success:function(ret){ 
 							if(ret.code==0){
+								//初始化显示
+								honey.d.noContent.setAttribute('style','display:none')
+								honey.d.header.setAttribute('style','')
+								honey.d.detailcontent.setAttribute('style','')
 								var data=ret.data;
 								//标题
 								honey.d.title.innerText=data.base.goods_name;
@@ -230,6 +225,7 @@
 									}
 								});
 								honey.imageSliderView.setImages(img)
+								honey.imageSliderView.show()
 								//是否有规格属性
 								if(data.spec){
 									var price_key=[];
@@ -272,12 +268,13 @@
 								//评价
 								if(data.comment){
 									honey.commentMore=true;
-									honey.d.evaluateMore.innerText="查看更多评论";
+									honey.d.evaluateMore.innerText="查看全部评价";
 									data.comment.statistics&&(honey.d.c0.innerText=data.comment.statistics.c0);
 									data.comment.list&&showCommentList(data.comment.list,'evaluate-list');
 								}else{
 									honey.commentMore=false;
-									honey.d.evaluateMore.innerText="此商品暂无评论";
+									honey.d.c0.innerText=0;
+									honey.d.evaluateMore.innerText="此商品暂无评价";
 								}
 								//简介
 								honey.d.remark.innerText=data.base.goods_remark;
@@ -288,33 +285,51 @@
 								if(img.length>0){
 									mui.each(img, function(i,v) {
 										var s=apihost+v.getAttribute('src')
-										v.setAttribute('src',apihost+v.getAttribute('src'))
+										v.setAttribute('src',s)
+										v.setAttribute('data-preview-src',s)
+										v.setAttribute('data-preview-group','content');
 									});
+									mui('#content-text').off('tap','img').on('tap','img',function(){
+										mui.previewImage()
+									})
 								}
 							}else if(ret.code==2){//商品不存在或以下架
-								mui.toast(ret.msg)
+								honey.getDataFailed()
 							}
 						},
 						error:function(ret){
-							alert(JSON.stringify(ret))
-							mui.toast('数据加载失败')
+							honey.getDataFailed(1)
 						} 
 					})
 				},
+				getDataFailed:function(err){
+					honey.d.noContentTxt.innerText=err==1?"很抱歉,网络不给力,请检查网络!":"很抱歉,此商品已下架或不存在!";
+					honey.d.noContent.setAttribute('style','')
+					honey.imageSliderView.hide()
+					honey.d.header.setAttribute('style','display: none;')
+					honey.d.detailcontent.setAttribute('style','display: none;')
+				}
 			};
 			mui.plusReady(function(){
+				/**
+				 * 分享事件
+				 */
 				honey.d.share.addEventListener('tap',function(){
-					mySrcollTo('attr',1,1)
-//					var y=document.getElementById('attr').clientHeight+220;
-//					mui.scrollTo(y,1);
+					mySrcollTo('evaluate',1,1)
 				})
 				
+				/**
+				 * 查看更多评论
+				 */
 				honey.d.evaluateMore.addEventListener('tap',function(){
 					if(honey.commentMore){
 						alert('more')
 					}
 				})
 				
+				/**
+				 * 头部菜单事件
+				 */
 				mui('#header').on('tap','span',function(){
 					honey.d.topMenu.className='';
 					this.className="active";
@@ -352,10 +367,10 @@
 						honey.goods.store=honey.spec_price[k].store_count;//库存
 						honey.d.price.innerText=honey.goods.price;
 						honey.d.store.innerText=honey.goods.store;
-						if(honey.goods.store==0){
-							honey.d.buyNum.value=0
-						}else{
+						if(honey.d.buyNum.value<honey.goods.store){
 							honey.d.buyNum.value==0&&(honey.d.buyNum.value=1);
+						}else{
+							honey.d.buyNum.value=honey.goods.store;
 						}
 					}
 				})
@@ -400,6 +415,7 @@
 				}
 				mySrcollTo()
 				honey.d.evaluateList.innerHTML='';
+				honey.d.content.innerHTML='';
 				honey.d.buyNum.value=1;
 				honey.ajaxGetData()
 				honey.goodsDetail.show()

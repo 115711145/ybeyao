@@ -116,13 +116,11 @@ function showGoodsList(data,id,append){
 	mui.each(data,function(i,v){
 		var li=document.createElement('li');
 		li.className="mui-table-view-cell mui-media mui-col-xs-6 goods-list";
-		li.innerHTML='<div class="goods-list-item">\
-		<a href="#" number="' + i + '" goods_id="'+v.goods_id+'"><img class="mui-media-object goods-logo" src="../images/default.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpg"/>\
-            <div class="mui-media-body goods-info">\
-            <p class="goods-title">'+v.goods_name +'</p>\
-            <p><span class="goods-price-one">￥'+v.shop_price+'</span><p>\
-            </div></a>\
-        </div>';
+		li.innerHTML='<div class="goods-list-item"><a href="#" number="' + i + '" goods_id="'+v.goods_id
+		+'"><img class="mui-media-object goods-logo" src="../images/default.png" data-lazyload="' + apihost 
+		+ v.sub_image + '_150_150.jpg"/><div class="mui-media-body goods-info"><p class="goods-title">'
+		+v.goods_name +'</p><p><span class="goods-price-one">￥'+v.shop_price+'</span><p>'
+		+(v.market_price?'<p><span class="goods-price-one">￥'+v.market_parice+'</span><p>':'')+'</div></a></div>';
         obj.appendChild(li);
 	})
 	mui('#'+id).imageLazyload({
@@ -250,10 +248,11 @@ function getYmdTime(time,showTime){
 		return '末知时间';
 	}
 }
-String.prototype.replaceAll = function(s1, s2) {
-	return this.replace(new RegExp(s1, "gm"), s2);
-}
 
+/**
+ * 转义html
+ * @param {Object} str
+ */
 function escape2Html(str) { 
 	var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'}; 
 	return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];}); 
