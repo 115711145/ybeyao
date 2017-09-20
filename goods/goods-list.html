@@ -103,6 +103,9 @@
 				pullRefresh: {
 					container: '#content',
 					down: {
+						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+					    color:'#41cea9',
+					    height:'80px',
 						callback: refresh
 					},
 					up: {
@@ -116,7 +119,9 @@
 			var count=0;
 			mui.ready(function(){
 				honey.content=mui('#content')
-				honey.list=document.getElementById('list')
+				honey.list=document.getElementById('list'),
+				honey.sort="default";
+				honey.desc="";
 			})
 			mui.plusReady(function() {
 				if(!honey.goodsListHeader) {
@@ -143,11 +148,24 @@
 				honey.page=1;
 				honey.total=0;
 				honey.cate=e.detail.cate;
+				honey.sort="";
+				honey.desc="";
 				ajaxGetData()
 			})
 			
+			window.addEventListener('GoodsListSort',function(e){
+				if(honey.sort!=e.detail.sort || honey.desc!=e.detail.desc){
+					honey.list.innerHTML='';
+					honey.content.pullRefresh().refresh(true);
+					honey.sort=e.detail.sort;
+					honey.desc=e.detail.desc;
+					honey.page=1;
+					honey.total=0;
+					ajaxGetData()
+				}
+			})
+			
 			function refresh(){
-				honey.list.innerHTML='';
 				honey.content.pullRefresh().refresh(true);
 				honey.page=1;
 				honey.total=0;
@@ -159,10 +177,13 @@
 					honey.content.pullRefresh().endPullupToRefresh(true)
 				}else{
 					mui.ajax(apiurl,{
-						data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate},
+						data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate,sort:honey.sort,desc:honey.desc},
 						type:'post',
 						dataType:'json',
-						success:function(ret){ 
+						success:function(ret){
+							if(honey.page==1){
+								honey.list.innerHTML='';
+							}
 							if(ret.code==0){
 								if(honey.page==1 && ret.data.length==0){
 									var obj=document.getElementById('list');

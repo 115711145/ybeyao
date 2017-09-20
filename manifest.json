@@ -305,7 +305,8 @@
 					"images/addcart.jpg",
 					"images/buynow.jpg",
 					"css/icons-extra.css",
-					"fonts/mui-icons-extra.ttf"
+					"fonts/mui-icons-extra.ttf",
+					null
 				],
 				"refer": [],
 				"priority": 0
@@ -340,7 +341,8 @@
 					"images/default.png",
 					"images/bg_buynow.png",
 					"images/bg_addcart.png",
-					"images/kuqi.png"
+					"images/kuqi.png",
+					null
 				],
 				"refer": [],
 				"priority": 0
@@ -419,7 +421,9 @@
 					"goods/goods-list.html",
 					"css/own.css",
 					"css/iconfont.css",
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"fonts/mui-icons-extra.ttf",
+					"css/icons-extra.css"
 				],
 				"refer": [],
 				"priority": 0

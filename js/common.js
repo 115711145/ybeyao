@@ -177,7 +177,7 @@ function preloadGoodsListWin(){
 		url:'goods/goods-list-header.html',
 			styles:{
 			top:'0px',
-			bottom:'0px'
+			bottom:'0px',
 		},
 	})
 	honey.goodsListHeader.hide()
@@ -187,7 +187,7 @@ function preloadGoodsListWin(){
 		id:'goods-list',
 		url:'goods/goods-list.html',
 			styles:{
-			top:'44px',
+			top:'74px',
 			bottom:0
 		},
 	})
