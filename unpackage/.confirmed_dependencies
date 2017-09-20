@@ -206,7 +206,9 @@
 			"goods/goods-list.html",
 			"css/own.css",
 			"css/iconfont.css",
-			"css/mui.min.css"
+			"css/mui.min.css",
+			"fonts/mui-icons-extra.ttf",
+			"css/icons-extra.css"
 		],
 		"refer": [
 			"goods/goods-list.html"

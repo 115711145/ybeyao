@@ -51,14 +51,61 @@
 			.footer-bar .add-cart:active,.footer-bar .buy-now:active{
 				background: #ccc;
 			}
-			
+			.own-main-background-color{
+				padding: 0 !important;
+			}
+			.title{
+				height: 44px;
+				padding: 0 10px;
+			}
+			.three_btn{
+				background: #ecfef9;
+				width: 100%;
+				height: 30px;
+				border-top: 1px solid #cfefe7;
+				border-bottom: 1px solid #ddd;
+			}
+			.three_btn p{
+				float: left;
+				width: 33.3333333333%;
+				line-height: 30px;
+				height: 30px;
+				text-align: center;
+			}
+			.three_btn span{
+				padding: 0;
+				margin: 0;
+			}
+			.three_btn .up{
+				font-size: 15px;
+				padding: 0;
+				line-height: 30px;
+				height: 30px;
+			}
+			.three_btn .active{
+				color: #41CEA9;
+				border-bottom: 2px solid #41CEA9;
+			}
+			.three_btn .active .up{
+				color: #41CEA9;
+			}
+			.hide{
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title" id="header-title">列表</h1>
-			<a id="rightBar" class="mui-icon mui-icon-home-filled mui-pull-right"></a>
+			<div class="title">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title" id="header-title">列表</h1>
+				<a id="rightBar" class="mui-icon mui-icon-home-filled mui-pull-right"></a>
+			</div>
+			<div class="three_btn">
+				<p id="default" class="active">默认</p>
+				<p id="sale">销量<span class="hide" desc="desc">▼</span></p>
+				<p id="price">价格<span class="hide" desc="desc">▼</span></p>
+			</div>
 		</header>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript">
@@ -66,19 +113,55 @@
 				swipeBack: false,
 			});
 			var honey={
-				title:document.getElementById('header-title'),
-				rightBar:document.getElementById('rightBar')
-			};
+					d:{
+						title:document.getElementById('header-title'),
+						rightBar:document.getElementById('rightBar'),
+						sort:document.getElementById('default')
+					},
+					sort:'default',
+					desc:''
+				};
 			mui.plusReady(function(){
 				if(!honey.goodsList){
 					honey.goodsList=plus.webview.getWebviewById('goods-list');
 				}
+				mui('.three_btn').on('tap','p',function(){
+					var sort=this.getAttribute('id');
+					if(sort==honey.sort){
+						if(sort!='default'){
+							if(honey.desc=='desc'){
+								honey.desc='asc';
+								honey.d.desc.innerText="▲";
+							}else{
+								honey.desc='desc';
+								honey.d.desc.innerText="▼";
+							}
+							mui.fire(honey.goodsList,'GoodsListSort',{sort:honey.sort,desc:honey.desc})
+						}
+					}else{
+						if(honey.d.desc){
+							honey.d.desc.className="hide";
+						}
+						if(sort!='default'){
+							honey.d.desc=this.querySelector('span');
+							honey.d.desc.className="";
+							honey.desc='desc';
+							honey.d.desc.innerText="▼";
+						}
+						this.className="active";
+						honey.d.sort.className="";
+						honey.d.sort=this;
+						honey.sort=sort;
+						mui.fire(honey.goodsList,'GoodsListSort',{sort:honey.sort,desc:honey.desc})
+					}
+				})
 			})
 			window.addEventListener('cateId',function(o){
-				honey.title.innerHTML=o.detail.name;
+				honey.d.title.innerHTML=o.detail.name;
 				mui.fire(honey.goodsList,'showGoodsList',{cate:o.detail.cate})
 				honey.goodsList.show()
 			})
+			
 		</script>
 	</body>
 
