@@ -227,7 +227,8 @@
 					"goods/goods-param.html",
 					"public/footer.html",
 					"goods/goods-list.html",
-					"goods/goods-list-header.html"
+					"goods/goods-list-header.html",
+					"mine/login.html"
 				],
 				"priority": 0
 			},
@@ -423,7 +424,8 @@
 					"css/iconfont.css",
 					"css/mui.min.css",
 					"fonts/mui-icons-extra.ttf",
-					"css/icons-extra.css"
+					"css/icons-extra.css",
+					"images/ad.jpg"
 				],
 				"refer": [],
 				"priority": 0
@@ -443,7 +445,10 @@
 					"js/mui.lazyload.js",
 					"js/mui.lazyload.img.js",
 					"images/yblogo.png",
-					"images/default.png"
+					"images/default.png",
+					"images/ad.jpg",
+					"images/ad1.jpg",
+					"images/ad2.jpg"
 				],
 				"refer": [],
 				"priority": 0
@@ -457,6 +462,30 @@
 					"fonts/mui.ttf",
 					"css/iconfont.css",
 					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"barItem/mine.html": {
+				"resources": [
+					"js/common.js",
+					"css/mui.min.css",
+					"js/mui.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mine/login.html": {
+				"resources": [
+					"js/own.js",
+					"css/own.css",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf",
+					"images/yblogo.png",
+					"images/logo.png"
 				],
 				"refer": [],
 				"priority": 0
