@@ -159,6 +159,15 @@
 			window.addEventListener('cateId',function(o){
 				honey.d.title.innerHTML=o.detail.name;
 				mui.fire(honey.goodsList,'showGoodsList',{cate:o.detail.cate})
+				if(honey.sort!='default'){
+					honey.d.desc.className="hide";
+					honey.d.sort.className="";
+					honey.d.sort=document.getElementById('default');
+					honey.d.sort.className="active";
+					honey.sort="default";
+					honey.d.desc="";
+					honey.desc="";
+				}
 				honey.goodsList.show()
 			})
 			

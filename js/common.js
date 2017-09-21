@@ -107,12 +107,19 @@ function preloadGoodsDetail(extras){
 /**
  * 显示商品列表
  * @param {Object} data
- * @param string id 选择器
- * @param boole append 是否追加
+ * @param {String} id 选择器
+ * @param {Boolean}} append 是否追加
+ * @param {Object} ad 广告图片
  */
-function showGoodsList(data,id,append){
+function showGoodsList(data,id,append,ad){
 	var obj = document.getElementById(id);
 //	!append&&(obj.innerHTML='')
+	if(ad){
+		var li=document.createElement('li');
+		li.className="ad";
+		li.innerHTML='<img src="'+ad.src+'"/>';
+		obj.appendChild(li);
+	}
 	mui.each(data,function(i,v){
 		var li=document.createElement('li');
 		li.className="mui-table-view-cell mui-media mui-col-xs-6 goods-list";
@@ -128,7 +135,11 @@ function showGoodsList(data,id,append){
 	});
 }
 
-
+/**
+ * 显示评价列表
+ * @param {Object} list 数组对象
+ * @param {String} id  选择器
+ */
 function showCommentList(list,id){
 	var obj=mui('#'+id);
 	mui.each(list, function(i,v) {
@@ -158,7 +169,10 @@ function showCommentList(list,id){
 		mui.previewImage()
 	})
 }
-
+/**
+ * 返回评价星级 
+ * @param {Number} s 平均得分
+ */
 function getCommentStar(s){
 	var star=[];
 	for(var i=0;i<5;i++){
@@ -200,7 +214,13 @@ function preloadGoodsListWin(){
 	honey.goodsListHeader.append(honey.goodsList)
 }
 
-
+/**
+ * 打开新页面
+ * @param {Object} url
+ * @param {Object} winId
+ * @param {Object} data
+ * @param {Object} styles
+ */
 function openWin(url,winId,data,styles){
 	mui.openWindow({
 	    url:url,

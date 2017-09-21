@@ -83,6 +83,13 @@
 				margin: 0;
 				padding: 10px 0 0 0;
 			}
+			.ad{
+				display: block;
+			}
+			.ad img{
+				width: 100%;
+			}
+			
 		</style>
 	</head>
 
@@ -155,7 +162,9 @@
 			
 			window.addEventListener('GoodsListSort',function(e){
 				if(honey.sort!=e.detail.sort || honey.desc!=e.detail.desc){
-					honey.list.innerHTML='';
+					if(honey.page>1 && honey.total==0){
+						return
+					}
 					honey.content.pullRefresh().refresh(true);
 					honey.sort=e.detail.sort;
 					honey.desc=e.detail.desc;
@@ -189,7 +198,7 @@
 									var obj=document.getElementById('list');
 									obj.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
 								}else{
-									showGoodsList(ret.data,'list',(honey.page>1))
+									showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?{src:'../images/ad'+honey.page+'.jpg'}:false)
 								}
 								honey.total=ret.total;
 								honey.content.pullRefresh().endPullupToRefresh((honey.page*honey.pageSize>=ret.total))

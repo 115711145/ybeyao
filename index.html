@@ -69,11 +69,14 @@
 	<script type="text/javascript" charset="UTF-8">
 		mui.init()
 		var honey={
+			token:localStorage.getItem('token'),
 			barItem:['home','category','cart','mine'],
 			barWebViews:[],
 			contentStyle:{top:'45px',bottom:'51px',scrollIndicator:'none'},
-			title:document.getElementById('nav-title'),//标题
-			search:document.getElementById('search'),
+			d:{
+				title:document.getElementById('nav-title'),//标题
+				search:document.getElementById('search'),
+			},
 			//初始化所有bar页面
 		    initWebViews:function(){
 		    	//预加载页面
@@ -120,19 +123,27 @@
 				honey.curBarItemWebview = honey.barItem[0];
 			},
 			bindBaritem:function(){//绑定菜单事件
-				mui('.mui-bar-tab').on('tap','.mui-tab-item',function(){
+				mui('nav').on('tap','a',function(e){
 					var id=this.getAttribute('id');
 					if(id!=honey.curBarItemWebview){
 						//更换标题
 						if(id=='home'){
-							honey.search.style.display="block";
-							honey.title.style.display="none";
+							honey.d.search.style.display="block";
+							honey.d.title.style.display="none";
 						}else{
-							if(honey.curBarItemWebview=='home'){
-								honey.search.style.display="none";
-								honey.title.style.display="block";
+							if(id=="mine" && !honey.token){
+								if(!honey.token){
+//									document.getElementById('#'+honey.curBarItemWebview)
+									openWin('mine/login.html','login')
+									e.stopPropagation()
+									return
+								}
 							}
-							honey.title.innerText = this.querySelector('.mui-tab-label').innerText;
+							if(honey.curBarItemWebview=='home'){
+								honey.d.search.style.display="none";
+								honey.d.title.style.display="block";
+							}
+							honey.d.title.innerText = this.querySelector('.mui-tab-label').innerText;
 						}
 						//切换baritemwebview
 						honey.barWebViews[id].show();

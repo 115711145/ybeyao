@@ -138,10 +138,11 @@
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
 								<img type="'+adList[len-1].ad_link_type+'" link="'+adList[len-1].ad_link_id+'" src="' + apihost+adList[len-1].ad_code + '"></a></div>')
 						}
-						i<len&&group.push('<div class="mui-slider-item"><a href="#">\
-							<img type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" src="' + apihost+adList[i].ad_code + '"></a></div>')
-						indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
-						if(i == len) {
+						if(i<len){
+							group.push('<div class="mui-slider-item"><a href="#">\
+								<img type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" src="' + apihost+adList[i].ad_code + '"></a></div>')
+							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
+						}else {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
 								<img type="'+adList[0].ad_link_type+'" link="'+adList[0].ad_link_id+'"  src="' + apihost+adList[0].ad_code + '"></a></div>')
 						}

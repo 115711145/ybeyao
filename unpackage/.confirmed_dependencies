@@ -25,7 +25,8 @@
 			"goods/goods-param.html",
 			"public/footer.html",
 			"goods/goods-list.html",
-			"goods/goods-list-header.html"
+			"goods/goods-list-header.html",
+			"mine/login.html"
 		]
 	},
 	"barItem/home.html": {
@@ -208,7 +209,8 @@
 			"css/iconfont.css",
 			"css/mui.min.css",
 			"fonts/mui-icons-extra.ttf",
-			"css/icons-extra.css"
+			"css/icons-extra.css",
+			"images/ad.jpg"
 		],
 		"refer": [
 			"goods/goods-list.html"
@@ -229,7 +231,10 @@
 			"js/mui.lazyload.js",
 			"js/mui.lazyload.img.js",
 			"images/yblogo.png",
-			"images/default.png"
+			"images/default.png",
+			"images/ad.jpg",
+			"images/ad1.jpg",
+			"images/ad2.jpg"
 		]
 	},
 	"goods/goods-detail-bottom.html": {
@@ -241,6 +246,26 @@
 			"fonts/mui.ttf",
 			"css/iconfont.css",
 			"css/mui.min.css"
+		]
+	},
+	"barItem/mine.html": {
+		"resources": [
+			"js/common.js",
+			"css/mui.min.css",
+			"js/mui.js"
+		]
+	},
+	"mine/login.html": {
+		"resources": [
+			"js/own.js",
+			"css/own.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"fonts/iconfont.ttf",
+			"images/yblogo.png",
+			"images/logo.png"
 		]
 	}
 }
