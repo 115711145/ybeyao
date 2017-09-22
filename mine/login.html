@@ -7,106 +7,16 @@
 		<title>E3不是父子模版，考虑其为模态视图</title>
 		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
-
-		<style type="text/css">
-			/*下面两项是重置muicss的输入框label和input之间的宽比率*/
-			
-			.mui-input-row label {
-				width: 20%;
-			}
-			
-			.mui-input-row label~input {
-				width: 80%;
-			}
-			
-			.mui-input-group{
-				background: #fff;
-				border: 1px solid #fff;
-				border-radius: 10px;
-			}
-			.mui-card{
-				margin-top: 20px;
-				border: 1px solid #eee;
-				border-radius: 10px;
-			}
-			.login{
-				margin: 10px;
-			}
-			.login button{
-				padding: 8px 0;
-				background: #41CEA9;
-				border-radius: 10px;
-				border: 1px solid #41CEA9;
-			}
-			
-			.third{
-				margin: 40px 10px;
-			}
-			.third .line{
-				text-align: center;
-				height: 20px;
-			}
-			.third .line span{
-				border-bottom: 1px solid #ccc;
-				padding: 0px 15%;
-				position: absolute;
-				margin-top: 10px;
-			}
-			.third .line .fl{
-				left: 10px;
-			}
-			.third .line .fr{
-				right: 10px;
-			}
-			.third .icon{
-				text-align: center;
-			}
-			.third .icon .mui-icon{
-				font-size: 40px;
-				border-radius: 50px;
-				color: #fff;
-				background: #41CEA9;
-				padding: 5px;
-			}
-			.logo{
-				text-align: center;
-			}
-			.logo span{
-				margin-top: 20px;
-				width: 70px;
-				height: 70px;
-				border-radius: 35px;
-				display: inline-block;
-				overflow: hidden;
-				background: #fff;
-			}
-			.logo span img{
-				height: 55px;
-			}
-			.regpwd{
-				padding: 0 15px;
-				height: 30px;
-			}
-			#register{
-				float: left;
-			}
-			#repsd{
-				float: right;
-				color: #DD5044;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="../css/own.css" />
+		<link rel="stylesheet" type="text/css" href="../css/register.css" />
 	</head>
 
 	<body>
 
 		<header class="mui-bar mui-bar-nav own-main-background-color">
-			<button type="button" class="mui-action-back mui-btn  mui-btn-link mui-pull-left own-button">
-			<!--<span class="mui-action-back mui-icon mui-icon-left-nav own-left-nav-color"></span>-->
-			<span class="own-left-nav-color">取消</span>
-		</button>
-			<h1 class="mui-title">登录</h1>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="header-title">登录</h1>
 		</header>
-
 		<div class="mui-content">
 			<div class="logo">
 				<span ><img src="../images/logo.png"/></span>
@@ -114,17 +24,17 @@
 			<div class="mui-card">
 				<form class="mui-input-group">
 					<div class="mui-input-row">
-						<label><span class="mui-icon iconfont icon-zhanghao"></span></label>
+						<label><img src="../images/zhanghao.png"/></label>
 						<input type="text" class="mui-input-clear" value="" placeholder="请输入手机号" />
 					</div>
 					<div class="mui-input-row">
-						<label><span class="mui-icon iconfont icon-mimaxiugai"></span></label>
+						<label><img src="../images/pwd.png"/></label>
 						<input type="password" class="mui-input-clear" value="" placeholder="请输入密码" />
 					</div>
 				</form>
 			</div>
 			<div class="mui-button-row login">
-				<button type="button" class="mui-btn mui-btn-green mui-btn-block">登录</button>
+				<button type="button" id="submit" class="mui-btn mui-btn-green mui-btn-block">登录</button>
 			</div>
 			<div class="mui-button-row regpwd">
 				<button id="register" type="button" class="mui-btn mui-btn-link">快速注册</button>
@@ -132,18 +42,62 @@
 			</div>
 			<div class="third">
 				<p class="line"><span class="fl"></span>第三方账号登录<span class="fr"></span></p>
-				<p class="icon"><span class="mui-icon mui-icon-weixin"></span></p>
+				<p class="icon" id="wxdl"><span class="mui-icon mui-icon-weixin"></span></p>
 				
 			</div>
 		</div>
 
 		<script src="../js/mui.min.js" charset="UTF-8"></script>
-		<script src="../js/own.js" charset="UTF-8"></script>
-		<script src="../js/ajax.js" charset="UTF-8"></script>
+		<script src="../js/common.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
 				swipeBack: true
 			});
+			honey.bindEvent=function(){
+				/**
+				 * 登录按钮事件
+				 */
+				document.getElementById('submit').addEventListener('tap',function(){
+					if(!honey.logining){
+						honey.logining=true;
+						var that=this;
+						mui.toast('开始登录')
+						that.setAttribute('style','background: #ccc;border: 1px solid #ccc;')
+						setTimeout(function(){
+							that.setAttribute('style','')
+							honey.logining=false;
+						},3000)
+					}
+				})
+				/**
+				 * 注册按钮事件
+				 */
+				document.getElementById('register').addEventListener('tap',function(){
+					alert('注册')
+					openWin('register.html','register')
+				})
+				
+				/**
+				 * 忘记密码事件
+				 */
+				document.getElementById('repsd').addEventListener('tap',function(){
+					alert('忘记密码')
+				})
+				
+				/**
+				 * 微信登录事件
+				 */
+				document.getElementById('wxdl').addEventListener('tap',function(){
+					alert('微信登录')
+				})
+			}
+			mui.plusReady(function(){
+				honey.bindEvent()
+				if(!honey.loginWin){
+					honey.loginWin=plus.webview.currentWebview();
+				}
+			})
+			
 		</script>
 	</body>
 

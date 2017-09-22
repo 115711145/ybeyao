@@ -89,7 +89,25 @@
 			.ad img{
 				width: 100%;
 			}
-			
+			#goTop { 
+				/*background: #41CEA9;*/
+				filter:alpha(opacity=50);  
+				-moz-opacity:0.5;  
+				opacity: 0.5;  
+				height: 40px;
+				width: 40px;
+				border-radius: 20px;
+				position:fixed;
+				color: #fff;
+				bottom:5%;
+				right: 5%;
+				text-align: center;
+				overflow: hidden;
+			}
+			#goTop img{
+				height: 100%; 
+				text-align: center;
+			}
 		</style>
 	</head>
 
@@ -99,6 +117,7 @@
 				<ul class="mui-table-view mui-grid-view" id="list">
 				</ul>
 			</div>
+			<div id="goTop" style="display: none;"><img src="../images/goTop.png"/></div>
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
@@ -129,6 +148,10 @@
 				honey.list=document.getElementById('list'),
 				honey.sort="default";
 				honey.desc="";
+				honey.d={
+					goTop:document.getElementById('goTop'),
+					list:document.getElementById('list')
+				}
 			})
 			mui.plusReady(function() {
 				if(!honey.goodsListHeader) {
@@ -146,6 +169,10 @@
 						goods_id:goods_id
 					})
 					honey.detailWebView.show('slide-in-right', 300)
+				})
+				
+				honey.d.goTop.addEventListener('tap',function(){
+					mySrcollTo('',200)
 				})
 			})
 			
@@ -171,8 +198,31 @@
 					honey.page=1;
 					honey.total=0;
 					ajaxGetData()
+					mySrcollTo()
 				}
 			})
+			
+			
+			
+			/**
+			 * 监听滚动时间
+			 */
+			document.addEventListener('scroll',function(){
+				if(!honey.toast){
+					honey.toast=true;
+					var h1=window.innerHeight;
+					var h=document.body.scrollTop;
+					if(h>(h1-74*2)){
+						honey.d.goTop.setAttribute('style','')
+					}else{
+						honey.d.goTop.setAttribute('style','display: none;')
+					}
+					setTimeout(function(){
+						honey.toast=false;
+					},100)
+				}
+			})
+			
 			
 			function refresh(){
 				honey.content.pullRefresh().refresh(true);
@@ -195,8 +245,7 @@
 							}
 							if(ret.code==0){
 								if(honey.page==1 && ret.data.length==0){
-									var obj=document.getElementById('list');
-									obj.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
+									honey.d.list.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
 								}else{
 									showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?{src:'../images/ad'+honey.page+'.jpg'}:false)
 								}

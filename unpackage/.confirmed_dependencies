@@ -234,7 +234,8 @@
 			"images/default.png",
 			"images/ad.jpg",
 			"images/ad1.jpg",
-			"images/ad2.jpg"
+			"images/ad2.jpg",
+			"images/goTop.png"
 		]
 	},
 	"goods/goods-detail-bottom.html": {
@@ -265,7 +266,38 @@
 			"css/mui.min.css",
 			"fonts/iconfont.ttf",
 			"images/yblogo.png",
-			"images/logo.png"
+			"images/logo.png",
+			"js/common.js",
+			"images/logo-login.png",
+			"images/pwd.png",
+			"images/zhanghao.png",
+			"css/register.css"
+		],
+		"refer": [
+			"mine/register.html"
+		]
+	},
+	"barItem/category.html": {
+		"resources": [
+			"js/mui.min.js"
+		]
+	},
+	"mine/register.html": {
+		"resources": [
+			"js/own.js",
+			"css/own.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"fonts/iconfont.ttf",
+			"images/logo.png",
+			"images/verifiy.png",
+			"images/zhanghao.png",
+			"images/repwd.png",
+			"images/pwd.png",
+			"css/register.css",
+			"js/common.js"
 		]
 	}
 }

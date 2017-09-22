@@ -1,0 +1,137 @@
+/*下面两项是重置muicss的输入框label和input之间的宽比率*/
+
+.mui-input-row label {
+	width: 16%;
+}
+
+.mui-input-row label img {
+	width: 22px;
+}
+
+.mui-input-row label~input {
+	width: 84%;
+}
+
+.mui-input-group {
+	background: #fff;
+	border: 1px solid #fff;
+	border-radius: 10px;
+}
+
+.mui-card {
+	margin-top: 20px;
+	border: 1px solid #eee;
+	border-radius: 10px;
+}
+
+.login {
+	margin: 10px;
+}
+
+.login button {
+	padding: 8px 0;
+	background: #41cea9;
+	border-radius: 10px;
+	border: 1px solid #41cea9;
+}
+
+.login .active {
+	background: #ccc;
+	border: 1px solid #ccc;
+}
+
+.third {
+	margin: 40px 10px;
+}
+
+.third .line {
+	text-align: center;
+	height: 20px;
+}
+
+.third .line span {
+	border-bottom: 1px solid #ccc;
+	padding: 0px 15%;
+	position: absolute;
+	margin-top: 10px;
+}
+
+.third .line .fl {
+	left: 10px;
+}
+
+.third .line .fr {
+	right: 10px;
+}
+
+.third .icon {
+	text-align: center;
+}
+
+.third .icon .mui-icon {
+	font-size: 40px;
+	border-radius: 50px;
+	color: #fff;
+	background: #41cea9;
+	padding: 5px;
+}
+
+.logo {
+	text-align: center;
+}
+
+.logo span {
+	margin-top: 20px;
+	width: 70px;
+	height: 70px;
+	border-radius: 35px;
+	display: inline-block;
+	overflow: hidden;
+	background: #fff;
+}
+
+.logo span img {
+	height: 55px;
+}
+
+.regpwd {
+	padding: 0 15px;
+	height: 30px;
+}
+
+#register {
+	float: left;
+}
+
+#repsd {
+	float: right;
+	color: #DD5044;
+}
+
+.register {
+	margin: 10px;
+}
+
+.register button {
+	padding: 8px 0;
+	background: #41cea9;
+	border-radius: 10px;
+	border: 1px solid #41cea9;
+}
+
+.register .active {
+	background: #ccc;
+	border: 1px solid #ccc;
+}
+
+#get-code{
+	position: absolute;
+	border: 1px solid #41CEA9;
+	background: #41CEA9;
+	color: #fff;
+	padding: 6px 20px;
+	top: 4px;
+	right: 0;
+	border-radius: 8px;
+}
+
