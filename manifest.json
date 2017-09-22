@@ -211,7 +211,8 @@
 					"barItem/home.html",
 					"fonts/iconfont.ttf",
 					"fonts/mui.ttf",
-					"js/common.js"
+					"js/common.js",
+					null
 				],
 				"refer": [
 					"barItem/category.html",
@@ -278,7 +279,8 @@
 					"js/mui.zoom.js",
 					"js/mui.previewimage.js",
 					"images/default.png",
-					"css/home.css"
+					"css/home.css",
+					null
 				],
 				"refer": [
 					"goods/goods-list-header.html"
@@ -448,7 +450,9 @@
 					"images/default.png",
 					"images/ad.jpg",
 					"images/ad1.jpg",
-					"images/ad2.jpg"
+					"images/ad2.jpg",
+					null,
+					"images/goTop.png"
 				],
 				"refer": [],
 				"priority": 0
@@ -485,7 +489,43 @@
 					"css/mui.min.css",
 					"fonts/iconfont.ttf",
 					"images/yblogo.png",
-					"images/logo.png"
+					"images/logo.png",
+					"js/common.js",
+					"images/logo-login.png",
+					null,
+					"images/pwd.png",
+					"images/zhanghao.png",
+					"css/register.css"
+				],
+				"refer": [
+					"mine/register.html"
+				],
+				"priority": 0
+			},
+			"barItem/category.html": {
+				"resources": [
+					"js/mui.min.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mine/register.html": {
+				"resources": [
+					"js/own.js",
+					"css/own.css",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf",
+					"images/logo.png",
+					"images/verifiy.png",
+					"images/zhanghao.png",
+					"images/repwd.png",
+					"images/pwd.png",
+					"css/register.css",
+					null,
+					"js/common.js"
 				],
 				"refer": [],
 				"priority": 0

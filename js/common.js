@@ -124,7 +124,7 @@ function showGoodsList(data,id,append,ad){
 		var li=document.createElement('li');
 		li.className="mui-table-view-cell mui-media mui-col-xs-6 goods-list";
 		li.innerHTML='<div class="goods-list-item"><a href="#" number="' + i + '" goods_id="'+v.goods_id
-		+'"><img class="mui-media-object goods-logo" src="../images/default.png" data-lazyload="' + apihost 
+		+'"><img class="mui-media-object goods-lphoneogo" src="../images/default.png" data-lazyload="' + apihost
 		+ v.sub_image + '_150_150.jpg"/><div class="mui-media-body goods-info"><p class="goods-title">'
 		+v.goods_name +'</p><p><span class="goods-price-one">￥'+v.shop_price+'</span><p>'
 		+(v.market_price?'<p><span class="goods-price-one">￥'+v.market_parice+'</span><p>':'')+'</div></a></div>';
@@ -222,24 +222,37 @@ function preloadGoodsListWin(){
  * @param {Object} styles
  */
 function openWin(url,winId,data,styles){
-	mui.openWindow({
-	    url:url,
-	    id:winId,
-	    styles:styles,
-	    extras:data,
-	    createNew:false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-	    show:{
-	      autoShow:true,//页面loaded事件发生后自动显示，默认为true
-	      aniShow:'slide-in-right',//页面显示动画，默认为”slide-in-right“；
-	      duration:200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-	      event:'titleUpdate',//页面显示时机，默认为titleUpdate事件时显示
-	      extras:{}//窗口动画是否使用图片加速
-	    },
-	    waiting:{
-	      autoShow:true,//自动显示等待框，默认为true
-	      title:'正在加载...',//等待对话框上显示的提示内容
-	    }
+	var newWindow=mui.preload({
+		id:winId,
+		url:url,
+		styles:{
+			top:'0px',
+			bottom:'0px',
+		},
 	})
+	setTimeout(function(){
+		newWindow.show('slide-in-right');
+	},10)
+	
+	
+//	mui.openWindow({
+//	    url:url,
+//	    id:winId,
+//	    styles:styles,
+//	    extras:data,
+//	    createNew:false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+//	    show:{
+//	      autoShow:true,//页面loaded事件发生后自动显示，默认为true
+//	      aniShow:'slide-in-right',//页面显示动画，默认为”slide-in-right“；
+//	      duration:200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+//	      event:'titleUpdate',//页面显示时机，默认为titleUpdate事件时显示
+//	      extras:{}//窗口动画是否使用图片加速
+//	    },
+//	    waiting:{
+//	      autoShow:false,//自动显示等待框，默认为true
+//	      title:'正在加载...',//等待对话框上显示的提示内容
+//	    }
+//	})
 }
 
 /**
@@ -278,3 +291,26 @@ function escape2Html(str) {
 	return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];}); 
 } 
 
+/**
+ * 判断是否为电话号码
+ * @param {Object} str
+ */
+function isPhone(str){
+	var myreg = /^1[34578]\d{9}$/; 
+	return str?myreg.test(str):false;
+}
+
+/**
+ * 去除空格
+ * @param {string} str
+ * @param {Boolean} isAll 是否全部去除
+ */
+function trim(str,isAll){ 
+	var result;
+    result = str.replace(/(^\s+)|(\s+$)/g,"");
+    if(isAll)
+    {
+        result = result.replace(/\s/g,"");
+    }
+    return result;
+}

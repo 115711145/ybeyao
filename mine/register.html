@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>E3父子模版</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/register.css"/>
+</head>
+<body>
+	
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title" id="header-title">注册</h1>
+	</header>
+	<div class="mui-content">
+		<div class="logo">
+			<span ><img src="../images/logo.png"/></span>
+		</div>
+		<div class="mui-card"> 
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label><img src="../images/zhanghao.png"/></label>
+					<input id="account" class="mui-input-clear" type="number" maxlength="11" placeholder="手机号码" />
+				</div>
+				<div class="mui-input-row">
+					<label><img src="../images/pwd.png"/></label>
+					<input id="pwd" class="mui-input-clear" type="password" placeholder="6-20位密码" />
+				</div>
+				<div class="mui-input-row">
+					<label><img src="../images/repwd.png"/></label>
+					<input id="repwd" class="mui-input-clear" type="password" placeholder="确认密码" />
+				</div>
+				<div class="mui-input-row check-code">
+					<label><img src="../images/verifiy.png"/></label>
+					<input id="code" class="mui-input-clear" type="text" placeholder="验证码" />
+					<span id="get-code">获取验证码&nbsp;<font id="code-time"></font></span>
+				</div>
+			</form>
+		</div>
+		<div class="mui-button-row register">
+			<button type="button" id="submit"  class="mui-btn mui-btn-block own-btn-green">注册</button>
+		</div>
+	</div>
+	
+	<script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/common.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+		mui.init({
+			swipeBack:true
+		});
+		
+		mui.plusReady(function(){
+			honey.d={
+				account: document.getElementById('account'),
+				pwd : document.getElementById('pwd'),
+				repwd : document.getElementById('repwd'),
+				submitBtn : document.getElementById('submit'),
+				code : document.getElementById('code'),
+				getCode : document.getElementById('get-code'),
+				codeTime:document.getElementById('code-time')
+			}
+			
+			honey.d.account.addEventListener('input',function(){
+				var v=this.value;
+				if(isNaN(v)){
+					v=v.substr(0,v.length-1)
+				}
+				if(v.length>11){
+					v=v.substr(0,11);
+				}
+				this.value=v;
+				if(v.length==11){
+					isPhone(v)?honey.d.account.setAttribute('style','')
+					:honey.d.account.setAttribute('style','color:#DD5044')
+				}
+			})
+			
+			honey.d.pwd.addEventListener('input',function(){
+				var v=this.value;
+				if(v.length>20){
+					v=v.substr(0,20);
+				}
+				this.value=v;
+			})
+			
+			honey.d.repwd.addEventListener('input',function(){
+				var v=this.value;
+				if(v.length>20){
+					v=v.substr(0,20);
+				}
+				this.value=v;
+			})
+			
+			honey.d.getCode.addEventListener('tap',function(){
+				honey.codeTime=120;
+				this.setAttribute('style','background:#ccc;border:1px solid #ccc')
+			})
+			
+			/**
+			 * 注册按钮事件
+			 */
+			honey.d.submitBtn.addEventListener('tap',function(){
+				if (!isPhone(honey.d.account.value)){
+					mui.toast('请输入正确的手机号');
+					honey.d.account.setAttribute('style','color:#DD5044')
+					return;
+				}
+				if (honey.d.pwd.value.length < 6){
+					mui.toast('请输入6至20位密码');
+					return;
+				}
+				if (honey.d.repwd.value.length <= 0 || honey.d.pwd.value != honey.d.repwd.value	){
+					mui.toast('两次输入密码必须一致');
+					return;
+				}
+				if(honey.d.code.value.length<4){
+					mui.toast('验证码错误')
+					return
+				}
+				mui.ajax(apiurl,{
+					data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate,sort:honey.sort,desc:honey.desc},
+					type:'post',
+					dataType:'json',
+					success:function(ret){
+						if(honey.page==1){
+							honey.list.innerHTML='';
+						}
+						if(ret.code==0){
+							if(honey.page==1 && ret.data.length==0){
+								honey.d.list.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
+							}else{
+								showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?{src:'../images/ad'+honey.page+'.jpg'}:false)
+							}
+							honey.total=ret.total;
+							honey.content.pullRefresh().endPullupToRefresh((honey.page*honey.pageSize>=ret.total))
+							honey.content.pullRefresh().endPulldownToRefresh();
+							honey.page+=1;
+						}
+					},
+					error:function(ret){
+						alert(JSON.stringify(ret))
+						mui.toast('数据加载失败')
+					} 
+				})
+				
+			},false);
+			
+		});
+		
+	</script>
+	
+</body>
+</html>
