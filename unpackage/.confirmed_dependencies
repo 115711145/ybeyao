@@ -297,7 +297,8 @@
 			"images/repwd.png",
 			"images/pwd.png",
 			"css/register.css",
-			"js/common.js"
+			"js/common.js",
+			"js/jsencrypt.js"
 		]
 	}
 }

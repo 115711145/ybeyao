@@ -525,7 +525,8 @@
 					"images/pwd.png",
 					"css/register.css",
 					null,
-					"js/common.js"
+					"js/common.js",
+					"js/jsencrypt.js"
 				],
 				"refer": [],
 				"priority": 0

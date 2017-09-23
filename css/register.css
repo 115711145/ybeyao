@@ -134,4 +134,17 @@
 	right: 0;
 	border-radius: 8px;
 }
+.check-code{
+	width: 67%;
+}
+.check-code input{
+	position: absolute;
+	left: 24%;
+}
+
+.codeinput{
+	position: relative;
+	/*border-bottom: 1px solid #ccc;*/
+}
+
 
