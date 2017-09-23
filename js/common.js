@@ -4,7 +4,8 @@ var honey={
 	page:1,
 	total:0,
 	pageSize:10,
-	contentnomore:'亲，已经到底了哦！'
+	contentnomore:'亲，已经到底了哦！',
+	ajaxTimeout:60000,
 }
 
 Element.prototype.hasClass = function(className){
@@ -256,6 +257,19 @@ function openWin(url,winId,data,styles){
 }
 
 /**
+ * 关闭窗口
+ * @param {Object} id
+ */
+function closeWin(id,timeOut){
+	var w=plus.webview.getWebviewById(id);
+	if(w){
+		setTimeout(function(){
+			w.close()
+		},timeOut?timeOut:10)
+	}
+}
+
+/**
  * 滚动
  * @param string id 选择器
  * @param int time 时间
@@ -313,4 +327,53 @@ function trim(str,isAll){
         result = result.replace(/\s/g,"");
     }
     return result;
+}
+
+/**
+ * 获取设备信息
+ * model 型号
+ * vender 厂商
+ * imei
+ * uuid
+ * screen 分辨率 
+ * imsi
+ */
+function getDeviceInfo(){
+	honey.deviceInfo={
+		model:plus.device.model,
+		vender:plus.device.vendor,
+		imei:plus.device.imei,
+		uuid:plus.device.uuid,
+		screen:plus.screen.resolutionWidth*plus.screen.scale+'*'+plus.screen.resolutionHeight*plus.screen.scale,
+		dpi:plus.screen.dpiX+'*'+plus.screen.dpiY,
+		imsi:''
+	}
+	for ( i=0; i<plus.device.imsi.length; i++ ) {
+        honey.deviceInfo.imsi += plus.device.imsi[i];
+    }
+}
+/**
+ * 获取系统信息
+ * name 系统名称
+ * version 系统版本
+ * language 系统语言
+ * vender 厂商
+ * network 网络状态
+ */
+function getSysInfo() {
+	var types = {};
+    types[plus.networkinfo.CONNECTION_UNKNOW] = "未知";
+    types[plus.networkinfo.CONNECTION_NONE] = "未连接网络";
+    types[plus.networkinfo.CONNECTION_ETHERNET] = "有线网络";
+    types[plus.networkinfo.CONNECTION_WIFI] = "WiFi网络";
+    types[plus.networkinfo.CONNECTION_CELL2G] = "2G蜂窝网络";
+    types[plus.networkinfo.CONNECTION_CELL3G] = "3G蜂窝网络";
+    types[plus.networkinfo.CONNECTION_CELL4G] = "4G蜂窝网络";
+	honey.systemInfo={
+		name:plus.os.name,
+		version:plus.os.version,
+		language:plus.os.language,
+		vendor:plus.os.vendor,
+		network:types[plus.networkinfo.getCurrentType()]
+	};
 }

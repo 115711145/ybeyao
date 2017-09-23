@@ -20,7 +20,7 @@
 			<span ><img src="../images/logo.png"/></span>
 		</div>
 		<div class="mui-card"> 
-			<form class="mui-input-group">
+			<div class="mui-input-group">
 				<div class="mui-input-row">
 					<label><img src="../images/zhanghao.png"/></label>
 					<input id="account" class="mui-input-clear" type="number" maxlength="11" placeholder="手机号码" />
@@ -33,12 +33,14 @@
 					<label><img src="../images/repwd.png"/></label>
 					<input id="repwd" class="mui-input-clear" type="password" placeholder="确认密码" />
 				</div>
-				<div class="mui-input-row check-code">
-					<label><img src="../images/verifiy.png"/></label>
-					<input id="code" class="mui-input-clear" type="text" placeholder="验证码" />
+				<div class="codeinput">
+					<div class="mui-input-row check-code">
+						<label><img src="../images/verifiy.png"/></label>
+						<input id="code" class="mui-input-clear" type="text" placeholder="验证码" />
+					</div>
 					<span id="get-code">获取验证码&nbsp;<font id="code-time"></font></span>
 				</div>
-			</form>
+			</div>
 		</div>
 		<div class="mui-button-row register">
 			<button type="button" id="submit"  class="mui-btn mui-btn-block own-btn-green">注册</button>
@@ -47,10 +49,26 @@
 	
 	<script src="../js/mui.min.js" charset="UTF-8"></script>
 	<script src="../js/common.js" charset="UTF-8"></script>
+	<script src="../js/jsencrypt.js" charset="UTF-8"></script>
 	<script type="text/javascript" charset="UTF-8">
 		mui.init({
 			swipeBack:true
 		});
+		honey.codeTime=0;
+		honey.autoTimeout=function(start){
+			if(start){
+				honey.codeTime=120; 
+				honey.d.getCode.setAttribute('style','background:#ccc;border:1px solid #ccc');
+			}
+			if(honey.codeTime>0){ 
+				honey.codeTime--;
+				honey.d.codeTime.innerText=honey.codeTime;
+				setTimeout(honey.autoTimeout,1000)
+			}else{
+				honey.d.codeTime.innerText='';
+				honey.d.getCode.setAttribute('style','')
+			}
+		}
 		
 		mui.plusReady(function(){
 			honey.d={
@@ -62,7 +80,12 @@
 				getCode : document.getElementById('get-code'),
 				codeTime:document.getElementById('code-time')
 			}
-			
+			//获取设备信息和系统信息
+			getSysInfo()
+			getDeviceInfo()
+			/**
+			 * 监听手机号码输入
+			 */
 			honey.d.account.addEventListener('input',function(){
 				var v=this.value;
 				if(isNaN(v)){
@@ -77,7 +100,9 @@
 					:honey.d.account.setAttribute('style','color:#DD5044')
 				}
 			})
-			
+			/**
+			 * 监听密码输入
+			 */
 			honey.d.pwd.addEventListener('input',function(){
 				var v=this.value;
 				if(v.length>20){
@@ -85,7 +110,9 @@
 				}
 				this.value=v;
 			})
-			
+			/**
+			 * 监听确认密码
+			 */
 			honey.d.repwd.addEventListener('input',function(){
 				var v=this.value;
 				if(v.length>20){
@@ -94,9 +121,49 @@
 				this.value=v;
 			})
 			
+			/**
+			 * 监听验证码
+			 */
+			honey.d.code.addEventListener('input',function(){
+				var v=this.value;
+				if(v.length>4){
+					v=v.substr(0,4);
+				}
+				this.value=v;
+			})
+			
+			/**
+			 * 获取验证码
+			 */
 			honey.d.getCode.addEventListener('tap',function(){
-				honey.codeTime=120;
-				this.setAttribute('style','background:#ccc;border:1px solid #ccc')
+				if(honey.codeTime==0){
+					if(!isPhone(honey.d.account.value)){
+						mui.toast('请输入正确的手机号')
+						return
+					}
+					mui.ajax(apiurl,{
+						data:{m:'get_register_code',mobile:honey.d.account.value},
+						type:'post',
+						dataType:'json',
+						timeout:honey.ajaxTimeout,
+						success:function(ret){ 
+							if(ret.code==0){
+								honey.autoTimeout(1)
+								mui.toast('短信发送成功')
+							}else{
+								mui.toast(ret.msg)
+								if(ret.code==3){
+									honey.autoTimeout(1)
+								}
+							}
+						},
+						error:function(ret){
+							mui.toast('短信发送失败')
+						}
+					})
+				}else{
+					alert('aa')
+				}
 			})
 			
 			/**
@@ -121,33 +188,37 @@
 					return
 				}
 				mui.ajax(apiurl,{
-					data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate,sort:honey.sort,desc:honey.desc},
+					data:{
+						m:'register',
+						mobile:honey.d.account.value,
+						password:honey.d.pwd.value,
+						code:honey.d.code.value,
+						system:honey.systemInfo.name,
+						system_model:honey.deviceInfo.model,
+						system_version:honey.systemInfo.version,
+						resolution:honey.deviceInfo.screen,
+						imei:honey.deviceInfo.imei,
+						app_version:plus.runtime.version
+					},
 					type:'post',
 					dataType:'json',
 					success:function(ret){
-						if(honey.page==1){
-							honey.list.innerHTML='';
-						}
 						if(ret.code==0){
-							if(honey.page==1 && ret.data.length==0){
-								honey.d.list.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
-							}else{
-								showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?{src:'../images/ad'+honey.page+'.jpg'}:false)
-							}
-							honey.total=ret.total;
-							honey.content.pullRefresh().endPullupToRefresh((honey.page*honey.pageSize>=ret.total))
-							honey.content.pullRefresh().endPulldownToRefresh();
-							honey.page+=1;
+							mui.toast('注册成功')
+							//触发登录事件
+							closeWin('login')
+							closeWin('register',1000)
+						}else{
+							mui.toast(ret.msg||'注册失败')
 						}
 					},
 					error:function(ret){
 						alert(JSON.stringify(ret))
 						mui.toast('数据加载失败')
-					} 
+					}
 				})
-				
+				return 
 			},false);
-			
 		});
 		
 	</script>
