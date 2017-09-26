@@ -212,10 +212,10 @@
 					"fonts/iconfont.ttf",
 					"fonts/mui.ttf",
 					"js/common.js",
-					null
+					null,
+					"barItem/category.html"
 				],
 				"refer": [
-					"barItem/category.html",
 					"barItem/mine.html",
 					"barItem/cart.html",
 					"template.html",
@@ -495,10 +495,12 @@
 					null,
 					"images/pwd.png",
 					"images/zhanghao.png",
-					"css/register.css"
+					"css/register.css",
+					"js/jsencrypt.js"
 				],
 				"refer": [
-					"mine/register.html"
+					"mine/register.html",
+					"mine/forgot.html"
 				],
 				"priority": 0
 			},
@@ -527,6 +529,25 @@
 					null,
 					"js/common.js",
 					"js/jsencrypt.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mine/forgot.html": {
+				"resources": [
+					"js/jsencrypt.js",
+					"images/verifiy.png",
+					"images/pwd.png",
+					"images/zhanghao.png",
+					"fonts/mui.ttf",
+					"images/repwd.png",
+					"css/own.css",
+					"js/common.js",
+					"images/logo.png",
+					"js/mui.min.js",
+					"css/iconfont.css",
+					"css/mui.min.css",
+					"css/register.css"
 				],
 				"refer": [],
 				"priority": 0

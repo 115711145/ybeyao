@@ -69,7 +69,7 @@
 	<script type="text/javascript" charset="UTF-8">
 		mui.init()
 		var honey={
-			token:localStorage.getItem('token'),
+//			token:localStorage.getItem('token'),
 			barItem:['home','category','cart','mine'],
 			barWebViews:[],
 			contentStyle:{top:'45px',bottom:'51px',scrollIndicator:'none'},
@@ -163,6 +163,10 @@
 			}
 			honey.home.show();
 			honey.barWebViews.home.show()
+		})
+		
+		window.addEventListener('login',function(o){
+			honey.token=localStorage.getItem('token')
 		})
 	</script>
 </body>

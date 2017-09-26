@@ -8,7 +8,8 @@
 			"barItem/home.html",
 			"fonts/iconfont.ttf",
 			"fonts/mui.ttf",
-			"js/common.js"
+			"js/common.js",
+			"barItem/category.html"
 		],
 		"refer": [
 			"barItem/category.html",
@@ -271,10 +272,12 @@
 			"images/logo-login.png",
 			"images/pwd.png",
 			"images/zhanghao.png",
-			"css/register.css"
+			"css/register.css",
+			"js/jsencrypt.js"
 		],
 		"refer": [
-			"mine/register.html"
+			"mine/register.html",
+			"mine/forgot.html"
 		]
 	},
 	"barItem/category.html": {
@@ -299,6 +302,23 @@
 			"css/register.css",
 			"js/common.js",
 			"js/jsencrypt.js"
+		]
+	},
+	"mine/forgot.html": {
+		"resources": [
+			"js/jsencrypt.js",
+			"images/verifiy.png",
+			"images/pwd.png",
+			"images/zhanghao.png",
+			"fonts/mui.ttf",
+			"images/repwd.png",
+			"css/own.css",
+			"js/common.js",
+			"images/logo.png",
+			"js/mui.min.js",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/register.css"
 		]
 	}
 }
