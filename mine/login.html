@@ -25,11 +25,11 @@
 				<form class="mui-input-group">
 					<div class="mui-input-row">
 						<label><img src="../images/zhanghao.png"/></label>
-						<input type="text" class="mui-input-clear" value="" placeholder="请输入手机号" />
+						<input type="text" id="mobile" class="mui-input-clear" value="" placeholder="手机号" />
 					</div>
 					<div class="mui-input-row">
 						<label><img src="../images/pwd.png"/></label>
-						<input type="password" class="mui-input-clear" value="" placeholder="请输入密码" />
+						<input type="password" id="pwd" class="mui-input-clear" value="" placeholder="密码" />
 					</div>
 				</form>
 			</div>
@@ -49,24 +49,65 @@
 
 		<script src="../js/mui.min.js" charset="UTF-8"></script>
 		<script src="../js/common.js" charset="UTF-8"></script>
+		<script src="../js/jsencrypt.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
 				swipeBack: true
 			});
+			honey.d={
+				pwd:document.getElementById('pwd'),
+				mobile:document.getElementById('mobile')
+			};
 			honey.bindEvent=function(){
 				/**
 				 * 登录按钮事件
 				 */
 				document.getElementById('submit').addEventListener('tap',function(){
+					var phone=isPhone(honey.d.mobile.value)
+					if(!phone){
+						mui.toast('手机号码错误');
+						return
+					}
 					if(!honey.logining){
 						honey.logining=true;
 						var that=this;
-						mui.toast('开始登录')
 						that.setAttribute('style','background: #ccc;border: 1px solid #ccc;')
-						setTimeout(function(){
-							that.setAttribute('style','')
-							honey.logining=false;
-						},3000)
+						mui.ajax(apiurl,{
+							data:{
+								m:'login',
+								type:1,
+								mobile:honey.d.mobile.value,
+								password:encryptString(honey.d.pwd.value),
+								system:honey.systemInfo.name,
+								system_model:honey.deviceInfo.model,
+								system_version:honey.systemInfo.version,
+								resolution:honey.deviceInfo.screen,
+								imei:honey.deviceInfo.imei,
+								app_version:plus.runtime.version
+							},
+							type:'post',
+							dataType:'json',
+							success:function(ret){
+								if(ret.code==0){
+									mui.toast('登录成功',{duration:1000})
+									that.setAttribute('style','')
+									localStorage.setItem('token',ret.data.token);
+									mui.fire(honey.indexWin, 'login')
+									//触发登录事件
+									//关闭注册和登录窗口
+									closeWin('login',1000)
+									closeWin('register')
+								}else{
+									mui.toast(ret.msg||'登录失败')
+								}
+								honey.logining=false;
+							},
+							error:function(ret){
+//								alert(JSON.stringify(ret))
+//								mui.toast('登录失败')
+							}
+						})
+						
 					}
 				})
 				/**
@@ -80,7 +121,7 @@
 				 * 忘记密码事件
 				 */
 				document.getElementById('repsd').addEventListener('tap',function(){
-					alert('忘记密码')
+					openWin('forgot.html','forgot')
 				})
 				
 				/**
@@ -91,9 +132,14 @@
 				})
 			}
 			mui.plusReady(function(){
+				getSysInfo()
+				getDeviceInfo()
 				honey.bindEvent()
 				if(!honey.loginWin){
 					honey.loginWin=plus.webview.currentWebview();
+				}
+				if(!honey.indexWin){
+					honey.indexWin= plus.webview.getLaunchWebview(); 
 				}
 			})
 			

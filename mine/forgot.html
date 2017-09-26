@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>注册</title>
+    <title>忘记密码</title>
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="../css/own.css"/>
@@ -13,7 +13,7 @@
 	
 	<header class="mui-bar mui-bar-nav own-main-background-color">
 		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-		<h1 class="mui-title" id="header-title">注册</h1>
+		<h1 class="mui-title" id="header-title">找回密码</h1>
 	</header>
 	<div class="mui-content">
 		<div class="logo">
@@ -27,11 +27,11 @@
 				</div>
 				<div class="mui-input-row">
 					<label><img src="../images/pwd.png"/></label>
-					<input id="pwd" class="mui-input-clear" type="password" placeholder="6-20位密码" />
+					<input id="pwd" class="mui-input-clear" type="password" placeholder="6-20位新密码" />
 				</div>
 				<div class="mui-input-row">
 					<label><img src="../images/repwd.png"/></label>
-					<input id="repwd" class="mui-input-clear" type="password" placeholder="确认密码" />
+					<input id="repwd" class="mui-input-clear" type="password" placeholder="确认新密码" />
 				</div>
 				<div class="codeinput">
 					<div class="mui-input-row check-code">
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 		<div class="mui-button-row register">
-			<button type="button" id="submit"  class="mui-btn mui-btn-block own-btn-green">注册</button>
+			<button type="button" id="submit"  class="mui-btn mui-btn-block own-btn-green">重置密码</button>
 		</div>
 	</div>
 	
@@ -143,7 +143,7 @@
 						return
 					}
 					mui.ajax(apiurl,{
-						data:{m:'get_register_code',mobile:honey.d.account.value},
+						data:{m:'get_repassword_code',mobile:honey.d.account.value},
 						type:'post',
 						dataType:'json',
 						timeout:honey.ajaxTimeout,
@@ -162,8 +162,6 @@
 							mui.toast('短信发送失败')
 						}
 					})
-				}else{
-					alert('aa')
 				}
 			})
 			

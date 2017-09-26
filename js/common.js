@@ -4,7 +4,7 @@ var honey={
 	page:1,
 	total:0,
 	pageSize:10,
-	contentnomore:'亲，已经到底了哦！',
+	contentnomore:'亲,已经到底啦！',
 	ajaxTimeout:60000,
 }
 
@@ -229,12 +229,12 @@ function openWin(url,winId,data,styles){
 		styles:{
 			top:'0px',
 			bottom:'0px',
+			popGesture:'close'
 		},
 	})
 	setTimeout(function(){
 		newWindow.show('slide-in-right');
 	},10)
-	
 	
 //	mui.openWindow({
 //	    url:url,
@@ -376,4 +376,62 @@ function getSysInfo() {
 		vendor:plus.os.vendor,
 		network:types[plus.networkinfo.getCurrentType()]
 	};
+}
+
+/**
+ * 加密
+ * @param {string} str
+ */
+function encryptString(str){
+		var pub_key="-----BEGIN PUBLIC KEY-----\
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1VZfzb8V7amcvBSr4TyA\
+pSP0Ndj43d6MK1/rXPIoLZ9+hnLzGBuBXwzi//cp9uBt61/b7YzZa4BlaQvNjqc8\
+4yttRo3eHyH7Y2W0mAiPiSJELxTsFqEKBfFDHs68VNKEbZ/uL51farm9hQxuaFqw\
+0GiwwKlYmkuO9ioUOjG80AninMmG2HalutL3zPOn3e1N3ed95Wt3thoRSAfPRclI\
+CUnqV8RFY933ylSI6TkUxXT07/1kVKaHLvuOZ9T/TSGamvcP+DrpvErsRA6/9DmR\
+yQ+jUd99+uMBkvA4SScssRB2J5uqesaeCgrBjY7hzpqiQNfTBBQnQ1qJl3TcItNW\
+WwIDAQAB\
+-----END PUBLIC KEY-----\
+";
+      var encrypt = new JSEncrypt();  
+      encrypt.setPublicKey(pub_key);  
+      return encrypt.encrypt(str);  
+}
+
+/**
+ * 解密
+ * @param {string} str
+ */
+function decryptString(str){
+		var pri_key="-----BEGIN RSA PRIVATE KEY-----\
+MIIEogIBAAKCAQEA1VZfzb8V7amcvBSr4TyApSP0Ndj43d6MK1/rXPIoLZ9+hnLz\
+GBuBXwzi//cp9uBt61/b7YzZa4BlaQvNjqc84yttRo3eHyH7Y2W0mAiPiSJELxTs\
+FqEKBfFDHs68VNKEbZ/uL51farm9hQxuaFqw0GiwwKlYmkuO9ioUOjG80AninMmG\
+2HalutL3zPOn3e1N3ed95Wt3thoRSAfPRclICUnqV8RFY933ylSI6TkUxXT07/1k\
+VKaHLvuOZ9T/TSGamvcP+DrpvErsRA6/9DmRyQ+jUd99+uMBkvA4SScssRB2J5uq\
+esaeCgrBjY7hzpqiQNfTBBQnQ1qJl3TcItNWWwIDAQABAoIBADDLttIKmOtpVi42\
+1DGKcypSlPMUE6g71Pe+0sjJoqL8ziXWeP/Umryw5+MAF5seLkYeAOHOy5QpJAjo\
+6DVuzyBuuGng3SNl1GghxTLZEmudaNcUBAQRBYfibSXIx47nL98bK5G8fyycG1sp\
+Qr+frr2clIEcuuVfzu1DJqlA4xz6GqW0+ofxrrSBa4LnAZ9tKcNHrRxN2ANcfsZU\
+v+cY9BdTcF+D16sWxfdSVpC3WaJAePLEJay4NyYTmtpmCPAnJTW4d8ayenOQaemO\
+LKqeW5MVC53fSv85xzYFhdI8wfyB9oP6GikHSjNAZ0/mNJ3KAXanwvEAvMuBolyk\
+LVGWdHECgYEA+69tJNuFwrqsk+J00bQkYK/iTUnfpWCqvk74PBJuXZ9PtelyHX47\
+PtXCO/eX9/ALO8ItEio6SlJ2TMlhI6zwz423LLFRhoDjnMmDvMSTcFLyV9sbRMw1\
+BqCvy+JnincujBB8gNj/T5uDki73ssenTEMPWRnbQ9cTYUHDi/uqt+0CgYEA2P6m\
+dppCpTV/6cStAbRx+ph11H0qRDCJnzq3jPyfWB5dIEM2VSNQY2SHrhDZdtd+o/sk\
+PCeFezm4PEphFViqkhCIt5sIp64ef6OqXSyF883ikYldtMARo+uCp6HUKF6io8xP\
+LwsgF1zkqSF+V+l/UgSX6cNbqakrxECta4QZ7mcCgYBb2oQsxWklzlcZibY0qlf0\
+aXxf1KwogQUPe2ahFeDtjizbKR2aoe0hW4YNuKjftd2Dq7QjQwIPCdVe5Mfs6zrf\
+pMrLJtOoEPYAzJKlm+BrR/pmEfL7wsM/bfl6oWBEaoa0W3f01j0nYow8F6QSvUbT\
+UE4TqJobQi0ye3vQZMLDaQKBgGrH1S6j9ovJ6eolaGVgYH5KrCEmfrgTkoWSpWRx\
+pA/+0SDhMklvGU3v2Hyluf2rSZx0J36ajCr5WloA2AljGnzKOhzv47BwFH4HEfzL\
+vhcdh5LKoBwkMAoUCLVpAzfiafJkxcqGlQIqKjO4Ua39LzQzInZcNi0lHG50zWIN\
+HZ2dAoGAexALRmsEJilLIosLkGDWMMBOlB+q9qWPi+vuWEz7roeamBC1BkG++DEI\
+dsAozIooupPz5FDz0DwB1U23JExXjFNUAmJtruBg+fs3EjqMCs6trC2qbkOVPs9Z\
+HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
+-----END RSA PRIVATE KEY-----\
+";
+	  var encrypt = new JSEncrypt();  
+	  encrypt.setPrivateKey(pri_key);  
+	  return encrypt.decrypt(str);  
 }
