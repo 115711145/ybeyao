@@ -129,7 +129,7 @@
 				pullRefresh: {
 					container: '#content',
 					down: {
-						style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+						style:'circle',
 					    color:'#41cea9',
 					    height:'80px',
 						callback: refresh
@@ -137,22 +137,23 @@
 					up: {
 						auto:false,
 						height:80,
+						contentinit: honey.contentinit,
+	                    contentdown: honey.contentdown,
+	                    contentrefresh: honey.contentrefresh,
 						contentnomore:honey.contentnomore,
-						callback: ajaxGetData //上拉加载具体业务实现
+						callback: ajaxGetData 
 					}
 				}
 			});
 			var count=0;
-			mui.ready(function(){
-				honey.content=mui('#content')
-				honey.list=document.getElementById('list'),
-				honey.sort="default";
-				honey.desc="";
-				honey.d={
-					goTop:document.getElementById('goTop'),
-					list:document.getElementById('list')
-				}
-			})
+			honey.content=mui('#content')
+			honey.list=document.getElementById('list'),
+			honey.sort="default";
+			honey.desc="";
+			honey.d={
+				goTop:document.getElementById('goTop'),
+				list:document.getElementById('list')
+			}
 			mui.plusReady(function() {
 				if(!honey.goodsListHeader) {
 					honey.goodsListHeader = plus.webview.getWebviewById('goods-list-header');
