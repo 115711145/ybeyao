@@ -4,7 +4,10 @@ var honey={
 	page:1,
 	total:0,
 	pageSize:10,
-	contentnomore:'亲,已经到底啦！',
+	contentinit: '<font style="font-size:12px;color:#999">上拉显示更多</font>',
+    contentdown: '<font style="font-size:12px;color:#999">上拉显示更多</font>',
+    contentrefresh: '<font style="font-size:12px;color:#999">正在加载...</font>',
+	contentnomore:'<font style="font-size:12px;color:#999">亲,已经到底啦！</font>',
 	ajaxTimeout:60000,
 }
 

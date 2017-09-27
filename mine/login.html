@@ -38,11 +38,11 @@
 			</div>
 			<div class="mui-button-row regpwd">
 				<button id="register" type="button" class="mui-btn mui-btn-link">快速注册</button>
-				<button id="repsd" type="button" class="mui-btn mui-btn-link">忘记密码</button>
+				<button id="forgot" type="button" class="mui-btn mui-btn-link">忘记密码</button>
 			</div>
 			<div class="third">
 				<p class="line"><span class="fl"></span>第三方账号登录<span class="fr"></span></p>
-				<p class="icon" id="wxdl"><span class="mui-icon mui-icon-weixin"></span></p>
+				<p class="icon"><span class="mui-icon mui-icon-weixin" id="wxdl"></span></p>
 				
 			</div>
 		</div>
@@ -56,7 +56,14 @@
 			});
 			honey.d={
 				pwd:document.getElementById('pwd'),
-				mobile:document.getElementById('mobile')
+				mobile:document.getElementById('mobile'),
+				wxdl:document.getElementById('wxdl'),
+				register:document.getElementById('register'),
+				forgot:document.getElementById('forgot')
+			};
+			honey.is_wxlogin=false;
+			honey.user={
+				oauth:'weixin'
 			};
 			honey.bindEvent=function(){
 				/**
@@ -88,9 +95,10 @@
 							type:'post',
 							dataType:'json',
 							success:function(ret){
+								honey.logining=false;
+								that.setAttribute('style','')
 								if(ret.code==0){
 									mui.toast('登录成功',{duration:1000})
-									that.setAttribute('style','')
 									localStorage.setItem('token',ret.data.token);
 									mui.fire(honey.indexWin, 'login')
 									//触发登录事件
@@ -100,7 +108,6 @@
 								}else{
 									mui.toast(ret.msg||'登录失败')
 								}
-								honey.logining=false;
 							},
 							error:function(ret){
 //								alert(JSON.stringify(ret))
@@ -113,22 +120,24 @@
 				/**
 				 * 注册按钮事件
 				 */
-				document.getElementById('register').addEventListener('tap',function(){
+				honey.d.register.addEventListener('tap',function(){
 					openWin('register.html','register')
 				})
 				
 				/**
 				 * 忘记密码事件
 				 */
-				document.getElementById('repsd').addEventListener('tap',function(){
+				honey.d.forgot.addEventListener('tap',function(){
 					openWin('forgot.html','forgot')
 				})
 				
 				/**
 				 * 微信登录事件
 				 */
-				document.getElementById('wxdl').addEventListener('tap',function(){
-					alert('微信登录')
+				honey.d.wxdl.addEventListener('tap',function(){
+					if(!honey.is_wxlogin){
+						honey.wxlogin()
+					}
 				})
 			}
 			mui.plusReady(function(){
@@ -141,7 +150,82 @@
 				if(!honey.indexWin){
 					honey.indexWin= plus.webview.getLaunchWebview(); 
 				}
+				if(!honey.service){
+					plus.oauth.getServices(function(services){
+						for(var i in services){
+							var service=services[i];
+							if(service.id=='weixin'){
+								honey.service=service;
+								break;
+							}
+						}
+					},honey.logErr);
+				}
 			})
+			
+			// 微信登录认证
+			honey.wxlogin=function (){
+				honey.d.wxdl.setAttribute('style','background: #ccc;border: 1px solid #ccc;')
+				if(honey.service){
+//					var w=null;
+//					if(plus.os.name=="Android"){
+//						w=plus.nativeUI.showWaiting();
+//					}
+//					document.addEventListener("pause",function(){
+//						setTimeout(function(){
+//							w&&w.close();w=null;
+//						},2000);
+//					}, false );
+					honey.service.login(function(){
+						honey.service.getUserInfo(honey.login,honey.logErr);
+					},honey.logErr);
+				}
+			}
+			honey.logErr=function(e){
+				honey.d.wxdl.setAttribute('style','')
+				mui.toast('登录失败:'+e.message)
+			}
+			// 获取用户信息
+			honey.login=function(){
+				mui.ajax(apiurl,{
+					data:{
+						m:'login',
+						type:2,
+						openid:honey.service.userInfo.unionid,
+						head_pic:honey.service.userInfo.headimgurl,
+						sex:honey.service.userInfo.sex,
+						unionid:honey.service.userInfo.unionid,
+						nickname:honey.service.userInfo.nickname,
+						system:honey.systemInfo.name,
+						system_model:honey.deviceInfo.model,
+						system_version:honey.systemInfo.version,
+						resolution:honey.deviceInfo.screen,
+						imei:honey.deviceInfo.imei,
+						app_version:plus.runtime.version
+					},
+					type:'post',
+					dataType:'json',
+					success:function(ret){
+						honey.logining=false;
+						honey.d.wxdl.setAttribute('style','')
+						if(ret.code==0){
+							mui.toast('登录成功',{duration:1000})
+							localStorage.setItem('token',ret.data.token);
+							mui.fire(honey.indexWin, 'login')
+							//触发登录事件
+							//关闭注册和登录窗口
+							closeWin('login',1000)
+							closeWin('register')
+						}else{
+							mui.toast(ret.msg||'登录失败')
+						}
+					},
+					error:function(ret){
+						alert(JSON.stringify(ret))
+						mui.toast('登录失败')
+					}
+				})
+			}
 			
 		</script>
 	</body>

@@ -54,6 +54,7 @@
 		mui.init({
 			swipeBack: true
 		});
+		
 		honey.codeTime=0;
 		honey.autoTimeout=function(start){
 			if(start){
@@ -69,7 +70,6 @@
 				honey.d.getCode.setAttribute('style','')
 			}
 		}
-		
 		mui.plusReady(function(){
 			honey.d={
 				account: document.getElementById('account'),
@@ -81,9 +81,8 @@
 				codeTime:document.getElementById('code-time'),
 				back:document.getElementById('back')
 			}
-			//获取设备信息和系统信息
-			getSysInfo()
-			getDeviceInfo()
+			
+		
 			/**
 			 * 监听手机号码输入
 			 */
@@ -133,6 +132,7 @@
 				this.value=v;
 			})
 			
+			
 			/**
 			 * 获取验证码
 			 */
@@ -148,6 +148,7 @@
 						dataType:'json',
 						timeout:honey.ajaxTimeout,
 						success:function(ret){ 
+							alert(JSON.stringify(ret))
 							if(ret.code==0){
 								honey.autoTimeout(1)
 								mui.toast('短信发送成功')
@@ -159,6 +160,7 @@
 							}
 						},
 						error:function(ret){
+							alert(JSON.stringify(ret))
 							mui.toast('短信发送失败')
 						}
 					})
@@ -166,7 +168,7 @@
 			})
 			
 			/**
-			 * 注册按钮事件
+			 * 重置密码按钮事件
 			 */
 			honey.d.submitBtn.addEventListener('tap',function(){
 				if (!isPhone(honey.d.account.value)){
@@ -188,39 +190,32 @@
 				}
 				mui.ajax(apiurl,{
 					data:{
-						m:'register',
+						m:'reset_password',
 						mobile:honey.d.account.value,
 						password:encryptString(honey.d.pwd.value),
 						code:honey.d.code.value,
-						system:honey.systemInfo.name,
-						system_model:honey.deviceInfo.model,
-						system_version:honey.systemInfo.version,
-						resolution:honey.deviceInfo.screen,
-						imei:honey.deviceInfo.imei,
-						app_version:plus.runtime.version
 					},
 					type:'post',
 					dataType:'json',
 					success:function(ret){
 						if(ret.code==0){
-							mui.toast('注册成功')
-							localStorage.setItem('token',ret.data.token)
+							mui.toast('密码重置成功',{duration:1000})
 							//触发登录事件
 							//关闭注册和登录窗口
-							closeWin('login')
-							closeWin('register',1000)
+							closeWin('forgot',1000)
 						}else{
-							mui.toast(ret.msg||'注册失败')
+							mui.toast(ret.msg||'重置失败')
 						}
 					},
 					error:function(ret){
 						alert(JSON.stringify(ret))
-						mui.toast('注册失败')
+						mui.toast('失败')
 					}
 				})
 				return 
 			},false);
-		});
+			
+		})
 		
 	</script>
 	
