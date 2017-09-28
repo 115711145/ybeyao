@@ -78,3 +78,7 @@
 	.mui-content {
 		background-color: #F8F8F8;
 	}
+	
+	input{  
+	    -webkit-user-select: auto;  
+	} 

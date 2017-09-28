@@ -102,7 +102,8 @@
 				self = document.body;
 			}
 			var id = self.getAttribute('data-imageLazyload');
-			if (!id) {
+			var src = self.getAttribute('src');
+			if (!id || !src) {
 				id = ++$.uuid;
 				$.data[id] = lazyloadApi = new ImageLazyload(self, options);
 				self.setAttribute('data-imageLazyload', id);

@@ -42,7 +42,7 @@
 <body class="own-gray-color">
 	<header class="mui-bar mui-bar-nav own-main-background-color">
 		<div class="mui-input-row mui-search" id="search">
-			<input type="search" readonly="readonly" id="search-input" class="mui-input-speech mui-input-clear" placeholder="友邦大药房">
+			<input type="search" readonly="readonly" disabled="disabled" id="search-input" class="mui-input-clear" placeholder="友邦大药房">
 		</div>
 		<h1 id="nav-title" class="mui-title"></h1>
 	</header>
@@ -69,7 +69,6 @@
 	<script type="text/javascript" charset="UTF-8">
 		mui.init()
 		var honey={
-//			token:localStorage.getItem('token'),
 			barItem:['home','category','cart','mine'],
 			barWebViews:[],
 			contentStyle:{top:'45px',bottom:'51px',scrollIndicator:'none'},
@@ -89,7 +88,7 @@
 				honey.bindBaritem()
 				
 				//搜索框事件
-				mui('#search').on('tap','input',function(){
+				mui('header').on('click','#search',function(){
 					alert('aa')
 				})
 			},
@@ -153,21 +152,24 @@
 			}
 		};
 		mui.plusReady(function(){
+			honey.token=getStorage('token')
 			document.getElementById('footerBar').style.top = (plus.display.resolutionHeight - 51) + "px";
 			honey.initWebViews()
 			honey.preloadDetailView()
+			
+			window.addEventListener('goHome',function(){
+				if(!honey.home){
+					honey.home=plus.webview.currentWebview();
+				}
+				honey.home.show();
+				honey.barWebViews.home.show()
+			})
+			
+			window.addEventListener('login',function(o){
+				honey.token=getStorage('token')
+			})
 		})
-		window.addEventListener('goHome',function(){
-			if(!honey.home){
-				honey.home=plus.webview.currentWebview();
-			}
-			honey.home.show();
-			honey.barWebViews.home.show()
-		})
-		
-		window.addEventListener('login',function(o){
-			honey.token=localStorage.getItem('token')
-		})
+
 	</script>
 </body>
 </html>

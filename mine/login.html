@@ -17,7 +17,7 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title" id="header-title">登录</h1>
 		</header>
-		<div class="mui-content">
+		<div class="mui-content" onresize="document.activeElement.scrollIntoView(true);">
 			<div class="logo">
 				<span ><img src="../images/logo.png"/></span>
 			</div>
@@ -25,7 +25,7 @@
 				<form class="mui-input-group">
 					<div class="mui-input-row">
 						<label><img src="../images/zhanghao.png"/></label>
-						<input type="text" id="mobile" class="mui-input-clear" value="" placeholder="手机号" />
+						<input type="number" id="mobile" class="mui-input-clear" value="" placeholder="手机号" />
 					</div>
 					<div class="mui-input-row">
 						<label><img src="../images/pwd.png"/></label>
@@ -99,7 +99,7 @@
 								that.setAttribute('style','')
 								if(ret.code==0){
 									mui.toast('登录成功',{duration:1000})
-									localStorage.setItem('token',ret.data.token);
+									setStorage('token',ret.data.token);
 									mui.fire(honey.indexWin, 'login')
 									//触发登录事件
 									//关闭注册和登录窗口
@@ -210,7 +210,7 @@
 						honey.d.wxdl.setAttribute('style','')
 						if(ret.code==0){
 							mui.toast('登录成功',{duration:1000})
-							localStorage.setItem('token',ret.data.token);
+							setStorage('token',ret.data.token);
 							mui.fire(honey.indexWin, 'login')
 							//触发登录事件
 							//关闭注册和登录窗口
