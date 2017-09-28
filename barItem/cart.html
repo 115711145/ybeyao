@@ -11,11 +11,21 @@
 	</head>
 	<style>
 		.goods-list{
-			border: 1px solid red;
-			margin: 3px 5px;
+			background: #fff;
+			margin: 1px 0 5px 0;
+			/*padding: 3px 5px;*/
+			border: 1px solid #fff;
 		}
 		.goods-title{
-			/*padding-left: 10px;*/
+			padding: 10px 0;
+			/*border-bottom: 1px solid #ddd;*/
+			border-top: 1px solid #ddd;
+		}
+		.goods-spec{
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid #ddd;
+			margin: 2px 0;
+			padding:5px 10px 5px 25px;
 		}
 		.checked-icon{
 			color: #41CEA9;
@@ -25,8 +35,13 @@
 	<body>
 		<dl class="goods-list">
 			<dt class="goods-title"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>标题jkjkljk</dt>
-			<dd><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
-			<dd><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
+			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
+			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
+		</dl>
+		<dl class="goods-list">
+			<dt class="goods-title"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>标题jkjkljk</dt>
+			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
+			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
 		</dl>
 	</body>
 
