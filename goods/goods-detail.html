@@ -68,7 +68,7 @@
 				<div class="preferential">
 					<div class="service" id="attr-express">
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>配送到家</p>
-						<p><span class="mui-icon mui-icon-checkmarkempty"></span>药店自提</p>
+						<p><span class="mui-icon mui-icon-checkmarkempty"></span>药店自取</p>
 						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 					</div>
 					<div class="service">
@@ -146,12 +146,12 @@
 			<p id="no-content-text">很抱歉,此商品已下架或不存在!</p>
 		</div>
 		<nav class="mui-bar mui-bar-tab footer-bar">
-			<a>
+			<a id="consult">
 				<span class="mui-icon mui-icon-chat"></span>
 				<span class="mui-tab-label">咨询</span>
 			</a>
-			<a>
-				<span class="mui-icon mui-icon-star"></span>
+			<a id="collect">
+				<span class="mui-icon mui-icon-star" id="collect-icon"></span>
 				<span class="mui-tab-label">收藏</span>
 			</a>
 			<a class="add-cart">
@@ -199,6 +199,9 @@
 					noContent:document.getElementById('no-content'),
 					noContentTxt:document.getElementById('no-content-text'),
 					detailcontent:document.getElementById('detailcontent'),
+					collect:document.getElementById('collect'),
+					consult:document.getElementById('consult'),
+					collectIcon:document.getElementById('collect-icon')
 				},
 				goods:{},
 				scrollMenu:true,
@@ -207,7 +210,7 @@
 						data:{m:'goods_info',goods_id:honey.goods.goods_id},
 						type:'post',
 						dataType:'json',
-						timeout:2000,
+						timeout:60000,
 						success:function(ret){ 
 							if(ret.code==0){
 								//初始化显示
@@ -217,6 +220,8 @@
 								var data=ret.data;
 								//标题
 								honey.d.title.innerText=data.base.goods_name;
+								//收藏
+								data.collect==1&&honey.collectCallBack(1)
 								//商品图片
 								var img=[{src:apihost+data.base.original_img}];
 								mui.each(data.images, function(i,v) {
@@ -298,6 +303,7 @@
 							}
 						},
 						error:function(ret){
+							alert(JSON.stringify(ret))
 							honey.getDataFailed(1)
 						} 
 					})
@@ -308,9 +314,13 @@
 					honey.imageSliderView.hide()
 					honey.d.header.setAttribute('style','display: none;')
 					honey.d.detailcontent.setAttribute('style','display: none;')
+				},
+				collectCallBack:function(is_true){
+					honey.d.collectIcon.setAttribute('class',is_true?'mui-icon mui-icon-star-filled has-collect':'mui-icon mui-icon-star')
 				}
 			};
 			mui.plusReady(function(){
+				honey.token=getStorage('token')
 				/**
 				 * 分享事件
 				 */
@@ -325,6 +335,33 @@
 					if(honey.commentMore){
 						alert('more')
 					}
+				})
+				
+				honey.d.collect.addEventListener('tap',function(e){
+					if(!honey.token){
+						honey.token=getStorage('token')
+						if(!honey.token){
+							openWin('../mine/login.html','login')
+							e.stopPropagation();
+						}
+						return
+					}
+					mui.ajax(apiurl,{
+						data:{m:'collect_goods',goods_id:honey.goods.goods_id,token:honey.token},
+						type:'post',
+						dataType:'json',
+						timeout:60000,
+						success:function(ret){
+							mui.toast(ret.msg)
+							if(ret.code==0){
+								honey.collectCallBack(ret.type==1)
+							}
+						},
+						error:function(ret){
+//							alert(JSON.stringify(ret))
+//							mui.toast('失败')
+						}
+					})
 				})
 				
 				/**
@@ -389,67 +426,82 @@
 						}
 					}
 				})
-			})
-			
-			/**
-			 * 显示商品事件
-			 */
-			window.addEventListener('showGoods',function(o){
-				honey.goods.goods_id=o.detail.goods_id;
-				if(!honey.goodsDetail){
-					honey.goodsDetail=plus.webview.currentWebview();
-				}
-				if(!honey.imageSliderView){
-					var data={
-						top:'0px',
-						left:'0px',
-						height:'220px',
-						width:'100%',
-						position:'static',
-						images:[{src:'../images/default.png'}]
-					};
-					honey.imageSliderView = new plus.nativeObj.ImageSlider('test',data);
-					honey.goodsDetail.append(honey.imageSliderView);
-				}else{
-					honey.imageSliderView.setImages([{src:'../images/default.png'}]);
-				}
-				mySrcollTo()
-				honey.d.evaluateList.innerHTML='';
-				honey.d.content.innerHTML='';
-				honey.d.buyNum.value=1;
-				honey.ajaxGetData()
-				honey.goodsDetail.show()
-			})
-			
-			/**
-			 * 滚动事件
-			 */
-			document.addEventListener('scroll',function(){
-				if(honey.scrollMenu){
-					honey.scrollMenu=false;
-					var h1=window.innerHeight;
-					var h=document.body.scrollTop+220;
-					var s1=honey.d.goodsContent.offsetTop;
-					var s2=honey.d.evaluate.offsetTop;
-					var i=0;
-					if(h>=s2){
-						i=2;
-					}else if(h>=s1){
-						i=1;
+				
+				honey.d.attrExpress.addEventListener('tap',function(){
+					plus.webview.currentWebview().setStyle({
+						mask: "rgba(0,0,0,0.5)"
+					});
+					if(!honey.servicePage){
+						honey.servicePage=plus.webview.getWebviewById('service');
 					}
-					honey.d.topMenu.className='';
-					honey.d.topMenu=honey.d.topSpan[i];
-					honey.d.topMenu.className="active";
-					if((h+220)>h1){
-						honey.d.header.setAttribute('style','')
+					honey.servicePage.show('slide-in-bottom',300)
+				})
+				
+				/**
+				 * 显示商品事件
+				 */
+				window.addEventListener('showGoods',function(o){
+					honey.goods.goods_id=o.detail.goods_id;
+					if(!honey.goodsDetail){
+						honey.goodsDetail=plus.webview.currentWebview();
+					}
+					honey.goodsDetail.setStyle({
+						mask: "none"
+					})
+					if(!honey.imageSliderView){
+						var data={
+							top:'0px',
+							left:'0px',
+							height:'220px',
+							width:'100%',
+							position:'static',
+							images:[{src:'../images/default.png'}]
+						};
+						honey.imageSliderView = new plus.nativeObj.ImageSlider('test',data);
+						honey.goodsDetail.append(honey.imageSliderView);
 					}else{
-						honey.d.header.setAttribute('style','display:none')
+						honey.imageSliderView.setImages([{src:'../images/default.png'}]);
 					}
-					setTimeout(function(){
-						honey.scrollMenu=true;
-					},200)
-				}
+					mySrcollTo()
+					honey.d.evaluateList.innerHTML='';
+					honey.d.content.innerHTML='';
+					honey.d.buyNum.value=1;
+					honey.collectCallBack()
+					honey.ajaxGetData()
+					honey.goodsDetail.show()
+				})
+				
+				/**
+				 * 滚动事件
+				 */
+				document.addEventListener('scroll',function(){
+					if(honey.scrollMenu){
+						honey.scrollMenu=false;
+						var h1=window.innerHeight;
+						var h=document.body.scrollTop+220;
+						var s1=honey.d.goodsContent.offsetTop;
+						var s2=honey.d.evaluate.offsetTop;
+						var i=0;
+						if(h>=s2){
+							i=2;
+						}else if(h>=s1){
+							i=1;
+						}
+						honey.d.topMenu.className='';
+						honey.d.topMenu=honey.d.topSpan[i];
+						honey.d.topMenu.className="active";
+						if((h+220)>h1){
+							honey.d.header.setAttribute('style','')
+						}else{
+							honey.d.header.setAttribute('style','display:none')
+						}
+						setTimeout(function(){
+							honey.scrollMenu=true;
+						},200)
+					}
+				})
 			})
+			
 			
 		</script>
 	</body>

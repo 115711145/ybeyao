@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css"  />
+		<style type="text/css">
+			body{
+				color: #333;
+			}
+			.con-padding{
+				margin-top: 10px;
+				padding-bottom: 51px;
+			}
+			.btn{
+				height: 35px;
+				text-align: center;
+				font-size: 16px;
+				line-height: 35px;
+				color: #fff;
+				background: #41CEA9;
+			}
+			h4{
+				text-align: center;
+				color: #41CEA9;
+				font-size: 16px;
+			}
+			.footer-bar{
+				height: 35px;
+			}
+			.service{
+				padding: 2px 10px ;
+			}
+			.service p{
+				margin: 0;
+			}
+			.service-title{
+				color: #000 !important;
+			}
+			.service-title img{
+				width: 25px;
+				color: #ff6633;
+				position: absolute;
+			}
+			.service-title span{
+				margin-left: 28px;	
+				line-height: 28px;
+				color: black;
+			}
+			.service-content{
+				color: #666;
+				padding: 2px 0 2px 28px;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mui-content con-padding">
+			<h4>服务说明</h4>
+			<div class="service">
+				<p class="service-title"><img src="../images/service-ps.png"/> <span>配送到家</span></p>
+				<p class="service-content">配送范围：友邦大药房所在的县市区</p>
+			</div>
+			<div class="service">
+				<p class="service-title"><img src="../images/service-zq.png"/> <span>药店自取</span></p>
+				<p class="service-content">自取门店：各县市区友邦大药房门店</p>
+			</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab footer-bar">
+			<div class="btn">完成</div>
+		</nav>
+		<script type="text/javascript" src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: false,
+			});
+			var honey={};
+			mui.plusReady(function(){
+				if(!honey.servicePage){
+					honey.servicePage=plus.webview.currentWebview()
+				}
+				if(!honey.goodsDetail){
+					honey.goodsDetail=plus.webview.getWebviewById('goods-detail')
+				}
+				mui('.footer-bar').on('tap','.btn',function(){
+					honey.servicePage.hide('slide-out-bottom',300)
+					honey.goodsDetail.setStyle({
+						mask: "none"
+					});
+				})
+				honey.servicePage.addEventListener('hide',function(){
+					honey.goodsDetail.setStyle({
+						mask: "none"
+					});
+				})
+			})
+		</script>
+	</body>
+</html>

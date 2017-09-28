@@ -247,7 +247,11 @@ p {
 }
 
 .evaluate .evaluate-list .evaluate-list-item p {
+	color: #333 !important;
 	padding: 2px 0;
+}
+.evaluate .evaluate-list .evaluate-list-item p.comment-content {
+	color:#333
 }
 
 .evaluate .evaluate-list .evaluate-list-item .user-name img {
@@ -488,3 +492,8 @@ p {
 	text-align: left;
 	display: inline-block;
 }
+.has-collect:before{
+	color: #ff6633;
+}
+
+

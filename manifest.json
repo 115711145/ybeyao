@@ -229,7 +229,8 @@
 					"public/footer.html",
 					"goods/goods-list.html",
 					"goods/goods-list-header.html",
-					"mine/login.html"
+					"mine/login.html",
+					"goods/service.html"
 				],
 				"priority": 0
 			},
@@ -347,7 +348,9 @@
 					"images/kuqi.png",
 					null
 				],
-				"refer": [],
+				"refer": [
+					"mine/login.html"
+				],
 				"priority": 0
 			},
 			"goods/goods-quan.html": {
@@ -548,6 +551,26 @@
 					"css/iconfont.css",
 					"css/mui.min.css",
 					"css/register.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"goods/mask-header.html": {
+				"resources": [
+					"goods/service.html",
+					"js/mui.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"goods/service.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"images/service-psdj.png",
+					"images/service-ps.png",
+					"images/service-zq.png"
 				],
 				"refer": [],
 				"priority": 0

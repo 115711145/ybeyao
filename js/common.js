@@ -1,4 +1,6 @@
-var apiurl="http://192.168.11.226/api/app/data";
+//var apiurl="http://ybuser.ybyiyao.com/api/app/data/";
+//var apihost="http://ybuser.ybyiyao.com";
+var apiurl="http://192.168.11.226/api/app/data/";
 var apihost="http://192.168.11.226";
 var honey={
 	page:1,
@@ -54,13 +56,13 @@ function preloadGoodsDetail(extras){
 //		styles:{
 //			top:0,
 //			scrollIndicator:'none',
-//			opacity:0.6
-//		}
+//			opacity:0.8
+//		},
 //	})
 //	
 //	honey.maskHeader.hide();
 //	
-//	//优惠券内容页面
+	//优惠券内容页面
 //	honey.detailQuan=mui.preload({
 //		id:'goods-quan',
 //		url:'goods/goods-quan.html',
@@ -72,32 +74,36 @@ function preloadGoodsDetail(extras){
 //		},
 //	})
 //	honey.detailQuan.hide()
-//	//产品参数页面
-//	honey.detailParam=mui.preload({
-//		id:'goods-param',
-//		url:'goods/goods-param.html',
-//		styles:{
-//			top:'220px',
-//			bottom:0,
-//			scrollIndicator:'none',
-//			bounceBackground:'#f8f8f8',
-//		},
-//	})
-//	honey.detailParam.hide()
-//	
-//	honey.detailParam.addEventListener('hide',function(){
+	//服务说明
+	honey.servicePage=mui.preload({
+		id:'service',
+		url:'goods/service.html',
+		styles:{
+			top:'180px',
+			bottom:0,
+			scrollIndicator:'none',
+			bounceBackground:'#f8f8f8',
+		},
+	})
+//	honey.servicePage.hide()
+//	honey.maskHeader.append(honey.servicePage)
+	
+//	honey.maskHeader.addEventListener('hide',function(){
 //		honey.maskHeader.hide()
+//	});
+//	
+//	honey.maskHeader.addEventListener('show',function(){
+//		honey.servicePage.show();
 //	})
+	
 //	
 //	honey.detailQuan.addEventListener('hide',function(){
 //		honey.maskHeader.hide()
 //	});
 	//父页面隐藏的时候子页面也隐藏
 	honey.detailHeader.addEventListener('hide',function(){
-		honey.detailSubpage.hide();
-//		honey.maskHeader.hide()
-//		honey.detailQuan.hide()
-//		honey.detailParam.hide()
+		honey.servicePage.hide()
+		honey.detailSubpage.hide('slide-out-right');
 	});
 	
 	honey.detailHeader.addEventListener('show',function(){
@@ -128,14 +134,14 @@ function showGoodsList(data,id,append,ad){
 		var li=document.createElement('li');
 		li.className="mui-table-view-cell mui-media mui-col-xs-6 goods-list";
 		li.innerHTML='<div class="goods-list-item"><a href="#" number="' + i + '" goods_id="'+v.goods_id
-		+'"><img class="mui-media-object goods-lphoneogo" src="../images/default.png" data-lazyload="' + apihost
+		+'"><img class="mui-media-object goods-lphoneogo" data-lazyload="' + apihost
 		+ v.sub_image + '_150_150.jpg"/><div class="mui-media-body goods-info"><p class="goods-title">'
 		+v.goods_name +'</p><p><span class="goods-price-one">￥'+v.shop_price+'</span><p>'
 		+(v.market_price?'<p><span class="goods-price-one">￥'+v.market_parice+'</span><p>':'')+'</div></a></div>';
         obj.appendChild(li);
 	})
 	mui('#'+id).imageLazyload({
-		placeholder: '../images/default.gif'
+		placeholder: '../images/default.png'
 	});
 }
 
@@ -150,7 +156,7 @@ function showCommentList(list,id){
 		var li=document.createElement('li');
 		li.className="evaluate-list-item";
 		var str=[];
-		str.push('<p><span class="user-name"><img src="../images/profile.png" data-lazyload="'+v.head_pic+'"/><font>'
+		str.push('<p><span class="user-name"><img data-lazyload="'+v.head_pic+'"/><font>'
 		+(v.is_anonymous?"匿名用户":v.nickname)+'</font></span>'
 		+getCommentStar(((v.deliver_rank+v.goods_rank+v.service_rank)/3).toFixed(2))
 		+'<span class="user-time">'+getYmdTime(v.add_time)+'</span></p><p class="comment-content">'+v.content+'</p>')
@@ -164,11 +170,10 @@ function showCommentList(list,id){
 		li.innerHTML=str.join('');
 		document.getElementById(id).appendChild(li)
 	});
-	document.body.removeAttribute('data-imagelazyload');
+//	document.body.removeAttribute('data-imagelazyload');
 	obj.imageLazyload({
-		placeholder: '../images/default.png'
+		placeholder: '../images/profile.png'
 	});
-	
 	mui('.user-photo').off('tap','img').on('tap','img',function(){
 		mui.previewImage()
 	})
@@ -205,7 +210,7 @@ function preloadGoodsListWin(){
 		id:'goods-list',
 		url:'goods/goods-list.html',
 			styles:{
-			top:'74px',
+			top:'79px',
 			bottom:0
 		},
 	})
@@ -437,4 +442,21 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 	  var encrypt = new JSEncrypt();  
 	  encrypt.setPrivateKey(pri_key);  
 	  return encrypt.decrypt(str);  
+}
+
+/**
+ * 获取数据
+ * @param {string} item
+ */
+function getStorage(item){
+	return plus.storage.getItem(item);
+}
+
+/**
+ * 存储数据
+ * @param {string} item
+ * @param {Object} value
+ */
+function setStorage(item,value){
+	return plus.storage.setItem(item,value);
 }
