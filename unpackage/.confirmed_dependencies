@@ -341,5 +341,12 @@
 			"images/service-ps.png",
 			"images/service-zq.png"
 		]
+	},
+	"barItem/cart.html": {
+		"resources": [
+			"css/own.css",
+			"css/mui.min.css",
+			"fonts/mui.ttf"
+		]
 	}
 }

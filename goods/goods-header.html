@@ -60,7 +60,7 @@
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
 			<h1 class="mui-title" id="header-title">商品详情</h1>
 			<a id="rightBar" class="mui-icon-extra mui-icon-extra-cart mui-pull-right"></a>
 		</header>
@@ -78,21 +78,23 @@
 			});
 			var honey={
 				title:document.getElementById('header-title'),
-				rightBar:document.getElementById('rightBar')
+				rightBar:document.getElementById('rightBar'),
+				back:document.getElementById('back')
 			};
 			mui.plusReady(function(){
 				if(!honey.detailSubpage){
 					honey.detailSubpage=plus.webview.getWebviewById('goods-detail');
 				}
+				if(!honey.goodsHeader){
+					honey.goodsHeader=plus.webview.currentWebview()
+				}
 				//预加载子页面
 				mui('header').on('tap','.mui-pull-left',function(){
+					mui.fire(honey.detailSubpage,'closeDetail')
 					mui.back()
 				})
 				honey.rightBar.addEventListener('tap',function(){
-					if(!honey.goodsHeader){
-						honey.goodsHeader=plus.webview.currentWebview()
-					}
-					mui.back()
+					
 				})
 				window.addEventListener('goodsId',function(o){
 //					honey.title.innerHTML=o.detail.title;
