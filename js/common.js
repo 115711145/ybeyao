@@ -243,7 +243,6 @@ function openWin(url,winId,data,styles){
 	setTimeout(function(){
 		newWindow.show('slide-in-right');
 	},10)
-	
 //	mui.openWindow({
 //	    url:url,
 //	    id:winId,
