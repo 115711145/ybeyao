@@ -574,6 +574,15 @@
 				],
 				"refer": [],
 				"priority": 0
+			},
+			"barItem/cart.html": {
+				"resources": [
+					"css/own.css",
+					"css/mui.min.css",
+					"fonts/mui.ttf"
+				],
+				"refer": [],
+				"priority": 0
 			}
 		},
 		"idle": {

@@ -321,6 +321,10 @@
 			};
 			mui.plusReady(function(){
 				honey.token=getStorage('token')
+				if(!honey.detailSubpage){
+					honey.detailSubpage=plus.webview.currentWebview();
+				}
+				
 				/**
 				 * 分享事件
 				 */
@@ -337,6 +341,10 @@
 					}
 				})
 				
+				
+				/**
+				 * 收藏商品
+				 */
 				honey.d.collect.addEventListener('tap',function(e){
 					if(!honey.token){
 						honey.token=getStorage('token')
@@ -435,6 +443,12 @@
 						honey.servicePage=plus.webview.getWebviewById('service');
 					}
 					honey.servicePage.show('slide-in-bottom',300)
+				})
+				/**
+				 * 监听关闭商品详情事件
+				 */
+				window.addEventListener('closeDetail',function(){
+					mui.previewImage().close();
 				})
 				
 				/**

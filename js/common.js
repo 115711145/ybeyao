@@ -1,7 +1,7 @@
-//var apiurl="http://ybuser.ybyiyao.com/api/app/data/";
-//var apihost="http://ybuser.ybyiyao.com";
-var apiurl="http://192.168.11.226/api/app/data/";
-var apihost="http://192.168.11.226";
+var apiurl="http://ybuser.ybyiyao.com/api/app/data/";
+var apihost="http://ybuser.ybyiyao.com";
+//var apiurl="http://192.168.11.226/api/app/data/";
+//var apihost="http://192.168.11.226";
 var honey={
 	page:1,
 	total:0,
