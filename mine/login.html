@@ -150,6 +150,9 @@
 				if(!honey.indexWin){
 					honey.indexWin= plus.webview.getLaunchWebview(); 
 				}
+				if(!honey.mineWin){
+					honey.mineWin= plus.webview.getWebviewById('mine'); 
+				}
 				if(!honey.service){
 					plus.oauth.getServices(function(services){
 						for(var i in services){
@@ -209,9 +212,11 @@
 						honey.logining=false;
 						honey.d.wxdl.setAttribute('style','')
 						if(ret.code==0){
-							mui.toast('登录成功',{duration:1000})
+							mui.toast(honey.service.userInfo.nickname+'登录成功',{duration:1000})
+							setStorage('nickname',honey.service.userInfo.nickname)
 							setStorage('token',ret.data.token);
 							mui.fire(honey.indexWin, 'login')
+							mui.fire(honey.mineWin, 'login')
 							//触发登录事件
 							//关闭注册和登录窗口
 							closeWin('login',1000)

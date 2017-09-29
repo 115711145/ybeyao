@@ -150,9 +150,10 @@ function showGoodsList(data,id,append,ad){
  * @param {Object} list 数组对象
  * @param {String} id  选择器
  */
-function showCommentList(list,id){
+function showCommentList(list,id,showReply){
 	var obj=mui('#'+id);
 	mui.each(list, function(i,v) {
+		honey.lastId=v.comment_id;
 		var li=document.createElement('li');
 		li.className="evaluate-list-item";
 		var str=[];
@@ -167,12 +168,25 @@ function showCommentList(list,id){
 			}
 			str.push('</div></p>')
 		}
+		if(showReply){
+			if(v.replyList){
+				for(var j=0;j<v.replyList.length;j++){
+					var reply=v.replyList[j];
+					str.push('<p class="reply"><span>'+reply.username+'回复：</span><span>'+reply.content+'</span></p>');
+				}
+			}
+		}
+		str.push('<p class="zan"><span class="zan_num" comment_id="'+v.comment_id+'"><img src="../images/zan.png"/> '+v.zan_num+'</span></p>')
 		li.innerHTML=str.join('');
 		document.getElementById(id).appendChild(li)
 	});
 //	document.body.removeAttribute('data-imagelazyload');
-	obj.imageLazyload({
+	
+	mui('.user-name').imageLazyload({
 		placeholder: '../images/profile.png'
+	});
+	mui('.user-photo').imageLazyload({
+		placeholder: '../images/default.png'
 	});
 	mui('.user-photo').off('tap','img').on('tap','img',function(){
 		mui.previewImage()
@@ -283,7 +297,7 @@ function closeWin(id,timeOut){
  * @param boolean isGoodsDetail 是否为商品详情页
  */
 function mySrcollTo(id,time,isGoodsDetail){
-	var y=(id?document.getElementById(id).offsetTop:0)+(isGoodsDetail?190:0);
+	var y=(id?document.getElementById(id).offsetTop-38:0)+(isGoodsDetail?190:0);
 	mui.scrollTo(y,(time?time:10));
 }
 
