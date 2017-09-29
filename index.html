@@ -152,7 +152,8 @@
 			}
 		};
 		mui.plusReady(function(){
-			honey.token=getStorage('token')
+			setStorage('token',null)
+//			honey.token=getStorage('token')
 			document.getElementById('footerBar').style.top = (plus.display.resolutionHeight - 51) + "px";
 			honey.initWebViews()
 			honey.preloadDetailView()

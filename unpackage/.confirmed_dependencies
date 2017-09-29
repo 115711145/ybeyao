@@ -138,7 +138,10 @@
 			"images/default.png",
 			"images/bg_buynow.png",
 			"images/bg_addcart.png",
-			"images/kuqi.png"
+			"images/kuqi.png",
+			"images/pl.png",
+			"images/zan.png",
+			"images/ai.png"
 		],
 		"refer": [
 			"goods/goods-detail-bottom.html",

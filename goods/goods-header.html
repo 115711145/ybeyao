@@ -91,7 +91,7 @@
 				//预加载子页面
 				mui('header').on('tap','.mui-pull-left',function(){
 					mui.fire(honey.detailSubpage,'closeDetail')
-					mui.back()
+					honey.goodsHeader.hide('slide-out-right')
 				})
 				honey.rightBar.addEventListener('tap',function(){
 					 
