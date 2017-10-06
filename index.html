@@ -116,7 +116,9 @@
 						}
 					});
 					honey.barWebViews[id].hide();
-					honey.mainWebview.append(honey.barWebViews[id]);
+//					if(id!="cart"){
+						honey.mainWebview.append(honey.barWebViews[id]);
+//					}
 				}
 				honey.barWebViews[honey.barItem[0]].show();
 				honey.curBarItemWebview = honey.barItem[0];
@@ -143,10 +145,12 @@
 								honey.d.title.style.display="block";
 							}
 							honey.d.title.innerText = this.querySelector('.mui-tab-label').innerText;
+//							honey.curBarItemWebview = honey.barItem[id];
 						}
 						//切换baritemwebview
-						honey.barWebViews[id].show();
 						honey.curBarItemWebview = honey.barItem[id];
+//						honey.barWebViews[id].show(id=="cart"?"slide-in-right":'');
+						honey.barWebViews[id].show();
 					}
 				});
 			}
