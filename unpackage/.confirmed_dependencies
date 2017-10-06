@@ -349,7 +349,9 @@
 		"resources": [
 			"css/own.css",
 			"css/mui.min.css",
-			"fonts/mui.ttf"
+			"fonts/mui.ttf",
+			"images/ad1.jpg",
+			"js/mui.min.js"
 		]
 	}
 }

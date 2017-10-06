@@ -10,39 +10,371 @@
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 	</head>
 	<style>
-		.goods-list{
-			background: #fff;
-			margin: 1px 0 5px 0;
-			/*padding: 3px 5px;*/
-			border: 1px solid #fff;
+		.sc_list {
+			padding: 0;
+			margin: 5px 0;
+		    overflow: hidden;
+		    border-bottom: 1px solid #f8f8f8;
 		}
-		.goods-title{
-			padding: 10px 0;
-			/*border-bottom: 1px solid #ddd;*/
-			border-top: 1px solid #ddd;
-		}
-		.goods-spec{
+		.sc_list li{
+			list-style: none;
+			float: left;
+			width: 100%;
+			padding: 5px 0;
 			border-bottom: 1px solid #ddd;
-			border-top: 1px solid #ddd;
-			margin: 2px 0;
-			padding:5px 10px 5px 25px;
 		}
-		.checked-icon{
-			color: #41CEA9;
-			padding:0 5px;
+		.sc_list li:first-child{
+			border-top: 1px solid #ddd;
+		}
+		.sc_list .radio {
+		    float: left;
+		    width: 50px;
+		    height: 100px;
+		    padding: 0 !important;
+		    margin: 0 !important;
+		}
+		.sc_list .radio .box{
+			position: relative;
+		}
+		.sc_list .radio .box label{
+			height: 100px;
+			width: 50px;
+			position: relative;
+			padding: 0 !important;
+			margin: 0 !important;
+		}
+		.mui-checkbox input:before{
+			color: #41CEA9 !important;
+		}
+		.sc_list .radio .box input{
+			left: 10px;
+			top: 30px;
+		}
+		.fl {
+		    float: left;
+		}
+		.goods-img{
+			max-height: 100px;
+			width: 20%;
+		}
+		.goods-img img {
+		    max-height: 60px;
+		    width: 100%;
+		    margin-top:15px ;
+		}
+		.sc_list .goods-info {
+		    width: 55%;
+		    padding-left: 5px;
+		}
+		.sc_list .goods-info .title{
+			overflow: hidden;
+			width: 95%;
+			/*white-space: nowrap;*/
+			color: #333;
+		    font-size: 13px;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    display: -webkit-box;
+		    word-break: break-word;
+		    line-height: 18px;
+		}
+		.sc_list .goods-info .del-btn{
+			font-size: 12px;
+			padding: 3px 8px;
+			float: right;
+			margin-right: 5px;
+		}
+		.sc_list .goods-info p{
+			padding: 2px;
+			margin: 0;
+			line-height: 18px;
+		}
+		
+		.fr {
+		    float: right;
+		}
+		.sc_list .mui-numbox{
+			position: relative;
+			max-width: 120px;
+			height: 24px;
+			line-height: 20px;
+			color: #666;
+			border: 1px solid #eee;
+		}
+		.mui-numbox .mui-btn{
+			background: #41CEA9;
+			color:#fff;
+			margin: 0 !important;
+			padding: 0 !important;
+		}
+		.mui-numbox .mui-input-numbox{
+			font-size: 12px;
+			line-height: 24px;
+		}
+		.weight{
+			font-size: 12px;
+		}
+		.mui-icon-close{
+			color: red;
+			margin: 30px 10px 0 0 !important;
+			float: right;
+		}
+		.sc_pri span{
+			color: #ff6633;
+		}
+		#amount{
+			color: #ff6633;
+		}
+		.submit-btn{
+			background: #41CEA9;
+			color: #fff;	
+			height: 50px;
+			width: 100px;
+			text-align: center;
+			line-height: 50px;
+			display: inline-block;
+			position: relative;
+			top: -1px;
+		}
+		.quanxuan {
+			height: 50px;
+			line-height: 50px;
+			width: 30%;
+			display: inline-block;
+			font-size: 14px;
+		}
+		.quanxuan input{
+			top: 10px !important;
+		}
+		.heji {
+			width: 30%;
+			display: inline-block;
+			height: 50px;
+			line-height: 50px;
+			font-size: 14px;
+		}
+		.footer-bar{
+			border-bottom: 1px solid #eee;
+			border-top: 1px solid #eee;
+			color: #333;
 		}
 	</style>
 	<body>
-		<dl class="goods-list">
-			<dt class="goods-title"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>标题jkjkljk</dt>
-			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
-			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
-		</dl>
-		<dl class="goods-list">
-			<dt class="goods-title"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>标题jkjkljk</dt>
-			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
-			<dd class="goods-spec"><span class="mui-icon mui-icon-checkbox-filled checked-icon"></span>内容</dd>
-		</dl>
+		<div class="mui-content">
+			<ul class="sc_list">
+		        <li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
+		         <li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
+		         <li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
+		         <li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
+		         <li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
+		         <li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
+		         <li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
+	       </ul>
+		</div>
+		<nav class="mui-bar mui-bar-tab footer-bar">
+			<div class="mui-input-row mui-checkbox mui-left fl quanxuan">
+				<label>全选</label>
+				<input name="checkbox" value="Item 2" type="checkbox" checked>
+			</div>
+			<div class="heji fl">
+				<span>合计:</span>
+				<span id="amount">￥123</span>
+			</div>
+			<div class="fr">
+				<span class="submit-btn">去结算</span>
+			</div>
+		</nav>
+    <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 	</body>
 
 </html>
+
