@@ -164,17 +164,17 @@
 		</div>
 		<nav class="mui-bar mui-bar-tab footer-bar">
 			<a id="consult">
-				<span class="mui-icon mui-icon-chat"></span>
+				<span class="mui-icon mui-icon-phone"></span>
 				<span class="mui-tab-label">咨询</span>
 			</a>
 			<a id="collect">
 				<span class="mui-icon mui-icon-star" id="collect-icon"></span>
 				<span class="mui-tab-label">收藏</span>
 			</a>
-			<a class="add-cart">
+			<a class="add-cart" id="add-cart">
 				加入购物车
 			</a>
-			<a class="buy-now">
+			<a class="buy-now" id="buy-now">
 				立即购买
 			</a>
 		</nav>
@@ -234,6 +234,8 @@
 					collect:document.getElementById('collect'),
 					consult:document.getElementById('consult'),
 					collectIcon:document.getElementById('collect-icon'),
+					addcart:document.getElementById('add-cart'),
+					buynow:document.getElementById('buy-now')
 				},
 				goods:{},
 				scrollMenu:true,
@@ -251,7 +253,7 @@
 								honey.d.detailcontent.setAttribute('style','')
 								var data=ret.data;
 								//标题
-								honey.d.title.innerText=data.base.goods_name;
+								honey.d.title.innerText=honey.goods.name=data.base.goods_name;
 								//收藏
 								data.collect==1&&honey.collectCallBack(1)
 								//商品图片
@@ -265,12 +267,14 @@
 								honey.imageSliderView.show()
 								//是否有规格属性
 								if(data.spec){
+									honey.spec_item=[];
 									var price_key=[];
 									var spec_html=[];
 									mui.each(data.spec, function(i,v) {
 										var html=[];
 										for(var j=0;j<data.spec[i].length;j++){
 											var v=data.spec[i][j];
+											honey.spec_item.push(v)
 											if(j==0){
 												price_key.push(v.item_id)
 											}
@@ -488,10 +492,13 @@
 						p.classList.remove('mui-btn-active')
 						var btn=mui('.mui-btn-active');
 						var price_key=[];
+						honey.goods.spec_name=[];
 						mui.each(btn, function(i,v) {
 							price_key.push(v.getAttribute('item_id'))
+							honey.goods.spec_name.push(v.innerText)
 						});
 						var k=price_key.length>1?price_key.join('_'):price_key[0];
+						honey.goods.spec_key=k;//套餐
 						honey.goods.price=honey.spec_price[k].price;//价格
 						honey.goods.store=honey.spec_price[k].store_count;//库存
 						honey.d.price.innerText=honey.goods.price;
@@ -539,6 +546,7 @@
 				 * 显示商品事件
 				 */
 				window.addEventListener('showGoods',function(o){
+					honey.goods={};
 					honey.goods.goods_id=o.detail.goods_id;
 					honey.lastId=0;
 					honey.content.pullRefresh().refresh(true);
@@ -598,6 +606,14 @@
 						setTimeout(function(){
 							honey.scrollMenu=true;
 						},200)
+					}
+				})
+				honey.d.addcart.addEventListener('tap',function(){
+//					alert(JSON.stringify(honey.spec_item))
+					//获取已经选择的商品
+					alert(JSON.stringify(honey.goods))
+					if(honey.goods.spec_name){
+						alert('yea')
 					}
 				})
 			})
