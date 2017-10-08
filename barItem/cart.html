@@ -15,6 +15,7 @@
 			margin: 5px 0;
 		    overflow: hidden;
 		    border-bottom: 1px solid #f8f8f8;
+		    margin-bottom: 44px;
 		}
 		.sc_list li{
 			list-style: none;
@@ -94,12 +95,12 @@
 		    float: right;
 		}
 		.sc_list .mui-numbox{
-			position: relative;
-			max-width: 120px;
-			height: 24px;
+			margin-top: 1px ;
+			width: 120px;
+			height: 20px;
 			line-height: 20px;
 			color: #666;
-			border: 1px solid #eee;
+			border: 1px solid #efefef;
 		}
 		.mui-numbox .mui-btn{
 			background: #41CEA9;
@@ -108,8 +109,9 @@
 			padding: 0 !important;
 		}
 		.mui-numbox .mui-input-numbox{
-			font-size: 12px;
-			line-height: 24px;
+			border: 0;
+			padding: 0 !important;
+			margin: 0 !important;
 		}
 		.weight{
 			font-size: 12px;
@@ -121,6 +123,7 @@
 		}
 		.sc_pri span{
 			color: #ff6633;
+			font-size: 14px;
 		}
 		#amount{
 			color: #ff6633;
@@ -161,176 +164,36 @@
 	</style>
 	<body>
 		<div class="mui-content">
-			<ul class="sc_list">
+			<ul class="sc_list" id="cart-list">
+				<li>
+	                <div class="radio fl ">
+	                    <!--商品勾选按钮-->
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <!--商品属性，规格-->
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p>
+	                	 <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+	                <span class="mui-icon mui-icon-close"></span>
+		        </li>
 		        <li>
-	                <div class="radio fl ">
-	                    <!--商品勾选按钮-->
-	                    <div class="mui-input-row mui-checkbox mui-left box">
-							<label>&nbsp;</label>
-							<input name="checkbox" value="Item 2" type="checkbox" checked>
-						</div>
-	                </div>
-	                <div class="goods-img fl">
-	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
-	                </div>
-	                <div class="goods-info fl">
-	                    <p class="title">
-	                    	云南白药 气血康胶囊24粒（买五送一送原品）
-	                    </p>
-	                    <!--商品属性，规格-->
-	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
-	                    <p class="sc_pri fl">
-	                        <span>￥</span><span class="price">11.00</span>
-	                    </p>
-	                	 <div class="mui-numbox fr">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-						</div>
-	                </div>
-	                <span class="mui-icon mui-icon-close"></span>
-		        </li>
-		         <li>
-	                <div class="radio fl ">
-	                    <!--商品勾选按钮-->
-	                    <div class="mui-input-row mui-checkbox mui-left box">
-							<label>&nbsp;</label>
-							<input name="checkbox" value="Item 2" type="checkbox" checked>
-						</div>
-	                </div>
-	                <div class="goods-img fl">
-	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
-	                </div>
-	                <div class="goods-info fl">
-	                    <p class="title">
-	                    	云南白药 气血康胶囊24粒（买五送一送原品）
-	                    </p>
-	                    <!--商品属性，规格-->
-	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
-	                    <p class="sc_pri fl">
-	                        <span>￥</span><span class="price">11.00</span>
-	                    </p>
-	                	 <div class="mui-numbox fr">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-						</div>
-	                </div>
-	                <span class="mui-icon mui-icon-close"></span>
-		        </li>
-		         <li>
-	                <div class="radio fl ">
-	                    <!--商品勾选按钮-->
-	                    <div class="mui-input-row mui-checkbox mui-left box">
-							<label>&nbsp;</label>
-							<input name="checkbox" value="Item 2" type="checkbox" checked>
-						</div>
-	                </div>
-	                <div class="goods-img fl">
-	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
-	                </div>
-	                <div class="goods-info fl">
-	                    <p class="title">
-	                    	云南白药 气血康胶囊24粒（买五送一送原品）
-	                    </p>
-	                    <!--商品属性，规格-->
-	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
-	                    <p class="sc_pri fl">
-	                        <span>￥</span><span class="price">11.00</span>
-	                    </p>
-	                	 <div class="mui-numbox fr">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-						</div>
-	                </div>
-	                <span class="mui-icon mui-icon-close"></span>
-		        </li>
-		         <li>
-	                <div class="radio fl ">
-	                    <!--商品勾选按钮-->
-	                    <div class="mui-input-row mui-checkbox mui-left box">
-							<label>&nbsp;</label>
-							<input name="checkbox" value="Item 2" type="checkbox" checked>
-						</div>
-	                </div>
-	                <div class="goods-img fl">
-	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
-	                </div>
-	                <div class="goods-info fl">
-	                    <p class="title">
-	                    	云南白药 气血康胶囊24粒（买五送一送原品）
-	                    </p>
-	                    <!--商品属性，规格-->
-	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
-	                    <p class="sc_pri fl">
-	                        <span>￥</span><span class="price">11.00</span>
-	                    </p>
-	                	 <div class="mui-numbox fr">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-						</div>
-	                </div>
-	                <span class="mui-icon mui-icon-close"></span>
-		        </li>
-		         <li>
-	                <div class="radio fl ">
-	                    <!--商品勾选按钮-->
-	                    <div class="mui-input-row mui-checkbox mui-left box">
-							<label>&nbsp;</label>
-							<input name="checkbox" value="Item 2" type="checkbox" checked>
-						</div>
-	                </div>
-	                <div class="goods-img fl">
-	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
-	                </div>
-	                <div class="goods-info fl">
-	                    <p class="title">
-	                    	云南白药 气血康胶囊24粒（买五送一送原品）
-	                    </p>
-	                    <!--商品属性，规格-->
-	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
-	                    <p class="sc_pri fl">
-	                        <span>￥</span><span class="price">11.00</span>
-	                    </p>
-	                	 <div class="mui-numbox fr">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-						</div>
-	                </div>
-	                <span class="mui-icon mui-icon-close"></span>
-		        </li>
-		         <li>
-	                <div class="radio fl ">
-	                    <!--商品勾选按钮-->
-	                    <div class="mui-input-row mui-checkbox mui-left box">
-							<label>&nbsp;</label>
-							<input name="checkbox" value="Item 2" type="checkbox" checked>
-						</div>
-	                </div>
-	                <div class="goods-img fl">
-	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
-	                </div>
-	                <div class="goods-info fl">
-	                    <p class="title">
-	                    	云南白药 气血康胶囊24粒（买五送一送原品）
-	                    </p>
-	                    <!--商品属性，规格-->
-	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
-	                    <p class="sc_pri fl">
-	                        <span>￥</span><span class="price">11.00</span>
-	                    </p>
-	                	 <div class="mui-numbox fr">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-						</div>
-	                </div>
-	                <span class="mui-icon mui-icon-close"></span>
-		        </li>
-		         <li>
 	                <div class="radio fl ">
 	                    <!--商品勾选按钮-->
 	                    <div class="mui-input-row mui-checkbox mui-left box">
@@ -374,6 +237,51 @@
 			</div>
 		</nav>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	mui.init();
+    	honey.d={
+    		list:document.getElementById('cart-list')
+    	}
+    	mui.plusReady(function(){
+    		var html=[];
+	        for(var i=0;i<10;i++){
+	        	var li='<li>\
+	                <div class="radio fl ">\
+	                    <div class="mui-input-row mui-checkbox mui-left box">\
+							<label>&nbsp;</label>\
+							<input name="checkbox" value="Item 2" type="checkbox" checked>\
+						</div>\
+	                </div>\
+	                <div class="goods-img fl">\
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">\
+	                </div>\
+	                <div class="goods-info fl">\
+	                    <p class="title">\
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）\
+	                    </p>\
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>\
+	                    <p class="sc_pri fl">\
+	                        <span>￥</span><span class="price">11.00</span>\
+	                    </p>\
+	                	 <div class="mui-numbox fr" max="5">\
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>\
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>\
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>\
+						</div>\
+	                </div>\
+	                <span class="mui-icon mui-icon-close"></span>\
+		        </li>';
+	        	html.push(li)
+	        }
+	        honey.d.list.innerHTML=html.join('')
+	        mui('.mui-numbox').on('tap','.mui-btn-numbox-minus',function(){
+	        	var p=this.parentElement;
+	        	var num=p.querySelector('input');
+	        	var max=p.getAttribute('max');alert(max)
+	        })
+    	})
+    </script>
 	</body>
 
 </html>
