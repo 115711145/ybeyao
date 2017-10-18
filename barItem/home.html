@@ -69,11 +69,11 @@
 			</div>
 			<div class="yb-ad1">
 				<p class="ad-left">
-					<img src="../images/ad1.jpg" class="adImg2"/>
+					<img src="../images/default.png" class="adImg2"/>
 				</p>
 				<p class="ad-right">
-					<img src="../images/ad2.jpg" class="adImg3"/>
-					<img src="../images/ad3.jpg" class="adImg3"/>
+					<img src="../images/default.png" class="adImg3"/>
+					<img src="../images/default.png" class="adImg3"/>
 				</p>
 			</div>
 			<div class="mui-content recommend">
@@ -82,7 +82,7 @@
 				</ul>
 			</div>
 			<div class="yb-ad1">
-				<img src="../images/ad.jpg" class="adImg4"/>
+				<img src="../images/default.png" class="adImg4"/>
 			</div>
 			<div class="mui-content recommend">
 				<ul class="mui-table-view mui-grid-view" id="hot">
@@ -102,21 +102,22 @@
 				swipeBack: true //启用右滑关闭功能
 			});
 			//			mui.plusReady(function() {
-			var honey = {
+			
+			var honey=(function(h,$){
 				/**
 				 * 自动加载广告
 				 */
-				autoAd:function(){
-					mui.ajax(apiurl,{
+				h.autoAd=function(){
+					mui.ajax(h.apiurl,{
 						data:{m:'ad_list'},
 						type:'post',
 						dataType:'json',
 						success:function(ret){
 							if(ret.code==0){
-								honey.showSlider(ret.data[1]);
-								honey.showAdImges(ret.data[2],2)
-								honey.showAdImges(ret.data[3],3)
-								honey.showAdImges(ret.data[4],4)
+								h.showSlider(ret.data[1]);
+								h.showAdImges(ret.data[2],2)
+								h.showAdImges(ret.data[3],3)
+								h.showAdImges(ret.data[4],4)
 							}
 						},
 						error:function(ret){
@@ -124,80 +125,80 @@
 							alert(JSON.stringify(ret)) 
 						} 
 					})
-				},
+				}
 				/**
 				 * 轮播图
 				 * @param {Object} adList
 				 */
-				showSlider: function(adList) {
+				h.showSlider= function(adList) {
 					var len=adList.length,
 					    group = [],
 						indicator = [];
 					for(var i = 0; i <= len; i++) {
 						if(i == 0) {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img type="'+adList[len-1].ad_link_type+'" link="'+adList[len-1].ad_link_id+'" src="' + apihost+adList[len-1].ad_code + '"></a></div>')
+								<img type="'+adList[len-1].ad_link_type+'" link="'+adList[len-1].ad_link_id+'" src="' + h.apihost+adList[len-1].ad_code + '"></a></div>')
 						}
 						if(i<len){
 							group.push('<div class="mui-slider-item"><a href="#">\
-								<img type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" src="' + apihost+adList[i].ad_code + '"></a></div>')
+								<img type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" src="' + h.apihost+adList[i].ad_code + '"></a></div>')
 							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
 						}else {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img type="'+adList[0].ad_link_type+'" link="'+adList[0].ad_link_id+'"  src="' + apihost+adList[0].ad_code + '"></a></div>')
+								<img type="'+adList[0].ad_link_type+'" link="'+adList[0].ad_link_id+'"  src="' + h.apihost+adList[0].ad_code + '"></a></div>')
 						}
 					}
 					document.getElementById('productSlider').innerHTML = '<div class="mui-slider-group mui-slider-loop">' + group.join('') +
 						'</div><div class="mui-slider-indicator">' + indicator.join('') + '</div>';
-					honey.slider = mui('.mui-slider').slider({
+					h.slider = $('.mui-slider').slider({
 						interval: 5000
 					});
-				},
+				}
 				/**
 				 * 显示广告图
 				 * @param {Object} ad  广告数组
 				 * @param {Object} obj 广告位置id
 				 */
-				showAdImges:function(ad,number){
+				h.showAdImges=function(ad,number){
 					var obj=mui('.adImg'+number);
 					for(var i=0;i<obj.length;i++){
-						ad[i]&&obj[i].setAttribute('src',apihost+ad[i].ad_code)
+						ad[i]&&obj[i].setAttribute('src',h.apihost+ad[i].ad_code)
 					}
-				},
-				bindListTap: function() {
+				}
+				h.bindListTap= function() {
 					//添加slider点击事件
-					mui('#productSlider').on('tap', 'a', function() {
+					$('#productSlider').on('tap', 'a', function() {
 						alert('a')
 					})
 					
 					//添加每个item点击的监听事件
-					mui('.recommend').on('tap', 'a', function() {
+					$('.recommend').on('tap', 'a', function() {
 						var goods_id = this.getAttribute('goods_id');
 //						var title = this.querySelector('.goods-title').innerText;
-						if(!honey.detailWebView) {
-							honey.detailWebView = plus.webview.getWebviewById('goods-header');
+						if(!h.detailWebView) {
+							h.detailWebView = plus.webview.getWebviewById('goods-header');
 						}
-						if(!honey.detailSubpage) {
-							honey.detailSubpage = plus.webview.getWebviewById('goods-detail');
+						if(!h.detailSubpage) {
+							h.detailSubpage = plus.webview.getWebviewById('goods-detail');
 						}
-						mui.fire(honey.detailWebView, 'goodsId', {
+						$.fire(h.detailWebView, 'goodsId', {
 							goods_id:goods_id
 						})
-						honey.detailWebView.show('slide-in-right', 300)
+						h.detailWebView.show('slide-in-right', 300)
 					});
-				},
+				}
 				/**
 				 * 获取首页商品
 				 */
-				loadGoods: function() {
-					mui.ajax(apiurl,{
+				h.loadGoods= function() {
+					$.ajax(h.apiurl,{
 						data:{m:'index_goods'},
 						type:'post',
 						dataType:'json',
 						success:function(ret){ 
 							if(ret.code==0){
-								showGoodsList(ret.data.recommend,'recommend')
-								showGoodsList(ret.data.hot,'hot')
+								h.showGoodsList(ret.data.recommend,'recommend')
+								h.showGoodsList(ret.data.hot,'hot')
 							}
 						},
 						error:function(ret){
@@ -215,7 +216,7 @@
 //						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">'+innerHTML+'</li>');
 //					}
 //					recommend.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
-				},
+				}
 				/**
 				 * 显示商品列表
 				 * @param {Object} data
@@ -242,7 +243,7 @@
 				/**
 				 * 绑定图标菜单触摸事件
 				 */
-				bindIconMenuTap:function(){
+				h.bindIconMenuTap=function(){
 					mui('#menus').on('tap','a',function(){
 						var name=this.getAttribute('name');
 						var cate=this.getAttribute('cate');
@@ -250,12 +251,14 @@
 							alert('优惠券')
 						}else{
 //							openWin("../goods/goods-list-header.html","goods-list-header",{cate:cate},{top:0,bottom:'51px'})
-							mui.fire(honey.goodsListHeader,'cateId',{name:name,cate:cate})
-							honey.goodsListHeader.show('slide-in-right',300)
+							$.fire(h.goodsListHeader,'cateId',{name:name,cate:cate})
+							h.goodsListHeader.show('slide-in-right',300)
 						}
 					})
-				},
-			};
+				}
+				return h;
+			}(honey,mui))
+			
 			//			})
 			mui.plusReady(function() {
 				if(!honey.goodsListHeader){

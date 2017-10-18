@@ -225,6 +225,18 @@
 					</li>
 				</ul>
 			</div>
+			<div id="clean" class="mui-popover mui-popover-action mui-popover-bottom">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="cart-clean">
+						<a href="#" style="color: #FF3B30;">清空购物车</a>
+					</li>
+				</ul>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#clean" style="color: #999;"><b>取消</b></a>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<nav class="mui-bar mui-bar-tab footer-bar">
 			<div class="mui-input-row mui-checkbox mui-left fl quanxuan">
@@ -250,6 +262,8 @@
     		nothing:document.getElementById('cart-empty'),
     		jiesuan:document.getElementById('jiesuan'),
     		qx:document.getElementById('qx'),
+    		_delete:document.getElementById('delete'),
+    		_clean:document.getElementById('clean')
     	}
     	honey.cart=[];
     	honey.amount=0;
@@ -313,7 +327,7 @@
     		 * 删除购物车商品
     		 */
     		honey.d.del.addEventListener('tap',function(){
-    			if(honey.change.goods.goods_id>0){
+    			if(honey.change.goods&&honey.change.goods.goods_id>0){
     				honey.changeCartNum(honey.change.goods,function(item){
     					if(item){
     						honey.d.list.removeChild(honey.change.obj)
@@ -322,7 +336,7 @@
     					}
     				})
     			}
-    			mui('.mui-popover').popover('toggle');
+    			mui(honey.d._delete).popover('toggle');
     		})
     		/**
     		 * 减少数量
@@ -348,7 +362,7 @@
 	        			}
 	        		})
 	        	}else{
-	        		mui('.mui-popover').popover('toggle');
+	        		mui(honey.d._delete).popover('toggle');
 	        	}
 	        })
 		    /**
@@ -386,7 +400,18 @@
 	        		mui.toast('您没有选择结算的商品')
 	        		return 
 	        	}
-	        	alert(JSON.stringify(honey.jsGoods))
+	        	if(!myStorage.getItem('token')){
+	        		honey.openWin('../mine/login.html','login')
+	        		return
+	        	}
+	        	if(!honey.buyHeader){
+	        		honey.buyHeader=honey.preloadWin('buy-header.html','buy-header')
+	        	}
+	        	if(!honey.buyContent){
+	        		honey.buyContent=plus.webview.getWebviewById('buy-content');
+	        	}
+	        	mui.fire(honey.buyContent,'showBuyList',honey.jsGoods)
+        		honey.buyHeader.show('slide-in-right',300);
 	        })
 	        
 	        /**
@@ -428,7 +453,7 @@
 	        	honey.cart=honey.jsGoods=myStorage.getItem('cart')
 	        	honey.d.qx.checked=true;
 	        	honey.amount=0;
-	    		if(honey.cart.length>0){
+	    		if(honey.cart&&honey.cart.length>0){
 	    			honey.d.nothing.setAttribute('style','display: none;')
 	    			var html=[];
 	    			mui.each(honey.cart,function(i,v){
@@ -473,6 +498,43 @@
 	    			honey.d.nothing.removeAttribute('style')
 	    		}
 	        })
+	        
+	        /**
+	         * 查看商品详情
+	         */
+	        mui(honey.d.list).on('tap','.goods-img',function(){
+	        	var goods_id = this.parentElement.getAttribute('goods_id');
+				if(!honey.detailHeader) {
+					honey.detailHeader = plus.webview.getWebviewById('goods-header');
+				}
+				if(!honey.detailSubpage) {
+					honey.detailSubpage = plus.webview.getWebviewById('goods-detail');
+				}
+				mui.fire(honey.detailHeader, 'goodsId', {
+					goods_id:goods_id
+				})
+				honey.detailHeader.show('slide-in-right', 300)
+	        })
+	        
+	        /**
+	         * 询问清空购物车
+	         */
+	        window.addEventListener('cartClean',function(){
+	        	mui(honey.d._clean).popover('toggle')
+	        })
+	        
+	        /**
+	         * 清空购物车
+	         */
+	        document.getElementById('cart-clean').addEventListener('tap',function(){
+	        	myStorage.removeItem('cart')
+	        	honey.cart=honey.jsGoods=[];
+	        	honey.d.nothing.removeAttribute('style')
+	        	honey.d.list.innerHTML='';
+		        honey.d.amount.innerText='￥0';
+	        	mui(honey.d._clean).popover('toggle')
+	        })
+	        
     	})
     </script>
 	</body>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>添加地址</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+    <link href="../css/mui.picker.css" rel="stylesheet" />
+	<link href="../css/mui.poppicker.css" rel="stylesheet" /> 
+</head>
+<style>
+	ul,li{
+		padding: 0;
+		margin: 0;
+	}
+	li{
+		list-style: none;
+	}
+	.mui-input-group .mui-input-row label{
+		width: 25%;
+		text-align: right;
+		color: #666;
+		font-size: 14px;
+	}
+	.mui-input-group .mui-input-row input{
+		width: 75%;
+		font-size: 14px;
+	}
+	.add-btn{
+		text-align: center;
+		padding: 20px;
+	}
+	.add-btn span{
+		padding: 8px 20px;
+		border-radius: 5px;
+		background: #41CEA9;
+		color: #fff;
+	}
+	.mui-content .mui-switch{
+		height: 18px;
+		width: 30px;
+		margin-top: 10px;
+		float: left;
+	}
+	.mui-content .mui-switch-handle{
+		padding: 5px;
+		height: 15px;
+		width: 15px;
+		border-radius: 20px;
+	}
+</style>
+<body>
+	
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">我的地址</h1>
+	</header>
+	<div class="mui-content">
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>收货人</label>
+				<input type="text" class="mui-input-clear" id="name" placeholder="姓名">
+			</div>
+			<div class="mui-input-row">
+				<label>手机号码</label>
+				<input type="number" class="mui-input-clear" id="mobile" placeholder="手机号码">
+			</div>
+			<div class="mui-input-row">
+				<label>所在区域</label>
+				<input type="text" readonly="readonly" class="mui-input-clear" id="area" placeholder="所在区域">
+			</div>
+			<div class="mui-input-row">
+				<label>街道地址</label>
+				<input type="text" class="mui-input-clear" id="street" placeholder="街道地址">
+			</div>
+			<div class="mui-input-row">
+				<label>邮政编码</label>
+				<input type="number" class="mui-input-clear" maxlength="6" id="zipcode" placeholder="邮政编码">
+			</div>
+			<div class="mui-input-row">
+				<label>设为默认</label>
+				<div class="mui-switch mui-switch-mini" id="default-btn">
+					<div class="mui-switch-handle"></div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="add-btn" id="add-btn">
+			<span>保存地址</span>
+		</div>
+	</div>
+	<!--<nav class="mui-bar mui-bar-tab footer-bar">
+		<div class="add-btn">
+			<span class="submit-btn">保存地址</span>
+		</div>
+	</nav>-->
+	
+	<script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/common.js" charset="UTF-8"></script>
+	<script src="../js/mui.picker.js"></script>
+	<script src="../js/mui.poppicker.js"></script>
+	<script src="../js/city.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+		(function(win,h,$,d) {
+			$.init();
+			h._getParam = function(obj, param) {
+				return obj[param] || '';
+			};
+			h.d={
+				area:d.getElementById('area'),
+				default_btn:d.getElementById('default-btn'),
+				add_btn:d.getElementById('add-btn'),
+				name:d.getElementById('name'),
+				mobile:d.getElementById('mobile'),
+				street:d.getElementById('street'),
+				code:d.getElementById('zipcode'),
+			}
+			h.is_default=0
+			h.cityData=JSON.parse(cityData);
+			h.getAddressInfo=function(){
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					dataType:'json',
+					data:{
+						m:'address_info',
+						token:myStorage.getItem('token'),
+						address_id:h.address_id
+					},
+					success:function(ret){
+						if(ret.code==0){
+							h.d.name.value=ret.data.consignee;
+							h.d.mobile.value=ret.data.mobile;
+							h.d.street.value=ret.data.address;
+							if(ret.data.is_default>0){
+								h.is_default=ret.data.is_default;
+								h.d.default_btn.setAttribute('class','mui-switch mui-switch-mini mui-active')
+							}
+							h.d.code.value=ret.data.zipcode;
+							h.address={
+								province:ret.data.province,
+								city:ret.data.city,
+								district:ret.data.district
+							}
+							h.d.area.value=h.getAddressText(ret.data,h.cityData,'',' - ')
+						}
+					},
+					error:function(){
+						
+					}
+				});
+			}
+			$.plusReady(function() {
+				h.self=plus.webview.currentWebview();
+				h.address_id=h.self.address_id;
+				h.addressPage=plus.webview.getWebviewById('address');
+				if(h.address_id&&h.address_id>0){
+					h.getAddressInfo()
+				}
+				$.back=function(){
+					h.self.close('slider-out-right')
+				}
+				h.piker=new $.PopPicker({layer:3})
+				h.piker.setData(JSON.parse(cityData));
+				h.d.area.addEventListener('tap', function(event) {
+					h.piker.show(function(items) {
+						h.address={
+							province:h._getParam(items[0], 'value'),
+							city:h._getParam(items[1], 'value'),
+							district:h._getParam(items[2], 'value')
+						}
+						h.d.area.value= h._getParam(items[0], 'text')  +' - '+ h._getParam(items[1], 'text') + " - " +h._getParam(items[2], 'text');
+					});
+				}, false);
+				
+				h.d.default_btn.addEventListener('toggle',function(e){
+					h.is_default=e.detail.isActive?1:0;
+				})
+				
+				h.d.add_btn.addEventListener('tap',function(){
+					var name=h.d.name.value;
+					if(!h.trim(name)){
+						$.toast('请填写收货人姓名')
+						return 
+					}
+					var mobile=h.d.mobile.value;
+					if(!h.isPhone(mobile)){
+						$.toast('手机号填写有误')
+						return
+					}
+					var street=h.d.street.value;
+					if(!h.trim(street)){
+						$.toast('请填写街道地址')
+						return
+					}
+					var zipcode=h.d.code.value;
+					if(!h.trim(zipcode) ||(zipcode.length>6)){
+						$.toast('邮政编码有误')
+						return
+					}
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						dataType:'json',
+						data:{
+							m:'edit_address',
+							token:myStorage.getItem('token'),
+							name:name,
+							mobile:mobile,
+							street:street,
+							zipcode:zipcode,
+							province:h.address.province,
+							city:h.address.city,
+							district:h.address.district,
+							is_default:h.is_default,
+							address_id:h.address_id
+						},
+						success:function(ret){
+							$.toast(ret.msg)
+							if(ret.code==0){
+								$.fire(h.addressPage,'reloadList')
+								setTimeout(function(){
+									$.back()
+								},1000)
+							}
+						},
+						error:function(ret){
+							$.toast('保存失败')
+						}
+					});
+				})
+				
+			});
+		})(window,honey,mui,document);
+		
+	</script>
+	
+</body>
+</html>

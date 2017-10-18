@@ -54,6 +54,8 @@
 			}
 			#rightBar{
 				margin-top: 10px;
+				color: #fff;
+				font-size: 14px;
 			}
 			
 		</style>
@@ -61,11 +63,8 @@
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-			<h1 class="mui-title" id="header-title">商品详情</h1>
-			<a id="rightBar" class="mui-icon-extra mui-icon-extra-cart mui-pull-right">
-				
-				
-			</a>
+			<h1 class="mui-title" id="header-title">购物车</h1>
+			<a class="mui-pull-right" id="rightBar"><img src="../images/cart-clean.png" width="25"/></a>
 		</header>
 		<div class="loader">
 			<a>
@@ -81,33 +80,16 @@
 			});
 			var honey={
 				title:document.getElementById('header-title'),
-				rightBar:document.getElementById('rightBar'),
-				back:document.getElementById('back')
+				back:document.getElementById('back'),
+				right_rar:document.getElementById('rightBar')
 			};
 			mui.plusReady(function(){
-				if(!honey.detailSubpage){
-					honey.detailSubpage=plus.webview.getWebviewById('goods-detail');
-				}
-				if(!honey.goodsHeader){
-					honey.goodsHeader=plus.webview.currentWebview()
-				}
-				if(!honey.indexPage){
-					honey.indexPage=plus.webview.getLaunchWebview();
-				}
-				//预加载子页面
-				mui('header').on('tap','.mui-pull-left',function(){
-					mui.fire(honey.detailSubpage,'closeDetail')
-					honey.goodsHeader.hide('slide-out-right')
+				honey.right_rar.addEventListener('tap',function(){
+					if(!honey.cartContent){
+						honey.cartContent=plus.webview.getWebviewById('cart-content')
+					}
+					mui.fire(honey.cartContent,'cartClean')
 				})
-				honey.rightBar.addEventListener('tap',function(){
-					 mui.fire(honey.indexPage,'showCart')
-				})
-				window.addEventListener('goodsId',function(o){
-//					honey.title.innerHTML=o.detail.title;
-					mui.fire(honey.detailSubpage,'showGoods',{goods_id:o.detail.goods_id})
-//					honey.detailSubpage.show()
-				})
-				
 			})
 		</script>
 	</body>

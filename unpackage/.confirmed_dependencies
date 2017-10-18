@@ -9,7 +9,8 @@
 			"fonts/iconfont.ttf",
 			"fonts/mui.ttf",
 			"js/common.js",
-			"barItem/category.html"
+			"barItem/category.html",
+			"js/mystoage.js"
 		],
 		"refer": [
 			"barItem/category.html",
@@ -28,7 +29,9 @@
 			"goods/goods-list.html",
 			"goods/goods-list-header.html",
 			"mine/login.html",
-			"goods/service.html"
+			"goods/service.html",
+			"cart/cart-header.html",
+			"cart/cart-content.html"
 		]
 	},
 	"barItem/home.html": {
@@ -141,7 +144,10 @@
 			"images/kuqi.png",
 			"images/pl.png",
 			"images/zan.png",
-			"images/ai.png"
+			"images/ai.png",
+			"js/mystoage.js",
+			"images/service-zq.png",
+			"images/service-ps.png"
 		],
 		"refer": [
 			"goods/goods-detail-bottom.html",
@@ -259,7 +265,31 @@
 		"resources": [
 			"js/common.js",
 			"css/mui.min.css",
-			"js/mui.js"
+			"js/mui.js",
+			"images/default.png",
+			"fonts/mui.ttf",
+			"images/laoren.png",
+			"images/dd-dfk.png",
+			"images/dd-dsh.png",
+			"images/dd-tk.png",
+			"images/dd-yfk.png",
+			"images/dd-dpj.png",
+			"images/mine-safe.png",
+			"images/mine-sc.png",
+			"images/mine-pj.png",
+			"images/mine-adress.png",
+			"images/mine-info.png",
+			"images/mine-msg.png",
+			"images/mine-record.png",
+			"images/mine-us.png",
+			"images/mine-feed.png",
+			"images/mine-help.png",
+			"images/mine-logout.png",
+			"images/mine-bg.jpg"
+		],
+		"refer": [
+			"mine/address.html",
+			"mine/login.html"
 		]
 	},
 	"mine/login.html": {
@@ -352,7 +382,127 @@
 			"fonts/mui.ttf",
 			"images/ad1.jpg",
 			"js/mui.min.js",
-			"js/common.js"
+			"js/common.js",
+			"images/nothing.png"
+		]
+	},
+	"cart/cart-header.html": {
+		"resources": [
+			"cart/cart-content.html",
+			"css/own.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/icons-extra.css",
+			"images/cart-clear.png",
+			"images/cart-clean.png"
+		],
+		"refer": [
+			"cart/cart-content.html"
+		]
+	},
+	"cart/cart-content.html": {
+		"resources": [
+			"images/nothing.png",
+			"css/own.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/layer/layer.js",
+			"js/layer/need/layer.css",
+			"images/default.png"
+		],
+		"refer": [
+			"cart/buy-header.html"
+		]
+	},
+	"cart/buy-header.html": {
+		"refer": [
+			"cart/buy-content.html"
+		],
+		"resources": [
+			"cart/buy-content.html",
+			"js/mui.min.js",
+			"css/own.css",
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/icons-extra.css"
+		]
+	},
+	"cart/buy-content.html": {
+		"resources": [
+			"js/common.js",
+			"js/mui.min.js",
+			"css/own.css",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"images/quan1.jpg",
+			"js/layer/layer.js",
+			"js/layer/need/layer.css",
+			"js/city.js",
+			"images/fdbs.png"
+		],
+		"refer": [
+			"cart/quan.html",
+			"mine/login.html",
+			"mine/address.html"
+		]
+	},
+	"cart/quan.html": {
+		"resources": [
+			"images/quan1.jpg",
+			"css/own.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"js/layer/layer.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/layer/need/layer.css"
+		],
+		"refer": [
+			"mine/login.html"
+		]
+	},
+	"mine/address.html": {
+		"resources": [
+			"images/checked-no.png",
+			"images/checked.png",
+			"js/mui.min.js",
+			"css/register.css",
+			"js/jsencrypt.js",
+			"css/own.css",
+			"js/common.js",
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"js/city.js"
+		],
+		"refer": [
+			"mine/address-add.html"
+		]
+	},
+	"mine/address-add.html": {
+		"resources": [
+			"css/own.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"css/register.css",
+			"js/jsencrypt.js",
+			"images/pwd.png",
+			"images/zhanghao.png",
+			"images/logo.png",
+			"js/mui.picker.js",
+			"js/city.data-3.js",
+			"js/mui.poppicker.js",
+			"css/mui.poppicker.css",
+			"css/mui.picker.css",
+			"js/city.js"
 		]
 	}
 }

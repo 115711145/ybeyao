@@ -142,7 +142,7 @@
 						mui.toast('请输入正确的手机号')
 						return
 					}
-					mui.ajax(apiurl,{
+					mui.ajax(honey.apiurl,{
 						data:{m:'get_repassword_code',mobile:honey.d.account.value},
 						type:'post',
 						dataType:'json',
@@ -171,7 +171,7 @@
 			 * 重置密码按钮事件
 			 */
 			honey.d.submitBtn.addEventListener('tap',function(){
-				if (!isPhone(honey.d.account.value)){
+				if (!honey.isPhone(honey.d.account.value)){
 					mui.toast('请输入正确的手机号');
 					honey.d.account.setAttribute('style','color:#DD5044')
 					return;
@@ -188,11 +188,11 @@
 					mui.toast('验证码错误')
 					return
 				}
-				mui.ajax(apiurl,{
+				mui.ajax(honey.apiurl,{
 					data:{
 						m:'reset_password',
 						mobile:honey.d.account.value,
-						password:encryptString(honey.d.pwd.value),
+						password:honey.encryptString(honey.d.pwd.value),
 						code:honey.d.code.value,
 					},
 					type:'post',
@@ -202,7 +202,7 @@
 							mui.toast('密码重置成功',{duration:1000})
 							//触发登录事件
 							//关闭注册和登录窗口
-							closeWin('forgot',1000)
+							honey.closeWin('forgot',1000)
 						}else{
 							mui.toast(ret.msg||'重置失败')
 						}

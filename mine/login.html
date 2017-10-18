@@ -29,7 +29,7 @@
 					</div>
 					<div class="mui-input-row">
 						<label><img src="../images/pwd.png"/></label>
-						<input type="password" id="pwd" class="mui-input-clear" value="" placeholder="密码" />
+						<input type="password" id="pwd" class="mui-input-password" value="" placeholder="密码" />
 					</div>
 				</form>
 			</div>
@@ -70,7 +70,7 @@
 				 * 登录按钮事件
 				 */
 				document.getElementById('submit').addEventListener('tap',function(){
-					var phone=isPhone(honey.d.mobile.value)
+					var phone=honey.isPhone(honey.d.mobile.value)
 					if(!phone){
 						mui.toast('手机号码错误');
 						return
@@ -79,12 +79,12 @@
 						honey.logining=true;
 						var that=this;
 						that.setAttribute('style','background: #ccc;border: 1px solid #ccc;')
-						mui.ajax(apiurl,{
+						mui.ajax(honey.apiurl,{
 							data:{
 								m:'login',
 								type:1,
 								mobile:honey.d.mobile.value,
-								password:encryptString(honey.d.pwd.value),
+								password:honey.encryptString(honey.d.pwd.value),
 								system:honey.systemInfo.name,
 								system_model:honey.deviceInfo.model,
 								system_version:honey.systemInfo.version,
@@ -99,12 +99,13 @@
 								that.setAttribute('style','')
 								if(ret.code==0){
 									mui.toast('登录成功',{duration:1000})
-									setStorage('token',ret.data.token);
+									myStorage.setItem('token',ret.data.token)
 									mui.fire(honey.indexWin, 'login')
+									mui.fire(honey.mineWin, 'login')
 									//触发登录事件
 									//关闭注册和登录窗口
-									closeWin('login',1000)
-									closeWin('register')
+									honey.closeWin('login',1000)
+									honey.closeWin('register')
 								}else{
 									mui.toast(ret.msg||'登录失败')
 								}
@@ -121,14 +122,14 @@
 				 * 注册按钮事件
 				 */
 				honey.d.register.addEventListener('tap',function(){
-					openWin('register.html','register')
+					honey.openWin('register.html','register')
 				})
 				
 				/**
 				 * 忘记密码事件
 				 */
 				honey.d.forgot.addEventListener('tap',function(){
-					openWin('forgot.html','forgot')
+					honey.openWin('forgot.html','forgot')
 				})
 				
 				/**
@@ -141,11 +142,11 @@
 				})
 			}
 			mui.plusReady(function(){
-				getSysInfo()
-				getDeviceInfo()
-				honey.bindEvent()
 				if(!honey.loginWin){
 					honey.loginWin=plus.webview.currentWebview();
+				}
+				mui.back=function(){
+					honey.loginWin.close("slide-out-right")
 				}
 				if(!honey.indexWin){
 					honey.indexWin= plus.webview.getLaunchWebview(); 
@@ -153,6 +154,9 @@
 				if(!honey.mineWin){
 					honey.mineWin= plus.webview.getWebviewById('mine'); 
 				}
+				honey.getSysInfo()
+				honey.getDeviceInfo()
+				honey.bindEvent()
 				if(!honey.service){
 					plus.oauth.getServices(function(services){
 						for(var i in services){
@@ -190,7 +194,7 @@
 			}
 			// 获取用户信息
 			honey.login=function(){
-				mui.ajax(apiurl,{
+				mui.ajax(honey.apiurl,{
 					data:{
 						m:'login',
 						type:2,
@@ -213,14 +217,13 @@
 						honey.d.wxdl.setAttribute('style','')
 						if(ret.code==0){
 							mui.toast(honey.service.userInfo.nickname+'登录成功',{duration:1000})
-							setStorage('nickname',honey.service.userInfo.nickname)
-							setStorage('token',ret.data.token);
+							myStorage.setItem('token',ret.data.token)
 							mui.fire(honey.indexWin, 'login')
 							mui.fire(honey.mineWin, 'login')
 							//触发登录事件
 							//关闭注册和登录窗口
-							closeWin('login',1000)
-							closeWin('register')
+							honey.closeWin('login',1000)
+							honey.closeWin('register')
 						}else{
 							mui.toast(ret.msg||'登录失败')
 						}

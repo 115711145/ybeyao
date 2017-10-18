@@ -173,44 +173,41 @@
 				})
 				
 				honey.d.goTop.addEventListener('tap',function(){
-					mySrcollTo('',200)
+					honey.mySrcollTo('',200)
 				})
-			})
-			
-			window.addEventListener('showGoodsList',function(e){
-				honey.list.innerHTML='';
-				honey.content.pullRefresh().refresh(true);
-				honey.page=1;
-				honey.total=0;
-				honey.cate=e.detail.cate;
-				honey.sort="";
-				honey.desc="";
-				ajaxGetData()
-			})
-			
-			window.addEventListener('GoodsListSort',function(e){
-				if(honey.sort!=e.detail.sort || honey.desc!=e.detail.desc){
-					if(honey.page>1 && honey.total==0){
-						return
-					}
+				
+				window.addEventListener('showGoodsList',function(e){
+					honey.d.goTop.setAttribute('style','display: none;')
+					honey.list.innerHTML='';
 					honey.content.pullRefresh().refresh(true);
-					honey.sort=e.detail.sort;
-					honey.desc=e.detail.desc;
 					honey.page=1;
 					honey.total=0;
+					honey.cate=e.detail.cate;
+					honey.sort="";
+					honey.desc="";
 					ajaxGetData()
-					mySrcollTo()
-				}
-			})
-			
-			
-			
-			/**
-			 * 监听滚动时间
-			 */
-			document.addEventListener('scroll',function(){
-				if(!honey.toast){
-					honey.toast=true;
+				})
+				
+				window.addEventListener('GoodsListSort',function(e){
+					if(honey.sort!=e.detail.sort || honey.desc!=e.detail.desc){
+						if(honey.page>1 && honey.total==0){
+							return
+						}
+						honey.content.pullRefresh().refresh(true);
+						honey.sort=e.detail.sort;
+						honey.desc=e.detail.desc;
+						honey.page=1;
+						honey.total=0;
+						ajaxGetData()
+						honey.mySrcollTo()
+					}
+				})
+				
+				
+				/**
+				 * 监听滚动时间
+				 */
+				document.addEventListener('scroll',function(){
 					var h1=window.innerHeight;
 					var h=document.body.scrollTop;
 					if(h>(h1-74*2)){
@@ -218,10 +215,7 @@
 					}else{
 						honey.d.goTop.setAttribute('style','display: none;')
 					}
-					setTimeout(function(){
-						honey.toast=false;
-					},100)
-				}
+				})
 			})
 			
 			
@@ -236,7 +230,7 @@
 				if(honey.page>1 &&(honey.page*honey.pageSize>=honey.total)){
 					honey.content.pullRefresh().endPullupToRefresh(true)
 				}else{
-					mui.ajax(apiurl,{
+					mui.ajax(honey.apiurl,{
 						data:{m:'goods_list',page:honey.page,size:honey.pageSize,cate:honey.cate,sort:honey.sort,desc:honey.desc},
 						type:'post',
 						dataType:'json',
@@ -248,7 +242,7 @@
 								if(honey.page==1 && ret.data.length==0){
 									honey.d.list.innerHTML="<li class='mui-table-view-cell' id='no-item' style='text'>没有找到相关商品</li>";
 								}else{
-									showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?{src:'../images/ad'+honey.page+'.jpg'}:false)
+									honey.showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?{src:'../images/ad'+honey.page+'.jpg'}:false)
 								}
 								honey.total=ret.total;
 								honey.content.pullRefresh().endPullupToRefresh((honey.page*honey.pageSize>=ret.total))
@@ -257,7 +251,7 @@
 							}
 						},
 						error:function(ret){
-							alert(JSON.stringify(ret))
+//							alert(JSON.stringify(ret))
 							mui.toast('数据加载失败')
 						} 
 					})

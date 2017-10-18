@@ -67,40 +67,46 @@
 	<script type="text/javascript" src="js/mui.min.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="js/common.js" charset="UTF-8"></script>
 	<script type="text/javascript" charset="UTF-8">
-		mui.init()
-		var honey={
-			barItem:['home','category','cart','mine'],
-			barWebViews:[],
-			contentStyle:{top:'45px',bottom:'51px',scrollIndicator:'none'},
-			d:{
+		mui.init({
+//			preloadLimit:20
+		})
+		var honey=(function(h,$){
+			h.barItem=['home','category','mine'];
+			h.barWebViews=[];
+			h.contentStyle={top:'45px',bottom:'51px',scrollIndicator:'none'};
+			h.d={
 				title:document.getElementById('nav-title'),//标题
 				search:document.getElementById('search'),
+				cart:document.getElementById('cart')
 			},
 			//初始化所有bar页面
-		    initWebViews:function(){
+		    h.initWebViews=function(){
 		    	//预加载页面
-				honey.preloadWebViews()
+				h.preloadWebViews()
 				//设置状态栏颜色
 				plus.navigator.setStatusBarBackground( "#41cea9" );
 				//设置只支持竖屏幕显示
 				plus.screen.lockOrientation("portrait-primary");
 				//绑定菜单事件
-				honey.bindBaritem()
-				
+				h.bindBaritem()
 				//搜索框事件
-				mui('header').on('click','#search',function(){
+				$('header').on('click','#search',function(){
 					alert('aa')
 				})
-			},
-			preloadDetailView:function(){//加载详情页
-				preloadGoodsDetail()
-				preloadGoodsListWin()
-			},
-			preloadWebViews:function(){//预加载页面
-				honey.mainWebview = plus.webview.currentWebview();
-				for (var i = 0; i < honey.barItem.length; i++) {
-					var id=honey.barItem[i];
-					honey.barWebViews[id] = mui.preload({
+			}
+			h.preloadDetailView=function(){
+				//加载详情页
+				honey.preloadGoodsDetail()
+				//加载列表页
+				honey.preloadGoodsListWin()
+				//加载购物车
+				honey.preloadCartWin()
+			}
+			h.preloadWebViews=function(){//预加载页面
+				h.mainWebview = plus.webview.currentWebview();
+				for (var i = 0; i < h.barItem.length; i++) {
+					var id=h.barItem[i];
+					h.barWebViews[id] = mui.preload({
 						id:id,
 						url:'barItem/'+id+'.html',
 						styles:{
@@ -115,63 +121,80 @@
 							autoShow:false
 						}
 					});
-					honey.barWebViews[id].hide();
-//					if(id!="cart"){
-						honey.mainWebview.append(honey.barWebViews[id]);
-//					}
+					h.barWebViews[id].hide();
+					h.mainWebview.append(h.barWebViews[id]);
 				}
-				honey.barWebViews[honey.barItem[0]].show();
-				honey.curBarItemWebview = honey.barItem[0];
-			},
-			bindBaritem:function(){//绑定菜单事件
-				mui('nav').on('tap','a',function(e){
-					var id=this.getAttribute('id');
-					if(id!=honey.curBarItemWebview){
-						//更换标题
-						if(id=='home'){
-							honey.d.search.style.display="block";
-							honey.d.title.style.display="none";
-						}else{
-							if(id=="mine" && !honey.token){
-								if(!honey.token){
-//									document.getElementById('#'+honey.curBarItemWebview)
-									openWin('mine/login.html','login')
-									e.stopPropagation()
-									return
-								}
+				h.barWebViews[h.barItem[0]].show();
+				h.curBarItemWebview = h.barItem[0];
+			}
+			h.showBarItemPage=function(id,e){
+				if(id=='cart'){
+					$.fire(honey.cartContent,"showCart")
+					h.cartHeader.show('slide-in-right',300)
+					e&&e.stopPropagation()
+					return
+				}
+				var dom=document.getElementById(id);
+				if(id!=h.curBarItemWebview){
+					//更换标题
+					if(id=='home'){
+						h.d.search.style.display="block";
+						h.d.title.style.display="none";
+					}else{
+						if(id=="mine" && !h.token){
+							if(!h.token){
+//									document.getElementById('#'+h.curBarItemWebview)
+								h.openWin('mine/login.html','login')
+								e&&e.stopPropagation()
+								return
 							}
-							if(honey.curBarItemWebview=='home'){
-								honey.d.search.style.display="none";
-								honey.d.title.style.display="block";
-							}
-							honey.d.title.innerText = this.querySelector('.mui-tab-label').innerText;
-//							honey.curBarItemWebview = honey.barItem[id];
+//						}else if(id=="cart"){
+//							$.fire(h.barWebViews[id], 'showCart')
 						}
-						//切换baritemwebview
-						honey.curBarItemWebview = honey.barItem[id];
-//						honey.barWebViews[id].show(id=="cart"?"slide-in-right":'');
-						honey.barWebViews[id].show();
+						if(h.curBarItemWebview=='home'){
+							h.d.search.style.display="none";
+							h.d.title.style.display="block";
+						}
+						h.d.title.innerText = dom.querySelector('.mui-tab-label').innerText;
+//							h.curBarItemWebview = h.barItem[id];
 					}
+					document.getElementById(h.curBarItemWebview).setAttribute('class','mui-tab-item')
+					dom.setAttribute('class','mui-tab-item mui-active')
+					//切换baritemwebview
+					h.curBarItemWebview = id;
+//					h.barWebViews[id].show(id=="cart"?"slide-in-right":'');
+					h.barWebViews[id].show();
+				}
+			}
+			h.bindBaritem=function(){//绑定菜单事件
+				$('nav').on('tap','a',function(e){
+					h.showBarItemPage(this.getAttribute('id'),e)
 				});
 			}
-		};
+			return h;
+		}(honey,mui));
+		
 		mui.plusReady(function(){
-			setStorage('token',null)
-//			honey.token=getStorage('token')
+			if(!honey.home){
+				honey.home=plus.webview.currentWebview();
+			}
+//			myStorage.removeItem('token')
+			honey.token=myStorage.getItem('token')
 			document.getElementById('footerBar').style.top = (plus.display.resolutionHeight - 51) + "px";
 			honey.initWebViews()
 			honey.preloadDetailView()
 			
 			window.addEventListener('goHome',function(){
-				if(!honey.home){
-					honey.home=plus.webview.currentWebview();
-				}
-				honey.home.show();
-				honey.barWebViews.home.show()
+				honey.showBarItemPage('home')
 			})
 			
 			window.addEventListener('login',function(o){
-				honey.token=getStorage('token')
+				honey.token=myStorage.getItem('token')
+				honey.showBarItemPage('mine')
+			})
+			
+			window.addEventListener('showCart',function(){
+				honey.showBarItemPage('cart')
 			})
 		})
 
