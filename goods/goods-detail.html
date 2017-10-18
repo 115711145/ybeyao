@@ -4,36 +4,33 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>product-detail</title>
-		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<title>商品详情</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css"  />
 		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
 		<link rel="stylesheet" type="text/css" href="../css/own.css" />
 		<link rel="stylesheet" type="text/css" href="../css/previewimage.css" />
 		<link rel="stylesheet" type="text/css" href="../css/goods-detail.css" />
 	</head>
-
 	<body id="body">
 		<header class="mui-bar mui-bar-nav" id="header">
-			<span class="active" index="1">商品</span> <span index="2">详情</span> <span index="3">评论</span>
+			<span class="active" index="1">商品</span> <span index="2">详情</span> <span index="3">评论</span> 
 		</header>
 		<div id="detailcontent" class="mui-content  detail-content-padding">
 			<div id="attr">
 				<div class="goods-title">
-					<div class="fl title">
-						<h5 id="goods_title">这里是标题这里是标题这里是这里是标题这里是标题这里是</h5></div>
+					<div class="fl title"><h5 id="goods_title"></h5></div>
 					<div class="fr icon">
-						<a href="#" id="share">
-							<span class="mui-icon-extra mui-icon-extra-share fl"></span>
-							<span class="fr">分享</span>
-						</a>
+						<!--<a href="#" id="share">
+		                    <span class="mui-icon-extra mui-icon-extra-share fl"></span>
+		                    <span class="fr">分享</span>
+		            	</a>-->
 					</div>
 				</div>
 				<div class="goods-attr">
 					<div class="price">
-						<p class="goods-price goods-price-one"><span class="icon-money">￥</span><span id="shop_price">200</span></p>
-						<p class="goods-price goods-price-two" id="market_price">价格 <span>￥300</span></p>
-						<p class="goods-price integral-change">可使用积分： <span id="integral-change">300</span></p>
+						<p class="goods-price goods-price-one"><span class="icon-money">￥</span><span id="shop_price">0.00</span></p>
+						<p class="goods-price goods-price-two" id="market_price">价格 <span>￥0.00</span></p>
 					</div>
 					<div class="express">
 						<p>
@@ -64,20 +61,18 @@
 					<span>数量</span>
 					<div class="mui-numbox">
 						<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-						<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" />
+						<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num"/>
 						<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-					</div>
+					</div>					
 				</div>
 				<div class="preferential">
 					<div class="service" id="attr-express">
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>配送到家</p>
 						<p><span class="mui-icon mui-icon-checkmarkempty"></span>药店自取</p>
-						<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>
+						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 					</div>
 					<div class="service">
-						<p class="point">
-							<icon>积分</icon>购买可得
-							<font id="give_integral">0</font>积分</p>
+						<p class="point"><icon>积分</icon>购买可得<font id="give_integral">0</font>积分</p>
 						<!--<p class="icon fr"><span class="mui-icon mui-icon-arrowright"></span></p>-->
 					</div>
 				</div>
@@ -164,10 +159,10 @@
 			</div>
 		</div>
 		<div id="no-content">
-			<p><img src="../images/kuqi.png" /></p>
+			<p><img src="../images/kuqi.png"/></p>
 			<p id="no-content-text">很抱歉,此商品已下架或不存在!</p>
 		</div>
-		<nav class="mui-bar mui-bar-tab footer-bar" id="footerBar">
+		<nav class="mui-bar mui-bar-tab footer-bar">
 			<a id="consult">
 				<span class="mui-icon mui-icon-phone"></span>
 				<span class="mui-tab-label">咨询</span>
@@ -191,523 +186,439 @@
 		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
-				swipeBack: true,
+				swipeBack: false,
 				pullRefresh: {
 					container: '#detailcontent',
 					up: {
-						auto: true,
-						height: 80,
+						auto:true,
+						height:80,
 						contentinit: '<font style="font-size:12px;color:#999">上拉查看更多评价</font>',
-						contentdown: '<font style="font-size:12px;color:#999">上拉查看更多评价</font>',
-						contentrefresh: '<font style="font-size:12px;color:#999">正在加载...</font>',
-						contentnomore: '<font style="font-size:12px;color:#999">暂无更多评价!</font>',
-						callback: function() {
-							honey.ajaxGetComment()
-						}
+					    contentdown: '<font style="font-size:12px;color:#999">上拉查看更多评价</font>',
+					    contentrefresh: '<font style="font-size:12px;color:#999">正在加载...</font>',
+						contentnomore:'<font style="font-size:12px;color:#999">暂无更多评价!</font>',
+						callback: ajaxGetData
 					}
 				}
 			});
-			var honey = (function(h, win, $) {
-				h.lastId = 0;
-				h.ctype = 1;
-				h.loadStatus = false;
-				h.d = {
-					attrExpress: document.getElementById('attr-express'),
-					id: document.getElementById('goods-id'),
-					buyNum: document.getElementById('buy-num'),
-					share: document.getElementById('share'),
-					param: document.getElementById('param'),
-					title: document.getElementById('goods_title'), //标题
-					price: document.getElementById('shop_price'), //价格
-					m_price: document.getElementById('market_price'), //市场价格
-					spec: document.getElementById('spec'), //规格属性
-					store: document.getElementById('store'),
-					saleNum: document.getElementById('sale_num'),
-					giveIntegral: document.getElementById('give_integral'),
-					table: document.getElementById('goods-attr-table'),
-					topSpan: document.getElementById('header').querySelectorAll('span'),
-					topMenu: document.getElementById('header').querySelectorAll('span')[0],
-					ctype: document.getElementsByClassName('ctype'),
-					evaluate: document.getElementById('evaluate'),
-					evaluateList: document.getElementById('evaluate-list'),
-					//					evaluateMore:document.getElementById('evaluate-more'),
-					header: document.getElementById('header'),
-					remark: document.getElementById('remark'),
-					goodsContent: document.getElementById('goods-content'),
-					content: document.getElementById('content-text'),
-					noContent: document.getElementById('no-content'),
-					noContentTxt: document.getElementById('no-content-text'),
-					detailcontent: document.getElementById('detailcontent'),
-					collect: document.getElementById('collect'),
-					consult: document.getElementById('consult'),
-					collectIcon: document.getElementById('collect-icon'),
-					addcart: document.getElementById('add-cart'),
-					buynow: document.getElementById('buy-now'),
-					integral_change:document.getElementById('integral-change')
-				};
-				h.goods = {};
-				h.scrollMenu = true;
-				h.ajaxGetData = function() {
-					$.ajax(h.apiurl, {
-						data: {
-							m: 'goods_info',
-							goods_id: h.goods.goods_id,
-							token:myStorage.getItem('token')
-						},
-						type: 'post',
-						dataType: 'json',
-						timeout: 60000,
-						success: function(ret) {
-							if(ret.code == 0) {
+			var honey={
+				lastId:0,
+				ctype:1,
+				loadStatus:false,
+				d:{
+					attrExpress:document.getElementById('attr-express'),
+					id:document.getElementById('goods-id'),
+					buyNum:document.getElementById('buy-num'),
+					share:document.getElementById('share'),
+					param:document.getElementById('param'),
+					title:document.getElementById('goods_title'),//标题
+					price:document.getElementById('shop_price'),//价格
+					m_price:document.getElementById('market_price'),//市场价格
+					spec:document.getElementById('spec'),//规格属性
+					store:document.getElementById('store'),
+					saleNum:document.getElementById('sale_num'),
+					giveIntegral:document.getElementById('give_integral'),
+					table:document.getElementById('goods-attr-table'),
+					topSpan:document.getElementById('header').querySelectorAll('span'),
+					topMenu:document.getElementById('header').querySelectorAll('span')[0],
+					ctype:document.getElementsByClassName('ctype'),
+					evaluate:document.getElementById('evaluate'),
+					evaluateList:document.getElementById('evaluate-list'),
+//					evaluateMore:document.getElementById('evaluate-more'),
+					header:document.getElementById('header'),
+					remark:document.getElementById('remark'),
+					goodsContent:document.getElementById('goods-content'),
+					content:document.getElementById('content-text'),
+					noContent:document.getElementById('no-content'),
+					noContentTxt:document.getElementById('no-content-text'),
+					detailcontent:document.getElementById('detailcontent'),
+					collect:document.getElementById('collect'),
+					consult:document.getElementById('consult'),
+					collectIcon:document.getElementById('collect-icon'),
+					addcart:document.getElementById('add-cart'),
+					buynow:document.getElementById('buy-now')
+				},
+				goods:{},
+				scrollMenu:true,
+				ajaxGetData:function(){
+					mui.ajax(apiurl,{
+						data:{m:'goods_info',goods_id:honey.goods.goods_id},
+						type:'post',
+						dataType:'json',
+						timeout:60000,
+						success:function(ret){ 
+							if(ret.code==0){
 								//初始化显示
-								h.d.noContent.setAttribute('style', 'display:none')
-								h.d.header.setAttribute('style', '')
-								h.d.detailcontent.setAttribute('style', '')
-								var data = ret.data;
+								honey.d.noContent.setAttribute('style','display:none')
+								honey.d.header.setAttribute('style','')
+								honey.d.detailcontent.setAttribute('style','')
+								var data=ret.data;
 								//标题
-								h.d.title.innerText = h.goods.name = data.base.goods_name;
-								//goods_sn
-								h.goods.goods_sn = data.base.goods_sn;
-								h.goods.sku = data.base.sku;
-								h.goods.exchange_integral = data.base.exchange_integral;
+								honey.d.title.innerText=honey.goods.name=data.base.goods_name;
 								//收藏
-								data.base.collerct == 1 && h.collectCallBack(1)
+								data.collect==1&&honey.collectCallBack(1)
 								//商品图片
-								var img = [{
-									src: h.apihost + data.base.original_img
-								}];
-								$.each(data.images, function(i, v) {
-									if(v.image_url != data.base.original_img) {
-										img.push({
-											src: h.apihost + v.image_url
-										})
-									} else {
-										h.goods.img = h.apihost + '/public/upload/goods/thumb/' + h.goods.goods_id +
-											'/goods_sub_thumb_' + v.img_id + '_150_150.jpg';
+								var img=[{src:apihost+data.base.original_img}];
+								mui.each(data.images, function(i,v) {
+									if(v.image_url!=data.base.original_img){
+										img.push({src:apihost+v.image_url})
 									}
 								});
-								h.imageSliderView.setImages(img)
-								h.imageSliderView.show()
+								honey.imageSliderView.setImages(img)
+								honey.imageSliderView.show()
 								//是否有规格属性
-								if(data.spec) {
-									h.spec_item = [];
-									h.goods.spec_name = [];
-									var price_key = [];
-									var spec_html = [];
-									$.each(data.spec, function(i, v) {
-										var html = [];
-										for(var j = 0; j < data.spec[i].length; j++) {
-											var v = data.spec[i][j];
-											v['spec'] = i;
-											h.spec_item.push(v)
-											if(j == 0) {
+								if(data.spec){
+									honey.spec_item=[];
+									var price_key=[];
+									var spec_html=[];
+									mui.each(data.spec, function(i,v) {
+										var html=[];
+										for(var j=0;j<data.spec[i].length;j++){
+											var v=data.spec[i][j];
+											honey.spec_item.push(v)
+											if(j==0){
 												price_key.push(v.item_id)
-												h.goods.spec_name.push(i + ':' + v.item)
 											}
-											html.push('<button type="button" item_id="' + v.item_id + '" class="mui-btn' + (j == 0 ? ' mui-btn-active' : '') + '">' + v.item + '</button>');
+											html.push('<button type="button" item_id="'+v.item_id+'" class="mui-btn'+(j==0?' mui-btn-active':'')+'">'+v.item+'</button>');
 										}
-										spec_html.push('<p class="goods_spec"><span>' + i + '</span>' + html.join('') + '</p>')
+										spec_html.push('<p class="goods_spec"><span>'+i+'</span>'+html.join('')+'</p>')
 									});
-									var k = h.goods.spec_key = price_key.length > 1 ? price_key.join('_') : price_key[0];
-									h.spec_price = data.spec_price;
-									h.d.price.innerText = h.goods.price = h.spec_price[k].price; //价格
-									h.d.store.innerText = h.goods.store = h.spec_price[k].store_count; //库存
-									h.d.spec.innerHTML = spec_html.join('');
-									h.d.spec.setAttribute('style', '')
-								} else {
-									h.d.spec.setAttribute('style', 'display:none')
-									h.d.price.innerText = h.goods.price = data.base.shop_price;
-									h.d.store.innerText = h.goods.store = data.base.store_count;
+									var k=price_key.length>1?price_key.join('_'):price_key[0];
+									honey.spec_price=data.spec_price;
+									honey.d.price.innerText=honey.goods.price=honey.spec_price[k].price;//价格
+									honey.d.store.innerText=honey.goods.store=honey.spec_price[k].store_count;//库存
+									honey.d.spec.innerHTML=spec_html.join('');
+									honey.d.spec.setAttribute('style','')
+								}else{
+									honey.d.spec.setAttribute('style','display:none')
+									honey.d.price.innerText=honey.goods.price=data.base.shop_price;
+									honey.d.store.innerText=honey.goods.store=data.base.store_count;
 								}
-								if(h.goods.store == 0) {
-									h.d.buyNum.value = 0
+								if(honey.goods.store==0){
+									honey.d.buyNum.value=0
 								}
 								//销量
-								h.d.saleNum.innerText = data.base.sale_num;
+								honey.d.saleNum.innerText=data.base.sale_num;
 								//积分
-								h.d.giveIntegral.innerText = data.base.give_integral;
-								h.d.integral_change.innerText=data.base.exchange_integral;
+								honey.d.giveIntegral.innerText=data.base.give_integral;
 								//产品参数
-								var goodsAttr = [];
-								$.each(data.attr, function(i, v) {
-									goodsAttr.push('<tr><td>' + v.attr_name + '</td><td>' + v.attr_value + '</td></tr>');
+								var goodsAttr=[];
+								mui.each(data.attr,function(i,v){
+									goodsAttr.push('<tr><td>'+v.attr_name+'</td><td>'+v.attr_value+'</td></tr>');
 								})
-								h.d.table.innerHTML = goodsAttr.join('');
+								honey.d.table.innerHTML=goodsAttr.join('');
 								//评价
-								$.each(h.d.ctype, function(i, v) {
-									var num = data.comment ? data.comment['c' + i] : 0
-									v.innerText = num;
-									//									v.setAttribute('num',num)
+								mui.each(honey.d.ctype, function(i,v) {
+									var num=data.comment?data.comment['c'+i]:0
+									v.innerText=num;
+//									v.setAttribute('num',num)
 								});
-								//								if(data.comment){
-								//									h.commentMore=true;
-								//									h.d.evaluateMore.innerText="查看全部评价";
-								//									data.comment.statistics&&(h.d.c0.innerText=data.comment.statistics.c0);
-								//									data.comment.list&&showCommentList(data.comment.list,'evaluate-list',1);
-								//								}else{
-								//									h.commentMore=false;
-								//									h.d.c0.innerText=0;
-								//									h.d.evaluateMore.innerText="此商品暂无评价";
-								//								}
+//								if(data.comment){
+//									honey.commentMore=true;
+//									honey.d.evaluateMore.innerText="查看全部评价";
+//									data.comment.statistics&&(honey.d.c0.innerText=data.comment.statistics.c0);
+//									data.comment.list&&showCommentList(data.comment.list,'evaluate-list',1);
+//								}else{
+//									honey.commentMore=false;
+//									honey.d.c0.innerText=0;
+//									honey.d.evaluateMore.innerText="此商品暂无评价";
+//								}
 								//简介
-								h.d.remark.innerText = data.base.goods_remark;
+								honey.d.remark.innerText=data.base.goods_remark;
 								//详情
-								data.base.goods_content = h.escape2Html(data.base.goods_content)
-								h.d.content.innerHTML = data.base.goods_content;
-								var img = h.d.content.querySelectorAll('img');
-								if(img.length > 0) {
-									$.each(img, function(i, v) {
-										var s = h.apihost + v.getAttribute('src')
-										v.setAttribute('src', s)
-										v.setAttribute('data-preview-src', s)
-										v.setAttribute('data-preview-group', 'content');
+								data.base.goods_content=escape2Html(data.base.goods_content)
+								honey.d.content.innerHTML=data.base.goods_content;
+								var img=honey.d.content.querySelectorAll('img');
+								if(img.length>0){
+									mui.each(img, function(i,v) {
+										var s=apihost+v.getAttribute('src')
+										v.setAttribute('src',s)
+										v.setAttribute('data-preview-src',s)
+										v.setAttribute('data-preview-group','content');
 									});
-									$('#content-text').off('tap', 'img').on('tap', 'img', function() {
+									mui('#content-text').off('tap','img').on('tap','img',function(){
 										mui.previewImage()
 									})
 								}
-								setTimeout(h.ajaxGetComment, 10)
-							} else if(ret.code == 2) { //商品不存在或以下架
-								h.getDataFailed()
+								setTimeout(ajaxGetData,10)
+							}else if(ret.code==2){//商品不存在或以下架
+								honey.getDataFailed()
 							}
 						},
-						error: function(ret) {
+						error:function(ret){
 							alert(JSON.stringify(ret))
-							h.getDataFailed(1)
+							honey.getDataFailed(1)
+						} 
+					})
+				},
+				getDataFailed:function(err){
+					honey.d.noContentTxt.innerText=err==1?"很抱歉,网络不给力,请检查网络!":"很抱歉,此商品已下架或不存在!";
+					honey.d.noContent.setAttribute('style','')
+					honey.imageSliderView.hide()
+					honey.d.header.setAttribute('style','display: none;')
+					honey.d.detailcontent.setAttribute('style','display: none;')
+				},
+				collectCallBack:function(is_true){
+					honey.d.collectIcon.setAttribute('class',is_true?'mui-icon mui-icon-star-filled has-collect':'mui-icon mui-icon-star')
+				},
+			};
+			function ajaxGetData(){
+				if(honey.loadStatus){
+					return false;
+				}
+				if(!honey.content){
+					honey.content=mui('#detailcontent')
+				}
+				if(honey.goods.goods_id){
+					honey.loadStatus=true;
+					mui.ajax(apiurl,{
+						data:{
+							m:'goods_comments_list',
+							goods_id:honey.goods.goods_id,
+							last_id:honey.lastId,
+							ctype:honey.ctype,
+						},
+						type:'post',
+						dataType:'json',
+						timeout:60000,
+						success:function(ret){
+							honey.loadStatus=false;
+							if(ret.code==0){
+								if(honey.lastId==0){
+									honey.d.evaluateList.innerHTML='';
+								}
+								ret.data.statistics&&(honey.d.c0.innerText=ret.data.statistics.c0);
+								showCommentList(ret.list,'evaluate-list',1);
+							}
+							honey.content.pullRefresh().endPullupToRefresh((!ret.list ||(ret.list&&ret.list.length<5)))
+						},
+						error:function(ret){
+//							alert(JSON.stringify(ret))
 						}
 					})
-				}
-				h.getDataFailed = function(err) {
-					h.d.noContentTxt.innerText = err == 1 ? "很抱歉,网络不给力,请检查网络!" : "很抱歉,此商品已下架或不存在!";
-					h.d.noContent.setAttribute('style', '')
-					h.imageSliderView.hide()
-					h.d.header.setAttribute('style', 'display: none;')
-					h.d.detailcontent.setAttribute('style', 'display: none;')
-				}
-				h.collectCallBack = function(is_true) {
-					h.d.collectIcon.setAttribute('class', is_true ? 'mui-icon mui-icon-star-filled has-collect' : 'mui-icon mui-icon-star')
-				}
-				h.ajaxGetComment = function() {
-					if(h.loadStatus) {
-						return false;
-					}
-					if(!h.content) {
-						h.content = mui('#detailcontent')
-					}
-					if(h.goods.goods_id) {
-						h.loadStatus = true;
-						$.ajax(h.apiurl, {
-							data: {
-								m: 'goods_comments_list',
-								goods_id: h.goods.goods_id,
-								last_id: h.lastId,
-								ctype: h.ctype,
-							},
-							type: 'post',
-							dataType: 'json',
-							timeout: 60000,
-							success: function(ret) {
-								h.loadStatus = false;
-								if(ret.code == 0) {
-									if(h.lastId == 0) {
-										h.d.evaluateList.innerHTML = '';
-									}
-									ret.data.statistics && (h.d.c0.innerText = ret.data.statistics.c0);
-									h.showCommentList(ret.list, 'evaluate-list', 1);
-								}
-								h.content.pullRefresh().endPullupToRefresh((!ret.list || (ret.list && ret.list.length < 5)))
-							},
-							error: function(ret) {
-								//							alert(JSON.stringify(ret))
-							}
-						})
-					} else {
-						h.content.pullRefresh().endPullupToRefresh()
-					}
-				}
-
-				return h;
-			}(honey, window, mui))
-			mui.plusReady(function() {
-				var originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
-				window.onresize = function() {
-					//软键盘弹起与隐藏  都会引起窗口的高度发生变化
-					var resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
-					if(resizeHeight * 1 < originalHeight * 1) { //resizeHeight<originalHeight证明窗口被挤压了
-						plus.webview.currentWebview().setStyle({
-							height: originalHeight
-						});
-					}
+				}else{
+					honey.content.pullRefresh().endPullupToRefresh()
 				}
 				
-				honey.token = honey.getStorage('token')
-				if(!honey.detailSubpage) {
-					honey.detailSubpage = plus.webview.currentWebview();
+			}
+			mui.plusReady(function(){
+				honey.token=getStorage('token')
+				if(!honey.detailSubpage){
+					honey.detailSubpage=plus.webview.currentWebview();
 				}
-
+				
 				/**
 				 * 分享事件
 				 */
-				honey.d.share.addEventListener('tap', function() {
-					honey.mySrcollTo('evaluate', 1, 1)
+				honey.d.share.addEventListener('tap',function(){
+					mySrcollTo('evaluate',1,1)
 				})
-
+				
 				/**
 				 * 查看更多评论
 				 */
-				mui('.statistics').on('tap', 'span', function() {
-					var ctype = this.getAttribute('ctype')
-					var num = this.querySelector('font').innerText;
-					if(ctype != honey.ctype && num > 0) {
-						honey.ctype = ctype;
-						//						honey.d.evaluateList.innerHTML='';
+				mui('.statistics').on('tap','span',function(){
+					var ctype=this.getAttribute('ctype')
+					var num=this.querySelector('font').innerText;
+					if(ctype!=honey.ctype && num>0){
+						honey.ctype=ctype;
+//						honey.d.evaluateList.innerHTML='';
 						honey.content.pullRefresh().refresh(true);
-						honey.lastId = 0;
-						honey.ajaxGetData()
-					} else {
-						honey.d.evaluateList.innerHTML = '';
+						honey.lastId=0;
+						ajaxGetData()
+					}else{
+						honey.d.evaluateList.innerHTML='';
 						honey.content.pullRefresh().endPullupToRefresh(1)
 					}
 				})
 				/**
 				 * 收藏商品
 				 */
-				honey.d.collect.addEventListener('tap', function(e) {
-					if(!honey.token) {
-						honey.token = myStorage.getItem('token')
-						if(!honey.token) {
-							openWin('../mine/login.html', 'login')
+				honey.d.collect.addEventListener('tap',function(e){
+					if(!honey.token){
+						honey.token=getStorage('token')
+						if(!honey.token){
+							openWin('../mine/login.html','login')
 							e.stopPropagation();
 						}
 						return
 					}
-					mui.ajax(honey.apiurl, {
-						data: {
-							m: 'collect_goods',
-							goods_id: honey.goods.goods_id,
-							token: honey.token
-						},
-						type: 'post',
-						dataType: 'json',
-						timeout: 60000,
-						success: function(ret) {
+					mui.ajax(apiurl,{
+						data:{m:'collect_goods',goods_id:honey.goods.goods_id,token:honey.token},
+						type:'post',
+						dataType:'json',
+						timeout:60000,
+						success:function(ret){
 							mui.toast(ret.msg)
-							if(ret.code == 0) {
-								honey.collectCallBack(ret.type == 1)
+							if(ret.code==0){
+								honey.collectCallBack(ret.type==1)
 							}
 						},
-						error: function(ret) {
-							//							alert(JSON.stringify(ret))
-							//							mui.toast('失败')
+						error:function(ret){
+//							alert(JSON.stringify(ret))
+//							mui.toast('失败')
 						}
 					})
 				})
-
+				
 				/**
 				 * 头部菜单事件
 				 */
-				mui('#header').on('tap', 'span', function() {
-					honey.d.topMenu.className = '';
-					this.className = "active";
-					honey.d.topMenu = this;
-					var index = this.getAttribute('index');
-					switch(index) {
-						case '1': //回到顶部
-							honey.mySrcollTo()
+				mui('#header').on('tap','span',function(){
+					honey.d.topMenu.className='';
+					this.className="active";
+					honey.d.topMenu=this;
+					var index=this.getAttribute('index');
+					switch(index){
+						case '1'://回到顶部
+							mySrcollTo()
 							break;
-						case '2': //详情
-							honey.mySrcollTo('goods-content')
+						case '2'://详情
+							mySrcollTo('goods-content')
 							break;
-						case '3': //评论
-							honey.mySrcollTo('evaluate')
+						case '3'://评论
+							mySrcollTo('evaluate')
 							break;
 					}
 				})
-
+				
 				/**
 				 * 选择规格事件
 				 */
-				mui('.choose-type').on('tap', '.mui-btn', function() {
+				mui('.choose-type').on('tap','.mui-btn',function(){
 					//判断是否已选择
-					if(!this.hasClass('mui-btn-active')) {
-						var p = this.parentElement.querySelectorAll('.mui-btn-active')[0];
+					if(!this.hasClass('mui-btn-active')){
+						var p=this.parentElement.querySelectorAll('.mui-btn-active')[0];
 						this.classList.add('mui-btn-active')
 						p.classList.remove('mui-btn-active')
-						var btn = mui('.mui-btn-active');
-						var price_key = [];
-						honey.goods.spec_name = [];
-						mui.each(btn, function(i, v) {
-							var id = v.getAttribute('item_id');
-							price_key.push(id)
-							for(var j = 0; j < honey.spec_item.length; j++) {
-								if(honey.spec_item[j].item_id == id) {
-									honey.goods.spec_name.push(honey.spec_item[j].spec + ':' + honey.spec_item[j].item)
-								}
-							}
-							//							honey.goods.spec_name.push(v.innerText)
+						var btn=mui('.mui-btn-active');
+						var price_key=[];
+						honey.goods.spec_name=[];
+						mui.each(btn, function(i,v) {
+							price_key.push(v.getAttribute('item_id'))
+							honey.goods.spec_name.push(v.innerText)
 						});
-						var k = price_key.length > 1 ? price_key.join('_') : price_key[0];
-						honey.goods.spec_key = k; //套餐
-						honey.goods.price = honey.spec_price[k].price; //价格
-						honey.goods.store = honey.spec_price[k].store_count; //库存
-						honey.d.price.innerText = honey.goods.price;
-						honey.d.store.innerText = honey.goods.store;
-						if(honey.d.buyNum.value < honey.goods.store) {
-							honey.d.buyNum.value == 0 && (honey.d.buyNum.value = 1);
-						} else {
-							honey.d.buyNum.value = honey.goods.store;
+						var k=price_key.length>1?price_key.join('_'):price_key[0];
+						honey.goods.spec_key=k;//套餐
+						honey.goods.price=honey.spec_price[k].price;//价格
+						honey.goods.store=honey.spec_price[k].store_count;//库存
+						honey.d.price.innerText=honey.goods.price;
+						honey.d.store.innerText=honey.goods.store;
+						if(honey.d.buyNum.value<honey.goods.store){
+							honey.d.buyNum.value==0&&(honey.d.buyNum.value=1);
+						}else{
+							honey.d.buyNum.value=honey.goods.store;
 						}
 					}
 				})
-
+				
 				/**
 				 * 选择数量事件
 				 */
-				honey.d.buyNum.addEventListener('change', function() {
-					if(this.value < 1) {
-						this.value = 1
+				honey.d.buyNum.addEventListener('change',function(){
+					if(this.value<1){
+						this.value=1
 					}
-					if(this.value > honey.goods.store) {
-						this.value = honey.goods.store
-						if(honey.goods.store == 0) {
+					if(this.value>honey.goods.store){
+						this.value=honey.goods.store
+						if(honey.goods.store==0){
 							mui.toast('该商品已售罄')
 						}
 					}
 				})
-				/**
-				 * 显示服务
-				 */
-				honey.d.attrExpress.addEventListener('tap', function() {
+				
+				honey.d.attrExpress.addEventListener('tap',function(){
 					plus.webview.currentWebview().setStyle({
 						mask: "rgba(0,0,0,0.5)"
 					});
-					if(!honey.servicePage) {
-						honey.servicePage = plus.webview.getWebviewById('service');
+					if(!honey.servicePage){
+						honey.servicePage=plus.webview.getWebviewById('service');
 					}
-					honey.servicePage.show('slide-in-bottom', 300)
+					honey.servicePage.show('slide-in-bottom',300)
 				})
 				/**
 				 * 监听关闭商品详情事件
 				 */
-				window.addEventListener('closeDetail', function() {
+				window.addEventListener('closeDetail',function(){ 
 					mui.previewImage().close();
 				})
-
+				
 				/**
 				 * 显示商品事件
 				 */
-				window.addEventListener('showGoods', function(o) {
-					honey.goods = {};
-					honey.goods.goods_id = o.detail.goods_id;
-					honey.lastId = 0;
+				window.addEventListener('showGoods',function(o){
+					honey.goods={};
+					honey.goods.goods_id=o.detail.goods_id;
+					honey.lastId=0;
 					honey.content.pullRefresh().refresh(true);
-					if(!honey.goodsDetail) {
-						honey.goodsDetail = plus.webview.currentWebview();
+					if(!honey.goodsDetail){
+						honey.goodsDetail=plus.webview.currentWebview();
 					}
 					honey.goodsDetail.setStyle({
 						mask: "none"
 					})
-					if(!honey.imageSliderView) {
-						var data = {
-							top: '0px',
-							left: '0px',
-							height: '220px',
-							width: '100%',
-							position: 'static',
-							images: [{
-								src: '../images/default.png'
-							}]
+					if(!honey.imageSliderView){
+						var data={
+							top:'0px',
+							left:'0px',
+							height:'220px',
+							width:'100%',
+							position:'static',
+							images:[{src:'../images/default.png'}]
 						};
-						honey.imageSliderView = new plus.nativeObj.ImageSlider('test', data);
+						honey.imageSliderView = new plus.nativeObj.ImageSlider('test',data);
 						honey.goodsDetail.append(honey.imageSliderView);
-					} else {
-						honey.imageSliderView.setImages([{
-							src: '../images/default.png'
-						}]);
+					}else{
+						honey.imageSliderView.setImages([{src:'../images/default.png'}]);
 					}
-					honey.mySrcollTo()
-					honey.d.evaluateList.innerHTML = '';
-					honey.d.content.innerHTML = '';
-					honey.d.buyNum.value = 1;
+					mySrcollTo()
+					honey.d.evaluateList.innerHTML='';
+					honey.d.content.innerHTML='';
+					honey.d.buyNum.value=1;
 					honey.collectCallBack()
 					honey.ajaxGetData()
 					honey.goodsDetail.show()
 				})
-
+				
 				/**
 				 * 滚动事件
 				 */
-				document.addEventListener('scroll', function() {
-					if(honey.scrollMenu) {
-						honey.scrollMenu = false;
-						var h1 = window.innerHeight;
-						var h = document.body.scrollTop + 220;
-						var s1 = honey.d.goodsContent.offsetTop;
-						var s2 = honey.d.evaluate.offsetTop;
-						var i = 0;
-						if(h >= s2) {
-							i = 2;
-						} else if(h >= s1) {
-							i = 1;
+				document.addEventListener('scroll',function(){
+					if(honey.scrollMenu){
+						honey.scrollMenu=false;
+						var h1=window.innerHeight;
+						var h=document.body.scrollTop+220;
+						var s1=honey.d.goodsContent.offsetTop;
+						var s2=honey.d.evaluate.offsetTop;
+						var i=0;
+						if(h>=s2){
+							i=2;
+						}else if(h>=s1){
+							i=1;
 						}
-						honey.d.topMenu.className = '';
-						honey.d.topMenu = honey.d.topSpan[i];
-						honey.d.topMenu.className = "active";
-						if((h + 220) > h1) {
-							honey.d.header.setAttribute('style', '')
-						} else {
-							honey.d.header.setAttribute('style', 'display:none')
+						honey.d.topMenu.className='';
+						honey.d.topMenu=honey.d.topSpan[i];
+						honey.d.topMenu.className="active";
+						if((h+220)>h1){
+							honey.d.header.setAttribute('style','')
+						}else{
+							honey.d.header.setAttribute('style','display:none')
 						}
-						setTimeout(function() {
-							honey.scrollMenu = true;
-						}, 200)
+						setTimeout(function(){
+							honey.scrollMenu=true;
+						},200)
 					}
 				})
-				//				myStorage.removeItem('cart')
-				/**
-				 * 加入购物车
-				 */
-				honey.d.addcart.addEventListener('tap', function() {
-					honey.goods.num = parseInt(honey.d.buyNum.value);
+				honey.d.addcart.addEventListener('tap',function(){
+//					alert(JSON.stringify(honey.spec_item))
 					//获取已经选择的商品
-					if(honey.goods.store > 0 && honey.goods.num > 0) {
-						var cart = [];
-						var cart_goods = myStorage.getItem('cart');
-						var isAdd = false;
-						if(cart_goods) {
-							for(var i = 0; i < cart_goods.length; i++) {
-								if(cart_goods[i].goods_id == honey.goods.goods_id) {
-									//判断是否有规格
-									if((!honey.goods.spec_key && !cart_goods[i].spec_key) ||
-										(honey.goods.spec_key && cart_goods[i].spec_key == honey.goods.spec_key)) {
-										//规格一样，只增加数量
-										if(honey.goods.num + cart_goods[i].num <= honey.goods.store) {
-											cart_goods[i].num = honey.goods.num + cart_goods[i].num;
-											isAdd = true;
-											break;
-										} else {
-											mui.toast('购物车商品数量已达到库存上限')
-											return
-										}
-									}
-								}
-							}
-							//不同商品或不同规格直接增加
-							if(!isAdd) {
-								cart_goods.push(honey.goods)
-							}
-							//重新写入购物车
-							myStorage.setItem('cart', cart_goods)
-						} else {
-							cart.push(honey.goods);
-							myStorage.setItem('cart', cart)
-						}
-						mui.toast('加入购物车成功')
-					} else {
-						mui.toast('该商品已售罄')
+					alert(JSON.stringify(honey.goods))
+					if(honey.goods.spec_name){
+						alert('yea')
 					}
 				})
 			})
+			
+			
 		</script>
 	</body>
 
