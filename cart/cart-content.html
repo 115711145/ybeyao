@@ -392,11 +392,11 @@
 	         * 结算
 	         */
 	        honey.d.jiesuan.addEventListener('tap',function(){
-	        	if(honey.cart.length==0){
+	        	if(!honey.cart || honey.cart.length==0){
 	        		mui.toast('购物车暂无商品')
 	        		return
 	        	}
-	        	if(honey.jsGoods.length==0){
+	        	if(!honey.jsGoods || honey.jsGoods.length==0){
 	        		mui.toast('您没有选择结算的商品')
 	        		return 
 	        	}
