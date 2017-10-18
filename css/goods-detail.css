@@ -103,6 +103,9 @@ p {
 .goods-attr .goods-price-two span {
 	text-decoration: line-through;
 }
+/*.goods-attr .goods-price.integral-change span{
+	color: #ff6633;
+}*/
 
 .express p {
 	margin: 0;
@@ -536,5 +539,3 @@ p {
 .has-collect:before{
 	color: #ff6633;
 }
-
-

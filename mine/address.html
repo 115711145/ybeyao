@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的地址</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+</head>
+<style>
+	ul,li{
+		padding: 0;
+		margin: 0;
+	}
+	li{
+		list-style: none;
+	}
+	.address-list li{
+		padding: 5px 0 5px 0;
+		margin-top:10px ;
+		background: #fff;
+		line-height: 30px;
+		position: relative;
+	}
+	.address-list li p{
+		padding: 0 10px;
+		color: #333;
+	}
+	.address-list li:first-child{
+		margin-top: 0;
+	}
+	.address-list .no-address{
+		text-align: center;
+		color: #333;
+		background: none !important;
+		padding: 20px 10px !important;
+		font-size: 14px;
+	}
+	.add-btn{
+		background: #41CEA9;
+		height: 51px;
+		color: #fff;
+		line-height: 51px;
+		text-align: center;
+	}
+	.fr{
+		float: right;
+	}
+	.fl{
+		float: left;
+	}
+	.address-list p{
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		width: 100%;
+	}
+	.address-list .name{
+		text-align: center;
+	}
+	.address-list .phone{
+		text-align: center;
+	}
+	.address-list .detail{
+		line-height: 20px;
+	}
+	.address-list li .pro-btn{
+		border-top: 1px solid #ddd;
+		line-height: 25px;		
+		height: 25px;
+		font-size: 14px;
+		padding: 5px 10px;
+	}
+	.address-list li .pro-btn img{
+		float: left;
+	}
+	.pro-btn .right-btn{
+		float: right;
+	}
+	.pro-btn .right-btn font{
+		padding: 2px 5px;
+		margin: 0 5px;
+	}
+</style>
+<body>
+	
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">我的地址</h1>
+	</header>
+	<div class="mui-content">
+		<ul class="address-list" id="address-list">
+			<div class="loader">
+				<a>
+					<span class="mui-spinner"></span>
+				</a>
+				<br />
+				<span>加载中...</span>
+			</div>
+			<!--<li>
+				<p class="title"><span class="fl name">张三</span><span class="fr phone">15012345678</span></p>
+				<p class="detail">江西省赣州市金岭路152号江西省赣州市金岭路152号江西省赣州市金岭路152号江西省赣州市金岭路152号</p>
+				<p class="pro-btn">
+					 <span class="default-btn" checked="1" is_default="1">
+					 	默认地址
+					 	<img src="../images/checked.png" width="25" />
+					 </span>
+					 <span class="right-btn"><font>编辑</font><font>删除</font></span>
+				</p>
+			</li>
+			<li>
+				<p class="title"><span class="fl name">张三</span><span class="fr phone">15012345678</span></p>
+				<p class="detail">江西省赣州市金岭路152号江西省赣州市金岭路152号江西省赣州市金岭路152号江西省赣州市金岭路152号</p>
+				<p class="pro-btn">
+					 <span class="default-btn">
+					 	设为默认
+					 	<img src="../images/checked.png" width="25" />
+					 </span>
+					 <span class="right-btn"><font>编辑</font><font>删除</font></span>
+				</p>
+			</li>-->
+			<!--<li class="no-address">
+				未添加收货地址
+			</li>-->
+		</ul>
+	</div>
+	<nav class="mui-bar mui-bar-tab footer-bar">
+		<div class="add-btn" id="add-btn">
+			<span class="submit-btn">+添加地址</span>
+		</div>
+	</nav>
+	<script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/common.js" charset="UTF-8"></script>
+	<script src="../js/city.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+		(function(win,h,$){
+			h.d={
+				add:document.getElementById('add-btn'),
+				address_list:document.getElementById('address-list')
+			}
+			
+			$.plusReady(function(){
+				$.back=function(){
+					plus.webview.currentWebview().close('slide-out-right')
+				}
+				h.cityData=JSON.parse(cityData);
+				h.showAddressList=function(data){
+					if(data&&data.length>0){
+						var html=[]
+						$.each(data, function(i,v) {
+							var address=h.getAddressText(v,h.cityData)+v.address;
+							var src='../images/checked'+(v.is_default==1?"":"-no")+'.png';
+							html.push('<li address_id="'+v.address_id+'"><p class="title"><span class="fl name">'+v.consignee+'</span><span class="fr phone">'+v.mobile+'</span></p>\
+								<p class="detail">'+address+'</p>\
+								<p class="pro-btn">\
+									 <span '+(v.is_default==1?'class="default-btn">默认地址':'class="default-btn set-default">设为默认')+'<img src="'+src+'" width="25" /></span>\
+									 <span class="right-btn"><font class="edit">编辑</font><font class="del">删除</font></span>\
+								</p></li>');
+						});
+						h.d.address_list.innerHTML=html.join('')
+					}else{
+						h.d.address_list.innerHTML='<li class="no-address">未添加收货地址</li>';
+					}
+				}
+				h.getAddressList=function(){
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						dataType:'json',
+						data:{
+							m:'address_list',
+							token:myStorage.getItem('token')
+						},
+						success:function(ret){
+							if(ret.code==0){
+								h.address_list=ret.data;
+								h.showAddressList(ret.data)
+							}
+						},
+					});
+				}
+				h.getAddressList()
+				$('.address-list').on('tap','.set-default',function(){
+					var id=this.parentElement.parentElement.getAttribute('address_id')
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						dataType:'json',
+						data:{
+							m:'default_address',
+							token:myStorage.getItem('token'),
+							address_id:id
+						},
+						success:function(ret){
+							if(ret.code==0){
+								for(var i=0;i<h.address_list.length;i++){
+									if(h.address_list[i].address_id==id){
+										h.address_list[i].is_default=1;
+									}else{
+										h.address_list[i].is_default=0;
+									}
+								}
+								h.showAddressList(h.address_list)
+							}
+						},
+						error:function(ret){
+							alert(JSON.stringify(ret))
+						}
+					});
+				})
+				
+				win.addEventListener('reloadList',function(){
+					h.getAddressList()
+				},false)
+				
+				/**
+				 * 新增地址
+				 */
+				h.d.add.addEventListener('tap',function(){
+					h.openWin('address-add.html','adress-add')
+				})
+				
+				/**
+				 * 修改地址
+				 */
+				$('#address-list').on('tap','.edit',function(){
+					var id=this.parentElement.parentElement.parentElement.getAttribute('address_id');
+					h.openWin('address-add.html','address-add',{address_id:id})
+				})
+				
+				/**
+				 * 删除地址
+				 */
+				$('#address-list').on('tap','.del',function(){
+					var id=this.parentElement.parentElement.parentElement.getAttribute('address_id');
+					var btnArray = ['否', '是'];
+					mui.confirm('确认删除吗？', '操作提示', btnArray, function(e) {
+						if (e.index == 1) {
+							$.ajax(h.apiurl,{
+								type:"post",
+								async:true,
+								dataType:'json',
+								data:{
+									m:'address_del',
+									token:myStorage.getItem('token'),
+									address_id:id
+								},
+								success:function(ret){
+									if(ret.code==0){
+										$.toast('删除成功')
+										var data=[];
+										for(var i=0;i<h.address_list.length;i++){
+											if(h.address_list[i].address_id==id){
+												continue
+											}else{
+												if(data.length==0){
+													h.address_list[i].is_default=1;
+												}
+												data.push(h.address_list[i])
+											}
+										}
+										h.showAddressList(h.address_list=data)
+									}
+								}
+							});
+						}
+					})
+				})
+				
+			})
+		}(window,honey,mui))
+		
+	</script>
+	
+</body>
+</html>

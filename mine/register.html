@@ -27,11 +27,11 @@
 				</div>
 				<div class="mui-input-row">
 					<label><img src="../images/pwd.png"/></label>
-					<input id="pwd" class="mui-input-clear" type="password" placeholder="6-20位密码" />
+					<input id="pwd" class="mui-input-password" type="password" placeholder="6-20位密码" />
 				</div>
 				<div class="mui-input-row">
 					<label><img src="../images/repwd.png"/></label>
-					<input id="repwd" class="mui-input-clear" type="password" placeholder="确认密码" />
+					<input id="repwd" class="mui-input-password" type="password" placeholder="确认密码" />
 				</div>
 				<div class="codeinput">
 					<div class="mui-input-row check-code">
@@ -82,8 +82,8 @@
 				back:document.getElementById('back')
 			}
 			//获取设备信息和系统信息
-			getSysInfo()
-			getDeviceInfo()
+			honey.getSysInfo()
+			honey.getDeviceInfo()
 			/**
 			 * 监听手机号码输入
 			 */
@@ -142,7 +142,7 @@
 						mui.toast('请输入正确的手机号')
 						return
 					}
-					mui.ajax(apiurl,{
+					mui.ajax(honey.apiurl,{
 						data:{m:'get_register_code',mobile:honey.d.account.value},
 						type:'post',
 						dataType:'json',
@@ -209,8 +209,8 @@
 							localStorage.setItem('token',ret.data.token)
 							//触发登录事件
 							//关闭注册和登录窗口
-							closeWin('login')
-							closeWin('register',1000)
+							honey.closeWin('login')
+							honey.closeWin('register',1000)
 						}else{
 							mui.toast(ret.msg||'注册失败')
 						}

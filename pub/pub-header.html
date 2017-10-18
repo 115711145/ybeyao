@@ -61,11 +61,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-			<h1 class="mui-title" id="header-title">商品详情</h1>
-			<a id="rightBar" class="mui-icon-extra mui-icon-extra-cart mui-pull-right">
-				
-				
-			</a>
+			<h1 class="mui-title" id="header-title"></h1>
 		</header>
 		<div class="loader">
 			<a>
@@ -85,11 +81,11 @@
 				back:document.getElementById('back')
 			};
 			mui.plusReady(function(){
-				if(!honey.detailSubpage){
-					honey.detailSubpage=plus.webview.getWebviewById('goods-detail');
+				if(!honey.contentPage){
+					honey.contentPage=plus.webview.getWebviewById('pub-content');
 				}
-				if(!honey.goodsHeader){
-					honey.goodsHeader=plus.webview.currentWebview()
+				if(!honey.pubHeader){
+					honey.pubHeader=plus.webview.currentWebview()
 				}
 				if(!honey.indexPage){
 					honey.indexPage=plus.webview.getLaunchWebview();
@@ -100,6 +96,7 @@
 					honey.goodsHeader.hide('slide-out-right')
 				})
 				honey.rightBar.addEventListener('tap',function(){
+					honey.goodsHeader.hide('slide-out-right')
 					 mui.fire(honey.indexPage,'showCart')
 				})
 				window.addEventListener('goodsId',function(o){
