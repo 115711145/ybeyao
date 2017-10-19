@@ -268,7 +268,6 @@
 						success:function(ret){
 							if(ret.code==0){
 								ms.setItem('user',ret.data.user)
-//								ms.setItem('level',ret.data.level)
 								$.each(ret.data.level, function(i,v) {
 									if(parseFloat(ret.data.user.total_amount)>=parseFloat(v.amount)){
 										ret.data.user.level=v
@@ -292,13 +291,13 @@
 					h.d.user_money.innerText=0;
 					h.d.pay_points.innerText=0;
 					h.d.level_name.innerText="游客";
-					h.d.head_pic.setAttribute('src','../images/default.png')
+					h.d.head_pic.setAttribute('src','../images/profile.png')
 				}else{
 					h.d.nickname.innerText=user.nickname;
 					h.d.user_money.innerText=user.user_money;
 					h.d.pay_points.innerText=user.pay_points;
 					h.d.level_name.innerText=user.level.level_name;
-					h.d.head_pic.setAttribute('src',user.head_pic)
+					h.d.head_pic.setAttribute('src',user.head_pic||'../images/profile.png')
 				}
 			}
 			h.logout=function(){

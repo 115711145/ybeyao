@@ -61,7 +61,7 @@
 		.goods-img img {
 		    max-height: 50px;
 		    width: 100%;
-		    margin-top:15px ;
+		    margin-top:5px ;
 		}
 		.sc_list .goods-info {
 		    width: 63%;
@@ -78,12 +78,6 @@
 		    display: -webkit-box;
 		    word-break: break-word;
 		    line-height: 18px;
-		}
-		.sc_list .goods-info .del-btn{
-			font-size: 12px;
-			padding: 3px 8px;
-			float: right;
-			margin-right: 5px;
 		}
 		.sc_list .goods-info p{
 			padding: 2px;
@@ -292,6 +286,42 @@
         	honey.d.amount.innerText='￥'+honey.fmoney(honey.amount);
     	}
     	/**
+		 * 预加载提交订单
+		 */
+		honey.preloadBuyWin = function() {
+			//头部
+			honey.buyHeader = mui.preload({
+				id: 'buy',
+				url: 'buy-header.html',
+				styles: {
+					top: '0px',
+					bottom: '0px',
+				},
+			})
+			honey.buyHeader.hide()
+	
+			//内容
+			honey.buyContent = mui.preload({
+				id: 'buy-content',
+				url: 'buy-content.html',
+				styles: {
+					top: '44px',
+					bottom: 0
+				},
+			})
+			honey.buyContent.hide()
+	
+			honey.buyHeader.addEventListener('hide', function() {
+				honey.buyContent.hide()
+			})
+			
+			honey.buyHeader.addEventListener('show', function() {
+				honey.buyContent.show()
+			})
+	
+			honey.buyHeader.append(honey.buyContent)
+		}
+    	/**
     	 * 修改购物车
     	 * @param {Object} item 当前商品 [goods_id,spec_key,num]
     	 * @param {Object} callBack 回调函数
@@ -323,6 +353,8 @@
     	}
     	
     	mui.plusReady(function(){
+    		//加载提交订单
+			honey.preloadBuyWin()
     		/**
     		 * 删除购物车商品
     		 */
@@ -405,7 +437,7 @@
 	        		return
 	        	}
 	        	if(!honey.buyHeader){
-	        		honey.buyHeader=honey.preloadWin('buy-header.html','buy-header')
+	        		honey.buyContent=plus.webview.getWebviewById('buy');
 	        	}
 	        	if(!honey.buyContent){
 	        		honey.buyContent=plus.webview.getWebviewById('buy-content');

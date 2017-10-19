@@ -57,7 +57,9 @@
 				color: #fff;
 				font-size: 14px;
 			}
-			
+			* {
+				touch-action: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -83,6 +85,7 @@
 				back:document.getElementById('back'),
 				right_rar:document.getElementById('rightBar')
 			};
+			
 			mui.plusReady(function(){
 				honey.right_rar.addEventListener('tap',function(){
 					if(!honey.cartContent){
