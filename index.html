@@ -36,7 +36,6 @@
 		.mui-input-row .mui-input-speech ~ .mui-icon-speech {
 			color: #fff;
 		}
-
    	</style>
 </head>
 <body class="own-gray-color">
@@ -67,10 +66,10 @@
 	<script type="text/javascript" src="js/mui.min.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="js/common.js" charset="UTF-8"></script>
 	<script type="text/javascript" charset="UTF-8">
-		mui.init({
-//			preloadLimit:20
-		})
-		var honey=(function(h,$){
+		(function(win,h,$,d,ms){
+			$.init({
+				preloadLimit:20
+			})
 			h.barItem=['home','category','mine'];
 			h.barWebViews=[];
 			h.contentStyle={top:'45px',bottom:'51px',scrollIndicator:'none'};
@@ -167,36 +166,34 @@
 				}
 			}
 			h.bindBaritem=function(){//绑定菜单事件
-				$('nav').on('tap','a',function(e){
+				$('#footerBar').on('tap','.mui-tab-item',function(e){
 					h.showBarItemPage(this.getAttribute('id'),e)
 				});
 			}
-			return h;
-		}(honey,mui));
-		
-		mui.plusReady(function(){
-			if(!honey.home){
-				honey.home=plus.webview.currentWebview();
-			}
-//			myStorage.removeItem('token')
-			honey.token=myStorage.getItem('token')
-			document.getElementById('footerBar').style.top = (plus.display.resolutionHeight - 51) + "px";
-			honey.initWebViews()
-			honey.preloadDetailView()
-			
-			window.addEventListener('goHome',function(){
-				honey.showBarItemPage('home')
+			$.plusReady(function(){
+				if(!h.home){
+					h.home=plus.webview.currentWebview();
+				}
+	//			myStorage.removeItem('token')
+				h.token=myStorage.getItem('token')
+				d.getElementById('footerBar').style.top = (plus.display.resolutionHeight - 51) + "px";
+				h.initWebViews()
+				h.preloadDetailView()
+				
+				win.addEventListener('goHome',function(){
+					h.showBarItemPage('home')
+				})
+				
+				win.addEventListener('login',function(o){
+					h.token=myStorage.getItem('token')
+					h.showBarItemPage('mine')
+				})
+				
+				win.addEventListener('showCart',function(){
+					h.showBarItemPage('cart')
+				})
 			})
-			
-			window.addEventListener('login',function(o){
-				honey.token=myStorage.getItem('token')
-				honey.showBarItemPage('mine')
-			})
-			
-			window.addEventListener('showCart',function(){
-				honey.showBarItemPage('cart')
-			})
-		})
+		}(window,honey,mui,document,myStorage))
 
 	</script>
 </body>

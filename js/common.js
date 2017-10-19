@@ -598,7 +598,6 @@ var honey = (function(win, $) {
 		h.goodsListHeader.append(h.goodsList)
 	}
 
-
 	/**
 	 * 预加载购物车
 	 */
@@ -635,6 +634,7 @@ var honey = (function(win, $) {
 
 		h.cartHeader.append(h.cartContent)
 	}
+	
 
 	
 	/**
@@ -823,7 +823,7 @@ var honey = (function(win, $) {
 //			newWindow.show('slide-in-right');
 //		}, 10)
 //		return newWindow
-		$.openWindow({
+		return $.openWindow({
 		    url:url,
 		    id:winId,
 		    styles:styles,
@@ -1109,7 +1109,13 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
             return str;
         }
     }
-    
+    /**
+     * 获取地址名称
+     * @param {Object} p 地址对象{province:'',city:'',district:''}
+     * @param {Object} data 地址数组
+     * @param {Object} type 当前类型
+     * @param {Object} tag 地址中间间隔符号
+     */
     h.getAddressText=function(p,data,type,tag){
     	var tag=tag||'';
 		for(var i=0;i<data.length;i++){
@@ -1132,5 +1138,9 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 		}
 		return ''
 	}
+    
+    h.fixFooter=function(id){
+    	document.getElementById(id||'footerBar').style.top = (plus.display.resolutionHeight - 95) + "px";
+    }
 	return h;
 }(window, mui))

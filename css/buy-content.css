@@ -1,0 +1,413 @@
+.mui-content {
+	margin-bottom: 44px;
+}
+
+.sc_list {
+	padding: 0;
+	margin: 5px 0 5px 0px;
+	overflow: hidden;
+	/*border-bottom: 1px solid #f8f8f8;
+		    border-top: 1px solid #f8f8f8;*/
+	background: #fff;
+}
+
+.sc_list li {
+	list-style: none;
+	float: left;
+	width: 100%;
+	padding: 5px 0 5px 10px;
+}
+
+.fl {
+	float: left;
+}
+
+.goods-img {
+	margin-top: 5px;
+	height: 55px;
+	width: 55px;
+	text-align: center;
+}
+
+.goods-img img {
+	height: 50px;
+	width: 50px;
+}
+
+.sc_list .goods-info {
+	width: 60%;
+	padding-left: 5px;
+}
+
+.sc_list .goods-info .title {
+	overflow: hidden;
+	width: 95%;
+	/*white-space: nowrap;*/
+	color: #333;
+	font-size: 14px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-break: break-word;
+	line-height: 18px;
+}
+
+.sc_list .goods-info p {
+	padding: 2px;
+	margin: 0;
+	line-height: 18px;
+}
+
+.fr {
+	float: right;
+}
+
+.weight {
+	font-size: 12px;
+}
+
+.price {
+	color: #ff6633;
+	font-size: 14px;
+}
+
+#amount {
+	color: #ff6633;
+}
+
+.submit-btn {
+	background: #41CEA9;
+	color: #fff;
+	height: 50px;
+	width: 100px;
+	text-align: center;
+	line-height: 50px;
+	display: inline-block;
+	position: relative;
+	top: -1px;
+}
+
+.footer-bar {
+	border-bottom: 1px solid #41CEA9;
+	border-top: 1px solid #41CEA9;
+	color: #333;
+	-webkit-box-shadow: none !important;
+	box-shadow: none;
+}
+
+#cart-empty {
+	text-align: center;
+	margin: 40px 0;
+}
+
+nav.mui-bar:before {
+	border: 0 !important;
+}
+
+.price-num {
+	position: absolute;
+	right: 10px;
+	text-align: right;
+}
+
+.heji {
+	line-height: 50px;
+	width: 50%;
+	text-align: right;
+}
+
+.user-address {
+	padding: 5px 10px;
+	min-height: 60px;
+	background: #fff;
+}
+
+.user-address .user {
+	width: 82%;
+	display: inline-block;
+}
+
+.user-address .icon {
+	width: 15%;
+	display: inline-block;
+	position: absolute;
+	line-height: 55px;
+	text-align: right;
+	color: #999;
+}
+
+.user-address .icon .mui-icon {
+	font-size: 14px;
+}
+
+.user-address p {
+	margin: 5px 0;
+	color: #333;
+	line-height: 18px;
+}
+
+.user-address .name {
+	float: left;
+}
+
+.user-address .phone {
+	text-align: right;
+	float: right;
+}
+
+.user-address .address {
+	float: left;
+}
+
+#no-address {
+	color: #DE5246;
+	line-height: 45px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.amout-list {
+	background: #fff;
+	padding: 10px;
+}
+
+.amout-list p {
+	line-height: 14px;
+	color: #333;
+	border-bottom: 1px dashed #ddd;
+	padding-bottom: 5px;
+}
+
+.amout-list p span {
+	width: 50%;
+	display: inline-block;
+}
+
+.amout-list .price {
+	text-align: right;
+}
+
+.order {
+	margin: 5px 0;
+	background: #fff;
+}
+
+.order p {
+	border-bottom: 1px solid #eee;
+	color: #333;
+	margin: 0;
+	padding: 5px 10px;
+}
+
+.order .mui-icon {
+	float: right;
+	color: #999;
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.order input.number {
+	border: none;
+	width: 50%;
+	padding: 0;
+	height: 25px;
+	font-size: 14px;
+	margin: 0;
+}
+
+#textarea {
+	width: 75%;
+	margin-left: 20%;
+	padding-left: 10px !important;
+	font-size: 14px;
+	padding: 2px 0;
+	border: 0;
+	display: inline-block;
+	height: 40px;
+}
+
+.order span.title {
+	width: 20%;
+	display: inline-block;
+	border-right: 1px dashed #ddd;
+	margin-right: 10px;
+}
+
+#beizhu {
+	position: absolute;
+	width: 19%;
+}
+
+#peisongfs .close-btn {
+	color: #666;
+}
+
+.quan {
+	height: 75px;
+	position: relative;
+	margin: 10px 20px;
+	background: url(../images/quan1.jpg) no-repeat center;
+	background-size: 100%;
+	background-position: 0 97%;
+}
+
+.quan .quan-con {
+	position: relative;
+}
+
+.quan .quan-con .title {
+	width: 65%;
+}
+
+.quan .quan-con .title .number {
+	margin: 15px 0 0 15px;
+}
+
+.quan .quan-con .title .number span {
+	font-size: 12px;
+}
+
+.quan .quan-con .title .number font {
+	font-size: 26px;
+}
+
+.quan .quan-con .title font {
+	font-size: 35px;
+	margin: 5px;
+}
+
+.quan .quan-con .title span {
+	font-size: 14px
+}
+
+.quan .quan-con .title .use-time {
+	font-size: 11px;
+	margin: 5px 0 0 20px;
+	line-height: 16px;
+}
+
+.quan .quan-con .getquan {
+	width: 26%;
+	margin-top: 30px;
+	text-align: center;
+}
+
+.quan .quan-con .getquan p {
+	font-size: 12px;
+	color: #666;
+}
+
+.quan-list {
+	background: #eee;
+	padding: 10px 0;
+}
+
+.no-quan,
+.no-fdbs {
+	text-align: center;
+	color: #666;
+	height: 100px;
+	line-height: 100px;
+}
+
+#quan {
+	position: fixed;
+	width: 100%;
+	background: #fff;
+}
+
+#quan .close-btn,
+#user-address .close-btn,
+#shops-fdbs .close-btn {
+	background: #41CEA9;
+	color: #fff;
+	text-align: center;
+	height: 44px;
+	line-height: 44px;
+}
+
+#quan p {
+	color: #fff;
+}
+
+#quan .getquan p {
+	color: #666;
+}
+
+.mui-scroll-wrapper {
+	top: -300px !important;
+	/*bottom: 51px;*/
+	border-radius: 0 !important;
+}
+
+#quan .mui-scroll-wrapper,
+#user-address .mui-scroll-wrapper,
+#shops-fdbs .mui-scroll-wrapper {
+	margin-bottom: 44px;
+	background: #eee;
+}
+
+#user-address,
+#shops-fdbs {
+	position: fixed;
+	width: 100%;
+}
+
+#user-address .address-list {
+	padding-top: 8px;
+}
+
+.address-list .address-item {
+	background: #fff;
+	margin: 0 0 8px 0;
+	padding: 10px;
+	position: relative;
+}
+
+.address-item .name {
+	width: 50%;
+	float: left;
+}
+
+.address-item .phone {
+	width: 50%;
+	float: right;
+}
+
+.address-item .address {
+	margin-right: 10px;
+	padding-right: 15px;
+}
+
+.address-item .icon {
+	float: right;
+	position: absolute;
+	right: 10px;
+	top: 25px;
+}
+
+.address-item .icon .mui-icon {
+	font-size: 16px;
+}
+
+#fdbs-list {
+	/*padding: 10px;*/
+}
+
+#fdbs-list .fdbs-item:first-child {
+	margin-top: 8px;
+}
+
+#fdbs-list .fdbs-item {
+	margin: 0 0 8px 0;
+	padding: 10px;
+	background: #fff;
+}
+
+#fdbs-list .shop_name {
+	color: #333;
+}
+
+#fdbs-list .shop_address {
+	padding-left: 20px;
+}

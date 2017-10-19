@@ -55,7 +55,6 @@
 			#rightBar{
 				margin-top: 10px;
 			}
-			
 		</style>
 	</head>
 	<body>
@@ -74,14 +73,14 @@
 		<script type="text/javascript">
 			mui.init({
 				swipeBack: false,
-				subpages:[{ 
-				url:'buy-content.html',
-				id:'buy-content',
-				styles:{
-						top: '45px',
-						bottom: '0px', 
-					}
-				}] 
+//				subpages:[{ 
+//				url:'buy-content.html',
+//				id:'buy-content',
+//				styles:{
+//						top: '45px',
+//						bottom: '0px', 
+//					}
+//				}] 
 			});
 			var honey={
 				d:{
@@ -90,6 +89,9 @@
 				}
 			};
 			mui.plusReady(function(){
+				mui.back=function(){
+					plus.webview.currentWebview().hide('slide-out-right')
+				}
 				honey.d.back.addEventListener('click',function(){
 					plus.webview.currentWebview().hide('slide-out-right')
 				})

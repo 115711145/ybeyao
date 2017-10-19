@@ -141,8 +141,15 @@
 			}
 			
 			$.plusReady(function(){
+				h.addressPage=plus.webview.currentWebview();
 				$.back=function(){
-					plus.webview.currentWebview().close('slide-out-right')
+					if(h.addressPage.frompage=='buy-content'){
+						if(!h.buyContent){
+							h.buyContent=plus.webview.getWebviewById('buy-content');
+							$.fire(h.buyContent,'reloadAddress')
+						}
+					}
+					h.addressPage.close('slide-out-right')
 				}
 				h.cityData=JSON.parse(cityData);
 				h.showAddressList=function(data){
