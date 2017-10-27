@@ -344,6 +344,14 @@ p {
 	background: #fff;
 	margin: 5px 0;
 }
+.price-ladder .ladder-list p{
+	border-bottom: 1px solid #eee;
+	padding: 3px 10px;
+	background: #fff;
+}
+.price-ladder font{
+	color: #ff6633;
+}
 
 #buy-number .mui-numbox{
 	position: relative;

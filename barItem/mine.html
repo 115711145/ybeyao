@@ -66,6 +66,7 @@
 			height: 35px;
 			text-align: center;
 			width: 33.3%;
+			height: 45px;
 		}
 		.top-btns li p{
 			margin: 0;
@@ -105,6 +106,7 @@
 		.myorder li p{
 			margin: 0;
 			color: #666;	
+			font-size: 12px;
 		}
 		.myorder li p:last-child{
 			padding-left:5px ;
@@ -164,66 +166,66 @@
 		<div class="center myorder">
 				<p class="title"><span class="fl">我的订单</span><span class="mui-icon mui-icon-arrowright fr"></span></p>
 				<ul>
-					<li>
+					<li type="WAITPAY">
 						<p>
 							<img src="../images/dd-dfk.png"/>
-							<span class="mui-badge mui-badge-danger warm-number">5</span>
+							<span class="mui-badge mui-badge-danger warm-number" style="display: none;">5</span>
 						</p>
 						<p>
 							待付款
 						</p>
 					</li>
-					<li>
+					<li type="WAITSEND">
 						<p>
-							<img src="../images/dd-yfk.png"/>
-							<span class="mui-badge mui-badge-danger warm-number">5</span>
+							<img src="../images/dd-dfh.png"/>
+							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
-							已付款
+							待发货
 						</p>
 					</li>
-					<li>
+					<li type="WAITRECEIVE">
 						<p>
 							<img src="../images/dd-dsh.png"/>
-							<span class="mui-badge mui-badge-danger warm-number">5</span>
+							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
 							待收货
 						</p>
 					</li>
-					<li>
+					<li type="WAITCCOMMENT">
 						<p>
 							<img src="../images/dd-dpj.png"/>
-							<span class="mui-badge mui-badge-danger warm-number">5</span>
+							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
 							待评价
 						</p>
 					</li>
-					<li>
+					<li type="RETURNBACK">
 						<p>
 							<img src="../images/dd-tk.png"/>
-							<span class="mui-badge mui-badge-danger warm-number">5</span>
+							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
-							退款
+							退款/货
 						</p>
 					</li>
 				</ul>
 		</div>
 		<div class="center">
 			<ul class="menu">
-				<li><img src="../images/mine-safe.png"/>账号安全</li>
+				<!--<li><img src="../images/mine-safe.png"/>账号安全</li>-->
 				<li><img src="../images/mine-info.png"/>个人资料</li>
 				<li id="address"><img src="../images/mine-adress.png"/>我的地址</li>
 			</ul>
 		</div>
-		<div class="center">
+		<!--<div class="center">
 			<ul class="menu">
 				<li><img src="../images/mine-msg.png"/>消息通知</li>
 				<li><img src="../images/mine-pj.png"/>我的评价</li>
 			</ul>
-		</div>
+		</div>-->
 		<div class="center">
 			<ul class="menu">
 				<li><img src="../images/mine-sc.png"/>我的收藏</li>
@@ -254,35 +256,11 @@
 				pay_points:d.getElementById('pay_points'),
 				coupon_num:d.getElementById('coupon_num'),
 				level_name:d.getElementById('level_name'),
-				head_pic:d.getElementById('head_pic')
+				head_pic:d.getElementById('head_pic'),
+				warm_number:d.getElementsByClassName('warm-number')
 			}
 			h.menu_url={
 				address:"../mine/address.html",
-			}
-			h.getUserInfo=function(){
-				if(h.token){
-					$.ajax(h.apiurl,{
-						data:{m:'get_userinfo',token:h.token},
-						type:'post',
-						dataType:'json',
-						success:function(ret){
-							if(ret.code==0){
-								ms.setItem('user',ret.data.user)
-								$.each(ret.data.level, function(i,v) {
-									if(parseFloat(ret.data.user.total_amount)>=parseFloat(v.amount)){
-										ret.data.user.level=v
-									}
-								});
-								h.d.nickname.innerText=ret.data.user.nickname
-								h.showUserInfo(ret.data.user,ret.data.level)
-							}
-						},
-						error:function(ret){
-//							alert(JSON.stringify(ret))
-							$.toast('获取用户信息异常')
-						}
-					})
-				}
 			}
 			
 			h.showUserInfo=function(user){
@@ -296,23 +274,110 @@
 					h.d.nickname.innerText=user.nickname;
 					h.d.user_money.innerText=user.user_money;
 					h.d.pay_points.innerText=user.pay_points;
-					h.d.level_name.innerText=user.level.level_name;
+					h.d.level_name.innerText=user.level.level_name+((user.level.discount<100)?'(尊享'+user.level.discount+'折)':"");
 					h.d.head_pic.setAttribute('src',user.head_pic||'../images/profile.png')
 				}
 			}
-			h.logout=function(){
+			h.logout=function(tologin){
 				h.token=null;
 				ms.removeItem('token')
 				ms.removeItem('user')
 				h.showUserInfo()
-				$.toast('已退出登录')
+				h.logoutFire()
+//				$.toast('已退出登录')
+				if(tologin){
+					$.fire(h.indexWin,'goHome')
+					setTimeout(function(){
+						h.openWin('../mine/login.html','login')
+					},1500)
+				}else{
+					setTimeout(function(){
+						$.fire(h.indexWin,'goHome')
+					},1500)
+				}
+				$.fire(h.indexWin,'goHome')
+
 			}
 			$.plusReady(function(){
 				h.token=ms.getItem('token')
+				h.doLogin=function(){
+			    	if(!honey.buyContent){
+			    		honey.buyContent=plus.webview.getWebviewById('buy-content')
+			    	}
+			    	$.fire(honey.buyContent,'login')
+			    	
+			    	if(!honey.indexWin){
+			    		honey.indexWin=plus.webview.getLaunchWebview()
+			    	}
+			    	$.fire(honey.indexWin,'login')
+			    }
+				h.getUserInfo=function(){
+					if(h.token){
+						$.ajax(h.apiurl,{
+							data:{m:'get_userinfo',token:h.token},
+							type:'post',
+							dataType:'json',
+							success:function(ret){
+								if(ret.code==0){
+									$.each(ret.data.level, function(i,v) {
+										if(parseFloat(ret.data.user.total_amount)>=parseFloat(v.amount)){
+											ret.data.user.level=v
+										}
+									});
+									ms.setItem('user',ret.data.user)
+									h.d.nickname.innerText=ret.data.user.nickname
+									h.showUserInfo(ret.data.user,ret.data.level)
+									$.each(h.d.warm_number,function(i,v){
+										var type=v.parentElement.parentElement.getAttribute('type');
+										var num=0;
+										switch(type){
+											case 'WAITPAY':
+												num=ret.data.user.waitPay
+												break;
+											case 'WAITSEND':
+												num=ret.data.user.waitSend
+												break;
+											case 'WAITRECEIVE':
+												num=ret.data.user.waitReceive
+												break
+											case 'WAITCCOMMENT':
+												num=ret.data.user.uncomment_count
+												break;
+											case 'RETURNBACK':
+												num=ret.data.user.return_count
+												break;
+										}
+										if(num>0){
+											v.innerText=num
+											v.setAttribute('style','')
+										}else{
+											v.setAttribute('style','display: none;')
+										}
+									})
+									h.doLogin()
+								}else{
+									if(ret.code==-1){
+										$.toast(ret.msg)
+										h.logout(1)
+									}
+								}
+							},
+							error:function(ret){
+								$.toast('获取用户信息异常')
+							}
+						})
+					}
+				}
 				h.getUserInfo()
-				win.addEventListener('login',function(){
+				win.addEventListener('login',function(o){
 					h.token=ms.getItem('token')
 					h.getUserInfo()
+					h.mySrcollTo()
+					$.fire(h.indexWin,'login',{show:o.detail.show})
+				})
+				
+				win.addEventListener('reloadUser',function(){
+					h.showUserInfo()
 				})
 				
 				win.addEventListener('logout',function(){
@@ -333,6 +398,22 @@
 						}
 					}
 				})
+				$('.myorder').on('tap','.title',function(){
+					h.openWin('../mine/order-list.html','order-list',{type:'ALL'})
+				})
+				
+				$('.myorder').on('tap','li',function(){
+					var type=this.getAttribute('type')
+					if(type=='RETURNBACK'){
+						alert('售后')
+					}else if(type=='WAITCCOMMENT'){
+						alert('待评价')
+					}else{
+						h.openWin('../mine/order-list.html','order-list',{type:type})
+//						h.openWin('../mine/goods-list.html','order-list',{type:type})
+					}
+				})
+				
 			})
 		}(window,mui,honey,myStorage,document))
 	</script>

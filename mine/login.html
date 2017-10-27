@@ -100,8 +100,9 @@
 								if(ret.code==0){
 									mui.toast('登录成功',{duration:1000})
 									myStorage.setItem('token',ret.data.token)
-									mui.fire(honey.indexWin, 'login')
-									mui.fire(honey.mineWin, 'login')
+//									mui.fire(honey.indexWin, 'login')
+//									mui.fire(honey.mineWin, 'login')
+									honey.loginFire(true)
 									//触发登录事件
 									//关闭注册和登录窗口
 									honey.closeWin('login',1000)
@@ -147,12 +148,6 @@
 				}
 				mui.back=function(){
 					honey.loginWin.close("slide-out-right")
-				}
-				if(!honey.indexWin){
-					honey.indexWin= plus.webview.getLaunchWebview(); 
-				}
-				if(!honey.mineWin){
-					honey.mineWin= plus.webview.getWebviewById('mine'); 
 				}
 				honey.getSysInfo()
 				honey.getDeviceInfo()
@@ -218,8 +213,9 @@
 						if(ret.code==0){
 							mui.toast(honey.service.userInfo.nickname+'登录成功',{duration:1000})
 							myStorage.setItem('token',ret.data.token)
-							mui.fire(honey.indexWin, 'login')
-							mui.fire(honey.mineWin, 'login')
+							honey.loginFire()
+//							mui.fire(honey.indexWin, 'login')
+//							mui.fire(honey.mineWin, 'login')
 							//触发登录事件
 							//关闭注册和登录窗口
 							honey.closeWin('login',1000)
@@ -229,7 +225,7 @@
 						}
 					},
 					error:function(ret){
-						alert(JSON.stringify(ret))
+//						alert(JSON.stringify(ret))
 						mui.toast('登录失败')
 					}
 				})

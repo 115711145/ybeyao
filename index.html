@@ -186,7 +186,13 @@
 				
 				win.addEventListener('login',function(o){
 					h.token=myStorage.getItem('token')
-					h.showBarItemPage('mine')
+					if(o.detail.show){
+						h.showBarItemPage('mine')
+					}
+				})
+				
+				win.addEventListener('logout',function(){
+					h.token=null;
 				})
 				
 				win.addEventListener('showCart',function(){

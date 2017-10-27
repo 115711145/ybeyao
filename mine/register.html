@@ -207,6 +207,7 @@
 						if(ret.code==0){
 							mui.toast('注册成功')
 							localStorage.setItem('token',ret.data.token)
+							honey.loginFire()
 							//触发登录事件
 							//关闭注册和登录窗口
 							honey.closeWin('login')
@@ -216,7 +217,7 @@
 						}
 					},
 					error:function(ret){
-						alert(JSON.stringify(ret))
+//						alert(JSON.stringify(ret))
 						mui.toast('注册失败')
 					}
 				})

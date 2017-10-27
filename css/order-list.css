@@ -1,0 +1,170 @@
+.top-btn {
+	position: absolute;
+	top: 44px;
+	left: 0;
+	width: 100%;
+	background: #fff;
+	padding: 0 10px;
+	height: 45px;
+}
+
+.mui-segmented-control .mui-control-item {
+	font-size: 12px;
+	line-height: 28px;
+}
+
+.mui-segmented-control-honey {
+	border: 1px solid #41CEA9;
+}
+
+.mui-segmented-control-honey .mui-control-item {
+	color: #41CEA9;
+	border-color: inherit;
+}
+
+.mui-segmented-control-honey .mui-control-item.mui-active {
+	color: #fff;
+	background-color: #41CEA9;
+}
+
+.mui-segmented-control-honey.mui-segmented-control-inverted .mui-control-item.mui-active {
+	color: #4cd964;
+	border-bottom: 2px solid #41CEA9;
+	background: none;
+}
+
+.mui-segmented-control-honey.mui-segmented-control-inverted~.mui-slider-progress-bar {
+	background-color: #41CEA9;
+}
+
+.sc_list {
+	padding: 0;
+	margin: 5px 0 5px 0px;
+	overflow: hidden;
+	background: none;
+}
+
+.sc_list li {
+	list-style: none;
+	float: left;
+	width: 100%;
+	padding: 2px 10px;
+	/*background: #fff;*/
+	margin: 5px 0;
+}
+
+.sc_list .order-goods {
+	border-bottom: 1px solid #eee;
+}
+
+.fl {
+	float: left;
+}
+
+.goods-img {
+	margin-top: 5px;
+	height: 55px;
+	width: 55px;
+	text-align: center;
+}
+
+.goods-img img {
+	height: 50px;
+	width: 50px;
+}
+
+.sc_list .goods-info {
+	width: 60%;
+	padding-left: 5px;
+}
+
+.sc_list .goods-info .title {
+	overflow: hidden;
+	width: 95%;
+	/*white-space: nowrap;*/
+	color: #333;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-break: break-word;
+	line-height: 18px;
+}
+
+.sc_list .goods-info p {
+	padding: 2px;
+	margin: 0;
+	line-height: 18px;
+}
+
+.fr {
+	float: right;
+}
+
+.weight {
+	font-size: 12px;
+}
+
+.price {
+	color: #ff6633;
+	font-size: 14px;
+	margin-right: 5px;
+}
+
+.sc_list .order_sn {
+	border-bottom: 1px solid #eee;
+}
+
+.sc_list .order_sn,
+.sc_list .sum {
+	color: #333;
+	padding: 5px 0 !important;
+	font-size: 14px;
+}
+
+.sc_list .status {
+	float: right;
+	color: #999;
+}
+
+.sc_list .sum .btns {
+	margin: 10px 0;
+}
+
+.price-num {
+	text-align: right;
+}
+
+.sc_list .sum .sum-price-num {
+	font-size: 14px;
+	line-height: 45px;
+	height: 30px;
+	color: #333;
+}
+
+.mui-content {
+	margin-top: 45px;
+}
+
+.order-list {
+	background: #fff;
+}
+
+.no-order {
+	text-align: center;
+	background: none !important;
+	color: #666;
+	font-size: 14px;
+}
+
+.btns span {
+	margin: 0 2px;
+}
+
+.btns .mui-btn {
+	font-size: 12px;
+	padding: 3px;
+}
+.red{
+	color: #DD5044 !important;
+}

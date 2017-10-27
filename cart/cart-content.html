@@ -11,21 +11,19 @@
 	</head>
 	<style>
 		.sc_list {
-			padding: 0;
-			margin: 0 0 5px 0;
+			padding: 0 ;
+			margin: 0 0 5px 0 !important;
 		    overflow: hidden;
-		    border-bottom: 1px solid #f8f8f8;
 		    margin-bottom: 44px;
+		    background: none;
 		}
 		.sc_list li{
 			list-style: none;
 			float: left;
 			width: 100%;
+			margin-bottom: 5px;
 			padding: 5px 0;
-			border-bottom: 1px solid #ddd;
-		}
-		.sc_list li:first-child{
-			border-top: 1px solid #ddd;
+			background: #fff;
 		}
 		.sc_list .radio {
 		    float: left;
@@ -84,17 +82,21 @@
 			margin: 0;
 			line-height: 18px;
 		}
+		.sc_list .price-info {
+		    width: 63%;
+		    padding-right: 5px;
+		}
 		
 		.fr {
 		    float: right;
 		}
 		.sc_list .mui-numbox{
-			margin-top: 1px ;
+			margin-top: 0px ;
 			width: 120px;
-			height: 20px;
-			line-height: 20px;
+			height: 25px;
 			color: #666;
 			border: 1px solid #efefef;
+			padding: 0 !important;
 		}
 		.mui-numbox .mui-btn{
 			background: #41CEA9;
@@ -115,9 +117,12 @@
 			margin: 30px 10px 0 0 !important;
 			float: right;
 		}
+		.sc_pri{
+			margin: 0;
+		}
 		.sc_pri span{
 			color: #ff6633;
-			font-size: 14px;
+			font-size: 16px;
 		}
 		#amount{
 			color: #ff6633;
@@ -136,9 +141,9 @@
 		.quanxuan {
 			height: 50px;
 			line-height: 50px;
-			width: 30%;
+			width: 25%;
 			display: inline-block;
-			font-size: 14px;
+			font-size: 16px;
 		}
 		.quanxuan label{
 			padding-left: 40px !important;
@@ -148,11 +153,12 @@
 			left:10px !important;
 		}
 		.heji {
-			width: 30%;
+			float: left;
+			width: 45%;
 			display: inline-block;
 			height: 50px;
 			line-height: 50px;
-			font-size: 14px;
+			font-size: 16px;
 		}
 		.footer-bar{
 			border-bottom: 1px solid #41CEA9;
@@ -172,11 +178,62 @@
 			color: #999;
 			/*font-size: 14px;*/
 		}
+		#cart-list{
+			margin: 0 ;
+			padding: 5px 0 0 0 ;
+			background: none;
+		}
+		#cart-list:after{
+			border: 0;
+			height: 0;
+			background-color: #fff;
+		}
+		#cart-list .mui-table-view-cell:first-child:after{
+			border: 0 !important;
+			background-color: #fff;
+		}
+		#cart-list .mui-table-view-cell{
+			border: 0 ;
+			background-color: #fff;
+			min-height: 95px;
+		}
 	</style>
 	<body>
 		<div class="mui-content">
-			<ul class="sc_list" id="cart-list">
-				<!--<li>
+			<ul class="mui-table-view sc_list" id="cart-list">
+				<!--<li class="mui-table-view-cell ">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+					<div class="radio fl ">
+	                    <div class="mui-input-row mui-checkbox mui-left box">
+							<label>&nbsp;</label>
+							<input name="checkbox" value="Item 2" type="checkbox" checked>
+						</div>
+	                </div>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                    <p class="sc_pri fl">
+	                        <span>￥</span><span class="price">11.00</span>
+	                    </p> 
+	                    <div class="mui-numbox fr">
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+	                </div>
+					</div>
+				</li>-->
+			</ul>
+			<!--<ul class="mui-table-view sc_list" id="cart-list">
+				<li>
 	                <div class="radio fl ">
 	                    <div class="mui-input-row mui-checkbox mui-left box">
 							<label>&nbsp;</label>
@@ -193,16 +250,15 @@
 	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
 	                    <p class="sc_pri fl">
 	                        <span>￥</span><span class="price">11.00</span>
-	                    </p>
-	                	 <div class="mui-numbox fr">
+	                    </p> 
+	                    <div class="mui-numbox fr">
 							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
 							<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
 							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
 						</div>
 	                </div>
-	                <span class="mui-icon mui-icon-close"></span>
-		        </li>-->
-	       </ul>
+		        </li>
+	       </ul>-->
 	       <div id="cart-empty" style="display: none;">
 	       	<p><img src="../images/nothing.png" width="50"/></p>
 	       	<p>购物车暂无商品</p>
@@ -215,7 +271,7 @@
 				</ul>
 				<ul class="mui-table-view">
 					<li class="mui-table-view-cell">
-						<a href="#delete"><b>取消</b></a>
+						<a href="#delete">取消</a>
 					</li>
 				</ul>
 			</div>
@@ -227,7 +283,7 @@
 				</ul>
 				<ul class="mui-table-view">
 					<li class="mui-table-view-cell">
-						<a href="#clean" style="color: #999;"><b>取消</b></a>
+						<a href="#clean" style="color: #999;">取消</a>
 					</li>
 				</ul>
 			</div>
@@ -261,6 +317,7 @@
     	}
     	honey.cart=[];
     	honey.amount=0;
+//  	honey.discount=100;
     	honey.sumPrice=function(){
         	honey.amount=0;
         	honey.jsGoods=[];
@@ -274,7 +331,7 @@
         			mui.each(honey.cart,function(j,v){
 		        		if(honey.cart[j].goods_id==goods_id && ((!honey.cart[j].spec_key&&spec_key=="undefined")||
     					(honey.cart[j].spec_key && honey.cart[j].spec_key==spec_key))){
-    						var s=honey.cart[j].num*honey.cart[j].price;
+    						var s=honey.cart[j].num*(honey.cart[j].ladder_price ||honey.cart[j].price);
 //  						alert(s)
 		        			honey.amount+=s;
 		        			honey.jsGoods.push(honey.cart[j])
@@ -338,10 +395,22 @@
     					}
     					honey.cart[i].num+=item.num;
     					cartItem=honey.cart[i];
-    					if(honey.cart[i].num==0){
+    					if(honey.cart[i].num<=0){
     						//删除商品
     						honey.cart.splice(i,1)
     						honey.cart.length==0&&honey.d.nothing.removeAttribute('style')
+    					}else{
+    						//检查价格阶梯
+    						honey.cart[i].ladder_price=false;
+				    		if(honey.cart[i].num>0&&honey.cart[i].price_ladder&&honey.cart[i].price_ladder.length>0){
+				    			mui.each(honey.cart[i].price_ladder,function(j,val){
+				    				if(honey.cart[i].num>=val.amount){
+//				    					honey.cart[i].ladder_price=honey.fmoney(val.price*honey.discount/100)
+				    					honey.cart[i].ladder_price=val.price
+				    				}
+				    			})
+				    		}
+				    		cartItem=honey.cart[i];
     					}
     					//更新购物车
     					myStorage.setItem('cart',honey.cart)
@@ -349,12 +418,52 @@
     				}
     			}
     		}
-    		callBack(cartItem)
+
+    		callBack&&callBack(cartItem)
     	}
     	
     	mui.plusReady(function(){
+    		honey.token=myStorage.getItem('token')
+//  		honey.user=myStorage.getItem('user')
+//  		if(honey.user&&honey.user.level.discount>0){
+//  			honey.discount=parseInt(honey.user.level.discount);
+//  		}
     		//加载提交订单
 			honey.preloadBuyWin()
+			
+			/**
+			 * 左滑事件
+			 */
+			honey.slider_delete=false;
+			mui(honey.d.list).on('slideleft', '.mui-table-view-cell', function(e) {
+				honey.slider_delete=this;
+			});
+			
+			/**
+			 * 监听删除键触发提示
+			 */
+			mui(honey.d.list).on('tap','.mui-btn-red',function(e){
+				var p=this.parentElement.parentElement;
+	        	honey.change={
+	        		goods:{
+		        		goods_id:p.getAttribute('goods_id'),
+		        		spec_key:p.getAttribute('spec_key'),
+		        		num:-99999
+		        	},
+		        	obj:p
+	        	}
+	        	mui(honey.d._delete).popover('toggle');
+			})
+			/**
+			 * 左滑自动还原
+			 */
+			document.addEventListener('tap',function(){
+				if(honey.slider_delete){
+					mui.swipeoutClose(honey.slider_delete);
+					honey.slider_delete=false;
+				}
+			})
+			
     		/**
     		 * 删除购物车商品
     		 */
@@ -383,13 +492,13 @@
 		        		spec_key:p.getAttribute('spec_key'),
 		        		num:-1
 		        	},
-		        	obj:p.parentElement.parentElement
+		        	obj:p.parentElement.parentElement.parentElement
 	        	}
 	        	if(_input.value>1){
 	        		honey.changeCartNum(honey.change.goods,function(item){
 	        			if(item){
 	        				_input.value=item.num;
-		        			_price.innerText=honey.fmoney(item.num*item.price);
+		        			_price.innerText=honey.fmoney(item.num*(item.ladder_price||item.price));
 		        			honey.sumPrice()
 	        			}
 	        		})
@@ -414,7 +523,7 @@
 	        	honey.changeCartNum(honey.change.goods,function(item){
 	        		if(item){
 	        			_input.value=item.num;
-	        			_price.innerText=honey.fmoney(item.num*item.price);
+	        			_price.innerText=honey.fmoney(item.num*(item.ladder_price|| item.price));
 	        			honey.sumPrice()
 	        		}
 	        	})
@@ -489,6 +598,7 @@
 	    			honey.d.nothing.setAttribute('style','display: none;')
 	    			var html=[];
 	    			mui.each(honey.cart,function(i,v){
+//	    				v.member_price=honey.fmoney(parseFloat(v.price)*honey.discount/100)//会员价
 	    				var spec='';
 	    				if(v.spec_key){
 	    					spec=[];
@@ -497,8 +607,18 @@
 	    					}
 	    					spec=spec.join('  ');
 	    				}
-	    				honey.amount+=v.price*v.num;
-	    				var li='<li goods_id="'+v.goods_id+'" spec_key="'+v.spec_key+'">\
+	    				var ladder_price=false;
+	    				if(v.price_ladder&&v.price_ladder.length>0){
+							mui.each(v.price_ladder, function(j,vv) {
+								if(parseInt(v.num)>=parseInt(vv.amount)){
+									ladder_price=vv.price; 
+								}
+							});
+						}
+	    				honey.amount+=parseFloat(ladder_price||v.price)*v.num;
+	    				honey.cart[i]=v;
+	    				var li='<li goods_id="'+v.goods_id+'" spec_key="'+v.spec_key+'" class="mui-table-view-cell ">\
+					<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red">删除</a></div><div class="mui-slider-handle">\
 			                <div class="radio fl">\
 			                    <div class="mui-input-row mui-checkbox mui-left box">\
 									<label>&nbsp;</label>\
@@ -512,21 +632,23 @@
 			                    <p class="title">'+honey.cutstr(v.name)+'</p>\
 			                    <p class="weight">'+spec+'</p>\
 			                    <p class="sc_pri fl">\
-			                        <span>￥</span><span class="price">'+honey.fmoney(v.price*v.num)+'</span>\
+			                        <span>￥</span><span class="price">'+honey.fmoney(parseFloat(ladder_price||v.price)*v.num)+'</span>\
 			                    </p>\
 			                	 <div class="mui-numbox fr" goods_id="'+v.goods_id+'" spec_key="'+v.spec_key+'" >\
 									<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>\
 									<input class="mui-input-numbox" type="number" readonly="readonly" min="1" id="buy-num" value="'+v.num+'"/>\
 									<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>\
 								</div>\
-			                </div>\
+			                </div></div>\
 			                <span class="mui-icon mui-icon-close" style="display:none"></span>\
 				        </li>';
 			        	html.push(li)
 	    			})
 			        honey.d.list.innerHTML=html.join('')
 			        honey.d.amount.innerText='￥'+honey.fmoney(honey.amount);
+			        honey.sumPrice()
 	    		}else{
+	    			honey.d.list.innerHTML=''
 	    			honey.d.nothing.removeAttribute('style')
 	    		}
 	        })
@@ -555,6 +677,17 @@
 	        	mui(honey.d._clean).popover('toggle')
 	        })
 	        
+//	        window.addEventListener('logout',function(){
+//	        	honey.discount=100;
+//	        })
+	        
+//	        window.addEventListener('login',function(){
+//	        	honey.user=myStorage.getItem('user')
+//	    		if(honey.user&&honey.user.level.discount>0){
+//	    			honey.discount=parseInt(honey.user.level.discount);
+//	    		}
+//	        })
+//	        
 	        /**
 	         * 清空购物车
 	         */

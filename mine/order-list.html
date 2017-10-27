@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<link type="text/css" rel="stylesheet" href="../css/order-list.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">我的订单</h1>
+			<div class="top-btn">
+				<div class="mui-segmented-control mui-segmented-control-honey">
+					<a class="mui-control-item mui-active" type="ALL">全部</a>
+					<a class="mui-control-item" type="WAITPAY">待付款</a>
+					<a class="mui-control-item" type="WAITSEND">待发货</a>
+					<a class="mui-control-item" type="WAITRECEIVE">待收货</a>
+					<a class="mui-control-item" type="FINISH">已完成</a>
+				</div>
+			</div>
+		</header>
+		<div class="mui-content" id="content">
+			<ul class="sc_list" id="list">
+				<li class="no-order">没有相关订单<li>
+				<!--<li>
+					<div class="order_sn">订单编号：12345654456
+						<span class="status">已付款</span>
+					</div>
+					<div class="order-goods fl">
+		                <div class="goods-img fl">
+		                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+		                </div>
+		                <div class="goods-info fl">
+		                    <p class="title">
+		                    	云南白药 气血康胶囊24粒（买五送一送原品）云南白药 气血康胶囊24粒（买五送一送原品）
+		                    </p>
+		                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+		                </div>
+		                <div class="price-num fr">
+		                	 <p class="price">
+		                        <span>￥</span><span>10001.00</span>
+		                	</p>
+		                	<p>
+		                		<span>×</span><span>1100</span>
+		                	</p>
+		                </div>
+			        </div>
+			        <div class="order-goods fl">
+		                <div class="goods-img fl">
+		                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+		                </div>
+		                <div class="goods-info fl">
+		                    <p class="title">
+		                    	云南白药 气血康胶囊24粒（买五送一送原品）
+		                    </p>
+		                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+		                </div>
+		                <div class="price-num fr">
+		                	 <p class="price">
+		                        <span>￥</span><span>10001.00</span>
+		                	</p>
+		                	<p>
+		                		<span>×</span><span>1100</span>
+		                	</p>
+		                </div>
+			        </div>
+			        <div class="sum">
+			        	<p class="fl sum-price-num">
+			        		<span class="price">￥120.00</span>
+			        		<span>共4件</span>
+			        	</p>
+			        	<p class="fr btns">
+			        		<span class="mui-btn mui-btn-red">立即付款</span>
+			        		<span class="mui-btn mui-btn-warning">退款</span>
+			        		<span class="mui-btn mui-btn-grey">取消订单</span>
+						</p>
+					</div>
+				</li>-->
+	       </ul>
+	       
+		</div>
+		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" type="weixin" >
+					<a href="#" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
+				</li>
+				<li class="mui-table-view-cell" type="alipay">
+					<a href="#" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
+						支付宝支付</a>
+				</li>
+				<li class="mui-table-view-cell" type="hdfk">
+					<a href="#" >货到付款</a>
+				</li>
+			</ul>
+		</div>
+    <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	(function(win, d, $, h, ms) {
+			$.init({
+				pullRefresh: {
+					container: '#content',
+//					down: {
+//						style:'circle',
+//					    color:'#41cea9',
+//					    height:'80px',
+//						callback: refresh
+//					},
+					up: {
+						auto:false,
+						height:80,
+						contentinit: h.contentinit,
+	                    contentdown: h.contentdown,
+	                    contentrefresh: h.contentrefresh,
+						contentnomore:h.contentnomore,
+						callback: getOrderList 
+					}
+				}
+			});
+			h.d = {
+				btn_items:$('.mui-control-item'),
+				content:$('#content'),
+				list: d.getElementById('list'),
+				amount: d.getElementById('amount'),
+				xz_pay:d.getElementById('xz_pay'),
+				pay_list:d.getElementById('pay_list')
+			}
+			function getOrderList(){
+				if(h.page==1){
+					h.d.list.innerHTML='';
+				}
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					dataType:'json',
+					data:{
+						m:'order_list',
+						token:h.token,
+						p:h.page,
+						type:h.type
+					},
+					success:function(ret){
+						if(ret.code==-1){
+							$.fire(plus.webview.getWebviewById('mine'),'logout')
+							h.openWin('login.html','login')
+							$.back()
+							return
+						}
+						h.showOrderList(ret.data)
+//						if(ret.code==0){
+							h.page++;
+//						}
+						(!ret.data ||ret.data.length<10)?h.d.content.pullRefresh().disablePullupToRefresh():h.d.content.pullRefresh().endPullupToRefresh(false)
+					},
+					error:function(ret){
+//						alert(JSON.stringify(ret))
+//						alert('error')
+					}
+				});
+				
+			}
+			
+			/**
+			 * 显示订单商品列表 
+			 * @param {Object} data
+			 */
+			h.showOrderList = function(data) {
+				var html = [];
+				if(data.length > 0) {
+					$.each(data, function(i, v) {
+						var li=[];
+						li.push('<li class="order-list" order_id="'+v.order_id+'"><div class="order_sn">订单编号：'+v.order_sn
+						+'<span class="status'+(v.order_status_code=='WAITPAY'?" red":"")+'">'+v.order_status_desc+'</span></div>');
+						var num=0;
+						//商品列表
+						for(var j=0;j<v.goods_list.length;j++){
+							var val=v.goods_list[j];
+							num+=num+parseInt(val.goods_num)
+							var img=h.apihost+'/public/upload/goods/thumb/'+val.goods_id+'/goods_sub_thumb_'+val.img_id+'_150_150.jpg';
+							li.push('<div class="order-goods fl">'
+			                +'<div class="goods-img fl">'
+			                	+'<img src="'+img+'">'
+			                +'</div>'
+			                +'<div class="goods-info fl">'
+			                    +'<p class="title">'+h.cutstr(val.goods_name)+'</p>'
+			                    +'<p class="weight">'+val.spec_key_name+'</p></div>'
+			                +'<div class="price-num fr">'
+			                	 +'<p class="price">'
+			                        +'<span>￥</span><span>'+val.goods_price+'</span>'
+			                	+'</p><p><span>×</span><span>'+val.goods_num+'</span></p></div></div>');
+						}
+						//应付金额
+						li.push('<div class="sum"><p class="fl sum-price-num">'
+			        		+'<span class="price">￥'+v.order_amount+'</span>'
+			        		+'<span>共'+num+'件</span></p><p class="fr btns">');
+			        	if(v.order_status>=3){//已完成、已取消、已作废
+			        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
+			        	}else{
+			        		if(v.pay_status>0){
+			        			if(v.order_status==2){
+			        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价</span>');
+			        			}else{
+			        				li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+			        			}
+				        	}else{
+				        		li.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span><span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
+				        	}
+				        	li.push('</div></li>')
+			        	}
+						html.push(li.join(''))
+					});
+					h.d.list.innerHTML+=html.join('')
+				}else{
+					h.page==1&&(h.d.list.innerHTML = '<li class="no-order">没有相关订单<li>');
+				}
+			}
+			
+			h.showType=function(type){
+				var type=type||h.type;
+				$.each(h.d.btn_items, function(i,v) {
+					v.setAttribute('class','mui-control-item'+(v.getAttribute('type')==type?' mui-active':''))
+				});
+			}
+			h.removeOrderItem=function(obj){
+				h.d.list.removeChild(obj)
+				if(h.d.list.length==0){
+					h.d.list.innerHTML = '<li class="no-order">没有相关订单<li>'
+				}
+			}
+			
+			$.plusReady(function() {
+				h.token=ms.getItem('token');
+				h._self=plus.webview.currentWebview();
+				h.type=h._self.type|| 'ALL';
+				h.mineWin=plus.webview.getWebviewById('mine')
+				h.showType()
+				getOrderList()
+				
+				/**
+				 * 切换订单类型
+				 */
+				$('.top-btn').on('tap','.mui-control-item',function(){
+					var type=this.getAttribute('type')
+					if(type!=h.type){
+						h.type=type;
+						h.page=1;
+						h.d.content.pullRefresh().refresh(true)
+						h.d.content.pullRefresh().enablePullupToRefresh()
+						h.d.content.pullRefresh().endPullupToRefresh(false)
+						getOrderList()
+					}
+				})
+				
+				h.orderService=function(type,order_id,o){
+					var txt=o.innerText
+					switch(type){
+						case 'pay-order':
+							$.ajax(h.apiurl,{
+								type:"post",
+								async:true,
+								dataType:'json',
+								data:{
+									m:'order_service',
+									type:type,
+									token:h.token,
+									id:order_id
+								},
+								success:function(ret){
+									alert(JSON.stringify(ret))
+								},
+								error:function(){
+									
+								}
+							});
+							break
+						case 'del-order':
+						case 'cansel-order':
+							plus.nativeUI.showWaiting('正在'+txt+'...')
+							$.ajax(h.apiurl,{
+								type:"post",
+								async:true,
+								dataType:'json',
+								data:{
+									m:'order_service',
+									token:h.token,
+									id:order_id,
+									type:type,
+								},
+								success:function(ret){
+									plus.nativeUI.closeWaiting()
+									if(ret.code==0){
+										$.toast(txt+'成功')
+										if(type=='cansel-order'){
+											//变更按钮
+											if(h.type=='ALL'){
+												var span=o.parentElement.parentElement.parentElement.querySelector('.status')
+												o.parentElement.innerHTML='<span class="mui-btn mui-btn-link" type="del-order">删除订单</span>'
+												span.innerText='已取消';
+												span.setAttribute('class','status')
+												$.fire(h.mineWin,'reloadUser')
+											}else{
+												h.removeOrderItem(o.parentElement.parentElement.parentElement)
+											}
+										}else{
+											h.removeOrderItem(o.parentElement.parentElement.parentElement)
+										}
+									}else{
+										$.toast(txt+'失败')
+									}
+								},
+								error:function(ret){
+//									alert(JSON.stringify(ret))
+									plus.nativeUI.closeWaiting()
+								}
+							});
+							break
+						case 'return-order':
+							alert('售后')
+							break
+						case 'comment-order':
+							alert('评价订单')
+					}
+					
+				}
+				
+				/**
+				 * 查看订单详情
+				 */
+				$(h.d.list).on('tap','.order_sn',function(){
+					var order_id=this.parentElement.getAttribute('order_id')
+					h.openWin('order-detail.html','order-detail',{order_id:order_id})
+				})
+				/**
+				 * 立即付款
+				 */
+				$(h.d.list).on('tap','.mui-btn',function(){
+					var type=this.getAttribute('type')
+					var order_id=this.parentElement.parentElement.parentElement.getAttribute('order_id')
+					h.orderService(type,order_id,this)
+//					h.openWin('order-detail.html','order-detail',{btn:btn,order_id:order_id})
+				})
+				
+				
+				//选择支付方式
+				$(h.d.pay_list).on('tap','li',function(){
+					h.pay_type=this.getAttribute('type')
+					h.d.xz_pay.querySelector('#pay').innerHTML=this.innerHTML
+					$(h.d.pay_list).popover('toggle')
+				})
+		
+				//关闭列表 
+				$('.mui-popover').on('tap', '.close-btn', function() {
+					$(this.parentElement).popover('toggle')
+				})
+				
+				$.back=function(){
+					plus.webview.currentWebview().close('slide-out-right');
+				}
+		
+			})
+		
+		}(window,document, mui, honey, myStorage))
+    </script>
+	</body>
+
+</html>
+

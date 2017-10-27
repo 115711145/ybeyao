@@ -1,0 +1,173 @@
+
+.sc_list {
+	padding: 0;
+	margin: 5px 0 5px 0px;
+	overflow: hidden;
+	/*border-bottom: 1px solid #f8f8f8;
+		    border-top: 1px solid #f8f8f8;*/
+	background: #fff;
+}
+
+.sc_list li {
+	list-style: none;
+	float: left;
+	width: 100%;
+	padding: 5px 0 5px 10px;
+}
+
+.fl {
+	float: left;
+}
+
+.goods-img {
+	margin-top: 5px;
+	height: 55px;
+	width: 55px;
+	text-align: center;
+}
+
+.goods-img img {
+	height: 50px;
+	width: 50px;
+}
+
+.sc_list .goods-info {
+	width: 60%;
+	padding-left: 5px;
+}
+
+.sc_list .goods-info .title {
+	overflow: hidden;
+	width: 95%;
+	/*white-space: nowrap;*/
+	color: #333;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-break: break-word;
+	line-height: 18px;
+}
+
+.sc_list .goods-info p {
+	padding: 2px;
+	margin: 0;
+	line-height: 18px;
+}
+
+.fr {
+	float: right;
+}
+
+.weight {
+	font-size: 12px;
+}
+
+.price,#order_amount {
+	color: #ff6633;
+	font-size: 14px;
+}
+
+
+.price-num {
+	position: absolute;
+	right: 10px;
+	text-align: right;
+}
+
+.amout-list {
+	background: #fff;
+	padding: 10px;
+	margin: 5px 0;
+}
+
+.amout-list p {
+	line-height: 14px;
+	color: #333;
+	border-bottom: 1px dashed #ddd;
+	padding-bottom: 5px;
+	width: 100%;
+}
+
+.amout-list p span {
+	width: 50%;
+	display: inline-block;
+	vertical-align:text-top;
+	color: #666;
+}
+
+.amout-list p span:last-child{
+	text-align: right;
+	color: #333;
+}
+.bold-title{
+	border:0 !important;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.user-address {
+	padding: 5px 10px;
+	min-height: 60px;
+	background: #fff;
+}
+
+.user-address .user {
+	width: 100%;
+	padding: 5px 10px;
+	display: inline-block;
+}
+
+.user-address .icon {
+	width: 15%;
+	display: inline-block;
+	position: absolute;
+	line-height: 55px;
+	text-align: right;
+	color: #999;
+}
+
+.user-address .icon .mui-icon {
+	font-size: 14px;
+}
+
+.user-address p {
+	margin: 5px 0;
+	color: #333;
+	line-height: 18px;
+}
+
+.user-address .name {
+	float: left;
+}
+
+.user-address .phone {
+	text-align: right;
+	float: right;
+}
+
+.user-address .address {
+	float: left;
+	width: 100%;
+}
+#note{
+	font-size: 13px;
+	border: none;
+	display: inline;
+}
+
+#btns{
+	text-align: center;
+}
+#btns .mui-btn{
+	padding: 5px;
+	margin: 0 2px;
+}
+#no-content{
+	margin: 10px 0;
+	text-align: center;
+	font-size: 16px;
+}
+#no-content img{
+	max-width: 20%;
+}
