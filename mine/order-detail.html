@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<link type="text/css" rel="stylesheet" href="../css/order-detail.css" />
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">订单详情</h1>
+		</header>
+		<div class="mui-content" id="no-order" style="display: none;">
+			<div id="no-content">
+				<p><img src="../images/kuqi.png" /></p>
+				<p>很抱歉,订单不存在</p>
+			</div>
+		</div>
+		<div class="mui-content" id="order">
+			<div class="user-address" id="address">
+				<!--<p>
+					<span class="name">收货人：张三</span>
+					<span class="phone">电话：15012345678</span>
+				</p>
+				<p class="address">
+					收件地址：江
+				</p>
+				<p class="icon">
+					<span class="mui-icon mui-icon-arrowright"></span>
+				</p>-->
+			</div>
+			<ul class="sc_list" id="goods-list">
+				<!--<li>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+	                </div>
+	                <div class="price-num fr">
+	                	 <p class="price">
+	                        <span>￥</span><span>10001.00</span>
+	                	</p>
+	                	<p>
+	                		<span>×</span><span>1100</span>
+	                	</p>
+	                </div>
+		        </li>-->
+	       </ul>
+	       <div class="amout-list">
+	       		<p class="bold-title">基本信息</p>
+	       		<p><span class="title">订单编号</span><span id="goods_sn"></span></p>
+	       		<p><span class="title">订单状态</span><span id="status"></span></p>
+	       		<p><span class="title">下单时间</span><span id="add_time"></span></p>
+	       		<div id="times">
+		       		<p><span class="title">支付时间</span><span></span></p>
+		       		<p><span class="title">发货时间</span><span></span></p>
+		       		<p><span class="title">确认收货</span><span></span></p>
+	       		</div>
+	       		<p><span class="title">支付方式</span><span id="pay_name"></span></p>
+	       		<p><span class="title">配送方式</span><span id="shipping_name"></span></p>
+	       		<p><span class="title">买家留言</span><span></span></p>
+	       		<p id="note"></p>
+	       </div>
+	       <div class="amout-list">
+	       		<p class="bold-title">价格信息</p>
+	       		<p><span class="title">商品金额:</span><span id="sum_amount">￥0</span></p>
+	       		<p><span class="title">配送费用:</span><span id="sum_ps">￥0</span></p>
+	       		<p><span class="title">使用余额:</span><span id="blance">-￥0</span></p>
+	       		<p><span class="title">使用积分:</span><span id="point">-￥0</span></p>
+	       		<p><span class="title">折扣优惠:</span><span id="discount">-￥0</span></p>
+	       		<p><span class="title">优 惠 券:</span><span id="coupon">-￥0</span></p>
+	       		<p><span class="title">实付金额:</span><span class="price" id="order_amount">￥0</span></p>
+		       	<div class="btns" id="btns">
+				</div>
+	       </div>
+		</div>
+		
+		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" type="weixin" >
+					<a href="#" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
+				</li>
+				<li class="mui-table-view-cell" type="alipay">
+					<a href="#" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
+						支付宝支付</a>
+				</li>
+				<li class="mui-table-view-cell" type="hdfk">
+					<a href="#" >货到付款</a>
+				</li>
+			</ul>
+		</div>
+    <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/city.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	(function(win, d, $, h, ms) {
+			$.init();
+			h.d={
+				address:d.getElementById('address')
+			}
+			h.getOrderDetail=function(){
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					dataType:'json',
+					data:{
+						m:'order_detail',
+						token:h.token,
+						id:h.order_id
+					},
+					success:function(ret){
+						if(ret.code==0){
+							h.data=ret.data;
+							//收货地址
+							h.d.address.innerHTML='<div class="user"><p><span class="name">收货人：'+ret.data.consignee+'</span>\
+							<span class="phone">电话：'+ret.data.mobile+'</span></p><p class="address">\
+							收件地址：'+ret.data.address+'</p></div>';
+							//商品列表
+							var html=[];
+							$.each(ret.data.goods_list, function(i,v) {
+								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+								html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
+								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
+	                	 <p class="price"><span>￥</span><span>'+v.goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
+							});
+							d.getElementById('goods-list').innerHTML=html.join('')
+							//基本信息
+							d.getElementById('goods_sn').innerText=ret.data.order_sn
+							d.getElementById('status').innerText=ret.data.order_status_desc
+							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.add_time,1)
+							var time_p=[];
+							if(ret.data.pay_time>0){
+								time_p.push('<p><span class="title">支付时间</span><span>'+h.getYmdTime(ret.data.pay_time,1)+'</span></p>');
+							}
+							if(ret.data.shipping_time>0){
+								time_p.push('<p><span class="title">发货时间</span><span>'+h.getYmdTime(ret.data.shipping_time,1)+'</span></p>');
+							}
+							if(ret.data.confirm_time>0){
+								time_p.push('<p><span class="title">确认收货</span><span>'+h.getYmdTime(ret.data.confirm_time,1)+'</span></p>');
+							}
+							d.getElementById('times').innerHTML=time_p.join('')
+							d.getElementById('pay_name').innerText=ret.data.pay_name
+							d.getElementById('shipping_name').innerText=ret.data.shipping_name
+							d.getElementById('note').innerText=ret.data.user_note
+							d.getElementById('sum_amount').innerText="￥"+ret.data.goods_price
+							d.getElementById('sum_ps').innerText="￥"+ret.data.shipping_price
+							d.getElementById('blance').innerText="-￥"+ret.data.user_money
+							d.getElementById('point').innerText="-￥"+ret.data.integral_money
+							d.getElementById('coupon').innerText="-￥"+ret.data.coupon_price
+							d.getElementById('order_amount').innerText="￥"+ret.data.order_amount
+							var btn=[]
+							if(ret.data.order_status>=3){//已完成、已取消、已作废
+			        			btn.push('<span class="mui-btn mui-btn-link del-order">删除订单</span>');
+				        	}else{
+				        		if(ret.data.pay_status>0){
+				        			if(ret.data.order_status==2){
+				        				btn.push('<span class="mui-btn mui-btn-nav comment-order">评价</span>');
+				        			}else{
+				        				btn.push('<span class="mui-btn mui-btn-warning return-order">退款/货</span>');
+				        			}
+					        	}else{
+					        		btn.push('<span class="mui-btn mui-btn-red pay-order">立即付款</span><span class="mui-btn mui-btn-grey cansel-order">取消订单</span>');
+					        	}
+				        	}
+				        	d.getElementById('btns').innerHTML=btn.join('')
+						}else{
+							h.noContent()
+						}
+					},
+					error:function(ret){
+						h.noContent()
+					}
+				});
+			}
+			h.noContent=function(){
+				d.getElementById('no-order').setAttribute('style','')
+				d.getElementById('order').setAttribute('style','display: none;')
+				setTimeout(function(){
+					$.back()
+				},1000)
+			}
+			/**
+			 * 订单操作
+			 * @param {string} type
+			 */
+			h.orderService=function(type){
+				
+			}
+			$.plusReady(function(){
+				h._self=plus.webview.currentWebview();
+				h.order_id=h._self.order_id
+				h.service=h._self.btn
+				h.token=ms.getItem('token')
+				h.getOrderDetail()
+				$.back=function(){
+					h._self.close('slide-out-right')
+				}
+			})
+		}(window, document, mui, honey, myStorage))
+    </script>
+	</body>
+
+</html>
+

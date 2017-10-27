@@ -876,8 +876,15 @@ var honey = (function(win, $) {
 		if(time > 0) {
 			time = time * 1000;
 			var dateStr = new Date(time);
-			return dateStr.getFullYear() + '-' + (dateStr.getMonth() + 1) + '-' + dateStr.getDate() +
-				(showTime ? (' ' + dateStr.getHours() + ':' + dateStr.getMinutes() + ':' + (dateStr.getSeconds() > 9 ? dateStr.getSeconds() : '0' + dateStr.getSeconds())) : "");
+			var m=(dateStr.getMonth()<9?"0":"")+(dateStr.getMonth()+1)
+			var d=(dateStr.getDate()<10?"0":"")+dateStr.getDate()
+			if(showTime){
+				var H=(dateStr.getHours()<10?"0":"")+dateStr.getHours()
+				var i=(dateStr.getMinutes()<10?"0":"")+dateStr.getMinutes()
+				var s=(dateStr.getSeconds()<10?"0":"")+dateStr.getSeconds()
+			}
+			return dateStr.getFullYear() + '-' + m + '-' + d +
+				(showTime ? (' ' + H+ ':' + i + ':' +  s):'');
 		} else {
 			return '末知时间';
 		}
@@ -1142,5 +1149,34 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
     h.fixFooter=function(id){
     	document.getElementById(id||'footerBar').style.top = (plus.display.resolutionHeight - 95) + "px";
     }
+    
+    $.plusReady(function(){
+    	h.logoutFire=function(){
+	    	if(!honey.indexWin){
+	    		honey.indexWin=plus.webview.getLaunchWebview()
+	    	}
+	    	if(!honey.cartContent){
+	    		honey.cartContent=plus.webview.getWebviewById('cart-content')
+	    	}
+	    	if(!honey.buyContent){
+	    		honey.buyContent=plus.webview.getWebviewById('buy-content')
+	    	}
+	    	if(!honey.detailSubpage){
+	    		honey.detailSubpage=plus.webview.getWebviewById('goods-detail')
+	    	}
+	    	$.fire(honey.indexWin,'logout')
+	    	$.fire(honey.cartContent,'logout')
+	    	$.fire(honey.buyContent,'logout')
+	    	$.fire(honey.detailSubpage,'logout')
+	    }
+    
+	    h.loginFire=function(show){
+	    	if(!honey.mineWin){
+	    		honey.mineWin=plus.webview.getWebviewById('mine')
+	    	}
+	    	$.fire(honey.mineWin,'login',{show:show})
+	    }
+    })
+    
 	return h;
 }(window, mui))
