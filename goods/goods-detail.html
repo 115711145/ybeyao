@@ -457,8 +457,45 @@
 				} else {
 					honey.content.pullRefresh().endPullupToRefresh()
 				}
-
 			}
+			
+			/**
+			 * 预加载提交订单
+			 */
+			honey.preloadBuyWin = function() {
+//				if(!plus.webview.getWebviewById('buy')){
+					//头部
+					honey.buyHeader = mui.preload({
+						id: 'buy',
+						url: '../cart/buy-header.html',
+						styles: {
+							top: '0px',
+							bottom: '0px',
+						},
+					})
+					honey.buyHeader.hide()
+			
+					//内容
+					honey.buyContent = mui.preload({
+						id: 'buy-content',
+						url: '../cart/buy-content.html',
+						styles: {
+							top: '44px',
+							bottom: 0
+						},
+					})
+					honey.buyContent.hide()
+					honey.buyHeader.addEventListener('hide', function() {
+						honey.buyContent.hide()
+					})
+					honey.buyHeader.addEventListener('show', function() {
+						honey.buyContent.show()
+					})
+					honey.buyHeader.append(honey.buyContent)
+//				}
+			}
+			
+			
 			mui.plusReady(function() {
 				honey.token = myStorage.getItem('token')
 //				if(honey.token&&(honey.user=myStorage.getItem('user'))){
@@ -469,7 +506,7 @@
 				if(!honey.detailSubpage) {
 					honey.detailSubpage = plus.webview.currentWebview();
 				}
-
+				
 				/**
 				 * 分享事件
 				 */
@@ -488,7 +525,7 @@
 						//						honey.d.evaluateList.innerHTML='';
 						honey.content.pullRefresh().refresh(true);
 						honey.lastId = 0;
-						ajaxGetData()
+						ajaxGetComments()
 					} else {
 						honey.d.evaluateList.innerHTML = '';
 						honey.content.pullRefresh().endPullupToRefresh(1)
@@ -680,6 +717,7 @@
 					honey.collectCallBack()
 					honey.ajaxGetData()
 					honey.goodsDetail.show()
+					honey.preloadBuyWin()
 				})
 
 				/**
@@ -755,6 +793,15 @@
 					}else{
 						mui.toast('该商品已售罄')
 					}
+				})
+				
+				honey.d.buynow.addEventListener('tap',function(){
+					if(!honey.buyHeader){
+						honey.preloadBuyWin()
+					}
+					honey.goods.num=parseInt(honey.d.buyNum.value);
+					mui.fire(honey.buyContent,'showBuyList',[honey.goods])
+        			honey.buyHeader.show('slide-in-right',300);
 				})
 			})
 		</script>

@@ -26,6 +26,13 @@
 			</div>
 		</header>
 		<div class="mui-content" id="content">
+			<div class="loader" id="loader">
+				<a>
+					<span class="mui-spinner"></span>
+				</a>
+				<br />
+				<span>加载中...</span>
+			</div>
 			<ul class="sc_list" id="list">
 				<li class="no-order">没有相关订单<li>
 				<!--<li>
@@ -85,6 +92,18 @@
 	       </ul>
 	       
 		</div>
+		<div id="delete" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="del">
+					<a href="#delete" style="color: #FF3B30;">删除订单</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#delete" style="color: #999;">取消</a>
+				</li>
+			</ul>
+		</div>
 		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="weixin" >
@@ -127,13 +146,14 @@
 				btn_items:$('.mui-control-item'),
 				content:$('#content'),
 				list: d.getElementById('list'),
-				amount: d.getElementById('amount'),
 				xz_pay:d.getElementById('xz_pay'),
-				pay_list:d.getElementById('pay_list')
+				pay_list:d.getElementById('pay_list'),
+				loader:d.getElementById('loader')
 			}
 			function getOrderList(){
 				if(h.page==1){
 					h.d.list.innerHTML='';
+					h.d.loader.style.display="block";
 				}
 				$.ajax(h.apiurl,{
 					type:"post",
@@ -152,6 +172,7 @@
 							$.back()
 							return
 						}
+						h.d.loader.style.display="none";
 						h.showOrderList(ret.data)
 //						if(ret.code==0){
 							h.page++;
@@ -192,12 +213,12 @@
 			                    +'<p class="weight">'+val.spec_key_name+'</p></div>'
 			                +'<div class="price-num fr">'
 			                	 +'<p class="price">'
-			                        +'<span>￥</span><span>'+val.goods_price+'</span>'
+			                        +'<span>￥</span><span>'+val.member_goods_price+'</span>'
 			                	+'</p><p><span>×</span><span>'+val.goods_num+'</span></p></div></div>');
 						}
 						//应付金额
 						li.push('<div class="sum"><p class="fl sum-price-num">'
-			        		+'<span class="price">￥'+v.order_amount+'</span>'
+			        		+'<span class="price">￥'+h.fmoney(v.total_amount-v.discount_money)+'</span>'
 			        		+'<span>共'+num+'件</span></p><p class="fr btns">');
 			        	if(v.order_status>=3){//已完成、已取消、已作废
 			        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
@@ -206,7 +227,10 @@
 			        			if(v.order_status==2){
 			        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价</span>');
 			        			}else{
-			        				li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+			        				if(v.shipping_status>0){
+			        					li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+			        				}
+		        					li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 			        			}
 				        	}else{
 				        		li.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span><span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
@@ -311,7 +335,7 @@
 											h.removeOrderItem(o.parentElement.parentElement.parentElement)
 										}
 									}else{
-										$.toast(txt+'失败')
+										$.toast(ret.msg||txt+'失败')
 									}
 								},
 								error:function(ret){
@@ -321,14 +345,22 @@
 							});
 							break
 						case 'return-order':
-							alert('售后')
+							h.openWin('order-return.html','order-return',{order_id:order_id})
 							break
 						case 'comment-order':
 							alert('评价订单')
+							break;
+						case 'confirm-order':
+							alert('确认收货')
+							break
 					}
 					
 				}
 				
+				d.getElementById('del').addEventListener('tap',function(){
+					h.orderService(h.del.type,h.del.order_id,h.del.obj)
+//					$('#delete').popover('toggle')
+				})
 				/**
 				 * 查看订单详情
 				 */
@@ -342,8 +374,16 @@
 				$(h.d.list).on('tap','.mui-btn',function(){
 					var type=this.getAttribute('type')
 					var order_id=this.parentElement.parentElement.parentElement.getAttribute('order_id')
-					h.orderService(type,order_id,this)
-//					h.openWin('order-detail.html','order-detail',{btn:btn,order_id:order_id})
+					if(type=='del-order'){
+						h.del={
+							type:type,
+							order_id:order_id,
+							obj:this
+						}
+						$('#delete').popover('toggle')
+					}else{
+						h.orderService(type,order_id,this)
+					}
 				})
 				
 				

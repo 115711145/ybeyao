@@ -171,3 +171,12 @@
 #no-content img{
 	max-width: 20%;
 }
+.comment-order{
+	color: #FF5053;
+	border-color: #FF5053;
+}
+.mui-btn-success{
+	color: #fff;
+	border-color: #41CEA9;
+	background-color:#41CEA9 ;
+}

@@ -16,13 +16,20 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
 			<h1 class="mui-title" id="header-title">订单详情</h1>
 		</header>
+		<div class="loader" id="loader">
+			<a>
+				<span class="mui-spinner"></span>
+			</a>
+			<br />
+			<span>加载中...</span>
+		</div>
 		<div class="mui-content" id="no-order" style="display: none;">
 			<div id="no-content">
 				<p><img src="../images/kuqi.png" /></p>
 				<p>很抱歉,订单不存在</p>
 			</div>
 		</div>
-		<div class="mui-content" id="order">
+		<div class="mui-content" id="order" style="display: none;">
 			<div class="user-address" id="address">
 				<!--<p>
 					<span class="name">收货人：张三</span>
@@ -77,11 +84,10 @@
 	       		<p><span class="title">配送费用:</span><span id="sum_ps">￥0</span></p>
 	       		<p><span class="title">使用余额:</span><span id="blance">-￥0</span></p>
 	       		<p><span class="title">使用积分:</span><span id="point">-￥0</span></p>
-	       		<p><span class="title">折扣优惠:</span><span id="discount">-￥0</span></p>
+	       		<!--<p><span class="title">折扣优惠:</span><span id="discount">-￥0</span></p>-->
 	       		<p><span class="title">优 惠 券:</span><span id="coupon">-￥0</span></p>
 	       		<p><span class="title">实付金额:</span><span class="price" id="order_amount">￥0</span></p>
-		       	<div class="btns" id="btns">
-				</div>
+		       	<div class="btns" id="btns"></div>
 	       </div>
 		</div>
 		
@@ -106,9 +112,14 @@
     	(function(win, d, $, h, ms) {
 			$.init();
 			h.d={
-				address:d.getElementById('address')
+				address:d.getElementById('address'),
+				loader:d.getElementById('loader'),
 			}
 			h.getOrderDetail=function(){
+				if(!h.order_id>0){
+					h.noContent()
+					return
+				}
 				$.ajax(h.apiurl,{
 					type:"post",
 					async:true,
@@ -120,6 +131,8 @@
 					},
 					success:function(ret){
 						if(ret.code==0){
+							h.d.loader.style.display="none";
+			        		d.getElementById('order').style.display="block";
 							h.data=ret.data;
 							//收货地址
 							h.d.address.innerHTML='<div class="user"><p><span class="name">收货人：'+ret.data.consignee+'</span>\
@@ -131,7 +144,7 @@
 								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
 								html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
 								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
-	                	 <p class="price"><span>￥</span><span>'+v.goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
+	                	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
 							});
 							d.getElementById('goods-list').innerHTML=html.join('')
 							//基本信息
@@ -152,20 +165,24 @@
 							d.getElementById('pay_name').innerText=ret.data.pay_name
 							d.getElementById('shipping_name').innerText=ret.data.shipping_name
 							d.getElementById('note').innerText=ret.data.user_note
-							d.getElementById('sum_amount').innerText="￥"+ret.data.goods_price
+							d.getElementById('sum_amount').innerText="￥"+(ret.data.goods_price-ret.data.discount_money)
 							d.getElementById('sum_ps').innerText="￥"+ret.data.shipping_price
 							d.getElementById('blance').innerText="-￥"+ret.data.user_money
 							d.getElementById('point').innerText="-￥"+ret.data.integral_money
 							d.getElementById('coupon').innerText="-￥"+ret.data.coupon_price
 							d.getElementById('order_amount').innerText="￥"+ret.data.order_amount
 							var btn=[]
-							if(ret.data.order_status>=3){//已完成、已取消、已作废
+							if(ret.data.order_status>=3){//已完成、已取消、已作废、退款单
+			        			
 			        			btn.push('<span class="mui-btn mui-btn-link del-order">删除订单</span>');
 				        	}else{
 				        		if(ret.data.pay_status>0){
 				        			if(ret.data.order_status==2){
-				        				btn.push('<span class="mui-btn mui-btn-nav comment-order">评价</span>');
+				        				btn.push('<span class="mui-btn mui-btn-nav comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
 				        			}else{
+				        				if(ret.data.shipping_status>0){
+				        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+				        				}
 				        				btn.push('<span class="mui-btn mui-btn-warning return-order">退款/货</span>');
 				        			}
 					        	}else{
@@ -183,11 +200,12 @@
 				});
 			}
 			h.noContent=function(){
+				h.d.loader.style.display="none";
 				d.getElementById('no-order').setAttribute('style','')
 				d.getElementById('order').setAttribute('style','display: none;')
 				setTimeout(function(){
 					$.back()
-				},1000)
+				},1500)
 			}
 			/**
 			 * 订单操作

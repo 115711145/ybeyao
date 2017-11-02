@@ -1,0 +1,767 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<style>
+			.order-goods {
+				padding: 10px 5px;
+				margin: 0 0 5px 0px;
+				overflow: hidden;
+				background: #fff;
+			}
+			.fl {
+				float: left;
+			}
+			.goods-img {
+				max-height: 50px;
+				width: 100%;
+				text-align: center;
+				float: left;
+				width: 20%;
+			}
+			.goods-img img {
+				height: 48px;
+				width: 48px;
+			}
+			.order-goods .goods-info {
+				float: right;
+				width: 80%;
+				display: inline-block;
+				padding-left: 5px;
+				margin: 0 !important;
+			}
+			.order-goods .goods-info p {
+				padding: 2px;
+				margin: 0;
+				line-height: 18px;
+				font-size: 12px;
+				color:#333
+			}
+			.ranks{
+				margin: 5px 0;
+				background: #fff;
+				padding: 5px 10px;
+			}
+			.mui-content input,
+			.mui-content textarea {
+				border: none !important;
+			}
+			.mui-content textarea {
+				height: 100px;
+				margin-bottom: 0 !important;
+				padding-bottom: 0 !important;
+			}
+			.mui-input-row label{
+				width: 30%;
+				font-size: 14px;
+				color: #666;
+			}
+			.mui-input-row input{
+				width: 70% !important;
+				font-size: 14px;
+				color: #333;
+			}
+			.mui-input-row div{
+				color: #333 !important;
+				width: 70%;
+				line-height: 22px;
+			}
+			.mui-content .row {
+				width: 100%;
+				background-color: #fff;
+			}
+			.mui-content p {
+				padding: 10px 15px 0;
+			}
+			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+				font-size: 14px;
+			}
+			
+			.mui-content .mui-inline{
+				vertical-align: bottom;
+				font-size: 14px;
+				color: #8f8f94;
+			}
+			.mui-icon-star{
+				color: #B5B5B5;
+				font-size: 22px;
+			}
+			.mui-icon-star-filled{
+				color: #FFB400;
+				font-size: 22px;
+			} 
+			.picture{
+				margin: 2px;
+				border: 1px solid #eee;
+				border-radius: 5px;
+				width: 18% !important;
+				display: inline-block;
+				vertical-align: middle;
+				height: 60px;
+				position: relative;
+				background-image: url(../images/kuqi.png);
+				background-repeat: no-repeat;
+				background-size: 85% 85%;
+				background-position: center center;
+			}
+			.picture .mui-icon-close{
+				position: absolute;
+				color: #fff;
+				right: -2px;
+				top: -7px;
+				background: #FF5053;
+				border-radius: 50px;
+				font-size: 15px;
+				z-index: 1;
+			}
+			.addfile-btn{
+				margin: 5px 0;
+				border: 1px solid #eee;
+				border-radius: 5px;
+				width: 18% !important;
+				display: inline-block;
+				vertical-align: middle;
+				height: 60px;
+				position: relative;
+				border-radius:5px;
+				text-align: center;
+			}
+			.addfile-btn span{
+				font-size: 40px;
+				line-height: 60px;
+				color: #999;
+			}
+			#image-list{
+				padding: 10px;
+				margin-top: 5px;
+			}
+			.row .mui-btn-success{
+				padding: 10px;
+				background: #41CEA9;
+				border-color: #41CEA9;
+			}
+			.row .mui-btn-success:active{
+				background: #ccc;
+				border-color: #ccc;
+			}
+			
+			.mui-content .hide-name {
+				height: 40px;
+				line-height: 10px;
+				display: inline-block;
+				font-size: 12px;
+				color: #666;
+			}
+			.mui-content .hide-name label{
+				padding-left: 40px !important;
+			}
+			.mui-icon-arrowright{
+				font-size: 14px;
+				line-height: 22px;
+				margin-right: 10px;
+			}
+			.mui-content.hide-name input{
+				left:10px;
+				color: #41CEA9 !important;
+			}
+			.mui-content .hide-name input:before{
+				font-size:18px;
+				position: relative;
+				top:3px;
+			}
+			.mui-checkbox input:before{
+				color: #41CEA9 !important;
+			}
+			#progress{
+				padding: 1px 0 !important;
+				height: 2px;
+			}
+			.sc_list {
+				padding: 0 ;
+				margin: 5px 0 5px 0 !important;
+			    overflow: hidden;
+			    margin-bottom: 44px;
+			}
+			.sc_list li{
+				list-style: none;
+				float: left;
+				width: 100%;
+				margin-bottom: 5px;
+				padding: 5px 0;
+				background: #fff;
+			}
+			.sc_list .radio {
+			    float: left;
+			    width: 15%;
+			    height: 60px;
+			    padding: 0 !important;
+			    margin: 0 !important;
+			}
+			.sc_list .radio .box{
+				position: relative;
+			}
+			.sc_list .radio .box label{
+				height: 60px;
+				width: 50px;
+				position: relative;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+			.mui-checkbox input:before{
+				color: #41CEA9 !important;
+			}
+			.sc_list .radio .box input{
+				left: 10px;
+				top: 20px;
+			}
+			.fl {
+			    float: left;
+			}
+			.goods-img{
+				max-height: 100px;
+				width: 20%;
+			}
+			.goods-img img {
+			    max-height: 50px;
+			    width: 100%;
+			    margin-top:5px ;
+			}
+			.sc_list .goods-info {
+			    width: 63%;
+			    padding-left: 5px;
+			}
+			.sc_list .goods-info .title{
+				overflow: hidden;
+				width: 95%;
+				white-space: nowrap;
+				color: #333;
+			    font-size: 12px;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			    /*display: -webkit-box;*/
+			    word-break: break-word;
+			    line-height: 18px;
+			}
+			.sc_list .goods-info p{
+				padding: 2px;
+				margin: 0;
+				line-height: 18px;
+			}
+			.sc_list .price-info {
+			    width: 63%;
+			    padding-right: 5px;
+			}
+		
+			.fr {
+			    float: right;
+			}
+			.sc_list .mui-numbox{
+				margin-top: 0px ;
+				width: 120px;
+				height: 25px;
+				color: #666;
+				/*border-color: #efefef;*/
+				padding: 0 !important;
+			}
+			p{
+				font-size: 12px;
+			}
+			.price,#order_amount,.mui-input-row .price {
+				color: #ff6633  !important;
+				font-size: 14px;
+			}
+			.price-num {
+				position: absolute;
+				right: 0px;
+				text-align: right;
+			}
+			.price-num p{
+				margin: 0;
+				line-height: 18px;
+			}
+			.explain {
+				padding: 10px 0;
+			}
+			.explain p{
+				margin: 0 !important;
+				padding: 0px 10px;
+				color: #FF5053;
+			}
+			.title p{
+				color: #666;
+				font-weight: bold;
+			}
+			#re_goods_list{
+				background: #fff;
+				border: 1px solid red;
+			}
+			.close-btn {
+				background: #41CEA9;
+				color: #fff;
+				text-align: center;
+				height: 44px;
+				line-height: 44px;
+			}
+			.mui-scroll-wrapper {
+				margin-bottom: 44px !important;
+				background: #eee;
+				top: -220px !important;
+				/*bottom: 51px;*/
+				border-radius: 0 !important;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">申请退款</h1>
+		</header>
+		<div class="loader" id="loader">
+			<a>
+				<span class="mui-spinner"></span>
+			</a>
+			<br />
+			<span>加载中...</span>
+		</div>
+		<div class="mui-content" id="no-order" style="display: none;">
+			<div id="no-content">
+				<p><img src="../images/kuqi.png" /></p>
+				<p>很抱歉,订单不存在</p>
+			</div>
+		</div>
+		<div class="mui-content" id="order" style="display: none;">
+			<div class="mui-content-padded" style="padding-top:0 ;">
+				 <div class="mui-input-group">
+				 	<!--<div class="mui-input-row title">
+						<p>退款申请</p>
+					</div>-->
+					<div class="mui-input-row">
+						<label>订单编号</label>
+						<div class="mui-inline" id="goods_sn"></div>
+					</div>
+					<!--<div class="mui-input-row">
+						<label>订单金额</label>
+						<div class="mui-inline price" id="total_amount"></div>
+					</div>
+					<div class="mui-input-row">
+						<label>积分抵扣</label>
+						<div class="mui-inline price" id="integral_money"></div>
+					</div>
+					<div class="mui-input-row">
+						<label>优 惠 券</label>
+						<div class="mui-inline price" id="quan"></div>
+					</div>
+					<div class="mui-input-row">
+						<label>实付金额</label>
+						<div class="mui-inline price" id="order_amount"></div>
+					</div>-->
+					<div class="mui-input-row">
+						<label>退款类型</label>
+						<div class="mui-inline" id="re_type"><font>选择退款类型</font> <span class="mui-icon mui-icon-arrowright fr"></span></div>
+					</div>
+					<div class="mui-input-row" id="amount-row" style="display: none;">
+						<label>退款金额</label>
+						<input type="number" class="mui-input-clear" id="amount" placeholder="退款金额">
+					</div>
+					<div class="mui-input-row">
+						<label>退款商品</label>
+						<div class="mui-inline" id="re_goods">
+							<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg" width="20">
+							<font>*2</font>
+						</div>
+					</div>
+					<div class="mui-input-row">
+						<label>退款原因</label>
+						<div class="mui-inline" id="re_reason"><font>选择退款原因</font> <span class="mui-icon mui-icon-arrowright fr"></span></div>
+					</div>
+				</div>
+				<div class="row mui-input-row">
+					<textarea  class="mui-input-clear comment-text" placeholder="问题描述" id="text"></textarea>
+				</div>
+				<div class="row mui-input-row explain">
+					<p>退款说明：</p>
+					<p>1.使用了优惠券的订单仅支持“整单退款”</p>
+					<p>2.优惠券不作退还处理</p>
+				</div>
+				<div id='image-list' class="row">
+					<div class="addfile-btn" id="get-image">
+						<span class="mui-icon mui-icon-plusempty"></span>
+					</div>
+					<!--<div class="picture">
+						<span class="mui-icon mui-icon-close"></span>
+					</div>-->
+				</div>
+				<div class="row">
+					<button type="button" class="mui-btn mui-btn-success mui-btn-block" id="submit-btn">申请退款</button>
+				</div>
+			</div>
+			<div id="return-type" class="mui-popover mui-popover-action mui-popover-bottom">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" type="1">
+						换货
+					</li>
+					<li class="mui-table-view-cell" type="2" >
+						仅退款
+					</li>
+					<li class="mui-table-view-cell" type="3">
+						退货退款
+					</li>
+					<li class="mui-table-view-cell" type="4">
+						整单退款
+					</li>
+				</ul>
+			</div>
+			<div id="reason-list" class="mui-popover mui-popover-action mui-popover-bottom">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" type="1">
+						商品与描述不符
+					</li>
+					<li class="mui-table-view-cell" type="2">
+						商品错发、漏发
+					</li>
+					<li class="mui-table-view-cell" type="3" >
+						商品破损问题
+					</li>
+					<li class="mui-table-view-cell" type="4">
+						发货问题
+					</li>
+					<li class="mui-table-view-cell" type="5">
+						拍错了，不想要了
+					</li>
+					<li class="mui-table-view-cell" type="5">
+						其他
+					</li>
+				</ul>
+			</div>
+			<div id="re_goods_list" class="mui-popover mui-popover-action mui-popover-bottom">
+				<div class="mui-scroll-wrapper" id="goods-wrapper" style="background: #eee;">
+					<ul class="mui-scroll sc_list" id="goods-list">
+				        <!--<li>
+		                <div class="radio fl ">
+		                    <div class="mui-input-row mui-checkbox mui-left box">
+								<label>&nbsp;</label>
+								<input name="checkbox" value="Item 2" type="checkbox" checked>
+							</div>
+		                </div>
+		                <div class="goods-img fl">
+		                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+		                </div>
+		                <div class="goods-info fl">
+		                    <p class="title">
+		                    	云南白药 气血康胶囊24粒（买五送一送原品）
+		                    </p>
+		                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+		                    <p class="sc_pri fl">
+		                        <span>￥</span><span class="price">11.00</span>
+		                    </p> 
+		                    <div class="mui-numbox fr">
+								<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+								<input class="mui-input-numbox" type="number" min="1" max="100" id="buy-num" value="1"/>
+								<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+							</div>
+		                </div>
+			        </li>-->
+		       </ul>
+	            </div>
+				<div class="close-btn">完成 </div>
+			</div>
+		</div>
+    <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	(function(win, d, $, h, ms) {
+			$.init();
+			h.d={
+				loader:d.getElementById('loader'),
+				image_list: d.getElementById('image-list'),
+				re_type:d.getElementById('re_type'),
+				amount_row:d.getElementById('amount-row'),
+				re_reason:d.getElementById('re_reason'),
+				amount:d.getElementById('amount'),
+				re_goods:d.getElementById('re_goods')
+			}
+			h.getOrderDetail=function(){
+				if(!h.order_id>0){
+					h.noContent()
+					return
+				}
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					dataType:'json',
+					data:{
+						m:'order_detail',
+						token:h.token,
+						id:h.order_id
+					},
+					success:function(ret){
+						if(ret.code==0){
+							h.d.loader.style.display="none";
+			        		d.getElementById('order').style.display="block";
+							//商品列表
+							var html=[];
+							h.goods_list=ret.data.goods_list;
+							$.each(ret.data.goods_list, function(i,v) {
+								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+								html.push('<li goods_id="'+v.goods_id+'"><div class="radio fl ">\
+		                    <div class="mui-input-row mui-checkbox mui-left box">\
+								<label>&nbsp;</label><input name="checkbox" type="checkbox" class="checkbox"></div></div>\
+		                <div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl">\
+		                    <p class="title">'+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p><p class="sc_pri fl">\
+		                        <span class="price">￥'+v.member_goods_price+'</span>\
+		                    </p><div class="mui-numbox fr">\
+								<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>\
+								<input class="mui-input-numbox" type="number" min="1" max="'+v.goods_num+'" value="'+v.goods_num+'"/>\
+								<button class="mui-btn mui-btn-numbox-plus" type="button">+</button></div></div></li>')
+
+								
+//								html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
+//								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
+//	                	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
+							});
+							h.d.amount.value=h.max_amount=(parseFloat(ret.data.user_money)+parseFloat(ret.data.order_amount));
+							d.getElementById('goods-list').innerHTML=html.join('')
+							//基本信息
+							d.getElementById('goods_sn').innerText=ret.data.order_sn
+//							d.getElementById('total_amount').innerText="￥"+ret.data.total_amount
+//							d.getElementById('integral_money').innerText="-￥"+ret.data.integral_money
+//							d.getElementById('quan').innerText="-￥"+ret.data.coupon_price
+//							d.getElementById('order_amount').innerText="￥"+h.fmoney(parseFloat(ret.data.order_amount)+parseFloat(ret.data.user_money))
+						}else{
+							h.noContent()
+						}
+					},
+					error:function(ret){
+						h.noContent()
+					}
+				});
+			}
+			h.noContent=function(){
+				h.d.loader.style.display="none";
+				d.getElementById('no-order').setAttribute('style','')
+				d.getElementById('order').setAttribute('style','display: none;')
+				setTimeout(function(){
+					$.back()
+				},1500)
+			}
+			
+			/**
+			 * 订单操作
+			 * @param {string} type
+			 */
+			h.orderService=function(type){
+				
+			}
+			$.plusReady(function(){
+				h._self=plus.webview.currentWebview();
+				h.order_id=h._self.order_id
+				h.service=h._self.btn
+				h.token=ms.getItem('token')
+				h.getOrderDetail()
+				h.data={
+					token:ms.getItem('token'),
+					m:'return_order',
+					images:[],
+				}
+				
+				h.maxnum=20;
+				h.index=0;
+				h.max_amount=0;
+				h.return_goods=[]
+				//添加图片
+				h.addImageFile=function(zip){
+					var div=d.createElement('div');
+					div.className="picture";
+					div.style.background="";
+					div.innerHTML='<span class="mui-icon mui-icon-close" i="'+h.index+'"></span>';
+					div.style.backgroundImage = 'url(' + zip.target + ')';
+					h.d.image_list.appendChild(div)
+					h.data.images.push({index:h.index,name:'images'+h.index,path:zip.target,size:zip.size})
+					h.index++
+				}
+				
+				//删除图片
+				h.removeImageFile=function(o){
+					var index=o.getAttribute('i');
+					for(var i=0;i<h.data.images.length;i++){
+						if(h.data.images[i].index==index){
+							h.data.images.splice(i,1)
+							h.d.image_list.removeChild(o.parentElement)
+						}
+					}
+				}
+				
+				//从相册选择图片
+				h.getGalleryImage=function (){
+					var maximum=h.maxnum-h.data.images.length
+					if(maximum==0){
+						alert('最多上传10张')
+						return;
+					}
+					var _option={
+						filter:'image',
+						multiple:true,
+						maximum:maximum,
+						system:false,
+						onmaxed:function(){
+							plus.nativeUI.alert('最多只能选择10张图片')
+						}
+					}
+					// 从相册中选择图片
+				    plus.gallery.pick(function(e){
+				    	for(var i in e.files){
+				    		//成功后压缩文件
+				    		var name = e.files[i].substr(e.files[i].lastIndexOf('/') + 1);
+					    	plus.zip.compressImage({
+								src: e.files[i],
+								dst: '_doc/' + name,
+								overwrite: true,
+								quality: 50
+							}, function(zip) {
+//								console.log(JSON.stringify(zip))
+//								console.log("filesize:"+zip.size+",totalsize:");
+								if(zip.size>1024*1024*5){//单张图片不得大于5M
+									$.toast('您选择的图片太大了')
+									return
+								}
+								h.addImageFile(zip)
+							}, function(zipe) {
+								$.toast('压缩失败！')
+							});
+//					    	alert(e.files[i]);
+				    	}
+				    }, function(e){
+				    	$.toast('取消选择图片');
+				    },_option);// 最多选择3张图片
+				}
+				
+				d.getElementById('get-image').addEventListener('tap',function(){
+					h.getGalleryImage()
+				})
+				
+				//删除图片
+				$(h.d.image_list).on('tap','.mui-icon-close',function(){
+					h.removeImageFile(this)
+				})
+				
+				//打开退款类型列表
+				h.d.re_type.addEventListener('tap',function(){
+					$('#return-type').popover('toggle')
+				})
+				//打开退款原因列表
+				h.d.re_reason.addEventListener('tap',function(){
+					$('#reason-list').popover('toggle')
+				})
+				
+				h.d.re_goods.addEventListener('tap',function(){
+					$('#re_goods_list').popover('toggle')
+					$('#goods-wrapper').scroll().scrollTo(0, 0, 0)
+				})
+				
+				h.d.amount.addEventListener('change',function(){
+					if(this.value>h.max_amount){
+						this.value=h.max_amount
+					}
+				})
+				
+				
+				//选择退款类型
+				$('#return-type').on('tap','li',function(){
+					h.type=this.getAttribute('type')
+					h.d.re_type.querySelector('font').innerText=this.innerText
+					$('#return-type').popover('toggle')
+					h.d.amount_row.setAttribute('style',h.type==3?'display: none;':'')
+				})
+				//选择退款原因
+				$('#reason-list').on('tap','li',function(){
+					h.reason=this.getAttribute('type')
+					h.d.re_reason.querySelector('font').innerText=h.reason_txt=this.innerText
+					$('#reason-list').popover('toggle')
+				})
+				
+				/**
+				 * 减少
+				 */
+				$('#re_goods_list').on('tap','.mui-btn-numbox-minus',function(){
+	        		var _input=this.parentElement.querySelector('input');
+	        		if(_input.value>1){
+	        			_input.value=_input.value-1
+	        			var p=this.parentElement.parentElement.parentElement;
+	        			var checked=p.querySelector('.checkbox').checked;
+	        			if(checked){
+	        				var goods_id=p.getAttribute('goods_id')
+	        				h.changeReturnGoods(goods_id,_input.value,checked)
+	        			}
+	        		}
+				})
+				
+				//增加
+				$('#re_goods_list').on('tap','.mui-btn-numbox-plus',function(){
+	        		var _input=this.parentElement.querySelector('input');
+	        		if(_input.value<_input.getAttribute('max')){
+	        			_input.value=parseFloat(_input.value)+1
+	        			var p=this.parentElement.parentElement.parentElement;
+	        			var checked=p.querySelector('.checkbox').checked;
+	        			if(checked){
+	        				var goods_id=p.getAttribute('goods_id')
+	        				h.changeReturnGoods(goods_id,_input.value,checked)
+	        			}
+	        		}
+				})
+				
+				h.changeReturnGoods=function(goods_id,num,checked){
+					var tag=false;
+					if(h.return_goods.length>0){
+						for(var i=0;i<h.return_goods.length;i++){
+		        			if(h.return_goods[i].goods_id==goods_id){
+	    						if(checked){
+	    							h.return_goods[i].num=num
+	    						}else{
+	    							h.return_goods.splice(i,1)
+	    						}
+	    						tag=true;
+	    						break
+	    					}
+		        		}
+					}
+	        		if(!tag && checked){
+	        			var data={
+	        				goods_id:goods_id,
+	        				num:num
+	        			}
+	        			h.return_goods.push({goods_id:goods_id,num:num})
+	        		}
+				}
+				
+				$('#re_goods_list').on('tap','.checkbox',function(e){
+					var p=this.parentElement.parentElement.parentElement;
+	        		var goods_id=p.getAttribute('goods_id')
+	        		var num=p.querySelector('.mui-input-numbox').value
+	        		var is_check=this.checked?false:true;
+	        		h.changeReturnGoods(goods_id,num,is_check)
+				})
+				
+				$('#re_goods_list').on('tap','.close-btn',function(){
+					$('#re_goods_list').popover('toggle')
+					alert(JSON.stringify(h.return_goods))
+				})
+				
+				
+				
+				$.back=function(){
+					h._self.close('slide-out-right')
+				}
+			})
+		}(window, document, mui, honey, myStorage))
+    </script>
+	</body>
+
+</html>
+
