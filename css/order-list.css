@@ -168,3 +168,13 @@
 .red{
 	color: #DD5044 !important;
 }
+
+.mui-btn-nav{
+	color: #FF5053;
+	border-color: #FF5053;
+}
+.mui-btn-success{
+	color: #fff;
+	border-color: #41CEA9;
+	background-color:#41CEA9 ;
+}

@@ -52,10 +52,6 @@
 		       		<span class="title">选择门店</span><a id="fdbs">总店</a>
 		       		<span class="mui-icon mui-icon-arrowright"></span>
 		       	</p>
-		       	<p id="xz_pay">
-		       		<span class="title">支付方式</span><span id="pay"><a href="#" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a></span>
-		       		<span class="mui-icon mui-icon-arrowright"></span>
-		       	</p>
 		       	<p>
 		       		<span class="title">使用余额</span><input id="ye" type="number" class="mui-input-clear number" min="0" max="0" placeholder="可用余额0" />
 		       	</p>
@@ -161,14 +157,17 @@
 		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="weixin" >
-					<a href="#" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
+					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
 				</li>
 				<li class="mui-table-view-cell" type="alipay">
-					<a href="#" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
+					<a href="#pay_list" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
 						支付宝支付</a>
 				</li>
 				<li class="mui-table-view-cell" type="hdfk">
-					<a href="#" >货到付款</a>
+					<a href="#pay_list" >货到付款</a>
+				</li>
+				<li class="mui-table-view-cell" type="cansel">
+					<a href="#pay_list" style="color: #999;" >取消</a>
 				</li>
 			</ul>
 		</div>
@@ -217,7 +216,6 @@
 				discount:document.getElementById('discount'),
 				discount_txt:document.getElementById('discount_txt'),
 				bz_txt:document.getElementById('textarea'),
-				xz_pay:document.getElementById('xz_pay'),
 				pay_list:document.getElementById('pay_list')
 			}
 			h.order = {}
@@ -285,7 +283,7 @@
 				}
 				if(data.length > 0) {
 					$.each(data, function(i, v) {
-						v.member_price=honey.fmoney(h.discount*parseFloat(v.price)/100);
+//						v.member_price=honey.fmoney(h.discount*parseFloat(v.price)/100);
 						if(h._sum.is_free_shipping && parseInt(v.is_free_shipping)==0){
 							h._sum.is_free_shipping=false
 						}
@@ -294,7 +292,7 @@
 //						var ladder_price=false;
 			    		if(v.num>0&&v.price_ladder&&v.price_ladder.length>0){
 			    			mui.each(v.price_ladder,function(j,val){
-			    				if(parseFloat(v.num)>=parseFloat(val.amount)){
+			    				if(v.num>=val.amount){
 			    					price=val.price;
 //			    					ladder_price=honey.fmoney(parseFloat(val.price)*h.discount/100)
 			    				}
@@ -306,7 +304,9 @@
 //			    		if(ladder_price && parseFloat(ladder_price)<parseFloat(v.member_price)){
 //			    			h._sum.ladder_amount+=parseFloat(honey.fmoney((v.member_price-ladder_price)*parseFloat(v.num)));
 //			    		}
-						h._sum.amount += price*v.num;
+						h._sum.amount +=price*100*v.num/100;
+//						alert(h._sum.amount)
+//						h._sum.amount += parseFloat(parseFloat(price*100*v.num/100).toFixed(2));
 						if(v.exchange_integral) {
 							h._sum.exchange_integral += parseInt(v.exchange_integral) * parseFloat(v.num)
 						}
@@ -331,9 +331,8 @@
 				$.each(h.config, function(i, v) {
 					h.conf[v.name] = v.value;
 				});
-				
 				//折扣优惠
-				h.discount_money=h.fmoney(h._sum.amount*(100-h.discount)/100);
+				h.discount_money=h.discount<100?h.fmoney(h._sum.amount*(100-h.discount)/100):0;
 				h.d.discount.innerText="-￥"+h.discount_money;
 				if(h.discount_money>0 || h.discount<100){
 					h.d.discount_txt.innerText="("+h.discount+"折)";
@@ -384,11 +383,13 @@
 					h.d.point.innerText = "-￥0";
 				}
 				//使用余额
-				if(h.d.ye.value > 0) {
-					if(h.d.ye.value > h.pay_amount) {
-						h.d.ye.value = h.fmoney(h.pay_amount)
+				var ye=h.d.ye.value
+				if( ye> 0) {
+					if(ye > h.pay_amount) {
+						ye=h.pay_amount
 					}
-					h.pay_amount -= h.d.ye.value;
+					h.d.ye.value=h.fmoney(ye)
+					h.pay_amount -= ye;
 					h.d.blance.innerText = "-￥" + h.fmoney(h.d.ye.value)
 				} else {
 					h.d.blance.innerText = "-￥0"
@@ -555,7 +556,9 @@
 	    				h.discount=100
 	    			}
 	    		}
-	    		h.cartContent=plus.webview.getWebviewById('buy-content');
+	    		h.cartContent=plus.webview.getWebviewById('cart-content');
+	    		h.mineWin=plus.webview.getWebviewById('mine');
+	    		h.buyWin=plus.webview.getWebviewById('buy');
 				h.fixFooter()
 				/**
 				 * 输入余额事件
@@ -675,6 +678,7 @@
 						success: function(ret) {
 							if(ret.code==0){//订单提交成功,开始支付
 								h._submit.success=true;
+								h.order_id=ret.order_id
 								$.toast('订单提交成功');
 								//删除购物车包含订单中的商品
 								cart=h.update_cart(ms.getItem('cart'),h.goods,'delete')
@@ -683,13 +687,12 @@
 								}else{
 									ms.removeItem('cart')
 								}
-								//跳转到订单详情并关闭当前页
-								h.openWin('../mine/order-detail.html','order-detail',{order_id:ret.order_id})
-								setTimeout(function(){
-									$.fire(h.cartContent,'showCart');
-									$.back()
-								},500)
-								
+								//提交成功，跳转支付
+								if(h.pay_amount>0){
+									$(h.d.pay_list).popover('toggle')
+								}else{
+									h.orderSuccess();
+								}
 							}else{
 								$.toast(ret.msg||'订单提交失败')
 								switch(ret.code){
@@ -743,6 +746,9 @@
 				 * @param {string} type
 				 */
 				h.update_cart=function(cart,items,type){
+					if(!cart){
+						return [];
+					}
 					$.each(items,function(i,v){
 						for(var j=0;j<cart.length;j++){
 							if(v.goods_id==cart[j].goods_id){
@@ -767,6 +773,18 @@
 					})
 					return cart;
 				}
+				
+				h.orderSuccess=function(){
+					//跳转到订单详情并关闭当前页
+					h.openWin('../mine/order-detail.html','order-detail',{order_id:h.order_id})
+					setTimeout(function(){
+						$.fire(h.cartContent,'showCart');
+						$.fire(h.mineWin,'reloadUser')
+						h.buyWin.hide()
+					},500)
+				}
+				
+				
 		
 				/**
 				 * 初始化提交订单页面
@@ -792,6 +810,10 @@
 					h.showPayAmount()
 					h.getCouponList()
 					h.getAddressList()
+					h._submit={
+						success:false,//提交成功
+						status:false//提交状态
+					}
 				})
 		
 				win.addEventListener('reloadAddress', function() {
@@ -912,15 +934,9 @@
 					$(h.d.quan).popover('toggle')
 				})
 				
-				//打开支付方式
-				h.d.xz_pay.addEventListener('tap',function(){
-					$(h.d.pay_list).popover('toggle')
-				})
-				
 				//选择支付方式
 				$(h.d.pay_list).on('tap','li',function(){
 					h.pay_type=this.getAttribute('type')
-					h.d.xz_pay.querySelector('#pay').innerHTML=this.innerHTML
 					$(h.d.pay_list).popover('toggle')
 				})
 		

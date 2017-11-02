@@ -140,12 +140,14 @@
 						h.d.search.style.display="block";
 						h.d.title.style.display="none";
 					}else{
-						if(id=="mine" && !h.token){
+						if(id=="mine"){
 							if(!h.token){
 //									document.getElementById('#'+h.curBarItemWebview)
 								h.openWin('mine/login.html','login')
 								e&&e.stopPropagation()
 								return
+							}else{
+								$.fire(h.barWebViews[id],'reloadUser',{time:true})
 							}
 //						}else if(id=="cart"){
 //							$.fire(h.barWebViews[id], 'showCart')

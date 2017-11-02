@@ -346,38 +346,38 @@
 		 * 预加载提交订单
 		 */
 		honey.preloadBuyWin = function() {
-			//头部
-			honey.buyHeader = mui.preload({
-				id: 'buy',
-				url: 'buy-header.html',
-				styles: {
-					top: '0px',
-					bottom: '0px',
-				},
-			})
-			honey.buyHeader.hide()
-	
-			//内容
-			honey.buyContent = mui.preload({
-				id: 'buy-content',
-				url: 'buy-content.html',
-				styles: {
-					top: '44px',
-					bottom: 0
-				},
-			})
-			honey.buyContent.hide()
-	
-			honey.buyHeader.addEventListener('hide', function() {
+			if(!plus.webview.getWebviewById('buy')){
+				//头部
+				honey.buyHeader = mui.preload({
+					id: 'buy',
+					url: 'buy-header.html',
+					styles: {
+						top: '0px',
+						bottom: '0px',
+					},
+				})
+				honey.buyHeader.hide()
+		
+				//内容
+				honey.buyContent = mui.preload({
+					id: 'buy-content',
+					url: 'buy-content.html',
+					styles: {
+						top: '44px',
+						bottom: 0
+					},
+				})
 				honey.buyContent.hide()
-			})
-			
-			honey.buyHeader.addEventListener('show', function() {
-				honey.buyContent.show()
-			})
-	
-			honey.buyHeader.append(honey.buyContent)
+				honey.buyHeader.addEventListener('hide', function() {
+					honey.buyContent.hide()
+				})
+				honey.buyHeader.addEventListener('show', function() {
+					honey.buyContent.show()
+				})
+				honey.buyHeader.append(honey.buyContent)
+			}
 		}
+		
     	/**
     	 * 修改购物车
     	 * @param {Object} item 当前商品 [goods_id,spec_key,num]
@@ -650,6 +650,7 @@
 	    		}else{
 	    			honey.d.list.innerHTML=''
 	    			honey.d.nothing.removeAttribute('style')
+	    			honey.d.amount.innerText='￥0'
 	    		}
 	        })
 	        

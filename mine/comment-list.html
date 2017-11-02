@@ -1,0 +1,355 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<style>
+			.top-btn {
+				position: absolute;
+				top: 44px;
+				left: 0;
+				width: 100%;
+				background: #fff;
+				padding: 0 10px;
+				height: 45px;
+			}
+			
+			.mui-segmented-control .mui-control-item {
+				font-size: 12px;
+				line-height: 28px;
+			}
+			
+			.mui-segmented-control-honey {
+				border: 1px solid #41CEA9;
+			}
+			
+			.mui-segmented-control-honey .mui-control-item {
+				color: #41CEA9;
+				border-color: inherit;
+			}
+			
+			.mui-segmented-control-honey .mui-control-item.mui-active {
+				color: #fff;
+				background-color: #41CEA9;
+			}
+			
+			.mui-segmented-control-honey.mui-segmented-control-inverted .mui-control-item.mui-active {
+				color: #4cd964;
+				border-bottom: 2px solid #41CEA9;
+				background: none;
+			}
+			
+			.mui-segmented-control-honey.mui-segmented-control-inverted~.mui-slider-progress-bar {
+				background-color: #41CEA9;
+			}
+			.sc_list {
+				padding: 0;
+				margin: 3px 0 5px 0px;
+				overflow: hidden;
+				background: none;
+			}
+			
+			.sc_list li.comment-list {
+				list-style: none;
+				float: left;
+				width: 100%;
+				padding: 5px 10px;
+				background: #fff;
+				margin: 3px 0;
+			}
+			
+			.fl {
+				float: left;
+			}
+			
+			.goods-img {
+				max-height: 50px;
+				width: 100%;
+				text-align: center;
+				float: left;
+				width: 20%;
+			}
+			
+			.goods-img img {
+				height: 48px;
+				width: 48px;
+			}
+			
+			.sc_list .goods-info {
+				float: right;
+				width: 80%;
+				display: inline-block;
+				padding-left: 5px;
+				margin: 0 !important;
+			}
+			
+			.sc_list p.title {
+				overflow: hidden;
+				width: 100%;
+				/*white-space: nowrap;*/
+				color: #333;
+				font-size: 12px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				word-break: break-word;
+			}
+			
+			.sc_list .goods-info p {
+				padding: 2px;
+				margin: 0;
+				line-height: 18px;
+				font-size: 12px;
+			}
+			.fr {
+				float: right;
+			}
+			
+			.mui-content {
+				margin-top: 45px;
+			}
+			
+			.no-comment {
+				text-align: center;
+				background: none;
+				color: #666;
+				font-size: 14px;
+				padding: 10px;
+			}
+			
+			.btns span {
+				margin: 0 2px;
+			}
+			.btns img{
+				width: 18px;
+			}
+			.btns .mui-btn {
+				font-size: 12px;
+				padding: 3px 5px;
+				line-height: 14px;
+				margin: 0;
+			}
+			.buy-time{
+				font-size: 12px;
+				float: left;
+				padding-top:5px !important;
+			}
+			.mui-btn-nav{
+				color: #999;
+				border-color: #ccc;
+			}
+			.comment-btn{
+				color: #FF5053;
+				border-color: #FF5053;
+			}
+
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">我的评价</h1>
+			<div class="top-btn">
+				<div class="mui-segmented-control mui-segmented-control-honey">
+					<a class="mui-control-item mui-active" type="ALL">全部</a>
+					<a class="mui-control-item" type="WAITCCOMMENT">待评价</a>
+					<a class="mui-control-item" type="COMMENTED">已评价</a>
+				</div>
+			</div>
+		</header>
+		<div class="mui-content" id="content">
+			<div class="loader" id="loader">
+				<a>
+					<span class="mui-spinner"></span>
+				</a>
+				<br />
+				<span>加载中...</span>
+			</div>
+			<ul class="sc_list" id="list">
+				<li class="no-comment">暂无评价<li>
+				<!--<li>
+	                <div class="goods-img fl">
+	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+	                </div>
+	                <div class="goods-info fl">
+	                    <p class="title">
+	                    	云南白药 气血康胶囊24粒（买五送一送原品）云南白药 气血康胶囊24粒（买五送一送原品）
+	                    </p>
+	                    <p class="buy-time">购买时间:2017-10-10 10:10:10</p>
+	                    <p class="fr btns">
+			        		<span class="mui-btn mui-btn-nav">
+			        			<span class="mui-icon mui-icon-compose"></span>评价订单
+			        		</span>
+						</p>
+	                </div>
+				</li>-->
+	       </ul>
+	       
+		</div>
+    <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	(function(win, d, $, h, ms) {
+			$.init({
+				pullRefresh: {
+					container: '#content',
+//					down: {
+//						style:'circle',
+//					    color:'#41cea9',
+//					    height:'80px',
+//						callback: refresh
+//					},
+					up: {
+						auto:false,
+						height:80,
+						contentinit: h.contentinit,
+	                    contentdown: h.contentdown,
+	                    contentrefresh: h.contentrefresh,
+						contentnomore:h.contentnomore,
+						callback: getCommentList 
+					}
+				}
+			});
+			h.d = {
+				btn_items:$('.mui-control-item'),
+				content:$('#content'),
+				list: d.getElementById('list'),
+				loader:d.getElementById('loader')
+			}
+			//加载评价列表 
+			function getCommentList(){
+				switch(h.type){
+					case 'WAITCCOMMENT':
+						type=0;
+						break;
+					case 'COMMENTED':
+						type=1;
+						break;
+					default:
+						type=2;
+				}
+				if(h.page==1){
+					h.d.list.innerHTML='';
+					h.d.loader.style.display="block";
+				}
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					dataType:'json',
+					data:{
+						m:'comment_list',
+						token:h.token,
+						type:type
+					},
+					success:function(ret){
+						if(ret.code==-1){
+							$.fire(plus.webview.getWebviewById('mine'),'logout')
+							h.openWin('login.html','login')
+							$.back()
+							return
+						}
+						h.d.loader.style.display="none";
+						h.showOrderList(ret.data)
+//						if(ret.code==0){
+							h.page++
+//						}
+						(!ret.data ||ret.data.length<10)?h.d.content.pullRefresh().disablePullupToRefresh():h.d.content.pullRefresh().endPullupToRefresh(false)
+					},
+					error:function(ret){
+//						$.toast('error')
+					}
+				});
+			}
+			
+			/**
+			 * 显示订单商品列表 
+			 * @param {Object} data
+			 */
+			h.showOrderList = function(data) {
+				if(data.length > 0) {
+					var html = [];
+					$.each(data, function(i,v) {
+						var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+						html.push('<li class="comment-list" order_id="'+v.order_id+'" rec_id="'+v.rec_id+'"><div class="goods-img fl">\
+				                	<img src="'+img+'"></div><div class="goods-info fl"><p class="title">'+v.goods_name
+				                	+'</p><p class="buy-time">购买时间:'+h.getYmdTime(v.order_time,1)+'</p><p class="fr btns">\
+						        		<span class="mui-btn mui-btn-nav'+(v.is_comment==1?' order-btn"><span class="mui-icon mui-icon-search"></span>查看订单':' comment-btn"><span class="mui-icon mui-icon-compose"></span>评价订单')+'</span>\
+						        		</p></div></li>')
+					});
+					h.d.list.innerHTML+=html.join('')
+				}else{
+					h.page==1&&(h.d.list.innerHTML = '<li class="no-comment">暂无评价<li>');
+				}
+			}
+			
+			h.showType=function(type){
+				var type=type||h.type;
+				$.each(h.d.btn_items, function(i,v) {
+					v.setAttribute('class','mui-control-item'+(v.getAttribute('type')==type?' mui-active':''))
+				});
+			}
+			h.removeOrderItem=function(obj){
+				h.d.list.removeChild(obj)
+				if(h.d.list.length==0){
+					h.d.list.innerHTML = '<li class="no-comment">暂无评价<li>'
+				}
+			}
+			
+			$.plusReady(function() {
+				h.token=ms.getItem('token');
+				h._self=plus.webview.currentWebview();
+				h.type=h._self.type|| 'ALL';
+				h.mineWin=plus.webview.getWebviewById('mine')
+				h.showType()
+				getCommentList()
+				
+				/**
+				 * 切换评价
+				 */
+				$('.top-btn').on('tap','.mui-control-item',function(){
+					var type=this.getAttribute('type')
+					if(type!=h.type){
+						h.type=type;
+						h.page=1;
+						h.d.content.pullRefresh().refresh(true)
+						h.d.content.pullRefresh().enablePullupToRefresh()
+						h.d.content.pullRefresh().endPullupToRefresh(false)
+						getCommentList()
+					}
+				})
+				
+				/**
+				 * 查看订单详情
+				 */
+				$(h.d.list).on('tap','.order-btn',function(){
+					var order_id=this.parentElement.parentElement.parentElement.getAttribute('order_id')
+					h.openWin('order-detail.html','order-detail',{order_id:order_id})
+				})
+				/**
+				 * 评价订单
+				 */
+				$(h.d.list).on('tap','.comment-btn',function(){
+					var li=this.parentElement.parentElement.parentElement
+					var rec_id=li.getAttribute('rec_id')
+					var img=li.querySelector('img').getAttribute('src')
+					var name=li.querySelector('.title').innerText
+					h.openWin('comment-detail.html','comment-detail',{rec_id:rec_id,img:img,name:name})
+				})
+				
+				$.back=function(){
+					plus.webview.currentWebview().close('slide-out-right');
+				}
+		
+			})
+		
+		}(window,document, mui, honey, myStorage))
+    </script>
+	</body>
+
+</html>
+
