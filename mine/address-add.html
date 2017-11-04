@@ -231,7 +231,14 @@
 						}
 					});
 				})
-				
+				$.back=function(){
+					plus.webview.currentWebview().close('slide-out-right')
+				}
+				win.addEventListener('swiperight',function(e){
+					if(Math.abs(e.detail.angle)<13){
+						$.back()
+					}
+				})
 			});
 		})(window,honey,mui,document);
 		
