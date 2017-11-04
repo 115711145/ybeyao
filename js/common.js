@@ -1150,6 +1150,15 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
     	document.getElementById(id||'footerBar').style.top = (plus.display.resolutionHeight - 95) + "px";
     }
     
+    h.swipeClose=function(_win){
+    	_win.addEventListener('swiperight',function(e){
+			var angle = Math.abs(e.detail.angle);
+			if(angle<11){
+				$.back()
+			}
+		})
+    }
+    
     $.plusReady(function(){
     	h.logoutFire=function(){
 	    	if(!honey.indexWin){

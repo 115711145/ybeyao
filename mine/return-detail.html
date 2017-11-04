@@ -14,7 +14,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-			<h1 class="mui-title" id="header-title">订单详情</h1>
+			<h1 class="mui-title" id="header-title">退款详情</h1>
 		</header>
 		<div class="loader" id="loader">
 			<a>
@@ -80,13 +80,13 @@
 	       </div>
 	       <div class="amout-list">
 	       		<p class="bold-title">价格信息</p>
-	       		<p><span class="title">商品金额</span><span id="sum_amount">￥0</span></p>
-	       		<p><span class="title">配送费用</span><span id="sum_ps">￥0</span></p>
-	       		<p><span class="title">使用余额</span><span id="blance">-￥0</span></p>
-	       		<p><span class="title">使用积分</span><span id="point">-￥0</span></p>
+	       		<p><span class="title">商品金额:</span><span id="sum_amount">￥0</span></p>
+	       		<p><span class="title">配送费用:</span><span id="sum_ps">￥0</span></p>
+	       		<p><span class="title">使用余额:</span><span id="blance">-￥0</span></p>
+	       		<p><span class="title">使用积分:</span><span id="point">-￥0</span></p>
 	       		<!--<p><span class="title">折扣优惠:</span><span id="discount">-￥0</span></p>-->
-	       		<p><span class="title">优&nbsp;&nbsp;惠&nbsp;&nbsp;券</span><span id="coupon">-￥0</span></p>
-	       		<p><span class="title">实付金额</span><span class="price" id="order_amount">￥0</span></p>
+	       		<p><span class="title">优 惠 券:</span><span id="coupon">-￥0</span></p>
+	       		<p><span class="title">实付金额:</span><span class="price" id="order_amount">￥0</span></p>
 		       	<div class="btns" id="btns"></div>
 	       </div>
 		</div>
@@ -125,7 +125,7 @@
 					async:true,
 					dataType:'json',
 					data:{
-						m:'order_detail',
+						m:'return_order_detail',
 						token:h.token,
 						id:h.order_id
 					},
@@ -142,14 +142,14 @@
 							var html=[];
 							$.each(ret.data.goods_list, function(i,v) {
 								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
-								html.push('<li goods_id="'+v.goods_id+'"><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
+								html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
 								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
 	                	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
 							});
 							d.getElementById('goods-list').innerHTML=html.join('')
 							//基本信息
 							d.getElementById('goods_sn').innerText=ret.data.order_sn
-							d.getElementById('status').innerText=ret.data.return_status_desc||ret.data.order_status_desc
+							d.getElementById('status').innerText=ret.data.order_status_desc
 							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.add_time,1)
 							var time_p=[];
 							if(ret.data.pay_time>0){
@@ -172,32 +172,21 @@
 							d.getElementById('coupon').innerText="-￥"+ret.data.coupon_price
 							d.getElementById('order_amount').innerText="￥"+ret.data.order_amount
 							var btn=[]
-							if(ret.data.order_status>=3){//已完成、已取消、已关闭交易、退款单
+							if(ret.data.order_status>=3){//已完成、已取消、已作废、退款单
+			        			
 			        			btn.push('<span class="mui-btn mui-btn-link del-order" type="del-order">删除订单</span>');
 				        	}else{
 				        		if(ret.data.pay_status>0){
-				        			if(ret.data.return_status>0){
-				        				btn.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
+				        			if(ret.data.order_status==2){
+				        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
 				        			}else{
-				        				if(ret.data.order_status==2){
-					        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
-					        			}else{
-					        				if(ret.data.shipping_status>0){
-					        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-					        				}
-					        				btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
-					        			}
+				        				if(ret.data.shipping_status>0){
+				        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+				        				}
+				        				btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 				        			}
-				        			
 					        	}else{
-					        		if(ret.data.pay_code=='cod'){
-					        			if(ret.data.shipping_status>0){
-					        				btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-					        			}
-					        		}else{
-					        			btn.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span>');
-					        		}
-					        		btn.push('<span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
+					        		btn.push('<span class="mui-btn mui-btn-red pay-order" type="pay-order">立即付款</span><span class="mui-btn mui-btn-grey cansel-order" type="cansel-order">取消订单</span>');
 					        	}
 				        	}
 				        	d.getElementById('btns').innerHTML=btn.join('')
@@ -304,9 +293,6 @@
 						case 'confirm-order':
 							alert('确认收货')
 							break
-						case 'show-order':
-							h.openWin('return-detail.html','return-detail',{order_id:order_id})
-							break;
 					}
 				}
 				
@@ -323,25 +309,9 @@
 						}
 						$('#delete').popover('toggle')
 					}else{
-						h.orderService(type,h.order_id,this)
+						h.orderService(type,order_id,this)
 					}
 				})
-				//查看商品详情
-				$('#goods-list').on('tap','li',function(){
-					var goods_id = this.getAttribute('goods_id');
-					if(!h.detailWebView) {
-						h.detailWebView = plus.webview.getWebviewById('goods-header');
-					}
-					if(!h.detailSubpage) {
-						h.detailSubpage = plus.webview.getWebviewById('goods-detail');
-					}
-					$.fire(h.detailWebView, 'goodsId', {
-						goods_id:goods_id
-					})
-					h.detailWebView.show('slide-in-right', 300)
-				})
-				
-				h.swipeClose(win)
 				
 				$.back=function(){
 					h._self.close('slide-out-right')

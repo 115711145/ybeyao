@@ -13,6 +13,7 @@
 	float: left;
 	width: 100%;
 	padding: 5px 0 5px 10px;
+	border-bottom: 1px solid #efefef;
 }
 
 .fl {
@@ -41,7 +42,7 @@
 	width: 95%;
 	/*white-space: nowrap;*/
 	color: #333;
-	font-size: 12px;
+	font-size: 13px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
@@ -60,12 +61,12 @@
 }
 
 .weight {
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .price,#order_amount {
 	color: #ff6633;
-	font-size: 14px;
+	font-size: 13px;
 }
 
 
@@ -85,25 +86,28 @@
 	line-height: 14px;
 	color: #333;
 	border-bottom: 1px dashed #ddd;
-	padding-bottom: 5px;
+	padding: 6px 0;
 	width: 100%;
+	margin: 0;
 }
 
 .amout-list p span {
-	width: 50%;
+	min-width: 50%;
 	display: inline-block;
 	vertical-align:text-top;
-	color: #666;
+	color: #4e5e71;
+	font-size: 14px;
+	padding: 0 10px;
 }
-
 .amout-list p span:last-child{
 	text-align: right;
-	color: #333;
+	/*color: #333;*/
 }
 .bold-title{
-	border:0 !important;
 	font-weight: bold;
-	font-size: 16px;
+	font-size: 14px;
+	padding: 5px 10px !important;
+	border-bottom: 1px solid #eee !important;
 }
 
 .user-address {
@@ -151,12 +155,13 @@
 	width: 100%;
 }
 #note{
-	font-size: 13px;
+	font-size: 14px;
 	border: none;
-	display: inline;
+	padding:5px 10px ;
 }
 
 #btns{
+	margin: 10px 0;
 	text-align: center;
 }
 #btns .mui-btn{

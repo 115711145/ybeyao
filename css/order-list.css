@@ -107,7 +107,7 @@
 
 .price {
 	color: #ff6633;
-	font-size: 14px;
+	font-size: 12px;
 	margin-right: 5px;
 }
 
@@ -117,7 +117,7 @@
 
 .sc_list .order_sn,
 .sc_list .sum {
-	color: #333;
+	color: #4e5e71;
 	padding: 5px 0 !important;
 	font-size: 14px;
 }
@@ -134,9 +134,12 @@
 .price-num {
 	text-align: right;
 }
+.price-num p{
+	margin-right: 5px;
+}
 
 .sc_list .sum .sum-price-num {
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 45px;
 	height: 30px;
 	color: #333;
@@ -154,7 +157,7 @@
 	text-align: center;
 	background: none !important;
 	color: #666;
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .btns span {
@@ -177,4 +180,7 @@
 	color: #fff;
 	border-color: #41CEA9;
 	background-color:#41CEA9 ;
+}
+.orange{
+	color: #FF5053 !important;
 }

@@ -528,7 +528,12 @@
 					"images/mine-logout.png",
 					"images/mine-bg.jpg",
 					"images/profile.png",
-					"images/dd-dfh.png"
+					"images/dd-dfh.png",
+					"images/dd-dfk1.png",
+					"images/dd-dfh1.png",
+					"images/dd-dsh1.png",
+					"images/dd-dpj1.png",
+					"images/dd-tk1.png"
 				],
 				"refer": [
 					"mine/address.html",
@@ -566,7 +571,8 @@
 			},
 			"barItem/category.html": {
 				"resources": [
-					"js/mui.min.js"
+					"js/mui.min.js",
+					"css/mui.min.css"
 				],
 				"refer": [],
 				"priority": 0
@@ -797,7 +803,8 @@
 				"refer": [
 					"mine/order-detail.html",
 					"mine/login.html",
-					"mine/order-return.html"
+					"mine/order-return.html",
+					"mine/return-detail.html"
 				],
 				"priority": 0
 			},
@@ -830,7 +837,10 @@
 					"css/icons-extra.css",
 					"images/kuqi.png"
 				],
-				"refer": [],
+				"refer": [
+					"mine/order-return.html",
+					"mine/return-detail.html"
+				],
 				"priority": 0
 			},
 			"mine/comment-list.html": {
@@ -881,6 +891,21 @@
 					"css/iconfont.css",
 					"css/mui.poppicker.css",
 					"css/mui.picker.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mine/return-detail.html": {
+				"resources": [
+					"css/order-detail.css",
+					"css/own.css",
+					"js/city.js",
+					"js/common.js",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"images/kuqi.png",
+					"css/mui.min.css",
+					"css/icons-extra.css"
 				],
 				"refer": [],
 				"priority": 0
