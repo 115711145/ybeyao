@@ -90,7 +90,30 @@
 		       	<div class="btns" id="btns"></div>
 	       </div>
 		</div>
-		
+		<div id="delete" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="del">
+					<a href="#delete" style="color: #FF3B30;">删除订单</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#delete" style="color: #999;">取消</a>
+				</li>
+			</ul>
+		</div>
+		<div id="cansel" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="cansel_order">
+					<a href="#cansel" style="color: #FF3B30;">取消订单</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#cansel" style="color: #999;">取消</a>
+				</li>
+			</ul>
+		</div>
 		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="weixin" >
@@ -142,7 +165,7 @@
 							var html=[];
 							$.each(ret.data.goods_list, function(i,v) {
 								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
-								html.push('<li goods_id="'+v.goods_id+'"><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
+								html.push('<li goods_id="'+v.goods_id+'"><div class="goods-img fl"><img src="'+img+'" onerror="javascript:this.src=\'../images/default.png\'"/></div><div class="goods-info fl"><p class="title">'
 								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
 	                	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
 							});
@@ -188,7 +211,6 @@
 					        				btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 					        			}
 				        			}
-				        			
 					        	}else{
 					        		if(ret.data.pay_code=='cod'){
 					        			if(ret.data.shipping_status>0){
@@ -273,24 +295,19 @@
 									if(ret.code==0){
 										$.toast(txt+'成功')
 										if(type=='cansel-order'){
-											//变更按钮
-											if(h.type=='ALL'){
-												var span=o.parentElement.parentElement.parentElement.querySelector('.status')
-												o.parentElement.innerHTML='<span class="mui-btn mui-btn-link" type="del-order">删除订单</span>'
-												span.innerText='已取消';
-												span.setAttribute('class','status')
-												$.fire(h.mineWin,'reloadUser')
-											}else{
-												h.removeOrderItem(o.parentElement.parentElement.parentElement)
-											}
+											d.getElementById('status').innerText="已取消";
+											d.getElementById('btns').innerHTML=""
 										}else{
-											h.removeOrderItem(o.parentElement.parentElement.parentElement)
+											setTimeout(function(){
+												$.back()
+											},1500)
 										}
 									}else{
 										$.toast(ret.msg||txt+'失败')
 									}
 								},
 								error:function(ret){
+//									alert(JSON.stringify(ret))
 									plus.nativeUI.closeWaiting()
 								}
 							});
@@ -310,6 +327,13 @@
 					}
 				}
 				
+				d.getElementById('del').addEventListener('tap',function(){
+					h.orderService(h.del.type,h.del.order_id,h.del.obj)
+				})
+				d.getElementById('cansel_order').addEventListener('tap',function(){
+					h.orderService(h.cansel.type,h.cansel.order_id,h.cansel.obj)
+				})
+				
 				/**
 				 * 按钮事件
 				 */
@@ -322,6 +346,13 @@
 							obj:this
 						}
 						$('#delete').popover('toggle')
+					}else if(type=='cansel-order'){
+						h.cansel={
+							type:type,
+							order_id:h.order_id,
+							obj:this
+						}
+						$('#cansel').popover('toggle')
 					}else{
 						h.orderService(type,h.order_id,this)
 					}

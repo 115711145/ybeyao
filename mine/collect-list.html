@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>我的收藏</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../css/own.css" />
+		<link rel="stylesheet" type="text/css" href="../css/previewimage.css" />
+		<style type="text/css">
+			body,
+			p {
+				padding: 0;
+				margin: 0;
+				font-size: 12px;
+			}
+			
+			.recommend {
+				margin: 5px 3px;
+				padding: 0px;
+			}
+			
+			.recommend .mui-table-view {
+				margin: 0px !important;
+				padding: 0 !important;
+				background: none;
+			}
+			
+			.mui-table-view:after,
+			.recommend .mui-table-view:before {
+				border: 0;
+				height: 0;
+				background-color: #fff;
+			}
+			
+			.recommend .goods-list {
+				margin: 0 !important;
+				padding: 2px 4px !important;
+			}
+			
+			.recommend .goods-list-item {
+				border-radius: 3px;
+				background: #fff;
+				padding-top: 3px;
+			}
+			
+			.recommend .goods-list-item img {
+				width: 100%;
+				max-height: 100px;
+				border-radius: 3px;
+			}
+			
+			.recommend .mui-table-view-cell .mui-media-body {
+				margin-top: 2px;
+				margin-bottom: 0px;
+				height: 50px !important;
+			}
+			
+			.recommend .mui-table-view-cell .mui-media-body p {
+				white-space: pre;
+				color: #555;
+				padding: 0 5px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			
+			.recommend .mui-table-view-cell .mui-media-body .goods-price-one {
+				margin-top: 12px;
+				float: left;
+				font-size: 1.1em;
+				color: #ff6633;
+				margin-bottom: 10px;
+			}
+			
+			.recommend .mui-table-view-cell .mui-media-body .goods-price-two {
+				margin-top: 12px;
+				float: right;
+				font-size: 1.1em;
+				margin-right: 5px;
+				text-decoration: line-through;
+			}
+			
+			#no-item {
+				text-align: center;
+				color: #DD4F43;
+				width: 100%;
+				margin: 0;
+				padding: 10px 0 0 0;
+			}
+			
+			.ad {
+				display: block;
+			}
+			
+			.ad img {
+				width: 100%;
+			}
+			
+			#goTop {
+				/*background: #41CEA9;*/
+				filter: alpha(opacity=50);
+				-moz-opacity: 0.5;
+				opacity: 0.5;
+				height: 40px;
+				width: 40px;
+				border-radius: 20px;
+				position: fixed;
+				color: #fff;
+				bottom: 5%;
+				right: 5%;
+				text-align: center;
+				overflow: hidden;
+			}
+			
+			#goTop img {
+				height: 100%;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">我的收藏</h1>
+		</header>
+		<div id="content" class="mui-content  detail-content-padding">
+			<div class="mui-content recommend">
+				<ul class="mui-table-view mui-grid-view" id="list">
+				</ul>
+			</div>
+			<div id="goTop" style="display: none;"><img src="../images/goTop.png" /></div>
+		</div>
+		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
+		<script type="text/javascript" charset="UTF-8">
+			(function(win, d, $, h,ms) {
+				$.init({
+					swipeBack: false,
+					pullRefresh: {
+						container: '#content',
+						down: {
+							style: 'circle',
+							color: '#41cea9',
+							height: '80px',
+							callback: refresh
+						},
+						up: {
+							auto: true,
+							height: 80,
+							contentinit: h.contentinit,
+							contentdown: h.contentdown,
+							contentrefresh: h.contentrefresh,
+							contentnomore: h.contentnomore,
+							callback: ajaxGetData
+						}
+					}
+				});
+				var count = 0;
+				h.list = d.getElementById('list'),
+					h.sort = "default";
+				h.desc = "";
+				h.d = {
+					goTop: d.getElementById('goTop'),
+					list: d.getElementById('list'),
+					content : $('#content')
+				}
+				$.plusReady(function() {
+					h.token=ms.getItem('token')
+					if(!h.goodsListHeader) {
+						h.goodsListHeader = plus.webview.getWebviewById('goods-list-header');
+					}
+					$('#list').on('tap', 'a', function() {
+						var goods_id = this.getAttribute('goods_id');
+						if(!h.detailWebView) {
+							h.detailWebView = plus.webview.getWebviewById('goods-header');
+						}
+						if(!h.detailSubpage) {
+							h.detailSubpage = plus.webview.getWebviewById('goods-detail');
+						}
+						$.fire(h.detailWebView, 'goodsId', {
+							goods_id: goods_id
+						})
+						h.detailWebView.show('slide-in-right', 300)
+					})
+
+					h.d.goTop.addEventListener('tap', function() {
+						h.mySrcollTo('', 200)
+					})
+
+					win.addEventListener('showGoodsList', function(e) {
+						h.d.goTop.setAttribute('style', 'display: none;')
+						h.list.innerHTML = '';
+						h.d.content.pullRefresh().refresh(true);
+						h.page = 1;
+						h.total = 0;
+						h.cate = e.detail.cate;
+						h.sort = "";
+						h.desc = "";
+						ajaxGetData()
+					})
+
+					win.addEventListener('GoodsListSort', function(e) {
+						if(h.sort != e.detail.sort || h.desc != e.detail.desc) {
+							if(h.page > 1 && h.total == 0) {
+								return
+							}
+							h.d.content.pullRefresh().refresh(true);
+							h.sort = e.detail.sort;
+							h.desc = e.detail.desc;
+							h.page = 1;
+							h.total = 0;
+							ajaxGetData()
+							h.mySrcollTo()
+						}
+					})
+
+					/**
+					 * 监听滚动时间
+					 */
+					d.addEventListener('scroll', function() {
+						var h1 = win.innerHeight;
+						var h = d.body.scrollTop;
+						if(h > (h1 - 74 * 2)) {
+							h.d.goTop.setAttribute('style', '')
+						} else {
+							h.d.goTop.setAttribute('style', 'display: none;')
+						}
+					})
+					
+					$.back=function(){
+						plus.webview.currentWebview().close('slide-out-right')
+					}
+				})
+
+				function refresh() {
+					h.d.content.pullRefresh().refresh(true);
+					h.page = 1;
+					h.total = 0;
+					ajaxGetData()
+				}
+
+				function ajaxGetData(o) {
+					if(h.page > 1 && (h.page * h.pageSize >= h.total)) {
+						alert('reree')
+						h.d.content.pullRefresh().endPullupToRefresh(true)
+					} else {
+						$.ajax(h.apiurl, {
+							data: {
+								m: 'collect_goods_list',
+								page: h.page,
+								size: h.pageSize,
+								token:h.token
+							},
+							type: 'post',
+							dataType: 'json',
+							success: function(ret) {
+								if(h.page == 1) {
+									h.list.innerHTML = '';
+								}
+								if(ret.code == 0) {
+									if(h.page == 1 && ret.data&& ret.data.length == 0) {
+										h.d.list.innerHTML = "<li class='mui-table-view-cell' id='no-item' style='text'>您还没有收藏商品</li>";
+									} else {
+										h.showGoodsList(ret.data, 'list')
+									}
+									h.total = ret.total;
+									h.d.content.pullRefresh().endPulldownToRefresh();
+									if(h.page==1&&h.total<h.pageSize){
+										console.log('aa')
+										h.d.content.pullRefresh().disablePullupToRefresh()
+									}else{
+										h.d.content.pullRefresh().endPullupToRefresh((h.page * h.pageSize >= ret.total))
+									}
+									h.page += 1;
+								}
+							},
+							error: function(ret) {
+								//							alert(JSON.stringify(ret))
+								$.toast('数据加载失败')
+							}
+						})
+					}
+				}
+			}(window, document,mui, honey,myStorage))
+		</script>
+	</body>
+
+</html>

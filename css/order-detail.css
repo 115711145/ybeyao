@@ -65,7 +65,7 @@
 }
 
 .price,#order_amount {
-	color: #ff6633;
+	color: #ff6633 !important;
 	font-size: 13px;
 }
 
@@ -154,7 +154,7 @@
 	float: left;
 	width: 100%;
 }
-#note{
+#note,#describe{
 	font-size: 14px;
 	border: none;
 	padding:5px 10px ;

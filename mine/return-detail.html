@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -10,6 +9,11 @@
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
 		<link type="text/css" rel="stylesheet" href="../css/order-detail.css" />
+		<style>
+			body{
+				background: #fff;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
@@ -26,7 +30,7 @@
 		<div class="mui-content" id="no-order" style="display: none;">
 			<div id="no-content">
 				<p><img src="../images/kuqi.png" /></p>
-				<p>很抱歉,订单不存在</p>
+				<p>很抱歉,订单不存在或已取消退款</p>
 			</div>
 		</div>
 		<div class="mui-content" id="order" style="display: none;">
@@ -63,31 +67,18 @@
 	                </div>
 		        </li>-->
 	       </ul>
-	       <div class="amout-list">
-	       		<p class="bold-title">基本信息</p>
+	       <div class="amout-list" style="padding-bottom: 20px;">
+	       		<p class="bold-title">退款信息</p>
 	       		<p><span class="title">订单编号</span><span id="goods_sn"></span></p>
-	       		<p><span class="title">订单状态</span><span id="status"></span></p>
-	       		<p><span class="title">下单时间</span><span id="add_time"></span></p>
-	       		<div id="times">
-		       		<p><span class="title">支付时间</span><span></span></p>
-		       		<p><span class="title">发货时间</span><span></span></p>
-		       		<p><span class="title">确认收货</span><span></span></p>
+	       		<p><span class="title">申请时间</span><span id="add_time"></span></p>
+	       		<p><span class="title">退款状态</span><span id="status"></span></p>
+	       		<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥0</span></p>
+	       		<p><span class="title">退款原因</span><span id="reason"></span></p>
+	       		<p><span class="title">问题描述</span><span></span></p>
+	       		<p id="describe"></p>
+	       		<div class="btns" id="btns">
+	       			
 	       		</div>
-	       		<p><span class="title">支付方式</span><span id="pay_name"></span></p>
-	       		<p><span class="title">配送方式</span><span id="shipping_name"></span></p>
-	       		<p><span class="title">买家留言</span><span></span></p>
-	       		<p id="note"></p>
-	       </div>
-	       <div class="amout-list">
-	       		<p class="bold-title">价格信息</p>
-	       		<p><span class="title">商品金额:</span><span id="sum_amount">￥0</span></p>
-	       		<p><span class="title">配送费用:</span><span id="sum_ps">￥0</span></p>
-	       		<p><span class="title">使用余额:</span><span id="blance">-￥0</span></p>
-	       		<p><span class="title">使用积分:</span><span id="point">-￥0</span></p>
-	       		<!--<p><span class="title">折扣优惠:</span><span id="discount">-￥0</span></p>-->
-	       		<p><span class="title">优 惠 券:</span><span id="coupon">-￥0</span></p>
-	       		<p><span class="title">实付金额:</span><span class="price" id="order_amount">￥0</span></p>
-		       	<div class="btns" id="btns"></div>
 	       </div>
 		</div>
 		
@@ -147,49 +138,26 @@
 	                	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
 							});
 							d.getElementById('goods-list').innerHTML=html.join('')
-							//基本信息
+							//退款信息
 							d.getElementById('goods_sn').innerText=ret.data.order_sn
-							d.getElementById('status').innerText=ret.data.order_status_desc
-							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.add_time,1)
-							var time_p=[];
-							if(ret.data.pay_time>0){
-								time_p.push('<p><span class="title">支付时间</span><span>'+h.getYmdTime(ret.data.pay_time,1)+'</span></p>');
+							var d_status=d.getElementById('status');
+							d_status.innerText=ret.data.return_status_desc
+							switch(ret.data.status){
+								case 2:
+									d_status.setAttribute('style','color: #FF5053;')
+									break;
+								case 3:
+								case 4:
+									d_status.setAttribute('style','color: #41CEA9;')
+									break;
 							}
-							if(ret.data.shipping_time>0){
-								time_p.push('<p><span class="title">发货时间</span><span>'+h.getYmdTime(ret.data.shipping_time,1)+'</span></p>');
+							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.addtime,1)
+							d.getElementById('sum_amount').innerText="￥"+h.fmoney((ret.data.refund_deposit*100+ret.data.refund_money*100)/100)
+							d.getElementById('reason').innerText=ret.data.reason
+							d.getElementById('describe').innerText=ret.data.describe
+							if(ret.data.status<4){
+								d.getElementById('btns').innerHTML='<span class="mui-btn mui-btn-grey">取消申请</span>';
 							}
-							if(ret.data.confirm_time>0){
-								time_p.push('<p><span class="title">确认收货</span><span>'+h.getYmdTime(ret.data.confirm_time,1)+'</span></p>');
-							}
-							d.getElementById('times').innerHTML=time_p.join('')
-							d.getElementById('pay_name').innerText=ret.data.pay_name
-							d.getElementById('shipping_name').innerText=ret.data.shipping_name
-							d.getElementById('note').innerText=ret.data.user_note
-							d.getElementById('sum_amount').innerText="￥"+h.fmoney(ret.data.goods_price-ret.data.discount_money)
-							d.getElementById('sum_ps').innerText="￥"+ret.data.shipping_price
-							d.getElementById('blance').innerText="-￥"+ret.data.user_money
-							d.getElementById('point').innerText="-￥"+ret.data.integral_money
-							d.getElementById('coupon').innerText="-￥"+ret.data.coupon_price
-							d.getElementById('order_amount').innerText="￥"+ret.data.order_amount
-							var btn=[]
-							if(ret.data.order_status>=3){//已完成、已取消、已作废、退款单
-			        			
-			        			btn.push('<span class="mui-btn mui-btn-link del-order" type="del-order">删除订单</span>');
-				        	}else{
-				        		if(ret.data.pay_status>0){
-				        			if(ret.data.order_status==2){
-				        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
-				        			}else{
-				        				if(ret.data.shipping_status>0){
-				        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-				        				}
-				        				btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
-				        			}
-					        	}else{
-					        		btn.push('<span class="mui-btn mui-btn-red pay-order" type="pay-order">立即付款</span><span class="mui-btn mui-btn-grey cansel-order" type="cansel-order">取消订单</span>');
-					        	}
-				        	}
-				        	d.getElementById('btns').innerHTML=btn.join('')
 						}else{
 							h.noContent()
 						}
@@ -222,96 +190,14 @@
 				h.token=ms.getItem('token')
 				h.getOrderDetail()
 				
-				h.orderService=function(type,order_id,o){
-					var txt=o.innerText
-					switch(type){
-						case 'pay-order':
-							$.ajax(h.apiurl,{
-								type:"post",
-								async:true,
-								dataType:'json',
-								data:{
-									m:'order_service',
-									type:type,
-									token:h.token,
-									id:order_id
-								},
-								success:function(ret){
-									alert(JSON.stringify(ret))
-								},
-								error:function(){
-									
-								}
-							});
-							break
-						case 'del-order':
-						case 'cansel-order':
-							plus.nativeUI.showWaiting('正在'+txt+'...')
-							$.ajax(h.apiurl,{
-								type:"post",
-								async:true,
-								dataType:'json',
-								data:{
-									m:'order_service',
-									token:h.token,
-									id:order_id,
-									type:type,
-								},
-								success:function(ret){
-									plus.nativeUI.closeWaiting()
-									if(ret.code==0){
-										$.toast(txt+'成功')
-										if(type=='cansel-order'){
-											//变更按钮
-											if(h.type=='ALL'){
-												var span=o.parentElement.parentElement.parentElement.querySelector('.status')
-												o.parentElement.innerHTML='<span class="mui-btn mui-btn-link" type="del-order">删除订单</span>'
-												span.innerText='已取消';
-												span.setAttribute('class','status')
-												$.fire(h.mineWin,'reloadUser')
-											}else{
-												h.removeOrderItem(o.parentElement.parentElement.parentElement)
-											}
-										}else{
-											h.removeOrderItem(o.parentElement.parentElement.parentElement)
-										}
-									}else{
-										$.toast(ret.msg||txt+'失败')
-									}
-								},
-								error:function(ret){
-									plus.nativeUI.closeWaiting()
-								}
-							});
-							break
-						case 'return-order':
-							h.openWin('order-return.html','order-return',{order_id:order_id})
-							break
-						case 'comment-order':
-							alert('评价订单')
-							break;
-						case 'confirm-order':
-							alert('确认收货')
-							break
-					}
-				}
-				
 				/**
 				 * 按钮事件
 				 */
-				$('#btns').on('tap','.mui-btn',function(){
-					var type=this.getAttribute('type')
-					if(type=='del-order'){
-						h.del={
-							type:type,
-							order_id:h.order_id,
-							obj:this
-						}
-						$('#delete').popover('toggle')
-					}else{
-						h.orderService(type,order_id,this)
-					}
+				$('#btns').on('tap','.mui-btn-grey',function(){
+					alert('取消退款')
 				})
+				
+				h.swipeClose(win)
 				
 				$.back=function(){
 					h._self.close('slide-out-right')

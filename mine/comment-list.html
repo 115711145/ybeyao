@@ -223,6 +223,9 @@
 			}
 			//加载评价列表 
 			function getCommentList(){
+				if(h.is_loading){
+					return;
+				}
 				switch(h.type){
 					case 'WAITCCOMMENT':
 						type=0;
@@ -237,6 +240,7 @@
 					h.d.list.innerHTML='';
 					h.d.loader.style.display="block";
 				}
+				h.is_loading=true;
 				$.ajax(h.apiurl,{
 					type:"post",
 					async:true,
@@ -247,6 +251,7 @@
 						type:type
 					},
 					success:function(ret){
+						h.is_loading=false;
 						if(ret.code==-1){
 							$.fire(plus.webview.getWebviewById('mine'),'logout')
 							h.openWin('login.html','login')
@@ -278,7 +283,7 @@
 						html.push('<li class="comment-list" order_id="'+v.order_id+'" rec_id="'+v.rec_id+'"><div class="goods-img fl">\
 				                	<img src="'+img+'"></div><div class="goods-info fl"><p class="title">'+v.goods_name
 				                	+'</p><p class="buy-time">购买时间:'+h.getYmdTime(v.order_time,1)+'</p><p class="fr btns">\
-						        		<span class="mui-btn mui-btn-nav'+(v.is_comment==1?' order-btn"><span class="mui-icon mui-icon-search"></span>查看订单':' comment-btn"><span class="mui-icon mui-icon-compose"></span>评价订单')+'</span>\
+						        		<span class="mui-btn mui-btn-nav'+(v.is_comment==1?' order-btn"><span class="mui-icon mui-icon-search"></span>查看评价':' comment-btn"><span class="mui-icon mui-icon-compose"></span>评价订单')+'</span>\
 						        		</p></div></li>')
 					});
 					h.d.list.innerHTML+=html.join('')
@@ -324,11 +329,11 @@
 				})
 				
 				/**
-				 * 查看订单详情
+				 * 查看评价详情
 				 */
 				$(h.d.list).on('tap','.order-btn',function(){
-					var order_id=this.parentElement.parentElement.parentElement.getAttribute('order_id')
-					h.openWin('order-detail.html','order-detail',{order_id:order_id})
+					var rec_id=this.parentElement.parentElement.parentElement.getAttribute('rec_id')
+					h.openWin('comment-detail.html','comment-detail',{rec_id:rec_id})
 				})
 				/**
 				 * 评价订单
@@ -338,8 +343,17 @@
 					var rec_id=li.getAttribute('rec_id')
 					var img=li.querySelector('img').getAttribute('src')
 					var name=li.querySelector('.title').innerText
-					h.openWin('comment-detail.html','comment-detail',{rec_id:rec_id,img:img,name:name})
+					h.openWin('comment.html','comment',{rec_id:rec_id,img:img,name:name})
 				})
+				
+				win.addEventListener('reload',function(){
+					h.page=1;
+					h.d.content.pullRefresh().refresh(true)
+					h.d.content.pullRefresh().enablePullupToRefresh()
+					h.d.content.pullRefresh().endPullupToRefresh(false)
+					getCommentList()
+				})
+				
 				
 				$.back=function(){
 					plus.webview.currentWebview().close('slide-out-right');

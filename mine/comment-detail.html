@@ -8,6 +8,7 @@
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<link rel="stylesheet" type="text/css" href="../css/previewimage.css" />
 		<style>
 			.order-goods {
 				padding: 10px 5px;
@@ -44,107 +45,12 @@
 				padding: 2px;
 				margin: 0;
 				line-height: 18px;
-				font-size: 12px;
+				font-size: 12px ;
 				color:#333
-			}
-			.ranks{
-				margin: 5px 0;
-				background: #fff;
-				padding: 5px 10px;
-			}
-			.feedback input,
-			.feedback textarea {
-				border: none !important;
-			}
-			.feedback textarea {
-				height: 100px;
-				margin-bottom: 0 !important;
-				padding-bottom: 0 !important;
 			}
 			.feedback .row {
 				width: 100%;
 				background-color: #fff;
-			}
-			.feedback p {
-				padding: 10px 15px 0;
-			}
-			/*.feedback button#submit { 
-				width: 90%;
-				height: 46px;
-				left: 50%;
-				-webkit-transform: translate(-50%);
-			}*/
-			
-			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
-				font-size: 14px;
-			}
-			
-			.feedback .mui-inline{
-				vertical-align: bottom;
-				font-size: 14px;
-				color: #8f8f94;
-			}
-			.mui-icon-star{
-				color: #B5B5B5;
-				font-size: 22px;
-			}
-			.mui-icon-star-filled{
-				color: #FFB400;
-				font-size: 22px;
-			} 
-			.mui-popover {
-				height: 180px;
-			}
-			.stream{
-				display: none;
-			}
-			.mui-plus-stream .stream{
-				display: block;
-			}
-			.picture{
-				margin: 2px;
-				border: 1px solid #eee;
-				border-radius: 5px;
-				width: 18% !important;
-				display: inline-block;
-				vertical-align: middle;
-				height: 60px;
-				position: relative;
-				background-image: url(../images/kuqi.png);
-				background-repeat: no-repeat;
-				background-size: 85% 85%;
-				background-position: center center;
-			}
-			.picture .mui-icon-close{
-				position: absolute;
-				color: #fff;
-				right: -2px;
-				top: -7px;
-				background: #FF5053;
-				border-radius: 50px;
-				font-size: 15px;
-				z-index: 1;
-			}
-			.addfile-btn{
-				margin: 5px 0;
-				border: 1px solid #eee;
-				border-radius: 5px;
-				width: 18% !important;
-				display: inline-block;
-				vertical-align: middle;
-				height: 60px;
-				position: relative;
-				border-radius:5px;
-				text-align: center;
-			}
-			.addfile-btn span{
-				font-size: 40px;
-				line-height: 60px;
-				color: #999;
-			}
-			#image-list{
-				padding: 10px;
-				margin-top: 5px;
 			}
 			.row .mui-btn-success{
 				padding: 10px;
@@ -155,32 +61,124 @@
 				background: #ccc;
 				border-color: #ccc;
 			}
+			.comment {
+				padding: 10px;
+			}
 			
-			.feedback .hide-name {
-				height: 40px;
-				line-height: 10px;
+			.comment .user-name {
+				text-align: left;
+				line-height: 14px;
+			}
+
+			.comment .user-name font {
+				line-height: 14px;
 				display: inline-block;
-				font-size: 12px;
+				max-width: 35%;
+				white-space:nowrap; 
+				text-overflow:ellipsis;
+				overflow: hidden;
+			}
+			
+			.comment .user-star {
+				line-height: 12px;
+				position: relative;
+				top: -3px
+			}
+			
+			.comment .user-star i {
+				font-size: 16px;
+				color: #F0AD4E;
+				line-height: 14px !important;
+			}
+			
+			.comment .user-time {
+				text-align: right;
+				float:right;
+				margin-top:3px ;
+				line-height: 14px;
+			}
+			.comment .user-photo img {
+				width: 18%;
+				margin: 0 2px;
+				border: 1px solid #eee;
+				border-radius: 5px;
+			}
+			.comment p.reply{
+				background: #efefef;
+				padding: 5px 5px 2px 15px;
+				margin: 2px;
+			}
+			.comment p.reply span{
 				color: #666;
 			}
-			.feedback .hide-name label{
-				padding-left: 40px !important;
+			.comment p.zan{
+				padding: 10px;
+				text-align: left;
+				display: inline-block;
+				width: 48%;
 			}
-			.feedback.hide-name input{
-				left:10px;
-				color: #41CEA9 !important;
+			.comment .zan span{
+				text-align: left;
+				padding: 1px 6px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+				margin: 2px;
+				color: #aaa;
 			}
-			.feedback .hide-name input:before{
-				font-size:18px;
+			.comment p.zan img{
+				width: 10px;
 				position: relative;
-				top:3px;
+				top: 1px;
+				color: #ccc;
 			}
-			.mui-checkbox input:before{
-				color: #41CEA9 !important;
+			.comment .content{
+				border-bottom: 1px solid #eee;
 			}
-			#progress{
-				padding: 1px 0 !important;
-				height: 2px;
+			.comment .reply a{
+				padding-left: 10px ;
+			}
+			.comment .reply font{
+				color: #41CEA9;
+			}
+			.comment .reply font.user{
+				color: #007AFF;
+			}
+			p,span{
+				-webkit-user-select: text !important;
+			}
+			.btns{
+				display: inline-block;
+				width: 48%;
+				text-align: right;
+			}
+			.btns .mui-btn{
+				font-size: 12px;
+				padding: 2px 5px;
+				margin-left: 5px;
+			}
+			.reply-txt{
+				text-align: left;
+				font-size:12px;
+				height: 80px;
+				margin: 0;
+			}
+			.reply-div{
+				margin: 10px 0;
+				background: #fff;
+				padding: 10px;
+				height: 130px;
+			}
+			.reply-div .mui-btn{
+				margin-right:10px ;
+				font-size: 12px;
+				float: right;
+				margin-right:10px ;
+				padding: 3px 20px;
+			}
+			#replys{
+				max-height: 150px;
+				overflow: auto;
+				overflow-y: scroll;
 			}
 		</style>
 	</head>
@@ -190,7 +188,6 @@
 			<h1 class="mui-title" id="header-title">评价订单</h1>
 		</header>
 		<div class="mui-content" id="content">
-			<p id="progress"></p>
 			<!--<div class="loader" id="loader">
 				<a>
 					<span class="mui-spinner"></span>
@@ -200,82 +197,116 @@
 			</div>-->
 			<div class="mui-content-padded">
 				<div class="order-goods" id="goods-info">
-					 <div class="goods-img fl">
+					 <!--<div class="goods-img fl">
 		            	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
 		            </div>
 		            <div class="goods-info fl">
 		                <p class="title">
 		                	云南白药 气血康胶囊24粒（买五送一送原品）云南白药 气血康胶囊24粒（买五送一送原品）
 		                </p>
-		            </div>
+		            </div>-->
 				</div>
-				<div class="ranks">
-			       <div class="mui-content-padded">
-						<div class="mui-inline">商品评分</div>
-						<div class="icons mui-inline" type="goods" style="margin-left: 6px;">
-							<i data-index="1" class="mui-icon mui-icon-star mui-icon-star-filled"></i>
-							<i data-index="2" class="mui-icon mui-icon-star"></i>
-							<i data-index="3" class="mui-icon mui-icon-star"></i>
-							<i data-index="4" class="mui-icon mui-icon-star"></i>
-							<i data-index="5" class="mui-icon mui-icon-star"></i>
+				<div class="comment row" id="comment-info">
+					<!--<p>
+						<span class="user-time">2017-01-01</span>
+					</p>
+					<p class="content">
+						分管控了数据顾客零食就赶快来数据打开感动死了就接口里金刚骷髅岛技术更抗裂砂浆啊分管控了数据顾客零食就赶
+					</p>
+					<p>
+						<div class="user-photo">
+							<img class="photos" data-preview-src="" data-preview-group="2"  src="../images/muwu.jpg"/>
+							<img class="photos" data-preview-src="" data-preview-group="2" src="../images/shuijiao.jpg"/>
 						</div>
-					</div>
-					 <div class="mui-content-padded">
-						<div class="mui-inline">服务态度</div>
-						<div class="icons mui-inline" type="service" style="margin-left: 6px;">
-							<i data-index="1" class="mui-icon mui-icon-star mui-icon-star-filled"></i>
-							<i data-index="2" class="mui-icon mui-icon-star"></i>
-							<i data-index="3" class="mui-icon mui-icon-star"></i>
-							<i data-index="4" class="mui-icon mui-icon-star"></i>
-							<i data-index="5" class="mui-icon mui-icon-star"></i>
-						</div>
-					</div>
-					 <div class="mui-content-padded">
-						<div class="mui-inline">发货速度</div>
-						<div class="icons mui-inline" type="deliver" style="margin-left: 6px;">
-							<i data-index="1" class="mui-icon mui-icon-star mui-icon-star-filled"></i>
-							<i data-index="2" class="mui-icon mui-icon-star"></i>
-							<i data-index="3" class="mui-icon mui-icon-star"></i>
-							<i data-index="4" class="mui-icon mui-icon-star"></i>
-							<i data-index="5" class="mui-icon mui-icon-star"></i>
-						</div>
-					</div>
+					</p>
+					<p class="reply">
+						<span>客服123回复：</span>
+						<span>就狂蜂浪蝶数据库里放假啊圣诞快乐接口里的数假
+						<a>回复</a>
+						</span>
+					</p>
+					<p class="zan">
+						<span><img src="../images/ai.png"/> 0</span>	
+						<span><img src="../images/zan.png"/> 0</span>	
+					</p>
+					<p class="btns">
+						<span class="mui-btn mui-btn-danger">删除评价</span>
+					</p>-->
 				</div>
-				<div class="row mui-input-row">
-					<textarea  class="mui-input-clear comment-text" placeholder="您对商品的评价..." id="text"></textarea>
+				<div class="reply-div" id="reply-div" style="display: none;">
+					<textarea class="reply-txt" placeholder="评论内容" id="reply_text"></textarea>
+					<span class="mui-btn mui-btn-nav">提交评论</span>
 				</div>
-				<div class="row">
-					<div class="mui-input-row mui-checkbox mui-left hide-name">
-						<input name="checkbox" value="" type="checkbox"  id="nm">
-						<label>匿名评价</label>
-					</div>
-				</div>
-				<div id='image-list' class="row">
-					<div class="addfile-btn" id="get-image">
-						<span class="mui-icon mui-icon-plusempty"></span>
-					</div>
-					<!--<div class="picture">
-						<span class="mui-icon mui-icon-close"></span>
-					</div>-->
-				</div>
-				<div class="row">
-					<button type="button" class="mui-btn mui-btn-success mui-btn-block" id="submit-btn">提交评价</button>
-				</div>
+				
 			</div>
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
+   <script type="text/javascript">
     	(function(win, d, $, h, ms) {
 			$.init();
 			h.d = {
-				content:$('#content'),
-				image_list: d.getElementById('image-list'),
-				_submit:d.getElementById('submit-btn'),
-				txt:d.getElementById('text'),
-				progressbar:$("#progress")
+				comment_info:d.getElementById('comment-info'),
+				reply_div:d.getElementById('reply-div')
 			}
 			
+			h.getCommentDetail=function(){
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					dataType:'json',
+					timeout:h.ajaxTimeout,
+					data:{
+						m:'comment_detail',
+						token:h.token,
+						rec_id:h.rec_id
+					},
+					success:function(ret){
+						d.getElementById('goods-info').innerHTML='<div class="goods-img fl"><img src="'+h.apihost+'/public/upload/goods/thumb/'+ret.data.goods.goods_id
+						 +'/goods_sub_thumb_'+ret.data.goods.img_id+'_150_150.jpg"></div><div class="goods-info fl"><p class="title">'+ret.data.goods.goods_name+'</p></div>';
+						var data=ret.data.comment;
+						var str = [];
+						h.comment_id=data.comment_id;
+						str.push('<p><span class="user-name"><font>' +
+				(data.is_anonymous ? "匿名评价" : h.user.nickname) + '</font></span>' +
+				h.getCommentStar(((data.deliver_rank + data.goods_rank + data.service_rank) / 3).toFixed(2))+'<span class="user-time">'+h.getYmdTime(data.add_time)+'</span></p>')
+						str.push('<p class="content">'+data.content+'</p>')
+						if(data.img &&data.img.length>0){
+							str.push('<p><div class="user-photo">')
+							for(var i=0;i<data.img.length;i++){
+								str.push('<img class="photos" data-lazyload="' + h.apihost + data.img[i] + '"  data-preview-src="' + h.apihost + data.img[i] + '" data-preview-group="0"/>')
+							}
+							str.push('</div></p>')
+						}
+						if(data.reply&&data.reply.length>0){
+							str.push('<div id="replys">')
+							for(var i = 0; i < data.reply.length; i++) {
+								var reply = data.reply[i];
+								str.push('<p class="reply"><span>' + (reply.user_id>0?"<font>客服</font> 回复":(reply.is_anonymous>0?"<font class=\"user\">匿名</font>":reply.username)+' 追加') + '：</span><span>' + reply.content +'</span></p>');
+							}
+							str.push('</div>')
+						}
+						str.push('<p class="zan"><span class="zan_num" comment_id="' + data.comment_id + '"><img src="../images/zan.png"/> ' + data.zan_num + '</span></p>')
+						str.push('<p class="btns"><span class="mui-btn mui-btn-nav">追加评论</span><span class="mui-btn mui-btn-danger">删除评价</span></p>')
+						h.d.comment_info.innerHTML=str.join('');
+						
+						$('.user-photo').imageLazyload({
+							placeholder: '../images/default.png'
+						});
+						
+						$('.user-photo').off('tap', 'img').on('tap', 'img', function() {
+							$.previewImage({zoom:false})
+						})
+					},
+					error:function(ret){
+//						alert(JSON.stringify(ret))
+					}
+				});
+			}
 			/**
 			 * 显示商品
 			 * @param {Object} _self
@@ -285,211 +316,64 @@
 		            </div><div class="goods-info fl"><p class="title">'+_self.name+'</p></div>';
 			}
 			
-			h.showType=function(type){
-				var type=type||h.type;
-				$.each(h.d.btn_items, function(i,v) {
-					v.setAttribute('class','mui-control-item'+(v.getAttribute('type')==type?' mui-active':''))
-				});
-			}
-			h.removeOrderItem=function(obj){
-				h.d.list.removeChild(obj)
-				if(h.d.list.length==0){
-					h.d.list.innerHTML = '<li class="no-comment">暂无评价<li>'
-				}
-			}
-			
 			
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
+				h.user=ms.getItem('user')
 				h._self=plus.webview.currentWebview();
-				h.mineWin=plus.webview.getWebviewById('mine')
-				h.data={
-					token:ms.getItem('token'),
-					m:'comment',
-					rec_id:h._self.rec_id,
-					goods:1,
-					service:1,
-					deliver:1,
-					images:[],
-					is_anonymous:0
-				}
-				h.showGoodsInfo(h._self)
+				h.rec_id=h._self.rec_id;
+//				if(plus.os.ios){
+//					plus.webview.currentWebview().evalJS("plus.navigator.setFullscreen(true);");
+//				}else{
+//					plus.navigator.setFullscreen(true);	
+//				}
+				h.getCommentDetail()
 				
-				 //应用评分
-				$('.icons').on('tap','i',function(){
-				  	var index = parseInt(this.getAttribute("data-index"));
-				  	var parent = this.parentNode;
-				  	var children = parent.children;
-				  	var type=this.parentElement.getAttribute('type')
-				  	if(this.classList.contains("mui-icon-star")){
-				  		for(var i=0;i<index;i++){
-			  				children[i].classList.remove('mui-icon-star');
-			  				children[i].classList.add('mui-icon-star-filled');
-				  		}
-				  	}else{
-				  		for (var i = index; i < 5; i++) {
-				  			children[i].classList.add('mui-icon-star')
-				  			children[i].classList.remove('mui-icon-star-filled')
-				  		}
-				  	}
-				  	starIndex = index;
-				  	h.data[type]=index;
-				});
 				
-				d.getElementById('nm').addEventListener('change',function(){
-					h.data.is_anonymous=this.checked?0:1
-//					alert(h.data.hide_username)
+				$('#comment-info').on('tap','.mui-btn-nav',function(){
+					h.d.reply_div.style.display=(h.d.reply_div.style.display=="block"?"none":"block")
 				})
 				
-				h.maxnum=10;
-				h.index=0;
-				//添加图片
-				h.addImageFile=function(zip){
-					var div=d.createElement('div');
-					div.className="picture";
-					div.style.background="";
-					div.innerHTML='<span class="mui-icon mui-icon-close" i="'+h.index+'"></span>';
-					div.style.backgroundImage = 'url(' + zip.target + ')';
-					h.d.image_list.appendChild(div)
-					h.data.images.push({index:h.index,name:'images'+h.index,path:zip.target,size:zip.size})
-					h.index++
-				}
-				
-				//删除图片
-				h.removeImageFile=function(o){
-					var index=o.getAttribute('i');
-					for(var i=0;i<h.data.images.length;i++){
-						if(h.data.images[i].index==index){
-							h.data.images.splice(i,1)
-							h.d.image_list.removeChild(o.parentElement)
-						}
-					}
-				}
-				
-				//从相册选择图片
-				h.getGalleryImage=function (){
-					var maximum=h.maxnum-h.data.images.length
-					if(maximum==0){
-						alert('最多上传10张')
-						return;
-					}
-					var _option={
-						filter:'image',
-						multiple:true,
-						maximum:maximum,
-						system:false,
-						onmaxed:function(){
-							plus.nativeUI.alert('最多只能选择10张图片')
-						}
-					}
-					// 从相册中选择图片
-				    plus.gallery.pick(function(e){
-				    	for(var i in e.files){
-				    		//成功后压缩文件
-				    		var name = e.files[i].substr(e.files[i].lastIndexOf('/') + 1);
-					    	plus.zip.compressImage({
-								src: e.files[i],
-								dst: '_doc/' + name,
-								overwrite: true,
-								quality: 50
-							}, function(zip) {
-//								console.log(JSON.stringify(zip))
-//								console.log("filesize:"+zip.size+",totalsize:");
-								if(zip.size>1024*1024*5){//单张图片不得大于5M
-									$.toast('您选择的图片太大了')
-									return
-								}
-								h.addImageFile(zip)
-							}, function(zipe) {
-								$.toast('压缩失败！')
-							});
-//					    	alert(e.files[i]);
-				    	}
-				    }, function(e){
-				    	$.toast('取消选择图片');
-				    },_option);// 最多选择3张图片
-				}
-				
-				d.getElementById('get-image').addEventListener('tap',function(){
-					h.getGalleryImage()
-				})
-				
-				//删除图片
-				$(h.d.image_list).on('tap','.mui-icon-close',function(){
-					h.removeImageFile(this)
-				})
-				
-				/**
-				 * 查看订单详情
-				 */
-				$(h.d.list).on('tap','.order-btn',function(){
-					var order_id=this.parentElement.parentElement.parentElement.getAttribute('order_id')
-					h.openWin('order-detail.html','order-detail',{order_id:order_id})
-				})
-				
-				/**
-				 * 评价订单
-				 */
-				$(h.d.list).on('tap','.comment-btn',function(){
-					var rec_id=this.parentElement.parentElement.parentElement.getAttribute('rec_id')
-					alert(rec_id)
-				})
-				
-				/**
-				 * 提交评价
-				 */
-				h.d._submit.addEventListener('tap',function(){
-					if(!h.trim(h.d.txt.value)){
-						$.toast('请填写评价内容')
+				$('#reply-div').on('tap','.mui-btn-nav',function(){
+					if(h.is_ajax){
 						return
 					}
-					//创建uploader
-					var uploader=plus.uploader.createUpload(h.apiurl,{
-						method:'POST'
-					},function(upload,status){
-						plus.nativeUI.closeWaiting()
-						h.d.progressbar.progressbar().hide();
-						if(status==200){
-							ret=JSON.parse(upload.responseText)
+					var obj=d.getElementById('reply_text')
+					var txt=h.trim(obj.value);
+					if(!txt||txt.length<5){
+						$.toast('回复不得少于5字')
+						return
+					}
+					h.is_ajax=true;
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						dataType:'json',
+						timeout:h.ajaxTimeout,
+						data:{
+							token:h.token,
+							m:'comment_reply',
+							id:h.comment_id,
+							content:txt
+						},
+						success:function(ret){
+							console.log(JSON.stringify(ret))
+							h.is_ajax=false;
 							if(ret.code==0){
-								$.toast('评价成功')
-								$.fire(h.mineWin,'reloadUser')
-								setTimeout(function(){
-									$.back()
-								},1000)
+								obj.value='';
+								h.d.reply_div.style.display="none"
+								h.getCommentDetail()
 							}
-						}
-					})
-					//添加数据
-					$.each(h.data, function(i,v) {
-						if(i!=='images'){
-							uploader.addData(i,''+v)
+						},
+						error:function(ret){
+//							h.is_ajax=false;
+							console.log(JSON.stringify(ret))
 						}
 					});
-					uploader.addData('content',h.d.txt.value)
 					
-					if(h.data.images.length>0){
-						$.each(h.data.images, function(i,v) {
-							uploader.addFile(v.path,{key:v.name})
-						});
-					}
 					
-					uploader.addEventListener( "statechanged", function(e){
-						console.log(parseInt(e.uploadedSize*100/e.totalSize));
-						if(e.state==3){
-							var progress=parseInt(e.uploadedSize*100/e.totalSize)
-	//						h.simulateLoading(h.d.progressbar, parseInt(e.uploadedSize*100/e.totalSize));
-							h.d.progressbar.progressbar().setProgress(progress);
-							if (progress >= 100) {
-								h.d.progressbar.progressbar().hide();
-							}
-						}
-						
-					}, false );
-					h.d.progressbar.progressbar({progress: 0}).show()
-					plus.nativeUI.showWaiting('提交评价中...')
-					uploader.start()
 				})
+				
 				$.back=function(){
 					plus.webview.currentWebview().close('slide-out-right');
 				}

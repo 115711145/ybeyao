@@ -184,3 +184,6 @@
 .orange{
 	color: #FF5053 !important;
 }
+p{
+	-webkit-user-select:text;
+}

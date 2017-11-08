@@ -281,6 +281,7 @@ p {
 }
 
 .evaluate .evaluate-list .user-name font {
+	line-height: 12px;
 	margin-left: 5px;
 	display: inline-block;
 	max-width: 35%;
@@ -290,14 +291,15 @@ p {
 }
 
 .evaluate .evaluate-list .user-star {
-	display: inline-block;
+	line-height: 12px;
 	position: relative;
-	top: -2px
+	top: -3px
 }
 
 .evaluate .evaluate-list .user-star i {
 	font-size: 14px;
 	color: #F0AD4E;
+	line-height: 12px !important;
 }
 
 .evaluate .evaluate-list .user-time {
@@ -318,9 +320,15 @@ p {
 	padding: 0px 5px 2px 15px;
 	margin: 2px;
 }
+
 .evaluate .evaluate-list p.reply span{
 	color: #666;
 }
+
+.evaluate .evaluate-list p.reply font{
+	color: #41cea9;
+}
+
 .evaluate .evaluate-list p.zan{
 	padding: 1px 10px;
 	text-align: right;

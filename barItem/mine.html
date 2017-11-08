@@ -81,8 +81,8 @@
 		}
 		.myorder .title{
 			border-bottom: 1px solid #ddd;
-			height: 30px;
-			padding: 5px 5px 5px 10px;
+			height: 35px;
+			padding: 10px 5px 0px 10px;
 			color: #333;
 		}
 		.myorder .title .mui-icon{
@@ -152,14 +152,20 @@
 			color:#999;
 			font-size: 12px;
 		}
+		#nickname{
+			font-size: 18px;
+		}
+		#level_name{
+			font-size: 12px;
+		}
 	</style>
 	<body>
 		<div class="top">
 			<div class="user-face own-main-background-color">
 				<div><img src="../images/default.png" id="head_pic"/></div>
 				<div class="user-nc">
-					<p id="level_name"></p>
 					<p id="nickname">150****5678</p>
+					<p id="level_name"></p>
 				</div>
 			</div>
 			<ul class="top-btns">
@@ -233,7 +239,7 @@
 		</div>
 		<div class="center">
 			<ul class="menu">
-				<li><img src="../images/mine-sc.png"/>我的收藏</li>
+				<li id="collect"><img src="../images/mine-sc.png"/>我的收藏</li>
 				<li><img src="../images/mine-record.png"/>浏览历史</li>
 			</ul>
 		</div>
@@ -264,9 +270,11 @@
 				head_pic:d.getElementById('head_pic'),
 				warm_number:d.getElementsByClassName('warm-number')
 			}
-			h.menu_url={
-				address:"../mine/address.html",
-				comment:"../mine/comment-list.html",
+			h.menu={
+				address:{id:'address',url:"../mine/address.html"},
+				comment:{id:'comment-list',url:"../mine/comment-list.html"},
+				collect:{id:'collect-list',url:"../mine/collect-list.html"},
+				
 			}
 			
 			h.showUserInfo=function(user){
@@ -407,7 +415,7 @@
 							h.logout()
 						}else{
 							if(h.token){
-								h.openWin(h.menu_url[id],id)
+								h.openWin(h.menu[id].url,h.menu[id].id)
 							}else{
 								h.openWin('../mine/login.html','login')
 							}
@@ -421,9 +429,9 @@
 				$('.myorder').on('tap','li',function(){
 					var type=this.getAttribute('type')
 					if(type=='RETURNBACK'){
-						alert('售后')
+						h.openWin('../mine/return-list.html','return-list')
 					}else if(type=='WAITCCOMMENT'){
-						h.openWin('../mine/comment-list.html','comment',{type:type})
+						h.openWin('../mine/comment-list.html','comment-list',{type:type})
 					}else{
 						h.openWin('../mine/order-list.html','order-list',{type:type})
 //						h.openWin('../mine/goods-list.html','order-list',{type:type})
