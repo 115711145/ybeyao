@@ -184,22 +184,22 @@
 				
 				win.addEventListener('goHome',function(){
 					h.showBarItemPage('home')
-				})
+				},false)
 				
 				win.addEventListener('login',function(o){
 					h.token=myStorage.getItem('token')
 					if(o.detail.show){
 						h.showBarItemPage('mine')
 					}
-				})
+				},false)
 				
 				win.addEventListener('logout',function(){
 					h.token=null;
-				})
+				},false)
 				
 				win.addEventListener('showCart',function(){
 					h.showBarItemPage('cart')
-				})
+				},false)
 			})
 		}(window,honey,mui,document,myStorage))
 

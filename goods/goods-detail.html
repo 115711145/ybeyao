@@ -796,6 +796,12 @@
 				})
 				
 				honey.d.buynow.addEventListener('tap',function(){
+					if(honey.goods.store==0){
+						if(honey.goods.store==0){
+							mui.toast('该商品已售罄')
+						}
+						return 
+					}
 					if(!honey.buyHeader){
 						honey.preloadBuyWin()
 					}

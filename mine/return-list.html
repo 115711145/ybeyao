@@ -3,27 +3,29 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>我的订单</title>
+		<title>退款/售后</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
 		<link type="text/css" rel="stylesheet" href="../css/order-list.css" />
+		<style>
+			.mui-content{
+				padding-top:0  !important;
+			}
+			.red{
+				color: #FF5053;
+			}
+			.green{
+				color: #41CEA9;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-			<h1 class="mui-title" id="header-title">我的订单</h1>
-			<div class="top-btn">
-				<div class="mui-segmented-control mui-segmented-control-honey" id="type-item">
-					<a class="mui-control-item mui-active" type="ALL" index="0">全部</a>
-					<a class="mui-control-item" type="WAITPAY" index="1">待付款</a>
-					<a class="mui-control-item" type="WAITSEND" index="2">待发货</a>
-					<a class="mui-control-item" type="WAITRECEIVE" index="3">待收货</a>
-					<a class="mui-control-item" type="FINISH" index="4">已完成</a>
-				</div>
-			</div>
+			<h1 class="mui-title" id="header-title">退款/售后</h1>
 		</header>
 		<div class="mui-content" id="content">
 			<div class="loader" id="loader">
@@ -90,6 +92,7 @@
 					</div>
 				</li>-->
 	       </ul>
+	       
 		</div>
 		<div id="delete" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
@@ -100,18 +103,6 @@
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
 					<a href="#delete" style="color: #999;">取消</a>
-				</li>
-			</ul>
-		</div>
-		<div id="cansel" class="mui-popover mui-popover-action mui-popover-bottom">
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" id="cansel_order">
-					<a href="#cansel" style="color: #FF3B30;">取消订单</a>
-				</li>
-			</ul>
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell">
-					<a href="#cansel" style="color: #999;">取消</a>
 				</li>
 			</ul>
 		</div>
@@ -172,10 +163,9 @@
 					async:true,
 					dataType:'json',
 					data:{
-						m:'order_list',
+						m:'return_order_list',
 						token:h.token,
 						p:h.page,
-						type:h.type
 					},
 					success:function(ret){
 						if(ret.code==-1){
@@ -189,7 +179,7 @@
 //						if(ret.code==0){
 							h.page++;
 //						}
-						(!ret.data ||ret.data.length<10)?h.d.content.pullRefresh().disablePullupToRefresh():(h.d.content.pullRefresh().enablePullupToRefresh(),h.d.content.pullRefresh().endPullupToRefresh(false))
+						(!ret.data ||ret.data.length<10)?h.d.content.pullRefresh().disablePullupToRefresh():h.d.content.pullRefresh().endPullupToRefresh(false)
 					},
 					error:function(ret){
 //						alert(JSON.stringify(ret))
@@ -207,15 +197,24 @@
 				var html = [];
 				if(data.length > 0) {
 					$.each(data, function(i, v) {
-						var li=[];
+						var li=[],color='';
+						switch(v.status){
+							case 2:
+								color=" red";
+								break;
+							case 3:
+							case 4:
+								color=" green"
+								break;
+						}
 						li.push('<li class="order-list" order_id="'+v.order_id+'" return_status="'+v.return_status+'"><div class="order_sn">订单编号：'+v.order_sn
-						+'<span class="status'+(v.return_status>0?' orange">'+v.return_status_desc:(v.order_status_code=='WAITPAY'?" red":"")+'">'+v.order_status_desc)+'</span></div>');
+						+'<span class="status'+color+'">'+v.status_desc+'</span></div>');
 						var num=0;
 						//商品列表
 						for(var j=0;j<v.goods_list.length;j++){
 							var val=v.goods_list[j];
 							num+=num+parseInt(val.goods_num)
-							var img=h.getGoodsImgUrl(val.goods_id,val.img_id)
+							var img=h.apihost+'/public/upload/goods/thumb/'+val.goods_id+'/goods_sub_thumb_'+val.img_id+'_150_150.jpg';
 							li.push('<div class="order-goods fl" goods_id="'+val.goods_id+'">'
 			                +'<div class="goods-img fl">'
 			                	+'<img src="'+img+'" onerror="javascript:this.src=\'../images/default.png\'"/>'
@@ -230,40 +229,9 @@
 						}
 						//应付金额
 						li.push('<div class="sum"><p class="fl sum-price-num">'
-			        		+'<span class="price">￥'+h.fmoney(v.total_amount-v.discount_money)+'</span>'
+			        		+'<span class="price">￥'+h.fmoney((v.refund_deposit*100+v.refund_money*100)/100)+'</span>'
 			        		+'<span>共'+num+'件</span></p><p class="fr btns">');
-			        	if(v.order_status>=3){//已完成、已取消、已作废
-			        		if(v.order_status==5&&v.return_status>0){
-			        			li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
-			        		}
-			        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
-			        	}else{
-			        		if(v.pay_status>0){
-			        			if(v.return_status>0){
-			        				li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
-			        			}else{
-				        			if(v.order_status==2){
-				        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价</span>');
-				        			}else{
-				        				if(v.shipping_status>0){
-				        					li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-				        				}
-			        					li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
-				        			}			        				
-			        			}
-
-				        	}else{
-				        		if(v.pay_code=='cod'){
-				        			if(v.shipping_status>0){
-				        				li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-				        			}
-				        		}else{
-				        			li.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span>');
-				        		}
-				        		li.push('<span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
-				        	}
-				        	li.push('</p></div></li>')
-			        	}
+			        	li.push('</p></div></li>')
 						html.push(li.join(''))
 					});
 					h.d.list.innerHTML+=html.join('')
@@ -288,113 +256,15 @@
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
 				h._self=plus.webview.currentWebview();
-				h.type=h._self.type|| 'ALL';
 				h.index=0;
 				h.mineWin=plus.webview.getWebviewById('mine')
 				h.showType()
 				getOrderList()
 				
-				/**
-				 * 切换订单类型
-				 */
-				$('.top-btn').on('tap','.mui-control-item',function(){
-					var type=this.getAttribute('type')
-					var index=this.getAttribute('index')
-					if(type!=h.type){
-						h.d.type_item.querySelector('.mui-active').setAttribute('class',"mui-control-item");
-						this.setAttribute('class',"mui-control-item mui-active");
-						h.type=type;
-						h.page=1;
-						h.index=index;
-						h.d.content.pullRefresh().refresh(true)
-						h.d.content.pullRefresh().disablePullupToRefresh()
-						getOrderList()
-					}
-				})
-				
-				h.orderService=function(type,order_id,o){
-					var txt=o.innerText
-					switch(type){
-						case 'pay-order':
-							$.ajax(h.apiurl,{
-								type:"post",
-								async:true,
-								dataType:'json',
-								data:{
-									m:'order_service',
-									type:type,
-									token:h.token,
-									id:order_id
-								},
-								success:function(ret){
-									alert(JSON.stringify(ret))
-								},
-								error:function(){
-									
-								}
-							});
-							break
-						case 'del-order':
-						case 'cansel-order':
-							plus.nativeUI.showWaiting('正在'+txt+'...')
-							$.ajax(h.apiurl,{
-								type:"post",
-								async:true,
-								dataType:'json',
-								data:{
-									m:'order_service',
-									token:h.token,
-									id:order_id,
-									type:type,
-								},
-								success:function(ret){
-									plus.nativeUI.closeWaiting()
-									if(ret.code==0){
-										$.toast(txt+'成功')
-										if(type=='cansel-order'){
-											//变更按钮
-											if(h.type=='ALL'){
-												var span=o.parentElement.parentElement.parentElement.querySelector('.status')
-												o.parentElement.innerHTML='<span class="mui-btn mui-btn-link" type="del-order">删除订单</span>'
-												span.innerText='已取消';
-												span.setAttribute('class','status')
-												$.fire(h.mineWin,'reloadUser')
-											}else{
-												h.removeOrderItem(o.parentElement.parentElement.parentElement)
-											}
-										}else{
-											h.removeOrderItem(o.parentElement.parentElement.parentElement)
-										}
-									}else{
-										$.toast(ret.msg||txt+'失败')
-									}
-								},
-								error:function(ret){
-//									alert(JSON.stringify(ret))
-									plus.nativeUI.closeWaiting()
-								}
-							});
-							break
-						case 'return-order':
-							h.openWin('order-return.html','order-return',{order_id:order_id})
-							break
-						case 'comment-order':
-							alert('评价订单')
-							break;
-						case 'confirm-order':
-							alert('确认收货')
-							break
-						case 'show-order':
-							h.openWin('return-detail.html','return-detail',{order_id:order_id})
-							break
-					}
-				}
 				
 				d.getElementById('del').addEventListener('tap',function(){
 					h.orderService(h.del.type,h.del.order_id,h.del.obj)
-				})
-				d.getElementById('cansel_order').addEventListener('tap',function(){
-					h.orderService(h.cansel.type,h.cansel.order_id,h.cansel.obj)
+//					$('#delete').popover('toggle')
 				})
 				/**
 				 * 查看订单详情
@@ -422,13 +292,6 @@
 							obj:this
 						}
 						$('#delete').popover('toggle')
-					}else if(type=='cansel-order'){
-						h.cansel={
-							type:type,
-							order_id:order_id,
-							obj:this
-						}
-						$('#cansel').popover('toggle')
 					}else{
 						h.orderService(type,order_id,this)
 					}

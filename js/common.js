@@ -550,10 +550,10 @@ var common =
 
 var honey = (function(win, $) {
 	var h={
-//		apiurl : "http://ybuser.ybyiyao.com/api/app/data/",
-//		apihost : "http://ybuser.ybyiyao.com",
-		apiurl : "http://192.168.11.226/api/app/data/",
-		apihost : "http://192.168.11.226",
+		apiurl : "http://ybuser.ybyiyao.com/api/app/data/",
+		apihost : "http://ybuser.ybyiyao.com",
+//		apiurl : "http://192.168.11.226/api/app/data/",
+//		apihost : "http://192.168.11.226",
 		page:1,
 		total:0,
 		pageSize:10,
@@ -710,9 +710,9 @@ var honey = (function(win, $) {
 		$.each(data, function(i, v) {
 			var li = document.createElement('li');
 			li.className = "mui-table-view-cell mui-media mui-col-xs-6 goods-list";
+			var img=h.getGoodsImgUrl(v.goods_id,v.img_id);
 			li.innerHTML = '<div class="goods-list-item"><a href="#" number="' + i + '" goods_id="' + v.goods_id +
-				'"><img class="mui-media-object goods-lphoneogo" data-lazyload="' + h.apihost +
-				v.sub_image + '_150_150.jpg"/><div class="mui-media-body goods-info"><p class="goods-title">' +
+				'"><img class="mui-media-object goods-lphoneogo" data-lazyload="'+ img +'"/><div class="mui-media-body goods-info"><p class="goods-title">' +
 				v.goods_name + '</p><p><span class="goods-price-one">￥' + v.shop_price + '</span><p>' +
 				(v.market_price ? '<p><span class="goods-price-one">￥' + v.market_parice + '</span><p>' : '') + '</div></a></div>';
 			obj.appendChild(li);
@@ -720,6 +720,16 @@ var honey = (function(win, $) {
 		$('#' + id).imageLazyload({
 			placeholder: '../images/default.png'
 		});
+	}
+	/**
+	 * 获取商品图片地址
+	 * @param {Object} goodsId
+	 * @param {Object} imgId
+	 * @param {Object} px
+	 */
+	h.getGoodsImgUrl=function(goodsId,imgId,px){
+		var px=px?px:150;
+		return h.apihost+'/public/upload/goods/thumb/'+goodsId+'/goods_sub_thumb_'+imgId+'_'+px+'_'+px+'.jpg';
 	}
 
 	/**
@@ -749,7 +759,7 @@ var honey = (function(win, $) {
 				if(v.replyList) {
 					for(var j = 0; j < v.replyList.length; j++) {
 						var reply = v.replyList[j];
-						str.push('<p class="reply"><span>' + reply.username + '回复：</span><span>' + reply.content + '</span></p>');
+						str.push('<p class="reply"><span>' +  (reply.user_id>0?"<font>客服</font> 回复":(reply.is_anonymous>0?"<a>匿名用户</a>":reply.username)+' 追加') + '：</span><span>' + reply.content + '</span></p>');
 					}
 				}
 			}
@@ -1153,7 +1163,7 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
     h.swipeClose=function(_win){
     	_win.addEventListener('swiperight',function(e){
 			var angle = Math.abs(e.detail.angle);
-			if(angle<11){
+			if(angle<6){
 				$.back()
 			}
 		})
