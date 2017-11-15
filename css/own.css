@@ -82,3 +82,71 @@
 	input {
 		-webkit-user-select: auto;
 	}
+	*{
+	    padding:0px;
+	    margin:0px;
+	    list-style: none;
+	    font-style:normal;
+	    font-family: arial;
+	    font-family: Microsoft YaHei,arial;
+	}
+	.twoRankedBox{
+	    margin:6px 8px;
+	    overflow: hidden;
+	    padding-bottom:25px;
+	    clear: both; 
+	}
+	.twoRankedBox ul{
+	    width:49%;
+	    float: left;
+	    list-style: none;
+	}
+	.twoRankedBox ul:last-child{
+	    margin-left:2%;
+	}
+	.twoRankedBox ul li{
+	    padding:5px;
+	    margin-bottom:6px;
+	    padding-bottom:8px;
+	    background-color: #FFFFFF;
+	}
+	.twoRankedBox ul li p:first-child{
+	    padding-top:0px;
+	}
+	.twoRankedBox ul li p{
+	    padding-top:4px;
+	}
+	.product_picture img{
+	    display: block;
+	    width:100%;
+	    min-height: 100px;
+	}
+	.product_np{
+	    overflow: hidden;
+	    line-height:20px;
+	}
+	.product_np a{
+	    display: block;
+	    overflow:hidden;
+	    text-overflow:ellipsis;
+	    white-space:nowrap;
+	}
+	.product_np a:first-child{
+	    font-size:0.9em;
+	    color:#58b7e3;
+	    width:65%;
+	    float: left;
+	}
+	.product_np a:last-child{
+	    font-size:12px;
+	    color:#FF6633;
+	    float: right;
+	    padding-right:5px ;
+	    width:35%;
+	    text-align: right;
+	}
+	.product_ie{
+	    /*font-size:0.8em !important;*/
+	    color:#777;
+	    font-size: 11px !important;
+	}

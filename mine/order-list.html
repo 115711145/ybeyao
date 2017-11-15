@@ -209,7 +209,7 @@
 					$.each(data, function(i, v) {
 						var li=[];
 						li.push('<li class="order-list" order_id="'+v.order_id+'" return_status="'+v.return_status+'"><div class="order_sn">订单编号：'+v.order_sn
-						+'<span class="status'+(v.return_status>0?' orange">'+v.return_status_desc:(v.order_status_code=='WAITPAY'?" red":"")+'">'+v.order_status_desc)+'</span></div>');
+						+'<span class="status">'+h.getOrderStatus(v)+'</span></div>');
 						var num=0;
 						//商品列表
 						for(var j=0;j<v.goods_list.length;j++){
@@ -232,44 +232,53 @@
 						li.push('<div class="sum"><p class="fl sum-price-num">'
 			        		+'<span class="price">￥'+h.fmoney(v.total_amount-v.discount_money)+'</span>'
 			        		+'<span>共'+num+'件</span></p><p class="fr btns">');
-			        	if(v.order_status>=3){//已完成、已取消、已作废
-			        		if(v.order_status==5&&v.return_status>0){
-			        			li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
-			        		}
-			        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
-			        	}else{
-			        		if(v.pay_status>0){
-			        			if(v.return_status>0){
-			        				li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
-			        			}else{
-				        			if(v.order_status==2){
-				        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价</span>');
-				        			}else{
-				        				if(v.shipping_status>0){
-				        					li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-				        				}
-			        					li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
-				        			}			        				
-			        			}
-
-				        	}else{
-				        		if(v.pay_code=='cod'){
-				        			if(v.shipping_status>0){
-				        				li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-				        			}
-				        		}else{
-				        			li.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span>');
-				        		}
-				        		li.push('<span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
-				        	}
+			        		li.push(h.getOrderBtn(v));
 				        	li.push('</p></div></li>')
-			        	}
-						html.push(li.join(''))
+							html.push(li.join(''))
 					});
 					h.d.list.innerHTML+=html.join('')
 				}else{
 					h.page==1&&(h.d.list.innerHTML = '<li class="no-order">没有相关订单<li>');
 				}
+			}
+			h.getOrderStatus=function(order){
+				return '<font class="'+(order.return_status>0?' orange">'+order.return_status_desc
+				:(order.order_status_code=='WAITPAY'?" red":"")+'">'+order.order_status_desc)+'</font>';
+			}
+			
+			h.getOrderBtn=function(order){
+				var li=[];
+				if(order.order_status>=3){//已完成、已取消、已作废
+	        		if(order.order_status==5&&order.return_status>0){
+	        			li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
+	        		}
+	        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
+	        	}else{
+	        		if(order.pay_status>0){
+	        			if(order.return_status>0){
+	        				li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
+	        			}else{
+		        			if(order.order_status==2){
+		        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价订单</span>');
+		        			}else{
+		        				if(order.shipping_status>0){
+		        					li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+		        				}
+	        					li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+		        			}			        				
+	        			}
+		        	}else{
+		        		if(order.pay_code=='cod'){
+		        			if(order.shipping_status>0){
+		        				li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+		        			}
+		        		}else{
+		        			li.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span>');
+		        		}
+		        		li.push('<span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
+		        	}
+	        	}
+	        	return li.join('');
 			}
 			
 			h.showType=function(type){
@@ -379,7 +388,7 @@
 							h.openWin('order-return.html','order-return',{order_id:order_id})
 							break
 						case 'comment-order':
-							alert('评价订单')
+							h.openWin('comment-list.html','comment-list',{type:'WAITCCOMMENT'})
 							break;
 						case 'confirm-order':
 							alert('确认收货')
@@ -414,7 +423,8 @@
 				 */
 				$(h.d.list).on('tap','.mui-btn',function(){
 					var type=this.getAttribute('type')
-					var order_id=this.parentElement.parentElement.parentElement.getAttribute('order_id')
+					var p=this.parentElement.parentElement.parentElement;
+					var order_id=p.getAttribute('order_id')
 					if(type=='del-order'){
 						h.del={
 							type:type,
@@ -430,6 +440,10 @@
 						}
 						$('#cansel').popover('toggle')
 					}else{
+						h._jump={
+							order_id:order_id,
+							p:p
+						}
 						h.orderService(type,order_id,this)
 					}
 				})
@@ -449,6 +463,27 @@
 				$.back=function(){
 					plus.webview.currentWebview().close('slide-out-right');
 				}
+				
+				win.addEventListener('returnCallback',function(){
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						dataType:'json',
+						timeout:h.ajaxTimeout,
+						data:{
+							m:'order_detail',
+							token:h.token,
+							id:h._jump.order_id
+						},
+						success:function(ret){
+							if(ret.code==0){
+								h._jump.p.querySelector('.status').innerHTML=h.getOrderStatus(ret.data)
+								h._jump.p.querySelector('.btns').innerHTML=h.getOrderBtn(ret.data)
+							}
+						}
+					});
+					
+				})
 				
 				win.addEventListener('swiperight',function(e){
 					if(Math.abs(e.detail.angle)<6){

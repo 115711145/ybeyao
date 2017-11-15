@@ -303,7 +303,9 @@
 			"mine/goods-list.html",
 			"mine/comment-list.html",
 			"mine/return-list.html",
-			"mine/collect-list.html"
+			"mine/collect-list.html",
+			"mine/personal.html",
+			"mine/wallet.html"
 		]
 	},
 	"mine/login.html": {
@@ -549,7 +551,8 @@
 			"mine/order-detail.html",
 			"mine/login.html",
 			"mine/order-return.html",
-			"mine/return-detail.html"
+			"mine/return-detail.html",
+			"mine/comment-list.html"
 		]
 	},
 	"mine/goods-list.html": {
@@ -597,7 +600,8 @@
 		"refer": [
 			"mine/order-detail.html",
 			"mine/comment-detail.html",
-			"mine/comment-detail-header.html"
+			"mine/comment-detail-header.html",
+			"mine/comment.html"
 		]
 	},
 	"mine/comment-detail.html": {
@@ -657,6 +661,15 @@
 		],
 		"refer": [
 			"mine/order-detail.html"
+		]
+	},
+	"mine/personal.html": {
+		"refer": [
+			"mine/test.html",
+			"mine/center_info.html",
+			"mine/avatar.html",
+			"mine/bind-mobile.html",
+			"mine/reset-password.html"
 		]
 	}
 }

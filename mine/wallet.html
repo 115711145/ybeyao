@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的钱包</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+    <style>
+    	.banner img{
+    		width: 100%;
+    	}
+    	ul{
+    		list-style: none;
+    	}
+    	.wallet{
+    		padding: 2px 0 10px 3px;
+    		background: #eee;
+    	}
+    	.wallet li{
+    		padding:8px 5px;
+    		border: 1px solid #fff;
+    		background: #fff;
+    		width: 48%;
+    		margin: 1%;
+    		float: left;
+    		height: 70px;
+    	}
+    	.wallet-icon{
+    		position: absolute;
+    	}
+    	.wallet-icon img{
+    		max-height: 35px;
+    		max-width:35px;
+    		border-radius:50px ;
+    		margin:8px 0 0 5px;
+    	}
+    	.item-info{
+    		width: 85%;
+    		display: block;
+    		float: right;
+    		text-align: center;
+    	}
+    	.price{
+    		color: #FF6633;
+    	}
+    	.title a{
+    		color: #58B0F3;
+    		border: 1px solid #eee;
+    		padding: 3px 10px;
+    		border-radius: 5px;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">我的钱包</h1>
+	</header>
+	<div class="mui-content">
+		<!--<div class="loader" id="loader">
+			<a>
+				<span class="mui-spinner"></span>
+			</a>
+			<br />
+			<span>加载中...</span>
+		</div>-->
+		<div class="banner">
+			<img src="../images/ad1.jpg"/>
+		</div>
+		<ul class="wallet">
+			<li class="wallet-item">
+				<span class="wallet-icon">
+					<img src="../images/wallet-ye.png" width="40"/>
+				</span>
+				<span class="item-info">
+					<p class="title">余额</p>
+					<p class="price" id="money">123456.00</p>
+				</span>
+			</li>
+			<li class="wallet-item">
+				<span class="wallet-icon">
+					<img src="../images/wallet-xf.png"/>
+				</span>
+				<span class="item-info">
+					<p class="title">累计消费</p>
+					<p class="price" id="amount">123456.00</p>
+				</span>
+			</li>
+			<li class="wallet-item">
+				<span class="wallet-icon">
+					<img src="../images/wallet-jf.png"/>
+				</span>
+				<span class="item-info">
+					<p class="title">积分</p>
+					<p class="price" id="points">123456.00</p>
+				</span>
+			</li>
+			<li class="wallet-item">
+				<span class="wallet-icon">
+					<img src="../images/wallet-yhq.png"/>
+				</span>
+				<span class="item-info">
+					<p class="title">优惠券</p>
+					<p class="price" id="quan">5</p>
+				</span>
+			</li>
+			<li class="wallet-item">
+				<span class="wallet-icon">
+					<img src="../images/wallet-cz.png"/>
+				</span>
+				<span class="item-info">
+					<p class="title"><a class="link-btn" type="recharge">余额充值</a></p>
+					<p class="title"><a class="link-btn" type="recharge-record">充值记录</a></p>
+				</span>
+			</li>
+			<li class="wallet-item">
+				<span class="wallet-icon">
+					<img src="../images/wallet-mx.png"/>
+				</span>
+				<span class="item-info">
+					<p class="title"><a class="link-btn" type="money">金额明细</a></p>
+					<p class="title"><a class="link-btn" type="points">积分明细</a></p>
+				</span>
+			</li>
+		</ul>
+	</div>
+	<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/photo.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+		(function(win,h,$,d,ms) {
+			$.init();
+			$.plusReady(function(){
+				h.self=plus.webview.currentWebview();
+				h.user=h.self.user;
+				h.d={
+					money:d.getElementById('money'),
+					amount:d.getElementById('amount'),
+					points:d.getElementById('points'),
+					quan:d.getElementById('quan'),
+				}
+				
+				d.getElementById('money').innerText='￥'+h.user.user_money;
+				d.getElementById('amount').innerText='￥'+h.user.total_amount;
+				d.getElementById('points').innerText=h.user.pay_points;
+				d.getElementById('quan').innerText=h.user.coupon_count;
+			})
+			$.back=function(){
+				h.self.close('slide-out-right')
+			}
+			
+			$('.wallet').on('tap','.link-btn',function(){
+				var type=this.getAttribute('type')
+				switch(type){
+					case 'recharge':
+						
+						break;
+					case 'recharge-record':
+						
+						break;
+					case 'money':
+						break;
+					case 'points':
+						break;
+				}
+			})
+			
+		})(window,honey,mui,document,myStorage);
+		
+	</script>
+	
+</body>
+</html>

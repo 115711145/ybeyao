@@ -158,7 +158,7 @@
 			})
 			window.addEventListener('cateId',function(o){
 				honey.d.title.innerHTML=o.detail.name;
-				mui.fire(honey.goodsList,'showGoodsList',{cate:o.detail.cate})
+				mui.fire(honey.goodsList,'showGoodsList',{cate:o.detail.cate,cid:o.detail.cid})
 				if(honey.sort!='default'){
 					honey.d.desc.className="hide";
 					honey.d.sort.className="";

@@ -362,6 +362,7 @@ var common =
 				//console.log('UNEXIST_' + filePathCache+"_"+netPath)
 				Filedownload(netPath, function(localPath) {
 					cb(localPath);
+					console.log('downcallback:localPath='+localPath)
 				});
 			}
 		});
@@ -390,7 +391,7 @@ var common =
 					callback(entry.toLocalURL()); //获取当前下载路径
 				});
 			} else {
-				//console.log('download.state:' + d.state + "____download.status" + status);
+				console.log('download.state:' + d.state + "____download.status" + status);
 				//下载失败 只递归一次，再次失败返回默认图片
 				if (++couDwn <= 1) {
 					console.log(couDwn);
@@ -525,6 +526,9 @@ var common =
 					next();
 				});
 			} else {
+				if(honey.trim(data_src)){
+					setPath(img, data_src);
+				}
 				next();
 			}
 		}, function() {
@@ -534,6 +538,7 @@ var common =
 	};
 
 	function setPath(img, src) {
+		src=src||img.getAttribute('default-src');
 		img.setAttribute('src', src);
 		img.classList.remove("lazy");
 	};
@@ -550,10 +555,10 @@ var common =
 
 var honey = (function(win, $) {
 	var h={
-		apiurl : "http://ybuser.ybyiyao.com/api/app/data/",
-		apihost : "http://ybuser.ybyiyao.com",
-//		apiurl : "http://192.168.11.226/api/app/data/",
-//		apihost : "http://192.168.11.226",
+//		apiurl : "http://ybuser.ybyiyao.com/api/app/data/",
+//		apihost : "http://ybuser.ybyiyao.com",
+		apiurl : "http://192.168.11.226/api/app/data/",
+		apihost : "http://192.168.11.226",
 		page:1,
 		total:0,
 		pageSize:10,
@@ -690,15 +695,45 @@ var honey = (function(win, $) {
 
 		h.detailHeader.append(h.detailSubpage)
 	}
-
+	
 	/**
 	 * 显示商品列表
+	 * @param {Object} data
+	 * @param {Object} append
+	 * @param {Object} ad
+	 */
+	h.showGoodsList=function(data,id,append,ad){
+//		var box=document.getElementById(id);
+		var leftBoxDom=document.getElementById('BoxLeft')
+		var rightBoxDom=document.getElementById('BoxRight')
+		$.each(data, function(i,v) {
+			var li=document.createElement('li');
+			li.className="goods-list";
+			li.setAttribute('goods_id',v.goods_id)
+			var img=h.getGoodsImgUrl(v.goods_id,v.img_id);
+		    li.innerHTML = '<p class="product_picture"><img class="lazy" data-lazyload="'+(img)+'" default-src="../images/default.png"/></p>'
+		            +'<p class="product_np"><a>'+v.goods_name+'</a><a class="price">￥'+v.shop_price+'</a></p>'
+		            +'<p class="product_ie">'+v.goods_remark+'</p>';
+		    if(leftBoxDom.offsetHeight<rightBoxDom.offsetHeight ){
+		        leftBoxDom.appendChild(li)
+		    }else{
+		    	rightBoxDom.appendChild(li)
+		    }
+//		    console.log('left:'+leftBoxDom.offsetHeight+' right:'+rightBoxDom.offsetHeight)
+		});
+		 $('#'+id).imageLazyload({
+			placeholder: '../images/default.png'
+		});
+	}
+	
+	/**
+	 * 显示收藏商品列表
 	 * @param {Object} data
 	 * @param {String} id 选择器
 	 * @param {Boolean}} append 是否追加
 	 * @param {Object} ad 广告图片
 	 */
-	h.showGoodsList = function(data, id, append, ad) {
+	h.showGoodsList1 = function(data, id, append, ad) {
 		var obj = document.getElementById(id);
 		//	!append&&(obj.innerHTML='')
 		if(ad) {
@@ -721,6 +756,7 @@ var honey = (function(win, $) {
 			placeholder: '../images/default.png'
 		});
 	}
+
 	/**
 	 * 获取商品图片地址
 	 * @param {Object} goodsId
@@ -818,7 +854,9 @@ var honey = (function(win, $) {
 	 * @param {Object} data
 	 * @param {Object} styles
 	 */
-	h.openWin = function(url, winId, data, styles) {
+	h.openWin = function(url, winId, data, styles,show,wait) {
+		var show=show||{}
+		var wait=wait||{}
 //		var newWindow = $.preload({
 //			id: winId,
 //			url: url,
@@ -840,15 +878,15 @@ var honey = (function(win, $) {
 		    extras:data,
 		    createNew:false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 		    show:{
-		      autoShow:true,//页面loaded事件发生后自动显示，默认为true
-		      aniShow:'slide-in-right',//页面显示动画，默认为”slide-in-right“；
-		      duration:200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-		      event:'titleUpdate',//页面显示时机，默认为titleUpdate事件时显示
-		      extras:{}//窗口动画是否使用图片加速
+		      autoShow:show.autoShow||true,//页面loaded事件发生后自动显示，默认为true
+		      aniShow:show.aniShow||'slide-in-right',//页面显示动画，默认为”slide-in-right“；
+		      duration:show.duration||200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+		      event:show.event||'titleUpdate',//页面显示时机，默认为titleUpdate事件时显示
+		      extras:show.extras||{}//窗口动画是否使用图片加速
 		    },
 		    waiting:{
-		      autoShow:false,//自动显示等待框，默认为true
-		      title:'正在加载...',//等待对话框上显示的提示内容
+		      autoShow:wait.autoShow||false,//自动显示等待框，默认为true
+		      title:wait.title||'正在加载...',//等待对话框上显示的提示内容
 		    }
 		})
 	}
@@ -923,8 +961,16 @@ var honey = (function(win, $) {
 	 */
 	h.isPhone=function (str) {
 		var myreg = /^1[34578]\d{9}$/;
-		return str ? myreg.test(str) : false;
+		return str ? (myreg.test(str)?str:false): false;
 	}
+	/**
+	 * 判断是否为邮箱
+	 * @param {Object} str
+	 */
+	h.isEmail=function (str){ 
+		var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+		return reg.test(str); 
+	} 
 
 	/**
 	 * 去除空格

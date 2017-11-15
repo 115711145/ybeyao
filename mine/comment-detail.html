@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>评价订单</title>
+		<title>查看评价</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
@@ -180,22 +180,25 @@
 				overflow: auto;
 				overflow-y: scroll;
 			}
+			#no-content{
+				text-align: center;
+			}
 		</style>
 	</head>
 	<body class="feedback">
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-			<h1 class="mui-title" id="header-title">评价订单</h1>
+			<h1 class="mui-title" id="header-title">查看评价</h1>
 		</header>
-		<div class="mui-content" id="content">
-			<!--<div class="loader" id="loader">
+		<div class="mui-content">
+			<div class="loader" id="loader">
 				<a>
 					<span class="mui-spinner"></span>
 				</a>
 				<br />
 				<span>加载中...</span>
-			</div>-->
-			<div class="mui-content-padded">
+			</div>
+			<div class="mui-content-padded" id="content" style="display: none;">
 				<div class="order-goods" id="goods-info">
 					 <!--<div class="goods-img fl">
 		            	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
@@ -237,8 +240,23 @@
 					<textarea class="reply-txt" placeholder="评论内容" id="reply_text"></textarea>
 					<span class="mui-btn mui-btn-nav">提交评论</span>
 				</div>
-				
 			</div>
+			<div id="no-content" style="display: none;">
+				<p><img src="../images/kuqi.png" width="100" /></p>
+				<p id="no-content-text">很抱歉,评价已删除!</p>
+			</div>
+		</div>
+		<div id="delete" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="del">
+					<a href="#delete" style="color: #FF3B30;">删除评价</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#delete" style="color: #999;">取消</a>
+				</li>
+			</ul>
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
@@ -266,41 +284,47 @@
 						rec_id:h.rec_id
 					},
 					success:function(ret){
-						d.getElementById('goods-info').innerHTML='<div class="goods-img fl"><img src="'+h.apihost+'/public/upload/goods/thumb/'+ret.data.goods.goods_id
-						 +'/goods_sub_thumb_'+ret.data.goods.img_id+'_150_150.jpg"></div><div class="goods-info fl"><p class="title">'+ret.data.goods.goods_name+'</p></div>';
-						var data=ret.data.comment;
-						var str = [];
-						h.comment_id=data.comment_id;
-						str.push('<p><span class="user-name"><font>' +
-				(data.is_anonymous ? "匿名评价" : h.user.nickname) + '</font></span>' +
-				h.getCommentStar(((data.deliver_rank + data.goods_rank + data.service_rank) / 3).toFixed(2))+'<span class="user-time">'+h.getYmdTime(data.add_time)+'</span></p>')
-						str.push('<p class="content">'+data.content+'</p>')
-						if(data.img &&data.img.length>0){
-							str.push('<p><div class="user-photo">')
-							for(var i=0;i<data.img.length;i++){
-								str.push('<img class="photos" data-lazyload="' + h.apihost + data.img[i] + '"  data-preview-src="' + h.apihost + data.img[i] + '" data-preview-group="0"/>')
+						d.getElementById('loader').setAttribute('style','display: none;');
+						if(ret.code==0){
+							d.getElementById('content').removeAttribute('style');
+							d.getElementById('goods-info').innerHTML='<div class="goods-img fl"><img src="'+h.apihost+'/public/upload/goods/thumb/'+ret.data.goods.goods_id
+							 +'/goods_sub_thumb_'+ret.data.goods.img_id+'_150_150.jpg"></div><div class="goods-info fl"><p class="title">'+ret.data.goods.goods_name+'</p></div>';
+							var data=ret.data.comment;
+							var str = [];
+							h.comment_id=data.comment_id;
+							str.push('<p><span class="user-name"><font>' +(data.is_anonymous ? "匿名评价" : h.user.nickname) + '</font></span>' +
+									h.getCommentStar(((data.deliver_rank + data.goods_rank + data.service_rank) / 3).toFixed(2))+'<span class="user-time">'+h.getYmdTime(data.add_time)+'</span></p>')
+							str.push('<p class="content">'+data.content+'</p>')
+							if(data.img &&data.img.length>0){
+								str.push('<p><div class="user-photo">')
+								for(var i=0;i<data.img.length;i++){
+									str.push('<img class="photos" data-lazyload="' + h.apihost + data.img[i] + '"  data-preview-src="' + h.apihost + data.img[i] + '" data-preview-group="0"/>')
+								}
+								str.push('</div></p>')
 							}
-							str.push('</div></p>')
-						}
-						if(data.reply&&data.reply.length>0){
-							str.push('<div id="replys">')
-							for(var i = 0; i < data.reply.length; i++) {
-								var reply = data.reply[i];
-								str.push('<p class="reply"><span>' + (reply.user_id>0?"<font>客服</font> 回复":(reply.is_anonymous>0?"<font class=\"user\">匿名</font>":reply.username)+' 追加') + '：</span><span>' + reply.content +'</span></p>');
+							if(data.reply&&data.reply.length>0){
+								str.push('<div id="replys">')
+								for(var i = 0; i < data.reply.length; i++) {
+									var reply = data.reply[i];
+									str.push('<p class="reply"><span>' + (reply.user_id>0?"<font>客服</font> 回复":(reply.is_anonymous>0?"<font class=\"user\">匿名</font>":reply.username)+' 追加') + '：</span><span>' + reply.content +'</span></p>');
+								}
+								str.push('</div>')
 							}
-							str.push('</div>')
+							str.push('<p class="zan"><span class="zan_num" comment_id="' + data.comment_id + '"><img src="../images/zan.png"/> ' + data.zan_num + '</span></p>')
+							str.push('<p class="btns"><span class="mui-btn mui-btn-nav">追加评论</span><span class="mui-btn mui-btn-danger">删除评价</span></p>')
+							h.d.comment_info.innerHTML=str.join('');
+							
+							$('.user-photo').imageLazyload({
+								placeholder: '../images/default.png'
+							});
+							
+							$('.user-photo').off('tap', 'img').on('tap', 'img', function() {
+								$.previewImage({zoom:false})
+							})
+						}else{
+							d.getElementById('content').setAttribute('style','display: none;')
+							d.getElementById('no-content').removeAttribute('style')
 						}
-						str.push('<p class="zan"><span class="zan_num" comment_id="' + data.comment_id + '"><img src="../images/zan.png"/> ' + data.zan_num + '</span></p>')
-						str.push('<p class="btns"><span class="mui-btn mui-btn-nav">追加评论</span><span class="mui-btn mui-btn-danger">删除评价</span></p>')
-						h.d.comment_info.innerHTML=str.join('');
-						
-						$('.user-photo').imageLazyload({
-							placeholder: '../images/default.png'
-						});
-						
-						$('.user-photo').off('tap', 'img').on('tap', 'img', function() {
-							$.previewImage({zoom:false})
-						})
 					},
 					error:function(ret){
 //						alert(JSON.stringify(ret))
@@ -357,7 +381,6 @@
 							content:txt
 						},
 						success:function(ret){
-							console.log(JSON.stringify(ret))
 							h.is_ajax=false;
 							if(ret.code==0){
 								obj.value='';
@@ -372,6 +395,42 @@
 					});
 					
 					
+				})
+				
+				$('#comment-info').on('tap','.mui-btn-danger',function(){
+					$('#delete').popover('toggle')
+				})
+				//删除评价
+				d.getElementById('del').addEventListener(function(){
+					if(h.is_del || !h.comment_id){
+						return
+					}
+					h.is_del=true;
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						timeout:h.ajaxTimeout,
+						dataType:'json',
+						data:{
+							m:'comment_delete',
+							token:h.token,
+							rec_id:h.rec_id,
+						},
+						success:function(ret){
+							h.is_del=false
+							if(ret.code==0){
+								$.toast('评价已删除成功')
+								setTimeout(function(){
+									$.back()
+								},1000)
+							}else{
+								$.toast(ret.msg||'评价删除失败')
+							}
+						},
+						error:function(ret){
+							$.toast('评价删除失败')
+						}
+					});
 				})
 				
 				$.back=function(){

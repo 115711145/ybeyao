@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>个人资料</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+</head>
+<style>
+	ul,li{
+		padding: 0;
+		margin: 0;
+	}
+	li{
+		list-style: none;
+	}
+	.mui-input-group .mui-input-row label{
+		width: 30%;
+		color: #666;
+		font-size: 14px;
+		line-height: 60px;
+		text-align: left ;
+		padding-left:20px;
+	}
+	.mui-input-group .mui-input-row input{
+		width: 70%;
+		font-size: 14px;
+	}
+	.add-btn{
+		text-align: center;
+		padding: 20px;
+	}
+	.add-btn span{
+		padding: 8px 20px;
+		border-radius: 5px;
+		background: #41CEA9;
+		color: #fff;
+	}
+	.mui-content .mui-switch{
+		height: 18px;
+		width: 30px;
+		margin-top: 10px;
+		float: left;
+	}
+	.mui-content .mui-switch-handle{
+		padding: 5px;
+		height: 15px;
+		width: 15px;
+		border-radius: 20px;
+	}
+	.mui-input-group .mui-input-row{
+		height: 60px;
+	}
+	.mui-input-group .mui-input-row:after{
+		 background-color:#ccc ;
+	}
+	.mui-input-row:active{
+		background: #eee;
+		border: 1px solid #eee;
+	}
+	.mui-input-row .info{
+		display: inline-block;
+		min-width: 70%;
+	}
+	.mui-input-row img{
+		width: 45px;
+		height: 45px;
+		position: absolute;
+		right: 33px;
+		border-radius: 45px;
+	}
+	.mui-input-row div{
+		color: #333;
+		width: 68%;
+		line-height: 60px;
+		text-align: right;
+		height: 60px;
+		padding-right:10px !important;
+		font-size: 14px;
+	}
+	.user-face{
+		text-align: right;
+	}
+	.mui-input-row .mui-icon-arrowright{
+		color: #666;
+		font-size: 16px;
+	}
+	.mui-input-group:after{
+		height: 0;
+	}
+</style>
+<body>
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">个人资料</h1>
+	</header>
+	<div class="mui-content">
+		<div class="loader" id="loader">
+			<a>
+				<span class="mui-spinner"></span>
+			</a>
+			<br />
+			<span>加载中...</span>
+		</div>
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>头 像</label>
+				<div class="mui-inline">
+					<img id="head_pic" src="../images/profile.png"/>
+					<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>
+			<div class="mui-input-row">
+				<label>昵 称</label>
+				<!--<input type="number" class="mui-input-clear" id="mobile" placeholder="手机号码">-->
+				<div class="mui-inline dialog" type-id="nickname">
+				<span class="info" id="nickname"></span>
+				<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>
+			<div class="mui-input-row">
+				<label>性 别</label>
+				<div class="mui-inline">
+					<span class="info" id="sex"></span>
+					<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>
+			<div class="mui-input-row">
+				<label>生 日</label>
+				<div class="mui-inline">
+					<span class="info" id="birthday"></span>
+					<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>
+			<div class="mui-input-row">
+				<label>手 机</label>
+				<div class="mui-inline">
+					<span class="info" id="mobile"></span>
+					<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>
+			<div class="mui-input-row">
+				<label>Q Q</label>
+				<div class="mui-inline dialog" type-id="qq">
+					<span class="info" id="qq"></span>
+					<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>
+			<div class="mui-input-row">
+				<label>邮 箱</label>
+				<div class="mui-inline dialog" type-id="email">
+					<span class="info" id="email"></span>
+					<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>
+			<div class="mui-input-row" id="reset-pwd">
+				<label>修改密码</label>
+				<div class="mui-inline name"><span class="mui-icon mui-icon-arrowright fr"></span></div>
+			</div>
+		</div>
+	</div>
+	<div id="sel-sex" class="mui-popover mui-popover-action mui-popover-bottom">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<a style="color:#ccc">设置性别</a>
+			</li>
+			<li class="mui-table-view-cell sex" sex="1">
+				<a href="#sel-sex">男</a>
+			</li>
+			<li class="mui-table-view-cell sex" sex="2">
+				<a href="#sel-sex">女</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<a href="#sel-sex" style="color: #999;">取消</a>
+			</li>
+		</ul>
+	</div>
+	<div id="sel-img" class="mui-popover mui-popover-action mui-popover-bottom">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<a style="color:#ccc">选择头像</a>
+			</li>
+			<li class="mui-table-view-cell" id="camera">
+				<a href="#sel-img">拍照</a>
+			</li>
+			<li class="mui-table-view-cell" id="gallery">
+				<a href="#sel-img">从手机相册选择</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<a href="#sel-img" style="color: #999;">取消</a>
+			</li>
+		</ul>
+	</div>
+	<!--<nav class="mui-bar mui-bar-tab footer-bar">
+		<div class="add-btn">
+			<span class="submit-btn">保存地址</span>
+		</div>
+	</nav>-->
+	
+	<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/photo.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+		(function(win,h,$,d,ms) {
+			$.init();
+			h.d={
+				head_pic:d.getElementById('head_pic'),
+				name:d.getElementById('nickname'),
+				sex:d.getElementById('sex'),
+				mobile:d.getElementById('mobile'),
+				email:d.getElementById('email'),
+				repwd:d.getElementById('reset-pwd'),
+				birthday:d.getElementById('birthday'),
+				qq:d.getElementById('qq')
+			}
+			h.getPersonal=function(){
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					timeout:h.ajaxTimeout,
+					dataType:'json',
+					data:{
+						m:'get_personal',
+						token:h.token
+					},
+					success:function(ret){
+						if(ret.code==0){
+							h.user=ret.data;
+							if(ret.data.head_pic){
+								var head_pic=h.trim(ret.data.head_pic)?(ret.data.head_pic.indexOf('http://')>=0?ret.data.head_pic:h.apihost+ret.data.head_pic)+'?v='+Math.random():'../images/profile.png';
+								h.d.head_pic.src=head_pic
+							}
+							h.d.name.innerText=ret.data.nickname;
+							h.d.sex.innerText=ret.data.sex>0?(ret.data.sex==1?"男":"女"):"未知";
+							h.d.mobile.innerText=ret.data.mobile||"未绑定";
+							h.d.email.innerText=ret.data.email||"未绑定";
+							h.d.birthday.innerText=ret.data.birthday||'未设置';
+							h.d.qq.innerText=ret.data.qq||'未设置'
+							h.eventListen()
+						}
+					},
+					error:function(ret){
+						
+					}
+				});
+			}
+			$.plusReady(function(){
+				h.token=ms.getItem('token')
+				h.getPersonal()
+				h.mineWin=plus.webview.getWebviewById('mine') 
+				$.back=function(){
+					plus.webview.currentWebview().close('slide-out-right')
+				}
+				
+				h.eventListen=function(){
+					h.d.head_pic.addEventListener('tap',function(){
+						h.photo= new Plugin.Photo({
+							callback : openAvatarPape,
+							options : {},
+							title : "选择头像",
+							compress : true,
+							compressCfg : {
+								width : '100px',
+	//							height:'100%'
+							}
+						})
+						$('#sel-img').popover('toggle')
+					},false)
+					
+					d.getElementById('camera').addEventListener('tap',function(){
+						h.photo.appendByCamera()
+					})
+					
+					d.getElementById('gallery').addEventListener('tap',function(){
+						h.photo.appendByGallery()
+					})
+					
+					h.d.mobile.addEventListener('tap',function(){
+						h.openWin('bind-mobile.html','bind-mobile',{user:h.user})
+					},false)
+					
+					$('.mui-content').on('tap','.dialog',function(){
+						var type=this.getAttribute('type-id');
+						var span=this.querySelector('#'+type)
+						var txt=span.innerText;
+						var title=h.trim(this.parentElement.querySelector('label').innerText);
+						$.prompt(title, txt, '友邦到家', ['取消','确定'], function(e) {
+							if (e.index == 1) {
+								var value=h.trim(e.value)
+								if(value){
+									if(type=='email'&&!h.isEmail(e.value)){
+										$.toast('您输入的邮箱格式错误')
+										return
+									}
+									if(type=='nickname'){
+										if(value.length>10){
+											$.toast('您输入的昵称太长了！')
+											return
+										}
+									}
+									if(type=='qq'&&(isNaN(value)||value.length<5||value.length>12)){
+										$.toast('QQ号码错误')
+										return
+									}
+									if(value==h.user[type]){
+										return
+									}
+									h.editUserInfo(type,value,function(ret){
+										if(ret){
+											ret.code==0?(span.innerText=h.user[type]=ret.data||value,$.fire(h.mineWin,'show_name',{nickname:value})):(ret.msg&&$.toast(ret.msg))
+										}
+									})
+								}
+							}
+						})
+					})
+					
+					h.d.sex.addEventListener('tap',function(){
+						$('#sel-sex').popover('toggle')
+					})
+					
+					$('#sel-sex').on('tap','.sex',function(){
+						var sex=this.getAttribute('sex')
+						if(sex!=h.user.sex){
+							h.editUserInfo('sex',sex,function(ret){
+								if(ret){
+									ret.code==0?(h.user.sex=sex,h.d.sex.innerText=(sex==1)?"男":"女"):(ret.msg&&$.toast(ret.msg))
+								}
+							})
+						}
+					})
+					
+					h.d.repwd.addEventListener('tap',function(){
+						h.openWin('reset-password.html','reset-password',{user:h.user})
+					})
+					
+					h.d.birthday.addEventListener('tap',function(){
+						var dDate = new Date();
+						var year=dDate.getFullYear();
+						var month=dDate.getMonth();
+						var day=dDate.getDate();
+						if(h.user.birthday){
+							var arr=h.user.birthday.split('-');
+							dDate.setFullYear(arr[0], arr[1]-1, arr[2]);
+						}else{
+							dDate.setFullYear(year-20, 0, 1);
+						}
+						var minDate = new Date();
+						minDate.setFullYear(1900, 0, 1);
+						var maxDate = new Date();
+						maxDate.setFullYear(year, month, day);
+						plus.nativeUI.pickDate(function(e) {
+							var dt = h.getYmdTime(e.date.getTime()/1000);
+//							$.toast('您选择的日期是:' + h.getYmdTime(d.getTime()/1000));
+							h.editUserInfo('birthday',dt,function(ret){
+								if(ret){
+									if(ret.code==0){
+										h.user.birthday=dt;
+										h.d.birthday.innerText=dt;
+									}else{
+										$.toast(ret.msg)
+									}
+								}
+							})
+							
+						}, function(e) {
+							info.innerText = "您没有选择日期";
+						}, {
+							title: "请选择生日",
+							date: dDate,
+							minDate: minDate,
+							maxDate: maxDate
+						});
+					})
+				}
+				
+				h.editUserInfo=function(index,value,callback){
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						timeout:h.ajaxTimeout,
+						dataType:'json',
+						data:{
+							m:'edit_userinfo',
+							type:'edit_info',
+							index:index,
+							value:value,
+							token:h.token
+						},
+						success:function(ret){
+							callback&&callback(ret)
+						},
+						error:function(ret){
+							callback&&callback()
+						}
+					});
+				}
+				
+				
+				function openAvatarPape(file,path){
+					h.openWin('avatar.html','avatar',{imgFile:file,imgPath:path},{},{aniShow:'zoom-fade-in',duration:300})
+				}
+				win.addEventListener('updateImg',function(e){
+					h.d.head_pic.src=e.detail.path;
+					$.fire(h.mineWin,'show_head',{path:e.detail.path})
+				})
+				win.addEventListener('updateMobile',function(e){
+					h.d.mobile.innerText=h.user.mobile=e.detail.mobile
+				})
+			})
+			
+		})(window,honey,mui,document,myStorage);
+		
+	</script>
+	
+</body>
+</html>

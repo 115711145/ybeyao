@@ -2,32 +2,32 @@
 	height: 150px;
 }
 
-.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-object {
+/*.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-object {
 	line-height: auto;
 	max-width: auto;
 	height: auto;
 	border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
-}
+}*/
 
-.recommend {
+/*.recommend {
 	margin: 5px 3px;
 	padding: 0px;
-}
+}*/
 
-.recommend .mui-table-view {
+/*.recommend .mui-table-view {
 	margin: 0px !important;
 	padding: 0 !important;
 	background: none;
-}
+}*/
 
-.mui-table-view:after,
+/*.mui-table-view:after,
 .recommend .mui-table-view:before {
 	border: 0;
 	height: 0;
 	background-color: #fff;
-}
-
+}*/
+/*
 .recommend .goods-list {
 	margin: 0 !important;
 	padding: 2px 4px !important;
@@ -74,7 +74,7 @@
 	font-size: 1.1em;
 	margin-right: 5px;
 	text-decoration: line-through;
-}
+}*/
 
 .mui-content a.active {
 	color: green;
@@ -120,9 +120,9 @@
 }
 
 .yb-ad1 {
-	margin: 8px 5px;
-	position: relative;
-	height: 130px;
+	margin: 5px;
+	float: left;
+	height: 122px;
 	background: #fff;
 	border-radius: 1px;
 }
@@ -156,4 +156,8 @@
 .ad-right img:first-child {
 	height: 60px;
 	border-bottom: 1px solid #ccc;
+}
+
+.twoRankedBox{
+	padding-bottom: 0px;
 }

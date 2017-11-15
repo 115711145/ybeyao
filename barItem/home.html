@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
-		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<!--<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />-->
 		<link type="text/css" rel="stylesheet" href="../css/home.css" />
 	</head>
 
@@ -69,26 +69,45 @@
 			</div>
 			<div class="yb-ad1">
 				<p class="ad-left">
-					<img src="../images/default.png" class="adImg2"/>
+					<img src="../images/default.png" class="lazy ad adImg2"/>
 				</p>
 				<p class="ad-right">
-					<img src="../images/default.png" class="adImg3"/>
-					<img src="../images/default.png" class="adImg3"/>
+					<img src="../images/default.png" class="lazy ad adImg3"/>
+					<img src="../images/default.png" class="lazy ad adImg3"/>
 				</p>
 			</div>
-			<div class="mui-content recommend">
-				<ul class="mui-table-view mui-grid-view" id="recommend">
+			<div class="yb-ad1" style="clear: both;margin-top:0 ;margin-bottom:15px !important;">
+				<img src="../images/default.png" class="lazy ad adImg4"/>
+			</div>
+			<!--<div class="mui-content recommend">-->
+				<!--<ul class="mui-table-view mui-grid-view" id="recommend">
 					
-				</ul>
-			</div>
-			<div class="yb-ad1">
-				<img src="../images/default.png" class="adImg4"/>
-			</div>
-			<div class="mui-content recommend">
+				</ul>-->
+				<div class="twoRankedBox" id="recommend">
+			        <ul class="BoxLeft" id="BoxLeft">
+			
+			        </ul>
+			
+			        <ul class="BoxRight" id="BoxRight">
+			
+			        </ul>
+			    </div>
+			<!--</div>-->
+			
+			<!--<div class="mui-content recommend">
 				<ul class="mui-table-view mui-grid-view" id="hot">
 					
 				</ul>
-			</div>
+			</div>-->
+			<!--<div class="twoRankedBox" id="hot">
+		        <ul class="BoxLeft" id="BoxLeft">
+		
+		        </ul>
+		
+		        <ul class="BoxRight" id="BoxRight">
+		
+		        </ul>
+		    </div>-->
 		</div>
 
 		<script type="text/javascript" src="../js/mui.js" charset="UTF-8"></script>
@@ -98,12 +117,11 @@
 		<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
-			mui.init({
-				swipeBack: true //启用右滑关闭功能
-			});
-			//			mui.plusReady(function() {
 			
-			var honey=(function(h,$){
+			(function(h,$,win,d,ms){
+				$.init({
+					swipeBack: true //启用右滑关闭功能
+				});
 				/**
 				 * 自动加载广告
 				 */
@@ -118,6 +136,7 @@
 								h.showAdImges(ret.data[2],2)
 								h.showAdImges(ret.data[3],3)
 								h.showAdImges(ret.data[4],4)
+								lazyImg.lazyLoad(h.d.homeDiv)
 							}
 						},
 						error:function(ret){
@@ -137,15 +156,15 @@
 					for(var i = 0; i <= len; i++) {
 						if(i == 0) {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img type="'+adList[len-1].ad_link_type+'" link="'+adList[len-1].ad_link_id+'" src="' + h.apihost+adList[len-1].ad_code + '"></a></div>')
+								<img class="lazy ad" name="'+adList[len-1].ad_name+'" type="'+adList[len-1].ad_link_type+'" link="'+adList[len-1].ad_link_id+'" data-src="' + h.apihost+adList[len-1].ad_code + '"></a></div>')
 						}
 						if(i<len){
 							group.push('<div class="mui-slider-item"><a href="#">\
-								<img type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" src="' + h.apihost+adList[i].ad_code + '"></a></div>')
+								<img class="lazy ad"  name="'+adList[i].ad_name+'" type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" data-src="' + h.apihost+adList[i].ad_code + '"></a></div>')
 							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
 						}else {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img type="'+adList[0].ad_link_type+'" link="'+adList[0].ad_link_id+'"  src="' + h.apihost+adList[0].ad_code + '"></a></div>')
+								<img class="lazy ad"  name="'+adList[0].ad_name+'" type="'+adList[0].ad_link_type+'" link="'+adList[0].ad_link_id+'"  data-src="' + h.apihost+adList[0].ad_code + '"></a></div>')
 						}
 					}
 					document.getElementById('productSlider').innerHTML = '<div class="mui-slider-group mui-slider-loop">' + group.join('') +
@@ -162,17 +181,44 @@
 				h.showAdImges=function(ad,number){
 					var obj=mui('.adImg'+number);
 					for(var i=0;i<obj.length;i++){
-						ad[i]&&obj[i].setAttribute('src',h.apihost+ad[i].ad_code)
+						if(ad[i]){
+							console.log()
+							obj[i].setAttribute('data-src',h.apihost+ad[i].ad_code)
+							obj[i].setAttribute('type',h.apihost+ad[i].ad_link_type)
+							obj[i].setAttribute('name',h.apihost+ad[i].ad_name)
+						}
 					}
 				}
 				h.bindListTap= function() {
 					//添加slider点击事件
-					$('#productSlider').on('tap', 'a', function() {
-						alert('a')
+					$('.mui-content').on('tap', '.ad', function() {
+						var linkId=this.getAttribute('link')
+						var type=parseInt(this.getAttribute('type'))
+						$.toast('type='+type+'  id='+linkId)
+						switch(type){
+							case 0://产品
+								if(!h.detailWebView) {
+									h.detailWebView = plus.webview.getWebviewById('goods-header');
+								}
+								if(!h.detailSubpage) {
+									h.detailSubpage = plus.webview.getWebviewById('goods-detail');
+								}
+								$.fire(h.detailWebView, 'goodsId', {
+									goods_id:linkId
+								})
+								h.detailWebView.show('slide-in-right', 300)
+								break;
+							case 1://文章
+								$.toast('打开文章'+linkId)
+								break;
+							case 2://分类
+							
+								break;
+						}
 					})
 					
 					//添加每个item点击的监听事件
-					$('.recommend').on('tap', 'a', function() {
+					$('#recommend').on('tap', '.goods-list', function() {
 						var goods_id = this.getAttribute('goods_id');
 //						var title = this.querySelector('.goods-title').innerText;
 						if(!h.detailWebView) {
@@ -198,12 +244,12 @@
 						success:function(ret){ 
 							if(ret.code==0){
 								h.showGoodsList(ret.data.recommend,'recommend')
-								h.showGoodsList(ret.data.hot,'hot')
+//								h.showGoodsList(ret.data.hot,'hot')
 							}
 						},
 						error:function(ret){
-							alert('error')
-							alert(JSON.stringify(ret)) 
+//							alert('error')
+//							alert(JSON.stringify(ret)) 
 						} 
 					})
 //					var recommend = document.getElementById('recommend');
@@ -256,19 +302,21 @@
 						}
 					})
 				}
-				return h;
-			}(honey,mui))
-			
-			//			})
-			mui.plusReady(function() {
-				if(!honey.goodsListHeader){
-					honey.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
+				
+				h.d={
+					homeDiv:d.getElementById('homeDiv')
 				}
-				honey.autoAd()
-				honey.bindIconMenuTap()
-				honey.loadGoods()
-				honey.bindListTap()
-			})
+				
+				$.plusReady(function() {
+					if(!honey.goodsListHeader){
+						honey.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
+					}
+					honey.autoAd()
+					honey.bindIconMenuTap()
+					honey.loadGoods()
+					honey.bindListTap()
+				})
+			}(honey,mui,window,document,myStorage))
 		</script>
 	</body>
 
