@@ -54,6 +54,10 @@
 			<span class="mui-icon iconfont icon-fenlei"></span>
 			<span class="mui-tab-label">分类</span>
 		</a>
+		<!--<a class="mui-tab-item" id="message">
+			<span class="mui-icon mui-icon-chat"></span>
+			<span class="mui-tab-label">消息</span>
+		</a>-->
 		<a class="mui-tab-item" id="cart">
 			<span class="mui-icon iconfont icon-cart"></span>
 			<span class="mui-tab-label">购物车</span>
@@ -70,7 +74,7 @@
 			$.init({
 				preloadLimit:20
 			})
-			h.barItem=['home','category','mine'];
+			h.barItem=['home','mine'];
 			h.barWebViews=[];
 			h.contentStyle={top:'45px',bottom:'51px',scrollIndicator:'none'};
 			h.d={
@@ -100,6 +104,8 @@
 				h.preloadGoodsListWin()
 				//加载购物车
 				h.preloadCartWin()
+				//预加载分类
+				h.cateWin=h.preloadWin('barItem/category.html','category')
 			}
 			h.preloadWebViews=function(){//预加载页面
 				h.mainWebview = plus.webview.currentWebview();
@@ -130,6 +136,11 @@
 				if(id=='cart'){
 					$.fire(honey.cartContent,"showCart")
 					h.cartHeader.show('slide-in-right',300)
+					e&&e.stopPropagation()
+					return
+				}
+				if(id=='category'){
+					h.cateWin.show('slide-in-right',300)
 					e&&e.stopPropagation()
 					return
 				}

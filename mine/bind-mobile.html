@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>绑定手机</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/register.css"/>
+    <style>
+    	.mui-card .mui-input-group{
+    		padding: 6px 0 15px 0;
+    	}
+    	.note{
+    		color: #fff;
+    		background: #41CEA9;
+    		width: 100%;
+    		border-top-left-radius:10px;
+    		border-top-right-radius:10px;
+    		font-size: 18px;
+    		margin: 0 !important;
+    		padding-left: 15px !important;
+    	}
+    	/*.grey{
+    		background: #ccc !important;
+    		border-color: #ccc !important;
+    	}*/
+    </style>
+</head>
+<body>
+	
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">绑定手机</h1>
+	</header>
+	<div class="mui-content">
+		<div class="mui-card"> 
+			<div class="mui-input-row">
+				<div class="mui-inline note" id="note">验证手机</div>
+			</div>
+			<div class="mui-input-group">
+				<div class="mui-input-row">
+					<label><span class="mui-icon mui-icon-phone"></span></label>
+					<input id="mobile" disabled="disabled" class="mui-input-clear mobile" value="" type="number" maxlength="11" placeholder="" />
+				</div>
+				<div class="codeinput">
+					<div class="mui-input-row check-code">
+						<label><img src="../images/verifiy.png"/></label>
+						<input id="code" class="mui-input-clear" type="text" placeholder="验证码" />
+					</div>
+					<span id="get-code">获取验证码&nbsp;<font id="code-time"></font></span>
+				</div>
+			</div>
+		</div>
+		<div class="mui-button-row register">
+			<button type="button" id="submit"  class="mui-btn mui-btn-block own-btn-green">下一步
+			<span class="mui-spinner" id="loader" style="display: none;"></span>
+			</button>
+		</div>
+	</div>
+	<!--<div class="mui-content" id="step2" style="display: none;">
+		<div class="mui-card"> 
+			<div class="mui-input-group">
+				<div class="mui-input-row">
+					<label><span class="mui-icon mui-icon-phone"></span></label>
+					<input id="mobile" class="mui-input-clear" type="number" maxlength="11" placeholder="请输入要绑定的手机号码" />
+				</div>
+				<div class="codeinput">
+					<div class="mui-input-row check-code">
+						<label><img src="../images/verifiy.png"/></label>
+						<input id="code" class="mui-input-clear" type="text" placeholder="验证码" />
+					</div>
+					<span id="get-code">获取验证码&nbsp;<font id="code-time"></font></span>
+				</div>
+			</div>
+		</div>
+		<div class="mui-button-row register">
+			<button type="button" id="submit"  class="mui-btn mui-btn-block own-btn-green">绑定手机</button>
+		</div>
+	</div>-->
+	
+	<script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/common.js" charset="UTF-8"></script>
+	<script src="../js/jsencrypt.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+	(function(win,$,h,d,ms){
+		$.init()
+		$.plusReady(function(){
+			h.personalWin=plus.webview.getWebviewById('personal');
+			h.token=ms.getItem('token')
+			h.self=plus.webview.currentWebview()
+			h.step=1;//默认为解绑
+			h.user=h.self.user;
+			var mobile=h.isPhone(h.user.mobile);
+			if(!mobile ||(mobile&&h.user.mobile_validated==3)){
+				h.step=2;
+			}
+			
+			h.d={
+				mobile:d.getElementById('mobile'),
+				code:d.getElementById('code'),
+				getCode:d.getElementById('get-code'),
+				codeTime:d.getElementById('code-time'),
+				_submit:d.getElementById('submit'),
+				note:d.getElementById('note'),
+				loader:d.getElementById('loader')
+			}
+			if(h.step==1){
+				h.d.mobile.value=h.user.mobile
+				h.d.mobile.setAttribute('disabled','disabled')
+			}
+			h.codeTime=0;
+			h.autoTimeout=function(start){
+				if(start){
+					h.codeTime=120; 
+					h.d.getCode.setAttribute('style','background:#ccc;border:1px solid #ccc');
+				}
+				if(h.codeTime>0){ 
+					h.codeTime--;
+					h.d.codeTime.innerText=h.codeTime;
+					setTimeout(h.autoTimeout,1000)
+				}else{
+					h.d.codeTime.innerText='';
+					h.d.getCode.setAttribute('style','')
+				}
+			}
+			
+			
+			//获取验证码
+			$('.mui-content').on('tap','#get-code',function(){
+				if(h.codeTime==0){
+					var mobile=h.isPhone(h.d.mobile.value);
+					if(!mobile){
+						$.toast('手机号码错误')
+						return
+					}
+					if(h.step==2&&mobile==h.user.mobile){
+						$.toast('您已绑定该手机，无需重新绑定')
+						return
+					}
+					$.ajax(h.apiurl,{
+						data:{
+							m:'get_bind_code',
+							mobile:h.d.mobile.value
+						},
+						type:'post',
+						dataType:'text',
+						timeout:h.ajaxTimeout,
+						success:function(ret){ 
+							ret=JSON.parse(ret)
+							if(ret.code==0){
+								h.autoTimeout(1)
+								$.toast('短信发送成功')
+							}else{
+								$.toast(ret.msg)
+								if(ret.code==3){
+									h.autoTimeout(1)
+								}
+							}
+						},
+						error:function(ret){
+							alert(ret.responseText)
+							$.toast('短信发送失败')
+						}
+					})
+				}
+			})
+			/**
+			 * 监听验证码
+			 */
+			$('.mui-content').on('input','#code',function(){
+				var v=this.value;
+				if(v.length>4){
+					v=v.substr(0,4);
+				}
+				this.value=v;
+			})
+			
+			$('.mui-content').on('tap','#submit',function(){
+				if(h.is_submit){
+					return
+				}
+				var data={
+					m:'edit_userinfo',
+					type:'change_mobile',
+					token:h.token,
+					mobile:h.d.mobile.value,
+				    code:h.d.code.value,
+				    bind:h.step-1
+				}
+				if(!h.isPhone(data.mobile)){
+					$.toast('手机号码有误')
+					return
+				}
+				if(h.step==2&&data.mobile==h.user.mobile){
+					$.toast('您已绑定该手机，无需重新绑定')
+					return
+				}
+				if(data.code.length!=4){
+					$.toast('验证码错误')
+					return
+				}
+//				console.log(JSON.stringify(data))
+				h.is_submit=true;
+				h.d._submit.setAttribute('style','background: #ccc;border-color:#ccc')
+				h.d.loader.setAttribute('style','')
+				$.ajax(h.apiurl,{
+					type:'post',
+					async:true,
+					dataType:'json',
+					data:data,
+					timeout:h.ajaxTimeout,
+					success:function(ret){
+						h.is_submit=false;
+						h.d._submit.removeAttribute('style')
+						h.d.loader.setAttribute('style','display: none;')
+//						console.log(ret)
+//						return
+//						ret=JSON.parse(ret);
+//						h.is_submit=false;
+						if(ret.code==0){
+							$.toast(ret.msg)
+							if(h.step==1){
+								h.step=2;
+								h.d.mobile.value='';
+								h.d.mobile.placeholder="请输入要绑定的手机号码";
+								h.d.mobile.removeAttribute('disabled');
+								h.d._submit.innerText="绑定手机";
+								h.d.code.value='';
+								h.d.code.blur();
+								h.d.note.innerText="绑定手机";
+							}else{
+								$.fire(h.personalWin,'updateMobile',{mobile:data.mobile})
+								$.later($.back,1500)
+							}
+						}else{
+							$.toast(ret.msg||'绑定失败')
+						}
+					},
+					error:function(ret){
+//						h.is_submit=false;
+//						alert(ret.responseText)
+					}
+				})
+			})
+			
+			$.back=function(){
+				plus.webview.currentWebview().close('slide-out-right')
+			}
+		})
+		
+	}(window,mui,honey,document,myStorage))
+	
+//		mui.init({
+//			swipeBack: true
+//		});
+//		
+//		honey.codeTime=0;
+//		honey.autoTimeout=function(start){
+//			if(start){
+//				honey.codeTime=120; 
+//				honey.d.getCode.setAttribute('style','background:#ccc;border:1px solid #ccc');
+//			}
+//			if(honey.codeTime>0){ 
+//				honey.codeTime--;
+//				honey.d.codeTime.innerText=honey.codeTime;
+//				setTimeout(honey.autoTimeout,1000)
+//			}else{
+//				honey.d.codeTime.innerText='';
+//				honey.d.getCode.setAttribute('style','')
+//			}
+//		}
+//		mui.plusReady(function(){
+//			honey.d={
+//				account: document.getElementById('account'),
+//				pwd : document.getElementById('pwd'),
+//				repwd : document.getElementById('repwd'),
+//				submitBtn : document.getElementById('submit'),
+//				code : document.getElementById('code'),
+//				getCode : document.getElementById('get-code'),
+//				codeTime:document.getElementById('code-time'),
+//				back:document.getElementById('back')
+//			}
+//			
+//		
+//			/**
+//			 * 监听手机号码输入
+//			 */
+//			honey.d.account.addEventListener('input',function(){
+//				var v=this.value;
+//				if(isNaN(v)){
+//					v=v.substr(0,v.length-1)
+//				}
+//				if(v.length>11){
+//					v=v.substr(0,11);
+//				}
+//				this.value=v;
+//				if(v.length==11){
+//					isPhone(v)?honey.d.account.setAttribute('style','')
+//					:honey.d.account.setAttribute('style','color:#DD5044')
+//				}
+//			})
+//			/**
+//			 * 监听密码输入
+//			 */
+//			honey.d.pwd.addEventListener('input',function(){
+//				var v=this.value;
+//				if(v.length>20){
+//					v=v.substr(0,20);
+//				}
+//				this.value=v;
+//			})
+//			/**
+//			 * 监听确认密码
+//			 */
+//			honey.d.repwd.addEventListener('input',function(){
+//				var v=this.value;
+//				if(v.length>20){
+//					v=v.substr(0,20);
+//				}
+//				this.value=v;
+//			})
+//			
+//			/**
+//			 * 监听验证码
+//			 */
+//			honey.d.code.addEventListener('input',function(){
+//				var v=this.value;
+//				if(v.length>4){
+//					v=v.substr(0,4);
+//				}
+//				this.value=v;
+//			})
+//			
+//			
+//			/**
+//			 * 获取验证码
+//			 */
+//			honey.d.getCode.addEventListener('tap',function(){
+//				if(honey.codeTime==0){
+//					if(!isPhone(honey.d.account.value)){
+//						mui.toast('请输入正确的手机号')
+//						return
+//					}
+//					mui.ajax(honey.apiurl,{
+//						data:{m:'get_repassword_code',mobile:honey.d.account.value},
+//						type:'post',
+//						dataType:'json',
+//						timeout:honey.ajaxTimeout,
+//						success:function(ret){ 
+//							alert(JSON.stringify(ret))
+//							if(ret.code==0){
+//								honey.autoTimeout(1)
+//								mui.toast('短信发送成功')
+//							}else{
+//								mui.toast(ret.msg)
+//								if(ret.code==3){
+//									honey.autoTimeout(1)
+//								}
+//							}
+//						},
+//						error:function(ret){
+//							alert(JSON.stringify(ret))
+//							mui.toast('短信发送失败')
+//						}
+//					})
+//				}
+//			})
+//			
+//			/**
+//			 * 重置密码按钮事件
+//			 */
+//			honey.d.submitBtn.addEventListener('tap',function(){
+//				if (!honey.isPhone(honey.d.account.value)){
+//					mui.toast('请输入正确的手机号');
+//					honey.d.account.setAttribute('style','color:#DD5044')
+//					return;
+//				}
+//				if (honey.d.pwd.value.length < 6){
+//					mui.toast('请输入6至20位密码');
+//					return;
+//				}
+//				if (honey.d.repwd.value.length <= 0 || honey.d.pwd.value != honey.d.repwd.value	){
+//					mui.toast('两次输入密码必须一致');
+//					return;
+//				}
+//				if(honey.d.code.value.length<4){
+//					mui.toast('验证码错误')
+//					return
+//				}
+//				mui.ajax(honey.apiurl,{
+//					data:{
+//						m:'reset_password',
+//						mobile:honey.d.account.value,
+//						password:honey.encryptString(honey.d.pwd.value),
+//						code:honey.d.code.value,
+//					},
+//					type:'post',
+//					dataType:'json',
+//					success:function(ret){
+//						if(ret.code==0){
+//							mui.toast('密码重置成功',{duration:1000})
+//							//触发登录事件
+//							//关闭注册和登录窗口
+//							honey.closeWin('forgot',1000)
+//						}else{
+//							mui.toast(ret.msg||'重置失败')
+//						}
+//					},
+//					error:function(ret){
+//						alert(JSON.stringify(ret))
+//						mui.toast('失败')
+//					}
+//				})
+//				return 
+//			},false);
+//			
+//		})
+		
+	</script>
+	
+</body>
+</html>

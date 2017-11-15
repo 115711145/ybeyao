@@ -540,7 +540,9 @@
 					"mine/goods-list.html",
 					"mine/comment-list.html",
 					"mine/return-list.html",
-					"mine/collect-list.html"
+					"mine/collect-list.html",
+					"mine/personal.html",
+					"mine/wallet.html"
 				],
 				"priority": 0
 			},
@@ -804,7 +806,8 @@
 					"mine/order-detail.html",
 					"mine/login.html",
 					"mine/order-return.html",
-					"mine/return-detail.html"
+					"mine/return-detail.html",
+					"mine/comment-list.html"
 				],
 				"priority": 0
 			},
@@ -856,7 +859,8 @@
 				"refer": [
 					"mine/order-detail.html",
 					"mine/comment-detail.html",
-					"mine/comment-detail-header.html"
+					"mine/comment-detail-header.html",
+					"mine/comment.html"
 				],
 				"priority": 0
 			},
@@ -923,6 +927,17 @@
 				],
 				"refer": [
 					"mine/order-detail.html"
+				],
+				"priority": 0
+			},
+			"mine/personal.html": {
+				"resources": [],
+				"refer": [
+					"mine/test.html",
+					"mine/center_info.html",
+					"mine/avatar.html",
+					"mine/bind-mobile.html",
+					"mine/reset-password.html"
 				],
 				"priority": 0
 			}

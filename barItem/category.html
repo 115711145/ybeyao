@@ -5,14 +5,365 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css"/>
+		<link type="text/css" rel="stylesheet" href="../css/own.css"/>
+		<style>
+			.mui-row.mui-fullscreen>[class*="mui-col-"] {
+				height: 100%;
+			}
+			.mui-col-xs-3,
+			.mui-col-xs-9 {
+				overflow-y: auto;
+				height: 100%;
+			}
+			.mui-segmented-control .mui-control-item {
+				line-height: 50px;
+				width: 100%;
+			}
+			
+			.mui-control-content {
+				display: block;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				background-color: #fff;
+			}
+			.last-cates{
+				list-style: none;
+				background: #fff;
+				padding: 5px;
+			}
+			.last-cates li{
+				display: inline-block;
+				width: 32%;
+				padding: 5px;
+				border-radius: 5px;
+			}
+			.last-cates li:active{
+				background: #eee !important;
+			}
+			.last-cates li p{
+				text-align: center;
+				color: #333;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				font-size: 12px;
+				margin: 0 ;
+			}
+			.last-cates li p img{
+				width: 35px;
+				height: 35px;
+				border-radius: 2px;
+			}
+			.mui-control-content .mui-table-view{
+				background: none;
+			}
+			.mui-control-content .mui-table-view-cell{
+				padding: 5px;
+				border: none;
+			}
+			.mui-control-content li:active{
+				background: none;
+			}
+			.second-cates{
+				color: #333;
+			}
+			.second-cates .title{
+				font-weight: bold;
+				color: #fff;
+				padding: 8px;
+				margin: 0;
+				background: #6bcc92;
+			}
+			.mui-control-item{
+				background: #fff;
+				color: #333 !important;
+				border-bottom:1px solid #ddd !important;
+			}
+			.mui-control-item.mui-active{
+				background: #6bcc92 !important;
+				color: #fff !important;
+			}
+			.mui-col-xs-3{
+				background: #fff;
+			}
+			#segmentedControlContents{
+				border-left:1px solid #ddd ;
+			}
+		</style>
 	</head>
-
 	<body>
-		<p> 这里是分类页</p>
-		<script src="../js/mui.min.js"></script>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">分类</h1>
+		</header>
+		<div class="mui-content mui-row mui-fullscreen">
+			<div class="mui-col-xs-3">
+				<div id="segmentedControls" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical">
+					<!--<a class="mui-control-item" data-index="0" href="#content1">选项1</a>-->
+				</div>
+			</div>
+			<div id="segmentedControlContents" class="mui-col-xs-9">
+				<!--<div id="content1" class="mui-control-content">
+					<ul class="mui-table-view">
+						<li class="second-cates">
+							<p class="title">营养健康</p>
+							<ul class="last-cates">
+								<li>
+									<p><img src="../images/logo.png" width="40" height="40"/></p>
+									<p>调节免疫调节免疫调节免疫</p>
+								</li>
+							</ul>
+						</li>
+						<li class="second-cates">
+							<p class="title">营养健康</p>
+							<ul class="last-cates">
+								<li>
+									<p><img src="../images/logo.png" width="40" height="40"/></p>
+									<p>调节免疫调节免疫调节免疫</p>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>-->
+			</div>
+		</div>
+		<script type="text/javascript" src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<script type="text/javascript">
-			mui.init()
+			(function(win,$,h,d,ms){
+				$.init({
+					swipeBack: true //启用右滑关闭功能
+				})
+				$.getCateList=function(){
+					$.ajax(h.apiurl,{
+						type:'post',
+						async:true,
+						timeout:h.ajaxTimeout,
+						dataType:'json',
+						data:{
+							m:'category_list',
+							time:h.time
+						},
+						success:function(ret){
+							if(ret.code==0){
+								ms.setItem('tree_time',ret.time)
+								var tree=h.getCateTree(ret.data)
+								ms.setItem('tree',tree)
+								h.showTree(tree)
+							}else{
+								//读取缓存
+								var tree=ms.getItem('tree')
+								if(tree){
+									h.showTree(tree)
+								}else{
+									$.toast('数据加载失败')
+								}
+							}
+						},
+						error:function(ret){
+//							alert(ret)
+						}
+					})
+				}
+				h.getCateTree=function(data){
+					var cate1=[],cate2=[],cate3=[];
+					for(var key in data){
+						var v=data[key]
+						switch(v.lvl){
+							case 1:
+								cate1.push(v)
+								break;
+							case 2:
+								if(!cate2[v.pid]){
+									cate2[v.pid]=[]
+								}
+								cate2[v.pid].push(v)
+								break;
+							case 3:
+								if(!cate3[v.pid]){
+									cate3[v.pid]=[]
+								}
+								cate3[v.pid].push(v)
+								break;
+						}
+					}
+					$.each(cate2, function(i,v) {
+						$.each(v, function(j,w) {
+							cate2[i][j]['sub_cate']=cate3[w.id]||false;
+						});
+					});
+					$.each(cate1, function(i,v) {
+						cate1[i]['sub_cate']=cate2[v.id]
+					});
+					return cate1
+				}
+				
+				h.showTree=function(tree){
+					var left_=[],right_=[];
+					for(var i=0;i<tree.length;i++){
+						left_.push('<a class="mui-control-item" data-index="'+i+'" href="#content'+i+'">'+tree[i]['name']+'</a>')
+						right_.push('<div id="content'+i+'" class="mui-control-content"><ul class="mui-table-view">')
+						if(tree[i]['sub_cate']&&tree[i]['sub_cate'].length>0){
+							for(var j=0;j<tree[i]['sub_cate'].length;j++){
+								var val=tree[i]['sub_cate'][j];
+								right_.push('<li class="second-cates"><p class="title view-item" cid="'+val['id']+'">'+val['name']+'</p>')
+								if(val['sub_cate']&&val['sub_cate'].length>0){
+									right_.push('<ul class="last-cates">')
+									for(key in val['sub_cate']){
+										var value=val['sub_cate'][key]
+										var img=value['img']?h.apihost+value['img']:'../images/logo.png';
+										right_.push('<li class="view-item" cid="'+value['id']+'"><p><img class="lazy" data-lazyload="'+img+'" /></p><p>'+value['name']+'</p></li>')
+									}
+									right_.push('</ul>')
+								}
+								right_.push('</li>')
+							}
+						}
+						right_.push('</ul></div>');
+//						if(i==2){
+//							console.log(right_.join(''))
+//							alert(right_.join(''))
+//						}
+					}
+					h.d.left.innerHTML=left_.join('')
+					h.d.right.innerHTML=right_.join('')
+					//默认选中第一个
+					h.d.left.querySelector('.mui-control-item').classList.add('mui-active');
+					//监听事件
+					h.cateTreeEvents()
+					//加载图片
+					$(h.d.right).imageLazyload({
+						placeholder:"../images/logo.png"
+					})
+					//缓存图片
+//					lazyImg.lazyLoad(h.d.right)
+				}
+				
+				$.plusReady(function(){
+					h.d={
+						left:d.getElementById('segmentedControls'),
+						right:d.getElementById('segmentedControlContents')
+					}
+					h.time=ms.getItem('tree_time');
+					$.getCateList()
+				})
+				
+				
+//				h.cateTreeEvents=function(){
+//					var leftList=h.d.left.querySelectorAll('.mui-control-item');
+//					var rightList=h.d.right.querySelectorAll('.mui-control-content')
+//					var leftWrapperElem=h.d.left.parentNode;
+//					var leftWrapperHeight=leftWrapperElem.leftWrapperHeight;
+//					var leftMaxScroll=leftWrapperElem.scrollHeight-leftHeight;//左侧类别最大可滚动高度
+//					var rightMaxScroll=h.d.right.scrollHeight-h.d.right.offsetHeight;//右侧内容最大可滚动高度
+//					var leftHeight=leftList[0].offsetHeight //左侧类别每一项的高度
+//					var leftTops=[];//存储control的scrollTop值
+//					var rightTops=[];//存储content的scrollTop值
+//					for(var i=0;i<leftList.length;i++){
+//						leftTops.push(leftList[i].offsetHeight+leftHeight*i)
+////						console.log(leftList[i].offsetHeight+leftHeight*i)
+//					}
+//					
+//				}
+//				
+				h.cateTreeEvents=function() {
+					var controlsElem = document.getElementById("segmentedControls");
+					var contentsElem = document.getElementById("segmentedControlContents");
+					var controlListElem = controlsElem.querySelectorAll('.mui-control-item');
+					var contentListElem = contentsElem.querySelectorAll('.mui-control-content');
+					var controlWrapperElem = controlsElem.parentNode;
+					var controlWrapperHeight = controlWrapperElem.offsetHeight;
+					var controlMaxScroll = controlWrapperElem.scrollHeight - controlWrapperHeight;//左侧类别最大可滚动高度
+					var maxScroll = contentsElem.scrollHeight - contentsElem.offsetHeight;//右侧内容最大可滚动高度
+					var controlHeight = controlListElem[0].offsetHeight;//左侧类别每一项的高度
+					var controlTops = []; //存储control的scrollTop值
+					var contentTops = [0]; //存储content的scrollTop值
+					var length = contentListElem.length;
+					for (var i = 0; i < length; i++) {
+						controlTops.push(controlListElem[i].offsetTop + controlHeight);
+					}
+					for (var i = 1; i < length; i++) {
+						var offsetTop = contentListElem[i].offsetTop;
+						if (offsetTop + 100 >= maxScroll) {
+							var height = Math.max(offsetTop + 100 - maxScroll, 100);
+							var totalHeight = 0;
+							var heights = [];
+							for (var j = i; j < length; j++) {
+								var offsetHeight = contentListElem[j].offsetHeight;
+								totalHeight += offsetHeight;
+								heights.push(totalHeight);
+							}
+							for (var m = 0, len = heights.length; m < len; m++) {
+								contentTops.push(parseInt(maxScroll - (height - heights[m] / totalHeight * height)));
+							}
+							break;
+						} else {
+							contentTops.push(parseInt(offsetTop));
+						}
+					}
+					contentsElem.addEventListener('scroll', function() {
+						var scrollTop = contentsElem.scrollTop;
+						for (var i = 0; i < length; i++) {
+							var offsetTop = contentTops[i];
+							var offset = Math.abs(offsetTop - scrollTop);
+	//						console.log("i:"+i+",scrollTop:"+scrollTop+",offsetTop:"+offsetTop+",offset:"+offset);
+							if (scrollTop < offsetTop) {
+								if (scrollTop >= maxScroll) {
+									onScroll(length - 1);
+								} else {
+									onScroll(i - 1);
+								}
+								break;
+							} else if (offset < 20) {
+								onScroll(i);
+								break;
+							}else if(scrollTop >= maxScroll){
+								onScroll(length - 1);
+								break;
+							}
+						}
+					});
+					var lastIndex = 0;
+					//监听content滚动
+					var onScroll = function(index) {
+						if (lastIndex !== index) {
+							lastIndex = index;
+							var lastActiveElem = controlsElem.querySelector('.mui-active');
+							lastActiveElem && (lastActiveElem.classList.remove('mui-active'));
+							var currentElem = controlsElem.querySelector('.mui-control-item:nth-child(' + (index + 1) + ')');
+							currentElem.classList.add('mui-active');
+							//简单处理左侧分类滚动，要么滚动到底，要么滚动到顶
+							var controlScrollTop = controlWrapperElem.scrollTop;
+							if (controlScrollTop + controlWrapperHeight < controlTops[index]) {
+								controlWrapperElem.scrollTop = controlMaxScroll;
+							} else if (controlScrollTop > controlTops[index] - controlHeight) {
+								controlWrapperElem.scrollTop = 0;
+							}
+						}
+					};
+					//滚动到指定content
+					var scrollTo = function(index) {
+						contentsElem.scrollTop = contentTops[index];
+					};
+					$(controlsElem).on('tap', '.mui-control-item', function(e) {
+						scrollTo(this.getAttribute('data-index'));
+						return false;
+					});
+					
+					$(contentsElem).on('tap','.view-item',function(){
+						var cid=this.getAttribute('cid')
+						var name=this.innerText
+						h.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
+						$.fire(h.goodsListHeader,'cateId',{name:name,cid:cid})
+						h.goodsListHeader.show('slide-in-right',300)
+					})
+				}
+			
+			}(window,mui,honey,document,myStorage))
 		</script>
 	</body>
 

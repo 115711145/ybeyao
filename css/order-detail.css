@@ -101,6 +101,7 @@
 }
 .amout-list p span:last-child{
 	text-align: right;
+	-webkit-user-select: text;
 	/*color: #333;*/
 }
 .bold-title{

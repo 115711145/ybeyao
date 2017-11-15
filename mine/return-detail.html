@@ -13,6 +13,13 @@
 			body{
 				background: #fff;
 			}
+			#no-content{
+				background: #fff;
+			}
+			#describe{
+				border-bottom: 1px dashed #ddd;
+				margin-bottom: 20px;
+			}
 		</style>
 	</head>
 	<body>
@@ -30,7 +37,7 @@
 		<div class="mui-content" id="no-order" style="display: none;">
 			<div id="no-content">
 				<p><img src="../images/kuqi.png" /></p>
-				<p>很抱歉,订单不存在或已取消退款</p>
+				<p>您已取消退款</p>
 			</div>
 		</div>
 		<div class="mui-content" id="order" style="display: none;">
@@ -96,6 +103,18 @@
 				</li>
 			</ul>
 		</div>
+		<div id="cancel" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="cansel-btn">
+					<a href="#cancel">取消退款</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#cancel" style="color: #999;">返回</a>
+				</li>
+			</ul>
+		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/city.js" charset="UTF-8"></script>
@@ -156,7 +175,7 @@
 							d.getElementById('reason').innerText=ret.data.reason
 							d.getElementById('describe').innerText=ret.data.describe
 							if(ret.data.status<4){
-								d.getElementById('btns').innerHTML='<span class="mui-btn mui-btn-grey">取消申请</span>';
+								d.getElementById('btns').innerHTML='<span class="mui-btn mui-btn-grey">取消退款</span>';
 							}
 						}else{
 							h.noContent()
@@ -176,25 +195,56 @@
 					$.back()
 				},1500)
 			}
-			/**
-			 * 订单操作
-			 * @param {string} type
-			 */
-			h.orderService=function(type){
-				
-			}
+			
 			$.plusReady(function(){
 				h._self=plus.webview.currentWebview();
+				h.orderListWin=plus.webview.getWebviewById('order-list');
 				h.order_id=h._self.order_id
 				h.service=h._self.btn
 				h.token=ms.getItem('token')
 				h.getOrderDetail()
 				
 				/**
-				 * 按钮事件
+				 * 取消按钮事件
 				 */
 				$('#btns').on('tap','.mui-btn-grey',function(){
-					alert('取消退款')
+					$('#cancel').popover('toggle')
+				})
+				
+				d.getElementById('cansel-btn').addEventListener('tap',function(){
+					if(h.is_cansel){
+						return
+					}
+					h.is_cansel=true;
+					plus.nativeUI.showWaiting('正在取消退款...');
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						timeout:h.ajaxTimeout,
+						dataType:'json',
+						data:{
+							m:'order_service',
+							type:'cansel-return',
+							id:h.order_id,
+							token:h.token
+						},
+						success:function(ret){
+							h.is_cansel=false;
+							plus.nativeUI.closeWaiting()
+							if(ret.code==0){
+								$.toast('取消退款已成功！')
+								$.fire(h.orderListWin,'returnCallback')
+								setTimeout(function(){
+									$.back()
+								})
+							}else{
+								$.toast(ret.msg||'取消退款失败')
+							}
+						},
+						error:function(ret){
+							$.toast('取消退款失败')
+						}
+					});
 				})
 				
 				h.swipeClose(win)

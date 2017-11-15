@@ -620,6 +620,11 @@
 			
 			$.plusReady(function(){
 				h._self=plus.webview.currentWebview();
+				h.parent_win=false
+				if(h._self.parent_id){
+					h.parent_win=plus.webview.getWebviewById(h._self.parent_id)
+				}
+				h.orderListWin=plus.webview.getWebviewById('order-list');
 				h.order_id=h._self.order_id
 				h.service=h._self.btn
 				h.token=ms.getItem('token')
@@ -796,7 +801,7 @@
 	    						if(checked){
 	    							if(h.return_goods[i].num!=num){
 	    								h.return_goods[i].num=num
-	    								d.getElementById('rg_'+rec_id).querySelector('font').innerText="*"+num
+	    								d.getElementById('rg_'+rec_id).querySelector('font').innerText="×"+num
 	    							}
 	    						}else{
 	    							h.return_goods.splice(i,1)
@@ -821,7 +826,7 @@
 	        				h.d.re_goods.innerHTML='';
 	        			}
 	        			h.return_goods.push(data)
-	        			h.d.re_goods.innerHTML+='<p class="mui-inline" id="rg_'+rec_id+'"><img src="'+img+'" width="20"><font>*'+num+'</font></p>';
+	        			h.d.re_goods.innerHTML+='<p class="mui-inline" id="rg_'+rec_id+'"><img src="'+img+'" width="20"><font>×'+num+'</font></p>';
 	        		}
 	        		h.changeReturnAmount()
 				}
@@ -861,13 +866,12 @@
 					},function(upload,status){
 						plus.nativeUI.closeWaiting()
 						h.d.progressbar.progressbar().hide();
-						alert(upload.responseText)
-							return;
 						if(status==200){
 							ret=JSON.parse(upload.responseText)
 							if(ret.code==0){
 								$.toast('申请成功，请等待审核')
 								$.fire(h.mineWin,'reloadUser')
+								$.fire(h.orderListWin,'returnCallback')
 								setTimeout(function(){
 									$.back()
 								},1000)

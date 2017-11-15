@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/avatar.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/own.css"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">设置头像</h1>
+	</header>
+	<div class="mui-content"> 
+		<div class="cropperBox" id="cropperBox">
+			<!--<div class="cropperCon">
+				<div id="cropperMask" class="cropperMask"></div>
+				<img id="cropperImg" class="cropperImg" src="../img/cbd.jpg" />
+				<div id="cropperArea" class="cropperArea"></div>
+			</div>
+			<div class="cropperBottom">保 存</div>-->
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js" ></script>
+<script type="text/javascript" src="../js/common.js" ></script>
+<script type="text/javascript" src="../js/cropper.js"></script>
+<script type="text/javascript">
+	(function(win,$,h,ms){
+//		$.init()
+		$.plusReady(function(){
+			h.self=plus.webview.currentWebview()
+			h.personalWin=plus.webview.getWebviewById('personal')
+			h.imgFile=h.self.imgFile;
+			h.imgPath=h.self.imgPath;
+			h.token=ms.getItem('token')
+			
+			console.log('imgfile:'+h.imgFile+' imgPath:'+h.imgPath)
+			
+			$.back=function(){
+				h.self.close('zoom-out')
+			}
+			
+			Cropper = new Plugin.Cropper({ 
+				imgSrc : h.self.imgPath, 
+				saveCallBack : saveCallBack,
+				squareLen : 300
+			});
+			//返回上一个页面并显示最新头像img标签
+			function saveCallBack(file,path){
+				var wt=plus.nativeUI.showWaiting('正在上传头像...')
+				var uploader=plus.uploader.createUpload(h.apiurl,{
+						method:'POST'
+					},function(upload,status){
+						if(status==200){
+							ret=JSON.parse(upload.responseText)
+							if(ret.code==0){
+								//返回上一个页面并显示最新头像img标签
+								$.fire(h.personalWin,'updateImg',{ path : path + "?" + Math.random(),src:ret.data.head_pic});
+							}
+						}
+						plus.nativeUI.closeWaiting()
+						$.back()
+					})
+				h.data={m:'edit_userinfo',token:h.token,type:'head_pic'}
+				//添加数据
+				$.each(h.data, function(i,v) {
+					uploader.addData(i,''+v)
+				});
+				//添加头像图片
+				uploader.addFile(path,{key:'headpic'})
+				uploader.start()
+			}
+		})
+	}(window,mui,honey,myStorage))
+</script>
+</body>
+</html>

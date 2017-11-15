@@ -106,7 +106,7 @@
 					 	默认地址
 					 	<img src="../images/checked.png" width="25" />
 					 </span>
-					 <span class="right-btn"><font>编辑</font><font>删除</font></span>
+					 <span class="right-btn"><font class="mui-btn mui-btn-nav">编辑</font><font class="mui-btn mui-btn-danger">删除</font></span>
 				</p>
 			</li>
 			<li>
@@ -162,7 +162,7 @@
 								<p class="detail">'+address+'</p>\
 								<p class="pro-btn">\
 									 <span '+(v.is_default==1?'class="default-btn">默认地址':'class="default-btn set-default">设为默认')+'<img src="'+src+'" width="25" /></span>\
-									 <span class="right-btn"><font class="edit">编辑</font><font class="del">删除</font></span>\
+									 <span class="right-btn"><font class="mui-btn mui-btn-nav edit">编辑</font><font class="mui-btn mui-btn-danger del">删除</font></span>\
 								</p></li>');
 						});
 						h.d.address_list.innerHTML=html.join('')

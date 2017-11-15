@@ -37,13 +37,20 @@
 			line-height: 25px;
 			font-size: 14px;
 		}
-		.top .user-face img{
-			border: 1px solid #eee;
-			border-radius: 60px;
+		.top .user-head{
 			width: 60px;
 			height: 60px;
-			float: left;
 			margin: 0 5px 0 10px;
+			border-radius: 60px;
+			overflow: hidden;
+			background: url(../images/default.png) no-repeat;
+			background-size: 100% 100%;
+			background-position: center center;
+		}
+		.top .user-face img{
+			width: 5px;
+			height: 5px;
+			float: left;
 		}
 		.fl{
 			float: left;
@@ -54,12 +61,11 @@
 		.top-btns{
 			background: #fff;
 			height: 60px;
-			padding: 0;
 			margin: 10px 0 0 0;
 			border: 1px solid #fff;
 			border-left: 0;
 			border-right: 0;
-			padding: 10px 0;
+			padding: 10px 2px;
 		}
 		.top-btns li{
 			float: left;
@@ -147,6 +153,7 @@
 		.myorder .title:active,li:active{
 			background: #ddd;
 			color: #fff;
+			border: 1px solid #eee;
 		}
 		.more{
 			color:#999;
@@ -162,20 +169,20 @@
 	<body>
 		<div class="top">
 			<div class="user-face own-main-background-color">
-				<div><img src="../images/default.png" id="head_pic"/></div>
+				<div class="user-head" id="head_pic"></div>
 				<div class="user-nc">
 					<p id="nickname">150****5678</p>
 					<p id="level_name"></p>
 				</div>
 			</div>
 			<ul class="top-btns">
-				<li><p class="orange" id="user_money">4567</p><p>余额</p></li>
-				<li><p class="orange" id="pay_points">1231</p><p>积分</p></li>
+				<li class="wallet"><p class="orange" id="user_money">4567</p><p>余额</p></li>
+				<li class="wallet"><p class="orange" id="pay_points">1231</p><p>积分</p></li>
 				<li><p class="orange" id="coupon_num">0</p><p>优惠券</p></li>
 			</ul>
 		</div>
 		<div class="center myorder">
-				<p class="title"><span class="fl">我的订单</span><span class="mui-icon mui-icon-arrowright fr"></span><span class="fr more">查看全部订单</span></p>
+				<p class="title"><span class="fl">我的订单</span><span class="mui-icon mui-icon-arrowright fr"></span><span class="fr more">查看更多订单</span></p>
 				<ul>
 					<li type="WAITPAY">
 						<p>
@@ -227,7 +234,7 @@
 		<div class="center">
 			<ul class="menu">
 				<!--<li><img src="../images/mine-safe.png"/>账号安全</li>-->
-				<li><img src="../images/mine-info.png"/>个人资料</li>
+				<li id="personal"><img src="../images/mine-info.png"/>个人资料</li>
 				<li id="address"><img src="../images/mine-adress.png"/>我的地址</li>
 			</ul>
 		</div>
@@ -274,7 +281,7 @@
 				address:{id:'address',url:"../mine/address.html"},
 				comment:{id:'comment-list',url:"../mine/comment-list.html"},
 				collect:{id:'collect-list',url:"../mine/collect-list.html"},
-				
+				personal:{id:'personal',url:'../mine/personal.html'},
 			}
 			
 			h.showUserInfo=function(user){
@@ -282,14 +289,19 @@
 					h.d.nickname.innerText="未登录";
 					h.d.user_money.innerText=0;
 					h.d.pay_points.innerText=0;
+					h.d.coupon_num.innerText=0;
 					h.d.level_name.innerText="游客";
-					h.d.head_pic.setAttribute('src','../images/profile.png')
+//					h.d.head_pic.setAttribute('src','../images/profile.png')
+					h.d.head_pic.style.background="url(../images/profile.png) no-repeat"
 				}else{
 					h.d.nickname.innerText=user.nickname;
 					h.d.user_money.innerText=user.user_money;
 					h.d.pay_points.innerText=user.pay_points;
+					h.d.coupon_num.innerText=user.coupon_count;
 					h.d.level_name.innerText=user.level.level_name+((user.level.discount<100)?'(尊享'+user.level.discount+'折)':"");
-					h.d.head_pic.setAttribute('src',user.head_pic||'../images/profile.png')
+					var head_pic=h.trim(user.head_pic)?(user.head_pic.indexOf('http://')>=0?user.head_pic:h.apihost+user.head_pic):'../images/profile.png';
+					h.d.head_pic.style.background="url("+head_pic+") no-repeat"
+//					h.d.head_pic.setAttribute('src',head_pic)
 				}
 			}
 			h.logout=function(tologin){
@@ -325,12 +337,13 @@
 			    	}
 			    	$.fire(honey.indexWin,'login')
 			    }
-				h.getUserInfo=function(){
+				h.getUserInfo=function(is_preload){
 					if(h.token){
 						$.ajax(h.apiurl,{
 							data:{m:'get_userinfo',token:h.token},
 							type:'post',
 							dataType:'json',
+							timeout:h.ajaxTimeout,
 							success:function(ret){
 								if(ret.code==0){
 									ms.setItem('load_user_time',new Date().getTime()/1000)
@@ -339,6 +352,7 @@
 											ret.data.user.level=v
 										}
 									});
+									h.user=ret.data.user;
 									ms.setItem('user',ret.data.user)
 									h.d.nickname.innerText=ret.data.user.nickname
 									h.showUserInfo(ret.data.user,ret.data.level)
@@ -372,19 +386,26 @@
 									h.doLogin()
 								}else{
 									if(ret.code==-1){
-										$.toast(ret.msg)
-										h.logout(1)
+										if(!is_preload){
+											$.toast(ret.msg)
+											h.logout(false)
+										}else{
+											h.logout(true)
+										}
 									}
 								}
 							},
 							error:function(ret){
-								alert(JSON.stringify(ret))
-								$.toast('获取用户信息异常')
+								var data=ms.getItem('user')
+								if(data){
+									h.showUserInfo(data)
+									h.user=data;
+								}
 							}
 						})
 					}
 				}
-				h.getUserInfo()
+				h.getUserInfo(true)
 				win.addEventListener('login',function(o){
 					h.token=ms.getItem('token')
 					h.getUserInfo()
@@ -404,8 +425,21 @@
 					load&&h.getUserInfo()
 				})
 				
+				h.d.head_pic.addEventListener('tap',function(){
+					if(h.token){
+						h.openWin('../mine/personal.html','personal')
+					}
+				})
+				
 				win.addEventListener('logout',function(){
 					h.logout()
+				})
+				
+				win.addEventListener('show_head',function(o){
+					h.d.head_pic.style.background="url("+o.detail.path+") no-repeat"
+				})
+				win.addEventListener('show_name',function(o){
+					h.d.nickname.innerText=o.detail.nickname
 				})
 				
 				$('.menu').on('tap','li',function(){
@@ -436,6 +470,10 @@
 						h.openWin('../mine/order-list.html','order-list',{type:type})
 //						h.openWin('../mine/goods-list.html','order-list',{type:type})
 					}
+				})
+				
+				$('.top-btns').on('tap','.wallet',function(){
+					h.openWin('../mine/wallet.html','wallet',{user:h.user})
 				})
 				
 			})

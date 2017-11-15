@@ -268,7 +268,7 @@
 									if(h.page == 1 && ret.data&& ret.data.length == 0) {
 										h.d.list.innerHTML = "<li class='mui-table-view-cell' id='no-item' style='text'>您还没有收藏商品</li>";
 									} else {
-										h.showGoodsList(ret.data, 'list')
+										h.showGoodsList1(ret.data, 'list')
 									}
 									h.total = ret.total;
 									h.d.content.pullRefresh().endPulldownToRefresh();
