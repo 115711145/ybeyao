@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>我的订单</title>
+		<title>金额明细</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
@@ -48,68 +48,6 @@
 			.mui-segmented-control-honey.mui-segmented-control-inverted~.mui-slider-progress-bar {
 				background-color: #41CEA9;
 			}
-			.sc_list {
-				padding: 0;
-				margin: 3px 0 5px 0px;
-				overflow: hidden;
-				background: none;
-			}
-			
-			.sc_list li.comment-list {
-				list-style: none;
-				float: left;
-				width: 100%;
-				padding: 5px 10px;
-				background: #fff;
-				margin: 3px 0;
-			}
-			
-			.fl {
-				float: left;
-			}
-			
-			.goods-img {
-				max-height: 50px;
-				width: 100%;
-				text-align: center;
-				float: left;
-				width: 20%;
-			}
-			
-			.goods-img img {
-				height: 48px;
-				width: 48px;
-			}
-			
-			.sc_list .goods-info {
-				float: right;
-				width: 80%;
-				display: inline-block;
-				padding-left: 5px;
-				margin: 0 !important;
-			}
-			
-			.sc_list p.title {
-				overflow: hidden;
-				width: 100%;
-				/*white-space: nowrap;*/
-				color: #333;
-				font-size: 12px;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				word-break: break-word;
-			}
-			
-			.sc_list .goods-info p {
-				padding: 2px;
-				margin: 0;
-				line-height: 18px;
-				font-size: 12px;
-			}
-			.fr {
-				float: right;
-			}
-			
 			.mui-content {
 				margin-top: 45px;
 			}
@@ -122,43 +60,65 @@
 				padding: 10px;
 			}
 			
-			.btns span {
-				margin: 0 2px;
+			.record-item{
+				background: #fff;
+				margin: 3px 0px;
+				padding: 0 10px !important;
 			}
-			.btns img{
-				width: 18px;
-			}
-			.btns .mui-btn {
-				font-size: 12px;
-				padding: 3px 5px;
-				line-height: 14px;
-				margin: 0;
-			}
-			.buy-time{
-				font-size: 12px;
+			.fl{
 				float: left;
-				padding-top:5px !important;
 			}
-			.mui-btn-nav{
+			.fr{
+				float: right;
+			}
+			.record-list{
+				padding-bottom: 20px;
+			}
+			.record-item span{
+				width: 40%;
+			}
+			.record-item span:first-child{
+				width: 60%;
+			}
+			.record-item p{
+				padding:3px 5px;
+				margin: 0;
+				color: #333;
+				font-size: 12px;
+			}
+			.record-item p:first-child{
+				float: left;
+				width: 100%;
+			}
+			.record-item p:last-child{
+				clear: both;
+			}
+			.pay,.no-pay{
+				float: left;
+				width: 100%;
+			}
+			.no-pay{
+				/*background: #eee;*/
+				opacity:0.8
+			}
+			.no-pay p{
 				color: #999;
-				border-color: #ccc;
 			}
-			.comment-btn{
-				color: #FF5053;
-				border-color: #FF5053;
+			.line{
+				clear: both;
+				height: 20px;
 			}
-
 		</style>
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-			<h1 class="mui-title" id="header-title">我的评价</h1>
+			<h1 class="mui-title" id="header-title">明细记录</h1>
 			<div class="top-btn">
 				<div class="mui-segmented-control mui-segmented-control-honey">
-					<a class="mui-control-item mui-active" type="ALL">全部</a>
-					<a class="mui-control-item" type="WAITCCOMMENT">待评价</a>
-					<a class="mui-control-item" type="COMMENTED">已评价</a>
+					<a class="mui-control-item mui-active" type="recharge">充值记录</a>
+					<a class="mui-control-item" type="amount">余额明细</a>
+					<a class="mui-control-item" type="points">积分明细</a>
 				</div>
 			</div>
 		</header>
@@ -170,6 +130,29 @@
 				<br />
 				<span>加载中...</span>
 			</div>
+			<ul class="record-list" id="list" >
+				<!--<li class="record-item pay">
+					<p>
+						<span class="fl">2017-09-09</span>
+						<span class="fr">充值金额 <font color="green">2000</font></span>
+					</p>
+					<p>
+						<span class="fl">支付宝支付</span>
+						<span class="fr" style="color: green;">已支付</span>
+					</p>
+				</li>
+				<li class="record-item no-pay">
+					<p>
+						<span class="fl">2017-09-09</span>
+						<span class="fr">充值金额 <font>2000</font></span>
+					</p>
+					<p>
+						<span class="fl">支付宝支付</span>
+						<span class="fr" style="color: red;">未支付</span>
+					</p>
+				</li>-->
+			</ul>
+			<div class="line"></div>
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
@@ -191,30 +174,20 @@
 	                    contentdown: h.contentdown,
 	                    contentrefresh: h.contentrefresh,
 						contentnomore:h.contentnomore,
-						callback: getCommentList 
+						callback: getRecordList 
 					}
 				}
 			});
 			h.d = {
-				btn_items:$('.mui-control-item'),
 				content:$('#content'),
+				btn_items:$('.mui-control-item'),
 				list: d.getElementById('list'),
 				loader:d.getElementById('loader')
 			}
-			//加载评价列表 
-			function getCommentList(){
+			//加载列表 
+			function getRecordList(){
 				if(h.is_loading){
 					return;
-				}
-				switch(h.type){
-					case 'WAITCCOMMENT':
-						type=0;
-						break;
-					case 'COMMENTED':
-						type=1;
-						break;
-					default:
-						type=2;
 				}
 				if(h.page==1){
 					h.d.list.innerHTML='';
@@ -226,9 +199,10 @@
 					async:true,
 					dataType:'json',
 					data:{
-						m:'comment_list',
+						m:'get_record',
 						token:h.token,
-						type:type
+						type:h.type,
+						page:h.page
 					},
 					success:function(ret){
 						h.is_loading=false;
@@ -239,36 +213,61 @@
 							return
 						}
 						h.d.loader.style.display="none";
-						h.showOrderList(ret.data)
+						if(h.page==1){
+							h.d.list.style.display="block";
+						}
+						h.total=ret.total;
+						h.showRecordList(ret.data)
 //						if(ret.code==0){
 							h.page++
 //						}
 						(!ret.data ||ret.data.length<10)?h.d.content.pullRefresh().disablePullupToRefresh():h.d.content.pullRefresh().endPullupToRefresh(false)
 					},
 					error:function(ret){
+						alert(ret.responseText)
 //						$.toast('error')
 					}
 				});
 			}
 			
+			
+			h.showRechargeList=function(data){
+				
+			}
 			/**
-			 * 显示订单商品列表 
+			 * 显示记录列表 
 			 * @param {Object} data
 			 */
-			h.showOrderList = function(data) {
+			h.showRecordList = function(data) {
 				if(data.length > 0) {
-					var html = [];
-					$.each(data, function(i,v) {
-						var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
-						html.push('<li class="comment-list" order_id="'+v.order_id+'" rec_id="'+v.rec_id+'"><div class="goods-img fl">\
-				                	<img src="'+img+'"></div><div class="goods-info fl"><p class="title">'+v.goods_name
-				                	+'</p><p class="buy-time">购买时间:'+h.getYmdTime(v.order_time,1)+'</p><p class="fr btns">\
-						        		<span class="mui-btn mui-btn-nav'+(v.is_comment==1?' order-btn"><span class="mui-icon mui-icon-search"></span>查看评价':' comment-btn"><span class="mui-icon mui-icon-compose"></span>评价订单')+'</span>\
-						        		</p></div></li>')
-					});
+					var html=[];
+					if(h.type=='recharge'){
+						$.each(data, function(i,v) {
+							var color="green",status="已支付",cls="pay";
+							if(parseInt(v.pay_status)!=1){
+								cls="no-pay";
+								color="red";
+								status=v.pay_status==0?"未支付":"交易关闭";
+							}
+							html.push('<li class="record-item '+cls+'"><p><span class="fl">'+h.getYmdTime(v.time)+'</span>\
+						<span class="fr">充值金额 <font color="'+(color=="green"||"")+'">'+v.account+'</font></span></p>\
+					<p><span class="fl">'+(v.pay_name||"")+'</span><span class="fr" style="color: '+color+';">'+status+'</span></p></li>');
+						});
+					}else{
+						var txt=(h.type=='amount'?'余额':'积分');
+						var index=(h.type=='amount'?'user_money':'pay_points');
+						$.each(data, function(i,v) {
+							html.push('<li class="record-item"><p><span class="fl">'+h.getYmdTime(v.time)+'</span>\
+							<span class="fr">'+txt+' <font color="'+(v[index]>0?"green":"red")+'">'+v[index]+'</font></span>\
+						</p><p>'+v.desc+'</p></li>');
+						});
+					}
+					if(h.page==1){
+						h.d.list.innerHTML='';
+					}
 					h.d.list.innerHTML+=html.join('')
 				}else{
-					h.page==1&&(h.d.list.innerHTML = '<li class="no-comment">暂无评价<li>');
+					h.page==1&&(h.d.list.innerHTML = '<li class="no-comment">暂无明细记录<li>');
 				}
 			}
 			
@@ -282,13 +281,12 @@
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
 				h._self=plus.webview.currentWebview();
-				h.type=h._self.type|| 'money';
-				h.mineWin=plus.webview.getWebviewById('mine')
+				h.type=h._self.type|| 'recharge';
 				h.showType()
-				getCommentList()
+				getRecordList()
 				
 				/**
-				 * 切换评价
+				 * 切换
 				 */
 				$('.top-btn').on('tap','.mui-control-item',function(){
 					var type=this.getAttribute('type')
@@ -298,7 +296,7 @@
 						h.d.content.pullRefresh().refresh(true)
 						h.d.content.pullRefresh().enablePullupToRefresh()
 						h.d.content.pullRefresh().endPullupToRefresh(false)
-						getCommentList()
+						getRecordList()
 					}
 				})
 				

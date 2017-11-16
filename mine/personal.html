@@ -97,13 +97,6 @@
 		<h1 class="mui-title" id="header-title">个人资料</h1>
 	</header>
 	<div class="mui-content">
-		<div class="loader" id="loader">
-			<a>
-				<span class="mui-spinner"></span>
-			</a>
-			<br />
-			<span>加载中...</span>
-		</div>
 		<div class="mui-input-group">
 			<div class="mui-input-row">
 				<label>头 像</label>
@@ -232,23 +225,37 @@
 					success:function(ret){
 						if(ret.code==0){
 							h.user=ret.data;
-							if(ret.data.head_pic){
-								var head_pic=h.trim(ret.data.head_pic)?(ret.data.head_pic.indexOf('http://')>=0?ret.data.head_pic:h.apihost+ret.data.head_pic)+'?v='+Math.random():'../images/profile.png';
-								h.d.head_pic.src=head_pic
-							}
-							h.d.name.innerText=ret.data.nickname;
-							h.d.sex.innerText=ret.data.sex>0?(ret.data.sex==1?"男":"女"):"未知";
-							h.d.mobile.innerText=ret.data.mobile||"未绑定";
-							h.d.email.innerText=ret.data.email||"未绑定";
-							h.d.birthday.innerText=ret.data.birthday||'未设置';
-							h.d.qq.innerText=ret.data.qq||'未设置'
-							h.eventListen()
+							h.showUserInfo()
+//							if(ret.data.head_pic){
+//								var head_pic=h.trim(ret.data.head_pic)?(ret.data.head_pic.indexOf('http://')>=0?ret.data.head_pic:h.apihost+ret.data.head_pic)+'?v='+Math.random():'../images/profile.png';
+//								h.d.head_pic.src=head_pic
+//							}
+//							h.d.name.innerText=ret.data.nickname;
+//							h.d.sex.innerText=ret.data.sex>0?(ret.data.sex==1?"男":"女"):"未知";
+//							h.d.mobile.innerText=ret.data.mobile||"未绑定";
+//							h.d.email.innerText=ret.data.email||"未绑定";
+//							h.d.birthday.innerText=ret.data.birthday||'未设置';
+//							h.d.qq.innerText=ret.data.qq||'未设置'
+//							h.eventListen()
 						}
 					},
 					error:function(ret){
-						
+						h.showUserInfo()
 					}
 				});
+			}
+			h.showUserInfo=function(){
+				if(h.user.head_pic){
+					var head_pic=h.trim(h.user.head_pic)?(h.user.head_pic.indexOf('http://')>=0?h.user.head_pic:h.apihost+h.user.head_pic)+'?v='+Math.random():'../images/profile.png';
+					h.d.head_pic.src=head_pic
+				}
+				h.d.name.innerText=h.user.nickname;
+				h.d.sex.innerText=h.user.sex>0?(h.user.sex==1?"男":"女"):"未知";
+				h.d.mobile.innerText=h.user.mobile||"未绑定";
+				h.d.email.innerText=h.user.email||"未绑定";
+				h.d.birthday.innerText=h.user.birthday||'未设置';
+				h.d.qq.innerText=h.user.qq||'未设置'
+				h.eventListen()
 			}
 			$.plusReady(function(){
 				h.token=ms.getItem('token')

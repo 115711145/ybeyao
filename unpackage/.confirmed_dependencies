@@ -660,7 +660,8 @@
 			"css/icons-extra.css"
 		],
 		"refer": [
-			"mine/order-detail.html"
+			"mine/order-detail.html",
+			"mine/return-detail.html"
 		]
 	},
 	"mine/personal.html": {
@@ -670,6 +671,13 @@
 			"mine/avatar.html",
 			"mine/bind-mobile.html",
 			"mine/reset-password.html"
+		]
+	},
+	"mine/wallet.html": {
+		"refer": [
+			"mine/record-list.html",
+			"mine/login.html",
+			"mine/wallet-record.html"
 		]
 	}
 }

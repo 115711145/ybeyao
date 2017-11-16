@@ -230,8 +230,7 @@
 						//应付金额
 						li.push('<div class="sum"><p class="fl sum-price-num">'
 			        		+'<span class="price">￥'+h.fmoney((v.refund_deposit*100+v.refund_money*100)/100)+'</span>'
-			        		+'<span>共'+num+'件</span></p><p class="fr btns">');
-			        	li.push('</p></div></li>')
+			        		+'<span>共'+num+'件</span></p><p class="fr btns"><span class="mui-btn mui-btn-nav" type="show-order">退款详情</span></p></div></li>')
 						html.push(li.join(''))
 					});
 					h.d.list.innerHTML+=html.join('')
@@ -285,15 +284,20 @@
 				$(h.d.list).on('tap','.mui-btn',function(){
 					var type=this.getAttribute('type')
 					var order_id=this.parentElement.parentElement.parentElement.getAttribute('order_id')
-					if(type=='del-order'){
-						h.del={
-							type:type,
-							order_id:order_id,
-							obj:this
-						}
-						$('#delete').popover('toggle')
-					}else{
-						h.orderService(type,order_id,this)
+					switch(type){
+						case 'del-order':
+							h.del={
+								type:type,
+								order_id:order_id,
+								obj:this
+							}
+							$('#delete').popover('toggle')
+							break;
+						case 'show-order':
+							h.openWin('return-detail.html','return-detail',{order_id:order_id})
+							break;
+						default:
+							h.orderService(type,order_id,this)
 					}
 				})
 				

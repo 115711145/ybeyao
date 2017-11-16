@@ -926,7 +926,8 @@
 					"css/icons-extra.css"
 				],
 				"refer": [
-					"mine/order-detail.html"
+					"mine/order-detail.html",
+					"mine/return-detail.html"
 				],
 				"priority": 0
 			},
@@ -938,6 +939,15 @@
 					"mine/avatar.html",
 					"mine/bind-mobile.html",
 					"mine/reset-password.html"
+				],
+				"priority": 0
+			},
+			"mine/wallet.html": {
+				"resources": [],
+				"refer": [
+					"mine/record-list.html",
+					"mine/login.html",
+					"mine/wallet-record.html"
 				],
 				"priority": 0
 			}
