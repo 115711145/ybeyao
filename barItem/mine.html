@@ -235,7 +235,8 @@
 			<ul class="menu">
 				<!--<li><img src="../images/mine-safe.png"/>账号安全</li>-->
 				<li id="personal"><img src="../images/mine-info.png"/>个人资料</li>
-				<li id="address"><img src="../images/mine-adress.png"/>我的地址</li>
+				<li id="wallet"><img src="../images/mine-qb.png"/>我的钱包</li>
+				<li id="address"><img src="../images/mine-adress.png"/>收货地址</li>
 			</ul>
 		</div>
 		<div class="center">
@@ -282,6 +283,7 @@
 				comment:{id:'comment-list',url:"../mine/comment-list.html"},
 				collect:{id:'collect-list',url:"../mine/collect-list.html"},
 				personal:{id:'personal',url:'../mine/personal.html'},
+				wallet:{id:'wallet',url:'../mine/wallet.html'}
 			}
 			
 			h.showUserInfo=function(user){
@@ -449,7 +451,7 @@
 							h.logout()
 						}else{
 							if(h.token){
-								h.openWin(h.menu[id].url,h.menu[id].id)
+								h.openWin(h.menu[id].url,h.menu[id].id,{user:h.user})
 							}else{
 								h.openWin('../mine/login.html','login')
 							}

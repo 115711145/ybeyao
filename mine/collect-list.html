@@ -273,7 +273,6 @@
 									h.total = ret.total;
 									h.d.content.pullRefresh().endPulldownToRefresh();
 									if(h.page==1&&h.total<h.pageSize){
-										console.log('aa')
 										h.d.content.pullRefresh().disablePullupToRefresh()
 									}else{
 										h.d.content.pullRefresh().endPullupToRefresh((h.page * h.pageSize >= ret.total))
