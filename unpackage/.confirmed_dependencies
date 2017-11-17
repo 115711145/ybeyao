@@ -305,7 +305,8 @@
 			"mine/return-list.html",
 			"mine/collect-list.html",
 			"mine/personal.html",
-			"mine/wallet.html"
+			"mine/wallet.html",
+			"mine/wallet-coupon.html"
 		]
 	},
 	"mine/login.html": {
@@ -677,7 +678,9 @@
 		"refer": [
 			"mine/record-list.html",
 			"mine/login.html",
-			"mine/wallet-record.html"
+			"mine/wallet-record.html",
+			"mine/wallet-recharge.html",
+			"mine/wallet-coupon.html"
 		]
 	}
 }

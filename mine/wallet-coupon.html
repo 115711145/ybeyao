@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>金额明细</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<style>
+			.top-btn {
+				position: absolute;
+				top: 44px;
+				left: 0;
+				width: 100%;
+				background: #fff;
+				padding: 0 10px;
+				height: 45px;
+			}
+			
+			.mui-segmented-control .mui-control-item {
+				font-size: 12px;
+				line-height: 28px;
+			}
+			
+			.mui-segmented-control-honey {
+				border: 1px solid #41CEA9;
+			}
+			
+			.mui-segmented-control-honey .mui-control-item {
+				color: #41CEA9;
+				border-color: inherit;
+			}
+			
+			.mui-segmented-control-honey .mui-control-item.mui-active {
+				color: #fff;
+				background-color: #41CEA9;
+			}
+			
+			.mui-segmented-control-honey.mui-segmented-control-inverted .mui-control-item.mui-active {
+				color: #4cd964;
+				border-bottom: 2px solid #41CEA9;
+				background: none;
+			}
+			
+			.mui-segmented-control-honey.mui-segmented-control-inverted~.mui-slider-progress-bar {
+				background-color: #41CEA9;
+			}
+			.mui-content {
+				margin-top: 45px;
+			}
+			.fl{
+				float: left;
+			}
+			.fr{
+				float: right;
+			}
+			.quan-list{
+				padding: 0;
+			}
+			.quan-list p{
+				color: #fff;
+			}
+			.quan {
+				height: 75px;
+				position: relative;
+				margin: 10px 10px;
+				background: url(../images/quan1.jpg) no-repeat center;
+				background-size: 100%;
+				background-position: 0 97%;
+			}
+			
+			.quan .quan-con {
+				position: relative;
+			}
+			
+			.quan .quan-con .title {
+				width: 65%;
+			}
+			
+			.quan .quan-con .title .number {
+				margin: 15px 0 0 15px;
+			}
+			
+			.quan .quan-con .title .number span {
+				font-size: 12px;
+			}
+			
+			.quan .quan-con .title .number font {
+				font-size: 26px;
+			}
+			
+			.quan .quan-con .title font {
+				font-size: 35px;
+				margin: 5px;
+			}
+			
+			.quan .quan-con .title span {
+				font-size: 14px
+			}
+			
+			.quan .quan-con .title .use-time {
+				font-size: 11px;
+				margin: 5px 0 0 20px;
+				line-height: 16px;
+			}
+			
+			.quan .quan-con .getquan {
+				width: 26%;
+				margin-top: 30px;
+				text-align: center;
+			}
+			
+			.quan .quan-con .getquan p {
+				font-size: 12px;
+				color: #666;
+			}
+			.expire{
+				background: url(../images/quan2.jpg) no-repeat center;
+				background-size: 100%;
+				background-position: 0 97%;
+			}
+			.expire p{
+				color: #eee;
+			}
+			.expire .getquan p{
+				color: #fff;
+			}
+			.no-quan {
+				text-align: center;
+				color: #666;
+				height: 50px;
+				line-height: 50px;
+				font-size: 13px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">我的优惠券</h1>
+			<div class="top-btn">
+				<div class="mui-segmented-control mui-segmented-control-honey">
+					<a class="mui-control-item mui-active" type="0">未使用</a>
+					<a class="mui-control-item" type="1">已使用</a>
+					<a class="mui-control-item" type="2">已过期</a>
+				</div>
+			</div>
+		</header>
+		<div class="mui-content" id="content">
+			<div class="loader" id="loader">
+				<a>
+					<span class="mui-spinner"></span>
+				</a>
+				<br />
+				<span>加载中...</span>
+			</div>
+        	<div class="quan-list" id="quan-list"> 
+                <!--<div class="quan">
+					<div class="quan-con">
+						<div class="fl title">
+							<p class="number"><font>5</font><span>元(满100元可用)</span></p>
+							<p class="use-time">有效期至: 2017-11-02 10:10:00</p>
+						</div>
+						<div class="fr getquan">
+							<p>未使用</p>
+						</div>
+					</div>
+				</div>
+				<div class="quan expire">
+					<div class="quan-con">
+						<div class="fl title">
+							<p class="number"><font>5</font><span>元(满100元可用)</span></p>
+							<p class="use-time">有效期至: 2017-11-02 10:10:00</p>
+						</div>
+						<div class="fr getquan">
+							<p>已过期</p>
+						</div>
+					</div>
+				</div>-->
+				<!--<div class="no-quan">没有可用的券</div>-->
+            </div>
+		</div>
+    <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	(function(win, d, $, h, ms) {
+			$.init({});
+			h.d = {
+				content:$('#content'),
+				btn_items:$('.mui-control-item'),
+				list: d.getElementById('quan-list'),
+				loader:d.getElementById('loader')
+			}
+			
+			
+			/**
+			 * 获取优惠券列表
+			 */
+			h.getCouponList = function() {
+				h.coupon = []
+				$.ajax(h.apiurl, {
+					data: {
+						m: 'get_coupon_list',
+						token: ms.getItem('token'),
+						type:h.type
+					},
+					type: 'post',
+					dataType: 'json',
+					success: function(ret) {
+						h.d.loader.style.display='none';
+						if(ret.code == 0) {
+							if(ret.data && ret.data.length > 0) {
+								var list = [];
+								var time = new Date().getTime() / 1000;
+								h.coupon = ret.data;
+								$.each(ret.data, function(i, v) {
+									var txt,expire=false;
+									if(v.use_time>0||v.order_id>0){
+										txt='已使用';
+										expire=true;
+									}else{
+										if(v.use_start_time>time){
+											txt='不可用'
+										}else if(v.use_end_time<time){
+											txt='已过期'
+											expire=true
+										}else{
+											txt='未使用'
+										}
+									}
+									
+									list.push('<div class="quan'+(expire?" expire":"")+'"><div class="quan-con"><div class="fl title">\
+										<p class="number"><font>'+parseFloat(v.money)+'</font><span>元(满' + parseFloat(v.condition) + '元可用)</span></p>\
+										<p class="use-time">有效期至: ' + h.getYmdTime(v.use_end_time) + '</p></div><div class="fr getquan"><p>'+txt+'</p></div></div></div>')
+								});
+								if(list.length > 0) {
+									h.d.list.innerHTML = list.join('')
+								} else {
+									h.d.list.innerHTML = '<div class="no-quan">没有可用的券</div>';
+								}
+							}
+						} else {
+							if(ret.code == -1) {
+								$.toast(ret.msg)
+								honey.openWin('../mine/login.html', 'login')
+								return
+							}
+							h.d.list.innerHTML = '<div class="no-quan">没有相关优惠券</div>';
+						}
+					},
+					error: function(ret) {
+						//						$.toast('优惠券读取失败')
+					}
+				});
+			}
+			
+			h.showType=function(type){
+				var type=type||h.type;
+				$.each(h.d.btn_items, function(i,v) {
+					v.setAttribute('class','mui-control-item'+(v.getAttribute('type')==type?' mui-active':''))
+				});
+			}
+			
+			$.plusReady(function() {
+				h.token=ms.getItem('token');
+				h._self=plus.webview.currentWebview();
+				h.type=h._self.type|| 0;
+				h.showType()
+				h.getCouponList()
+				
+				/**
+				 * 切换
+				 */
+				$('.top-btn').on('tap','.mui-control-item',function(){
+					var type=this.getAttribute('type')
+					if(type!=h.type){
+						h.d.list.innerHTML='';
+						h.d.loader.style.display='block';
+						h.type=type;
+						h.getCouponList()
+					}
+				})
+				
+				$.back=function(){
+					plus.webview.currentWebview().close('slide-out-right');
+				}
+		
+			})
+		
+		}(window,document, mui, honey, myStorage))
+    </script>
+	</body>
+
+</html>
+

@@ -104,10 +104,6 @@
 			.no-pay p{
 				color: #999;
 			}
-			.line{
-				clear: both;
-				height: 20px;
-			}
 		</style>
 	</head>
 	<body>
@@ -221,18 +217,14 @@
 //						if(ret.code==0){
 							h.page++
 //						}
-						(!ret.data ||ret.data.length<10)?h.d.content.pullRefresh().disablePullupToRefresh():h.d.content.pullRefresh().endPullupToRefresh(false)
+						(h.page==2&&(!ret.data ||ret.data.length<10))?h.d.content.pullRefresh().disablePullupToRefresh()
+						:(h.d.content.pullRefresh().enablePullupToRefresh(),h.d.content.pullRefresh().endPullupToRefresh(ret.data.length<10))
 					},
 					error:function(ret){
 						alert(ret.responseText)
 //						$.toast('error')
 					}
 				});
-			}
-			
-			
-			h.showRechargeList=function(data){
-				
 			}
 			/**
 			 * 显示记录列表 
@@ -294,8 +286,9 @@
 						h.type=type;
 						h.page=1;
 						h.d.content.pullRefresh().refresh(true)
-						h.d.content.pullRefresh().enablePullupToRefresh()
-						h.d.content.pullRefresh().endPullupToRefresh(false)
+						h.d.content.pullRefresh().disablePullupToRefresh()
+//						h.d.content.pullRefresh().enablePullupToRefresh()
+//						h.d.content.pullRefresh().endPullupToRefresh(false)
 						getRecordList()
 					}
 				})

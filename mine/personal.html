@@ -256,6 +256,7 @@
 				h.d.birthday.innerText=h.user.birthday||'未设置';
 				h.d.qq.innerText=h.user.qq||'未设置'
 				h.eventListen()
+				
 			}
 			$.plusReady(function(){
 				h.token=ms.getItem('token')
@@ -420,6 +421,7 @@
 				win.addEventListener('updateMobile',function(e){
 					h.d.mobile.innerText=h.user.mobile=e.detail.mobile
 				})
+				h.swipeClose(win)
 			})
 			
 		})(window,honey,mui,document,myStorage);

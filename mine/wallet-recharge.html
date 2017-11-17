@@ -6,183 +6,114 @@
     <title>我的钱包</title>
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+     <link rel="stylesheet" type="text/css" href="../css/icons-extra.css"/>
     <link rel="stylesheet" type="text/css" href="../css/own.css"/>
     <style>
-    	.banner{
-    		height: 160px;
-    		background: url(../images/wallet-bk.jpg) no-repeat;
-    		background-size: 100% 130%;
+    	.mui-content p{
+    		padding: 10px 20px;
+    		margin: 0;
+    		
+    	}
+    	.money-box{
+    		float: left;
+    		width: 100%;
+    		padding: 0 10px;
     		text-align: center;
     	}
-    	.banner img{
-    		width: 50px;
-    		height: 50px;
-    		border-radius:50px ;
-    		margin-top:50px;
+    	.money-box li{
+    		border: 1px solid #41CEA9;
+    		display: inline-block;
+    		width: 30%;
+    		text-align: center;
+    		margin: 6px 0;
+    		border-radius:5px;
+    		padding: 5px 5px;
+    		/*background: #41CEA9;*/
+    		color: #41CEA9;
     	}
-    	.banner p{
-    		color: #fff;
+    	.money-box li.left{
+    		margin-right: 3%;
     	}
-    	.banner p a{
-    		color: #ff6633;
-    		border: 1px solid #FF6633;
-    		padding: 2px 15px;
-    		border-radius: 5px;
-    		font-size: 12px;
-    		background: #fff;
-    		opacity:0.9
+    	.money-box li.right{
+    		margin-left: 3%;
     	}
-    	ul{
-    		list-style: none;
+    	.mui-content input{
+    		color: #333;
+    		text-align: right ;
+    		padding: 0 30px 0 20px;
+    		display: inline-block;
+    		border: 0;
+    		margin: 0;
+    		background: none;
+    		font-size: 14px;
+    		color: red;
     	}
-    	.wallet{
-    		padding: 2px 0 10px 3px;
+    	
+    	.input{
     		background: #eee;
     	}
-    	.wallet li{
-    		padding:8px 5px;
-    		border: 1px solid #fff;
-    		background: #fff;
-    		width: 48%;
-    		margin: 1%;
-    		float: left;
-    		height: 70px;
+    	.input .mui-icon{
+    		color: #666;
+    		width: 8%;
     	}
-    	.wallet-icon{
-    		position: absolute;
-    	}
-    	.wallet-icon img{
-    		max-height: 35px;
-    		max-width:35px;
-    		border-radius:50px ;
-    		margin:8px 0 0 5px;
-    	}
-    	.item-info{
-    		width: 85%;
-    		display: block;
-    		float: right;
+    	.recharge-btn{
+    		background: #41CEA9;
+    		margin: 150px 10px;
+    		padding: 10px;
+    		border-radius: 10px;
+    		color: #fff;
     		text-align: center;
     	}
-    	.price{
-    		color: #FF6633;
+    	#clear{
+    		display: none;
     	}
-    	.title{
-    		color: #333;
+    	.ye{
+    		padding-top:20px !important;
     	}
-    	.fl{
-			float: left;
-		}
-		.fr{
-			float: right;
-		}
-		.record-box{
-			clear: both;
-			padding: 1px 5px;
-		}
-		.record-box .note{
-			font-size: 13px;
-			color: #666;
-			padding: 2px;
-			margin: 0 !important;
-		}
-		.record-item {
-			margin: 0 0 5px 0 !important;
-			background: #fff;
-		}
-		.record-item span{
-			width: 40%;
-		}
-		.record-item span:first-child{
-			width: 60%;
-		}
-		.record-item p{
-			padding:3px 5px;
-			margin: 0;
-			color: #333;
-			font-size: 12px;
-		}
-		.record-item p:first-child{
-			float: left;
-			width: 100%;
-		}
-		.record-item p:last-child{
-			clear: both;
-		}
-		.no-content{
-			height: 50px;
-			line-height: 50px;
-			font-size: 12px;
-			text-align: center;
-			color: #666;
-		}
     </style>
 </head>
 <body>
 	<header class="mui-bar mui-bar-nav own-main-background-color">
 		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-		<h1 class="mui-title" id="header-title">我的钱包</h1>
+		<h1 class="mui-title" id="header-title">充值</h1>
 	</header>
 	<div class="mui-content">
-		<!--<div class="loader" id="loader">
-			<a>
-				<span class="mui-spinner"></span>
-			</a>
-			<br />
-			<span>加载中...</span>
-		</div>-->
-		<div class="banner">
-			<div><img id="head_pic" src="../images/default.png"/></div>
-			<p id="nickname">哈喽</p>
-			<p id="recharge"><a>充 值</a></p>
+		<p class="ye">当前余额：132456</p>
+		<div class="input">
+			<span><input type="number" name="money" id="money" placeholder="充值金额" class="mui-input-clear"/></span>
 		</div>
-		<ul class="wallet">
-			<li class="wallet-item link-btn" type="amount">
-				<span class="wallet-icon">
-					<img src="../images/wallet-cz.png" width="40"/>
-				</span>
-				<span class="item-info">
-					<p class="title">余额</p>
-					<p class="price" id="money">123456.00</p>
-				</span>
-			</li>
-			<li class="wallet-item link-btn" type="amount">
-				<span class="wallet-icon">
-					<img src="../images/wallet-xf.png"/>
-				</span>
-				<span class="item-info">
-					<p class="title">累计消费</p>
-					<p class="price" id="amount">123456.00</p>
-				</span>
-			</li>
-			<li class="wallet-item link-btn" type="points">
-				<span class="wallet-icon">
-					<img src="../images/wallet-jf.png"/>
-				</span>
-				<span class="item-info">
-					<p class="title">积分</p>
-					<p class="price" id="points">123456.00</p>
-				</span>
-			</li>
-			<li class="wallet-item">
-				<span class="wallet-icon">
-					<img src="../images/wallet-yhq.png"/>
-				</span>
-				<span class="item-info">
-					<p class="title">优惠券</p>
-					<p class="price" id="quan">5</p>
-				</span>
-			</li>
+		<p>选择充值金额(元)</p>
+		<ul class="money-box">
+			<li class="money-item left">30</li>
+			<li class="money-item">50</li>
+			<li class="money-item right">100</li>
+			<li class="money-item left">200</li>
+			<li class="money-item">500</li>
+			<li class="money-item right">1000</li>
 		</ul>
-		<div class="record-box">
-			<p class="note">最近明细记录</p>
-			<ul class="record-list" id="list">
-				<li class="record-item no-content">
-					没有明细记录
+		<div class="recharge-btn">
+			立即充值
+		</div>
+	</div>
+	<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" >
+					<span style="color: #aaa;">选择支付方式</span>
+				</li>
+				<li class="mui-table-view-cell pay" type="weixin" >
+					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
+				</li>
+				<li class="mui-table-view-cell pay" type="alipay">
+					<a href="#pay_list" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
+						支付宝支付</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#pay_list" style="color: #999;" >取消</a>
 				</li>
 			</ul>
 		</div>
-		
-	</div>
 	<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="../js/photo.js" charset="UTF-8"></script>
@@ -192,83 +123,37 @@
 			$.plusReady(function(){
 				h.token=ms.getItem('token');
 				h.self=plus.webview.currentWebview();
-				h.user=h.self.user;
 				h.d={
 					money:d.getElementById('money'),
-					amount:d.getElementById('amount'),
-					points:d.getElementById('points'),
-					quan:d.getElementById('quan'),
-					list:d.getElementById('list')
+					clear:d.getElementById('clear'),
 				}
+				$('.money-box').on('tap','li',function(){
+					h.d.money.value=this.innerText
+				})
 				
-				d.getElementById('money').innerText='￥'+h.user.user_money;
-				d.getElementById('amount').innerText='￥'+h.user.total_amount;
-				d.getElementById('points').innerText=h.user.pay_points;
-				d.getElementById('quan').innerText=h.user.coupon_count;
-				if(h.user.head_pic){
-					d.getElementById('head_pic').src=(h.user.head_pic.indexOf('http://')>=0?h.user.head_pic:h.apihost+h.user.head_pic);
-				}
-				d.getElementById('nickname').innerText=h.user.nickname;
+				h.d.money.addEventListener('input',function(){
+					var v=this.value;
+					this.value=parseInt(v>10000?v.substr(0,4):v)
+				})
 				
+				$('.mui-content').on('tap','.recharge-btn',function(){
+					if(h.d.money.value>0){
+						$('#pay_list').popover('toggle')
+					}else{
+						$.toast('请选择充值金额')
+					}
+				})
+				
+				$('#pay_list').on('tap','.pay',function(){
+					var type=this.getAttribute('type')
+					$.toast(type)
+				})
 				
 				$.back=function(){
 					h.self.close('slide-out-right')
 				}
-				
-				h.getRecordList=function(){
-					$.ajax(h.apiurl,{
-						type:"post",
-						async:true,
-						dataType:'json',
-						data:{
-							m:'get_record',
-							token:h.token,
-							type:'cost',
-							page:h.page,
-							size:3
-						},
-						success:function(ret){
-							if(ret.code==-1){
-								$.fire(plus.webview.getWebviewById('mine'),'logout')
-								h.openWin('login.html','login')
-								$.back()
-								return
-							}
-							if(ret.code==0){
-								if(ret.data&&ret.data.length>0){
-									var html=[];
-									$.each(ret.data, function(i,v) {
-									html.push('<li class="record-item"><p><span class="fl">'+h.getYmdTime(v.time)+'</span>\
-										<span class="fr"> '+(v.user_money!=0?'金额 <font color="red">'+v.user_money+'</font>':'')
-										+(v.pay_points!=0?'积分 <font color="red">'+v.pay_points+'</font>':'')+'</span>\
-									</p><p>'+v.desc+'</p></li>');
-									});
-									h.d.list.innerHTML=html.join('')
-								}else{
-									h.d.list.innerHTML='<li class="record-item no-content">没有明细记录</li>';
-								}
-								
-							}
-						},
-						error:function(ret){
-						}
-					});
-				}
-				
-				h.getRecordList()
-				d.getElementById('recharge').addEventListener('tap',function(){
-					alert('充值')
-				})
-				
-				$('.wallet').on('tap','.link-btn',function(){
-					var type=this.getAttribute('type')
-					h.openWin('record-list.html','record-list',{type:type})
-				})
-				
 			})
 		})(window,honey,mui,document,myStorage);
-		
 	</script>
-	
 </body>
 </html>

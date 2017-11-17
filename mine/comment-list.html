@@ -155,10 +155,10 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
 			<h1 class="mui-title" id="header-title">我的评价</h1>
 			<div class="top-btn">
-				<div class="mui-segmented-control mui-segmented-control-honey">
-					<a class="mui-control-item mui-active" type="ALL">全部</a>
-					<a class="mui-control-item" type="WAITCCOMMENT">待评价</a>
-					<a class="mui-control-item" type="COMMENTED">已评价</a>
+				<div class="mui-segmented-control mui-segmented-control-honey" id="type-item">
+					<a class="mui-control-item mui-active" type="ALL" index="0">全部</a>
+					<a class="mui-control-item" type="WAITCCOMMENT" index="1">待评价</a>
+					<a class="mui-control-item" type="COMMENTED" index="2">已评价</a>
 				</div>
 			</div>
 		</header>
@@ -219,7 +219,8 @@
 				btn_items:$('.mui-control-item'),
 				content:$('#content'),
 				list: d.getElementById('list'),
-				loader:d.getElementById('loader')
+				loader:d.getElementById('loader'),
+				type_item:d.getElementById('type-item')
 			}
 			//加载评价列表 
 			function getCommentList(){
@@ -308,7 +309,8 @@
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
 				h._self=plus.webview.currentWebview();
-				h.type=h._self.type|| 'ALL';
+				h.type='ALL';
+				h.index=0;
 				h.mineWin=plus.webview.getWebviewById('mine')
 				h.showType()
 				getCommentList()
@@ -318,9 +320,13 @@
 				 */
 				$('.top-btn').on('tap','.mui-control-item',function(){
 					var type=this.getAttribute('type')
+					var index=this.getAttribute('index')
 					if(type!=h.type){
+						h.d.type_item.querySelector('.mui-active').setAttribute('class',"mui-control-item");
+						this.setAttribute('class',"mui-control-item mui-active");
 						h.type=type;
 						h.page=1;
+						h.index=index;
 						h.d.content.pullRefresh().refresh(true)
 						h.d.content.pullRefresh().enablePullupToRefresh()
 						h.d.content.pullRefresh().endPullupToRefresh(false)
@@ -358,7 +364,23 @@
 				$.back=function(){
 					plus.webview.currentWebview().close('slide-out-right');
 				}
-		
+				
+				win.addEventListener('swiperight',function(e){
+					if(Math.abs(e.detail.angle)<6){
+						if(h.index>0){
+							$.trigger(h.d.type_item.querySelectorAll('a')[h.index-1],'tap')
+						}else{
+							$.back()
+						}
+					}
+				})
+				
+				win.addEventListener('swipeleft',function(e){
+					var angle = Math.abs(e.detail.angle);
+					if(angle>177&&angle<185&&h.index<2){
+						$.trigger(h.d.type_item.querySelectorAll('a')[h.index*1+1],'tap')
+					}
+				})
 			})
 		
 		}(window,document, mui, honey, myStorage))
