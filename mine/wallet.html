@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../css/own.css"/>
     <style>
     	.banner{
-    		height: 160px;
+    		height: 165px;
     		background: url(../images/wallet-bk.jpg) no-repeat;
     		background-size: 100% 130%;
     		text-align: center;
@@ -163,7 +163,7 @@
 					<p class="price" id="points">123456.00</p>
 				</span>
 			</li>
-			<li class="wallet-item">
+			<li class="wallet-item" id="coupon">
 				<span class="wallet-icon">
 					<img src="../images/wallet-yhq.png"/>
 				</span>
@@ -225,7 +225,7 @@
 							token:h.token,
 							type:'cost',
 							page:h.page,
-							size:3
+							size:10
 						},
 						success:function(ret){
 							if(ret.code==-1){
@@ -239,8 +239,8 @@
 									var html=[];
 									$.each(ret.data, function(i,v) {
 									html.push('<li class="record-item"><p><span class="fl">'+h.getYmdTime(v.time)+'</span>\
-										<span class="fr"> '+(v.user_money!=0?'金额 <font color="red">'+v.user_money+'</font>':'')
-										+(v.pay_points!=0?'积分 <font color="red">'+v.pay_points+'</font>':'')+'</span>\
+										<span class="fr"> '+(v.user_money!=0?'金额 <font color="'+(v.user_money>0?"green":"red")+'">'+v.user_money+'</font>':'')
+										+(v.pay_points!=0?' 积分 <font color="'+(v.pay_points>0?"green":"red")+'">'+v.pay_points+'</font>':'')+'</span>\
 									</p><p>'+v.desc+'</p></li>');
 									});
 									h.d.list.innerHTML=html.join('')
@@ -257,14 +257,18 @@
 				
 				h.getRecordList()
 				d.getElementById('recharge').addEventListener('tap',function(){
-					alert('充值')
+					h.openWin('wallet-recharge.html','wallte-recharge')
+				})
+				
+				d.getElementById('coupon').addEventListener('tap',function(){
+					h.openWin('wallet-coupon.html','wallet-coupon')
 				})
 				
 				$('.wallet').on('tap','.link-btn',function(){
 					var type=this.getAttribute('type')
 					h.openWin('wallet-record.html','wallet-record',{type:type})
 				})
-				
+				h.swipeClose(win)
 			})
 		})(window,honey,mui,document,myStorage);
 		

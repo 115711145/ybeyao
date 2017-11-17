@@ -430,7 +430,7 @@
 								}
 							}
 						} else {
-							if(ret.code == 1 || ret.code == 3) {
+							if(ret.code == -1) {
 								$.toast(ret.msg)
 								honey.openWin('../mine/login.html', 'login')
 								return

@@ -178,7 +178,7 @@
 			<ul class="top-btns">
 				<li class="wallet"><p class="orange" id="user_money">4567</p><p>余额</p></li>
 				<li class="wallet"><p class="orange" id="pay_points">1231</p><p>积分</p></li>
-				<li><p class="orange" id="coupon_num">0</p><p>优惠券</p></li>
+				<li class="coupon"><p class="orange" id="coupon_num">0</p><p>优惠券</p></li>
 			</ul>
 		</div>
 		<div class="center myorder">
@@ -236,21 +236,26 @@
 				<!--<li><img src="../images/mine-safe.png"/>账号安全</li>-->
 				<li id="personal"><img src="../images/mine-info.png"/>个人资料</li>
 				<li id="wallet"><img src="../images/mine-qb.png"/>我的钱包</li>
-				<li id="address"><img src="../images/mine-adress.png"/>收货地址</li>
 			</ul>
 		</div>
 		<div class="center">
 			<ul class="menu">
+				<li id="address"><img src="../images/mine-adress.png"/>收货地址</li>
 				<li><img src="../images/mine-msg.png"/>消息通知</li>
-				<li id="comment"><img src="../images/mine-pj.png"/>我的评价</li>
 			</ul>
 		</div>
 		<div class="center">
+			<ul class="menu">
+				<li id="comment"><img src="../images/mine-pj.png"/>我的评价</li>
+				<li id="collect"><img src="../images/mine-sc.png"/>我的收藏</li>
+			</ul>
+		</div>
+		<!--<div class="center">
 			<ul class="menu">
 				<li id="collect"><img src="../images/mine-sc.png"/>我的收藏</li>
 				<li><img src="../images/mine-record.png"/>浏览历史</li>
 			</ul>
-		</div>
+		</div>-->
 		<!--<div class="center">
 			<ul class="menu">
 				<li><img src="../images/mine-help.png"/>帮助中心</li>
@@ -301,7 +306,7 @@
 					h.d.pay_points.innerText=user.pay_points;
 					h.d.coupon_num.innerText=user.coupon_count;
 					h.d.level_name.innerText=user.level.level_name+((user.level.discount<100)?'(尊享'+user.level.discount+'折)':"");
-					var head_pic=h.trim(user.head_pic)?(user.head_pic.indexOf('http://')>=0?user.head_pic:h.apihost+user.head_pic):'../images/profile.png';
+					var head_pic=h.trim(user.head_pic)?(user.head_pic.indexOf('http://')>=0?user.head_pic:h.apihost+user.head_pic)+'?v='+Math.random():'../images/profile.png';
 					h.d.head_pic.style.background="url("+head_pic+") no-repeat"
 //					h.d.head_pic.setAttribute('src',head_pic)
 				}
@@ -438,7 +443,9 @@
 				})
 				
 				win.addEventListener('show_head',function(o){
-					h.d.head_pic.style.background="url("+o.detail.path+") no-repeat"
+					h.d.head_pic.style.background="url("+o.detail.path+") no-repeat";
+					h.d.head_pic.style.backgroundSize="100% 100%";
+					h.d.head_pic.style.backgroundPosition="center center";
 				})
 				win.addEventListener('show_name',function(o){
 					h.d.nickname.innerText=o.detail.nickname
@@ -476,6 +483,10 @@
 				
 				$('.top-btns').on('tap','.wallet',function(){
 					h.openWin('../mine/wallet.html','wallet',{user:h.user})
+				})
+				
+				$('.top-btns').on('tap','.coupon',function(){
+					h.openWin('../mine/wallet-coupon.html','wallet-coupon')
 				})
 				
 			})
