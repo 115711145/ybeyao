@@ -86,10 +86,11 @@
 			
 			#no-item {
 				text-align: center;
-				color: #DD4F43;
+				color: #999;
 				width: 100%;
 				margin: 0;
-				padding: 10px 0 0 0;
+				padding: 20px 0 0 0;
+				font-size: 14px;
 			}
 			
 			.ad {
@@ -247,8 +248,10 @@
 				}
 
 				function ajaxGetData(o) {
+					if(h.page == 1) {
+						h.list.innerHTML = '';
+					}
 					if(h.page > 1 && (h.page * h.pageSize >= h.total)) {
-						alert('reree')
 						h.d.content.pullRefresh().endPullupToRefresh(true)
 					} else {
 						$.ajax(h.apiurl, {
@@ -261,23 +264,24 @@
 							type: 'post',
 							dataType: 'json',
 							success: function(ret) {
-								if(h.page == 1) {
-									h.list.innerHTML = '';
-								}
+								h.d.content.pullRefresh().endPulldownToRefresh();
 								if(ret.code == 0) {
 									if(h.page == 1 && ret.data&& ret.data.length == 0) {
 										h.d.list.innerHTML = "<li class='mui-table-view-cell' id='no-item' style='text'>您还没有收藏商品</li>";
 									} else {
 										h.showGoodsList1(ret.data, 'list')
 									}
-									h.total = ret.total;
-									h.d.content.pullRefresh().endPulldownToRefresh();
+									h.total = ret.total; 
 									if(h.page==1&&h.total<h.pageSize){
 										h.d.content.pullRefresh().disablePullupToRefresh()
 									}else{
+										h.d.content.pullRefresh().enablePullupToRefresh()
 										h.d.content.pullRefresh().endPullupToRefresh((h.page * h.pageSize >= ret.total))
 									}
 									h.page += 1;
+								}else{
+									h.d.content.pullRefresh().disablePullupToRefresh()
+									h.d.list.innerHTML = "<li class='mui-table-view-cell' id='no-item' style='text'>您还没有收藏商品</li>";
 								}
 							},
 							error: function(ret) {

@@ -78,7 +78,7 @@
 		<h1 class="mui-title" id="header-title">充值</h1>
 	</header>
 	<div class="mui-content">
-		<p class="ye">当前余额：132456</p>
+		<p class="ye">当前余额：<font id="ye" color="#FF6633">0</font></p>
 		<div class="input">
 			<span><input type="number" name="money" id="money" placeholder="充值金额" class="mui-input-clear"/></span>
 		</div>
@@ -123,13 +123,16 @@
 			$.plusReady(function(){
 				h.token=ms.getItem('token');
 				h.self=plus.webview.currentWebview();
+				h.user=h.self.user;
 				h.d={
 					money:d.getElementById('money'),
 					clear:d.getElementById('clear'),
 				}
+				d.getElementById('ye').innerText=h.user.user_money||0;
 				$('.money-box').on('tap','li',function(){
 					h.d.money.value=this.innerText
 				})
+				
 				
 				h.d.money.addEventListener('input',function(){
 					var v=this.value;

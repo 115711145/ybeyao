@@ -212,36 +212,34 @@
 					dataType: 'json',
 					success: function(ret) {
 						h.d.loader.style.display='none';
-						if(ret.code == 0) {
-							if(ret.data && ret.data.length > 0) {
-								var list = [];
-								var time = new Date().getTime() / 1000;
-								h.coupon = ret.data;
-								$.each(ret.data, function(i, v) {
-									var txt,expire=false;
-									if(v.use_time>0||v.order_id>0){
-										txt='已使用';
-										expire=true;
+						if(ret.code == 0 && ret.data && ret.data.length > 0) {
+							var list = [];
+							var time = new Date().getTime() / 1000;
+							h.coupon = ret.data;
+							$.each(ret.data, function(i, v) {
+								var txt,expire=false;
+								if(v.use_time>0||v.order_id>0){
+									txt='已使用';
+									expire=true;
+								}else{
+									if(v.use_start_time>time){
+										txt='不可用'
+									}else if(v.use_end_time<time){
+										txt='已过期'
+										expire=true
 									}else{
-										if(v.use_start_time>time){
-											txt='不可用'
-										}else if(v.use_end_time<time){
-											txt='已过期'
-											expire=true
-										}else{
-											txt='未使用'
-										}
+										txt='未使用'
 									}
-									
-									list.push('<div class="quan'+(expire?" expire":"")+'"><div class="quan-con"><div class="fl title">\
-										<p class="number"><font>'+parseFloat(v.money)+'</font><span>元(满' + parseFloat(v.condition) + '元可用)</span></p>\
-										<p class="use-time">有效期至: ' + h.getYmdTime(v.use_end_time) + '</p></div><div class="fr getquan"><p>'+txt+'</p></div></div></div>')
-								});
-								if(list.length > 0) {
-									h.d.list.innerHTML = list.join('')
-								} else {
-									h.d.list.innerHTML = '<div class="no-quan">没有可用的券</div>';
 								}
+								
+								list.push('<div class="quan'+(expire?" expire":"")+'"><div class="quan-con"><div class="fl title">\
+									<p class="number"><font>'+parseFloat(v.money)+'</font><span>元(满' + parseFloat(v.condition) + '元可用)</span></p>\
+									<p class="use-time">有效期至: ' + h.getYmdTime(v.use_end_time) + '</p></div><div class="fr getquan"><p>'+txt+'</p></div></div></div>')
+							});
+							if(list.length > 0) {
+								h.d.list.innerHTML = list.join('')
+							} else {
+								h.d.list.innerHTML = '<div class="no-quan">没有可用的券</div>';
 							}
 						} else {
 							if(ret.code == -1) {

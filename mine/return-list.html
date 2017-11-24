@@ -199,16 +199,20 @@
 					$.each(data, function(i, v) {
 						var li=[],color='';
 						switch(v.status){
+							case 1:
+								color="orange";
+								break;
 							case 2:
-								color=" red";
+								color="#FF5053";
 								break;
 							case 3:
-							case 4:
-								color=" green"
+								color="#41cea9";
 								break;
+							default:
+								color="#666";
 						}
 						li.push('<li class="order-list" order_id="'+v.order_id+'" return_status="'+v.return_status+'"><div class="order_sn">订单编号：'+v.order_sn
-						+'<span class="status'+color+'">'+v.status_desc+'</span></div>');
+						+'<span class="status"><font color="'+color+'">'+v.status_desc+'</font></span></div>');
 						var num=0;
 						//商品列表
 						for(var j=0;j<v.goods_list.length;j++){

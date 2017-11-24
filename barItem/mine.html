@@ -38,14 +38,20 @@
 			font-size: 14px;
 		}
 		.top .user-head{
+			/*width: 60px;
+			height: 60px;*/
+			margin: 0 5px 0 10px;
+/*			border: 1px solid red;*/
+			/*overflow: hidden;*/
+			/*background: url(../images/default.png) no-repeat;
+			background-size: 100% 100%;
+			background-position: center center;*/
+		}
+		#head_pic{
+			width: 100%;
 			width: 60px;
 			height: 60px;
-			margin: 0 5px 0 10px;
 			border-radius: 60px;
-			overflow: hidden;
-			background: url(../images/default.png) no-repeat;
-			background-size: 100% 100%;
-			background-position: center center;
 		}
 		.top .user-face img{
 			width: 5px;
@@ -169,7 +175,9 @@
 	<body>
 		<div class="top">
 			<div class="user-face own-main-background-color">
-				<div class="user-head" id="head_pic"></div>
+				<div class="user-head">
+					<img id="head_pic" src="../images/default.png" />
+				</div>
 				<div class="user-nc">
 					<p id="nickname">150****5678</p>
 					<p id="level_name"></p>
@@ -236,14 +244,15 @@
 				<!--<li><img src="../images/mine-safe.png"/>账号安全</li>-->
 				<li id="personal"><img src="../images/mine-info.png"/>个人资料</li>
 				<li id="wallet"><img src="../images/mine-qb.png"/>我的钱包</li>
+				<li id="address"><img src="../images/mine-adress.png"/>收货地址</li>
 			</ul>
 		</div>
-		<div class="center">
+		<!--<div class="center">
 			<ul class="menu">
 				<li id="address"><img src="../images/mine-adress.png"/>收货地址</li>
-				<li><img src="../images/mine-msg.png"/>消息通知</li>
+				<li id="message"><img src="../images/mine-msg.png"/>消息通知</li>
 			</ul>
-		</div>
+		</div>-->
 		<div class="center">
 			<ul class="menu">
 				<li id="comment"><img src="../images/mine-pj.png"/>我的评价</li>
@@ -256,13 +265,13 @@
 				<li><img src="../images/mine-record.png"/>浏览历史</li>
 			</ul>
 		</div>-->
-		<!--<div class="center">
+		<div class="center">
 			<ul class="menu">
 				<li><img src="../images/mine-help.png"/>帮助中心</li>
 				<li><img src="../images/mine-feed.png"/>意见反馈</li>
-				<li><img src="../images/mine-us.png"/>联系我们</li>
+				<li id="about"><img src="../images/mine-us.png"/>关于我们</li>
 			</ul>
-		</div>-->
+		</div>
 		<div class="center">
 			<ul class="menu">
 				<li id="logout"><img src="../images/mine-logout.png"/>退出登录</li>
@@ -288,9 +297,10 @@
 				comment:{id:'comment-list',url:"../mine/comment-list.html"},
 				collect:{id:'collect-list',url:"../mine/collect-list.html"},
 				personal:{id:'personal',url:'../mine/personal.html'},
-				wallet:{id:'wallet',url:'../mine/wallet.html'}
+				wallet:{id:'wallet',url:'../mine/wallet.html'},
+				message:{id:'message',url:'../mine/message.html'},
+				about:{id:'about',url:'../mine/about.html'}
 			}
-			
 			h.showUserInfo=function(user){
 				if(!user||user.length==0){
 					h.d.nickname.innerText="未登录";
@@ -298,8 +308,8 @@
 					h.d.pay_points.innerText=0;
 					h.d.coupon_num.innerText=0;
 					h.d.level_name.innerText="游客";
-//					h.d.head_pic.setAttribute('src','../images/profile.png')
-					h.d.head_pic.style.background="url(../images/profile.png) no-repeat"
+					h.d.head_pic.setAttribute('src','../images/profile.png')
+//					h.d.head_pic.style.background="url(../images/profile.png) no-repeat"
 				}else{
 					h.d.nickname.innerText=user.nickname;
 					h.d.user_money.innerText=user.user_money;
@@ -307,8 +317,8 @@
 					h.d.coupon_num.innerText=user.coupon_count;
 					h.d.level_name.innerText=user.level.level_name+((user.level.discount<100)?'(尊享'+user.level.discount+'折)':"");
 					var head_pic=h.trim(user.head_pic)?(user.head_pic.indexOf('http://')>=0?user.head_pic:h.apihost+user.head_pic)+'?v='+Math.random():'../images/profile.png';
-					h.d.head_pic.style.background="url("+head_pic+") no-repeat"
-//					h.d.head_pic.setAttribute('src',head_pic)
+//					h.d.head_pic.style.background="url("+head_pic+") no-repeat"
+					h.d.head_pic.setAttribute('src',head_pic)
 				}
 			}
 			h.logout=function(tologin){
@@ -362,7 +372,7 @@
 									h.user=ret.data.user;
 									ms.setItem('user',ret.data.user)
 									h.d.nickname.innerText=ret.data.user.nickname
-									h.showUserInfo(ret.data.user,ret.data.level)
+									h.showUserInfo(ret.data.user)
 									$.each(h.d.warm_number,function(i,v){
 										var type=v.parentElement.parentElement.getAttribute('type');
 										var num=0;
@@ -425,7 +435,7 @@
 					if(o.detail.time){
 						var time=ms.getItem('load_user_time')
 						var now=new Date().getTime()/1000;
-						if(time&&(now-time)<600){
+						if(time&&(now-time)<60){
 							load=false
 						}
 					}
@@ -443,9 +453,10 @@
 				})
 				
 				win.addEventListener('show_head',function(o){
-					h.d.head_pic.style.background="url("+o.detail.path+") no-repeat";
-					h.d.head_pic.style.backgroundSize="100% 100%";
-					h.d.head_pic.style.backgroundPosition="center center";
+					h.d.head_pic.src=o.detail.path;
+//					h.d.head_pic.style.background="url("+o.detail.path+") no-repeat";
+//					h.d.head_pic.style.backgroundSize="100% 100%";
+//					h.d.head_pic.style.backgroundPosition="center center";
 				})
 				win.addEventListener('show_name',function(o){
 					h.d.nickname.innerText=o.detail.nickname

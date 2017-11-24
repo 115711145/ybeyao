@@ -36,6 +36,13 @@
 		.mui-input-row .mui-input-speech ~ .mui-icon-speech {
 			color: #fff;
 		}
+		#msg-num{
+			z-index:99;
+			position: absolute;
+			display: none;
+			right: 44%;
+			margin-top:2px ;
+		}
    	</style>
 </head>
 <body class="own-gray-color">
@@ -58,6 +65,11 @@
 			<span class="mui-icon mui-icon-chat"></span>
 			<span class="mui-tab-label">消息</span>
 		</a>-->
+		<a class="mui-tab-item" id="message">
+			<span class="mui-icon mui-icon-email"></span>
+			<span class="mui-badge mui-badge-danger" id="msg-num"></span>
+			<span class="mui-tab-label">消息</span>
+		</a>
 		<a class="mui-tab-item" id="cart">
 			<span class="mui-icon iconfont icon-cart"></span>
 			<span class="mui-tab-label">购物车</span>
@@ -74,13 +86,14 @@
 			$.init({
 				preloadLimit:20
 			})
-			h.barItem=['home','mine'];
+			h.barItem=['home','message','mine'];
 			h.barWebViews=[];
 			h.contentStyle={top:'45px',bottom:'51px',scrollIndicator:'none'};
 			h.d={
 				title:document.getElementById('nav-title'),//标题
 				search:document.getElementById('search'),
-				cart:document.getElementById('cart')
+				cart:document.getElementById('cart'),
+				msgNum:d.getElementById('msg-num')
 			},
 			//初始化所有bar页面
 		    h.initWebViews=function(){
@@ -162,6 +175,8 @@
 							}
 //						}else if(id=="cart"){
 //							$.fire(h.barWebViews[id], 'showCart')
+						}else if(id=='message'){
+							$.fire(h.barWebViews[id],'refresh')
 						}
 						if(h.curBarItemWebview=='home'){
 							h.d.search.style.display="none";
@@ -183,12 +198,56 @@
 					h.showBarItemPage(this.getAttribute('id'),e)
 				});
 			}
+			/**
+			 * 获取消息数量
+			 * @param {Object} time 轮询时间
+			 */
+			h.getMessageCount=function(time){
+				h.msgCount=h.msgCount||0;
+				time=time||0;
+//				console.log(time)
+				if(h.token){
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						data:{
+							m:'get_message_count',
+							token:h.token,
+						},
+						dataType:'json',
+						timeout:h.ajaxTimeout,
+						success:function(ret){
+//							console.log(ret.data)
+							if(ret.code==0&&ret.data>0){
+								if(time>0&&ret.data!=h.msgCount){
+									(time+=parseInt(time*0.2));
+								}else{
+									time=6000;
+								}
+								h.msgCount=ret.data
+								h.d.msgNum.innerText=h.msgCount;
+								h.d.msgNum.style.display="inline-block";
+							}else{
+								h.d.msgNum.innerText=0;
+								h.d.msgNum.style.display="none";
+								time>0&&(time+=parseInt(time*0.2));
+							}
+						}
+					});
+				}
+				time>0&&setTimeout(function(){
+					h.getMessageCount(time)
+				},time)
+			}
 			$.plusReady(function(){
 				if(!h.home){
 					h.home=plus.webview.currentWebview();
 				}
 	//			myStorage.removeItem('token')
 				h.token=myStorage.getItem('token')
+				if(h.token){
+					h.getMessageCount()
+				}
 				d.getElementById('footerBar').style.top = (plus.display.resolutionHeight - 51) + "px";
 				h.initWebViews()
 				h.preloadDetailView()
@@ -202,6 +261,7 @@
 					if(o.detail.show){
 						h.showBarItemPage('mine')
 					}
+					h.getMessageCount(600000)
 				},false)
 				
 				win.addEventListener('logout',function(){
@@ -210,6 +270,10 @@
 				
 				win.addEventListener('showCart',function(){
 					h.showBarItemPage('cart')
+				},false)
+				
+				win.addEventListener('msgCount',function(){
+					h.getMessageCount()
 				},false)
 			})
 		}(window,honey,mui,document,myStorage))

@@ -134,15 +134,18 @@
 	.product_np a:first-child{
 	    font-size:0.9em;
 	    color:#58b7e3;
-	    width:65%;
+	    width:60%;
 	    float: left;
+	}
+	.ad .product_ie{
+		color:#58b7e3 ;
 	}
 	.product_np a:last-child{
 	    font-size:12px;
 	    color:#FF6633;
 	    float: right;
 	    padding-right:5px ;
-	    width:35%;
+	    width:40%;
 	    text-align: right;
 	}
 	.product_ie{

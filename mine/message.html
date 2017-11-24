@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的消息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<style>
+			.no-comment {
+				text-align: center;
+				background: none;
+				color: #666;
+				font-size: 14px;
+				padding: 10px;
+			}
+			.record-item{
+				background: #fff;
+				margin: 3px 0px;
+				width: 100%;
+				float: left;
+			}
+			.fl{
+				float: left;
+			}
+			.fr{
+				float: right;
+			}
+			.record-item span{
+				width: 40%;
+			}
+			.record-item span:first-child{
+				width: 60%;
+			}
+			.record-item p{
+				padding:3px 5px;
+				margin: 0;
+				color: #000;
+				font-size: 12px;
+			}
+			.record-item p:first-child{
+				float: left;
+				width: 100%;
+			}
+			.record-item p:last-child{
+				clear: both;
+			}
+			.record-item .title{
+				font-size: 14px;
+			}
+			
+			.title .fr{
+				text-align: right;
+			}
+			.is-read{
+				/*background: #eee;*/
+				opacity:0.8
+			}
+			.is-read p{
+				color: #666;
+			}
+			.mui-table-view .mui-table-view-cell{
+				padding: 5px 10px !important;
+			}
+			.mui-content .mui-table-view:after{
+				height: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">我的消息</h1>
+		</header>
+		<div class="mui-content" id="content">
+			<div class="loader" id="loader">
+				<a>
+					<span class="mui-spinner"></span>
+				</a>
+				<br />
+				<span>加载中...</span>
+			</div>
+			<ul class="mui-table-view" style="margin: 0;" id="list">
+				<!--<li class="no-comment">没有更多消息</li>-->
+				<!--<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red">删除</a>
+					</div>
+					<div class="mui-slider-handle mui-table">
+						<div class="mui-table-cell record-item">
+							<p class="title">
+								<span class="fl">系统消息</span>
+								<span class="fr">2017-09-06</span>
+							</p>
+							<p class="message">
+								口里返金额口里返金额枯萎了分开了就枯萎了分开了就口里返金额枯萎了分开了
+								就口里返金额枯萎了分开了就口里返金额枯萎了分开了就口里返金额枯萎了分开了就
+							</p>
+						</div>
+					</div>
+				</li>-->
+			</ul>
+		</div>
+    <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	(function(win, d, $, h, ms) {
+			$.init({
+				pullRefresh: {
+					container: '#content',
+//					down: {
+//						style:'circle',
+//					    color:'#41cea9',
+//					    height:'80px',
+//						callback: refresh
+//					},
+					up: {
+						auto:false,
+						height:80,
+						contentinit: h.contentinit,
+	                    contentdown: h.contentdown,
+	                    contentrefresh: h.contentrefresh,
+						contentnomore:h.contentnomore,
+						callback: getMessage 
+					}
+				}
+			});
+			h.d = {
+				content:$('#content'),
+				list: d.getElementById('list'),
+				loader:d.getElementById('loader')
+			}
+			//加载列表 
+			function getMessage(){
+				if(h.is_loading){
+					return;
+				}
+				if(h.page==1){
+					h.d.list.innerHTML='';
+					h.d.loader.style.display="block";
+				}
+				h.is_loading=true;
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					dataType:'json',
+					data:{
+						m:'get_message',
+						token:h.token,
+						page:h.page
+					},
+					success:function(ret){
+						h.is_loading=false;
+						if(ret.code==-1){
+							$.fire(plus.webview.getWebviewById('mine'),'logout')
+							h.openWin('login.html','login')
+							$.back()
+							return
+						}
+						h.d.loader.style.display="none";
+						if(h.page==1){
+							h.d.list.style.display="block";
+						}
+						h.total=ret.total;
+						h.showMessageList(ret.data)
+//						if(ret.code==0){
+							h.page++
+//						}
+						(h.page==2&&(!ret.data ||ret.data.length<10))?h.d.content.pullRefresh().disablePullupToRefresh()
+						:(h.d.content.pullRefresh().enablePullupToRefresh(),h.d.content.pullRefresh().endPullupToRefresh(ret.data.length<10))
+					},
+					error:function(ret){
+//						alert(ret.responseText)
+//						$.toast('error')
+					}
+				});
+			}
+			/**
+			 * 显示记录列表 
+			 * @param {Object} data
+			 */
+			h.showMessageList = function(data) {
+				if(data.length > 0) {
+					var html=[];
+					$.each(data, function(i,v) {
+						html.push('<li class="mui-table-view-cell" rec_id="'+v.rec_id+'">\
+					<div class="mui-slider-right mui-disabled"><a class="mui-btn mui-btn-red del">删除</a></div>\
+					<div class="mui-slider-handle mui-table">\
+						<div class="mui-table-cell record-item'+(v.status==1?" is-read":"")+'">\
+							<p class="title">\
+								<span class="fl">'+(v.category==0?"系统":"活动")+'消息</span>\
+								<span class="fr">'+h.getYmdTime(v.send_time)+'</span></p>\
+							<p class="message">'+v.message+'</p></div></div></li>')
+					});
+					if(h.page==1){
+						h.d.list.innerHTML='';
+					}
+					h.d.list.innerHTML+=html.join('')
+				}else{
+					h.page==1&&(h.d.list.innerHTML = '<li class="no-comment">暂无消息<li>');
+				}
+			}
+			//删除消息
+			$('#list').on('tap','.del',function(){
+				var p=this.parentElement.parentElement;
+				var rec_id=p.getAttribute('rec_id');
+				p.parentElement.removeChild(p)
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					timeout:h.ajaxTimeout,
+					data:{
+						m:'delete_message',
+						token:h.token,
+						rec_id:rec_id
+					},
+					dataType:'json',
+					success:function(ret){
+//							alert(JSON.stringify(ret))
+					},
+					error:function(ret){
+						
+					}
+				});
+			})
+			
+					
+			$.plusReady(function() {
+				h.token=ms.getItem('token');
+				h._self=plus.webview.currentWebview();
+				getMessage()
+				$.back=function(){
+					plus.webview.currentWebview().close('slide-out-right');
+				}
+				
+				win.addEventListener('refresh',refresh,false)
+			})
+			
+		}(window,document, mui, honey, myStorage))
+    </script>
+	</body>
+
+</html>
+

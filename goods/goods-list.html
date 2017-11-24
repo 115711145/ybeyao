@@ -193,6 +193,12 @@
 					h.detailWebView.show('slide-in-right', 300)
 				})
 				
+				$('#list').on('tap','.ad',function(){
+					var ad_id=this.getAttribute('ad_id');
+					var ad_type=this.getAttribute('ad_type');
+					alert(ad_id)
+				})
+				
 				h.d.goTop.addEventListener('tap',function(){
 					h.mySrcollTo('',200)
 				})
@@ -209,7 +215,6 @@
 						d.getElementById('goTop').setAttribute('style','display: none;')
 					}
 				})
-				
 				
 			})
 			
@@ -269,7 +274,9 @@
 									}
 								}
 								if(ret.data.length>0){
-									h.showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?{src:'../images/ad'+honey.page+'.jpg'}:false)
+									var ad=[];
+									ad.push({name:'广告名称广告名称广告名称广告名称广告名称',type:1,src:'../images/ad'+honey.page+'.jpg'});
+									h.showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?ad:false)
 								}
 								h.total=ret.total;
 								if(h.page==1&&honey.total<=honey.pageSize){
