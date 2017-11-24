@@ -356,6 +356,9 @@
 				background: #ccc;
 				border-color: #ccc;
 			}
+			#re_goods_list .mui-checkbox>input{
+		        pointer-events: none;   
+		    }
 		</style>
 	</head>
 	<body>
@@ -560,6 +563,10 @@
 					},
 					success:function(ret){
 						if(ret.code==0){
+							if(ret.data.disable_return){
+								h.disableReturn()
+								return
+							}
 							h.d.loader.style.display="none";
 			        		d.getElementById('order').style.display="block";
 							//基本信息
@@ -594,7 +601,6 @@
 							}else{
 								d.getElementById('goods-list').innerHTML=html.join('')
 							}
-							
 //							d.getElementById('total_amount').innerText="￥"+ret.data.total_amount
 //							d.getElementById('integral_money').innerText="-￥"+ret.data.integral_money
 //							d.getElementById('quan').innerText="-￥"+ret.data.coupon_price
@@ -651,6 +657,11 @@
 					h.d.image_list.appendChild(div)
 					h.data.images.push({index:h.index,name:'images'+h.index,path:zip.target,size:zip.size})
 					h.index++
+				}
+				//禁止申请退款
+				h.disableReturn=function(){
+					$.alert('此订单申请退款的次数过多','申请被拒绝');
+					$.back()
 				}
 				
 				//删除图片
@@ -723,11 +734,13 @@
 				})
 				
 				//打开商品选择列表
-				h.d.re_goods.addEventListener('tap',function(){
+				h.d.re_goods.addEventListener('tap',function(e){
 					if(h.goods_enabled){
 						$('#re_goods_list').popover('toggle')
 						$('#goods-wrapper').scroll().scrollTo(0, 0, 0)
 					}
+					e.stopPropagation()
+					
 				})
 				
 				h.d.amount.addEventListener('change',function(){
@@ -831,18 +844,30 @@
 	        		h.changeReturnAmount()
 				}
 				
-				$('#re_goods_list').on('tap','.checkbox',function(e){
+				$('#re_goods_list').off('change').on('change','input[type="checkbox"]',function(e){
+//					$.toast(this.checked?'true':'false')
+//					e.stopPropagation();
 					var p=this.parentElement.parentElement.parentElement;
 	        		var rec_id=p.getAttribute('rec_id')
 	        		var num=p.querySelector('.mui-input-numbox').value
-	        		var is_check=this.checked?false:true;
+	        		var is_check=this.checked;
 	        		var img=p.querySelector('img').getAttribute('src')
 	        		var price=p.getAttribute('price')
 	        		h.changeReturnGoods(rec_id,num,is_check,img,price)
 				})
+//				$('#re_goods_list').on('tap','.checkbox',function(e){
+//					var p=this.parentElement.parentElement.parentElement;
+//	        		var rec_id=p.getAttribute('rec_id')
+//	        		var num=p.querySelector('.mui-input-numbox').value
+//	        		var is_check=this.checked?false:true;
+//	        		var img=p.querySelector('img').getAttribute('src')
+//	        		var price=p.getAttribute('price')
+//	        		h.changeReturnGoods(rec_id,num,is_check,img,price)
+//				})
 				//关闭商品列表
-				$('#re_goods_list').on('tap','.close-btn',function(){
+				$('#re_goods_list').on('tap','.close-btn',function(e){
 					$('#re_goods_list').popover('toggle')
+					e.stopPropagation()
 				})
 				h.is_submit=false;
 				d.getElementById('add-btn').addEventListener('tap',function(){

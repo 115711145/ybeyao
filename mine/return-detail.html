@@ -20,6 +20,13 @@
 				border-bottom: 1px dashed #ddd;
 				margin-bottom: 20px;
 			}
+			#remark{
+				color: #319FF4;
+				overflow: hidden;
+				width: 50%;
+				white-space: nowrap;
+				text-overflow:ellipsis;
+			}
 		</style>
 	</head>
 	<body>
@@ -79,6 +86,7 @@
 	       		<p><span class="title">订单编号</span><span id="goods_sn"></span></p>
 	       		<p><span class="title">申请时间</span><span id="add_time"></span></p>
 	       		<p><span class="title">退款状态</span><span id="status"></span></p>
+	       		<p style="display: none;"><span class="title">审核说明</span><span id="remark"></span></p>
 	       		<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥0</span></p>
 	       		<p><span class="title">退款原因</span><span id="reason"></span></p>
 	       		<p><span class="title">问题描述</span><span></span></p>
@@ -124,6 +132,7 @@
 			h.d={
 				address:d.getElementById('address'),
 				loader:d.getElementById('loader'),
+				remark:d.getElementById('remark'),
 			}
 			h.getOrderDetail=function(){
 				if(!h.order_id>0){
@@ -161,20 +170,31 @@
 							d.getElementById('goods_sn').innerText=ret.data.order_sn
 							var d_status=d.getElementById('status');
 							d_status.innerText=ret.data.return_status_desc
+							var color='';
 							switch(ret.data.status){
+								case 1:
+									color="orange";
+									break;
 								case 2:
-									d_status.setAttribute('style','color: #FF5053;')
+									color="#FF5053";
+									h.d.remark.innerText=ret.data.remark;
+									h.d.remark.parentElement.style.display="block";
 									break;
 								case 3:
-								case 4:
-									d_status.setAttribute('style','color: #41CEA9;')
+									color="#41cea9";
 									break;
+							}
+							if(color){
+								d_status.setAttribute('style','color: '+color+';')
+							}
+							if(ret.data.status!=2){
+								h.d.remark.parentElement.style.display="none";
 							}
 							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.addtime,1)
 							d.getElementById('sum_amount').innerText="￥"+h.fmoney((ret.data.refund_deposit*100+ret.data.refund_money*100)/100)
 							d.getElementById('reason').innerText=ret.data.reason
 							d.getElementById('describe').innerText=ret.data.describe
-							if(ret.data.status<4){
+							if(ret.data.status<3){
 								d.getElementById('btns').innerHTML='<span class="mui-btn mui-btn-grey">取消退款</span>';
 							}
 						}else{
@@ -234,6 +254,7 @@
 							if(ret.code==0){
 								$.toast('取消退款已成功！')
 								$.fire(h.orderListWin,'returnCallback')
+								
 								setTimeout(function(){
 									$.back()
 								})
@@ -248,6 +269,11 @@
 				})
 				
 				h.swipeClose(win)
+				
+				
+				h.d.remark.addEventListener('tap',function(){
+					$.alert(this.innerText,'审核说明')
+				})
 				
 				$.back=function(){
 					h._self.close('slide-out-right')

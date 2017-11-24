@@ -67,6 +67,7 @@
 	       		<p class="bold-title">基本信息</p>
 	       		<p><span class="title">订单编号</span><span id="goods_sn"></span></p>
 	       		<p><span class="title">订单状态</span><span id="status"></span></p>
+	       		<p style="display: none;"><span class="title">退款状态</span><span id="return-status"></span></p>
 	       		<p><span class="title">下单时间</span><span id="add_time"></span></p>
 	       		<div id="times">
 		       		<p><span class="title">支付时间</span><span></span></p>
@@ -82,11 +83,11 @@
 	       		<p class="bold-title">价格信息</p>
 	       		<p><span class="title">商品金额</span><span id="sum_amount">￥0</span></p>
 	       		<p><span class="title">配送费用</span><span id="sum_ps">￥0</span></p>
-	       		<p><span class="title">使用余额</span><span id="blance">-￥0</span></p>
-	       		<p><span class="title">使用积分</span><span id="point">-￥0</span></p>
+	       		<p><span class="title">余额抵扣</span><span id="blance">-￥0</span></p>
+	       		<p><span class="title">积分抵扣</span><span id="point">-￥0</span></p>
 	       		<!--<p><span class="title">折扣优惠:</span><span id="discount">-￥0</span></p>-->
 	       		<p><span class="title">优&nbsp;&nbsp;惠&nbsp;&nbsp;券</span><span id="coupon">-￥0</span></p>
-	       		<p><span class="title">实付金额</span><span class="price" id="order_amount">￥0</span></p>
+	       		<p><span class="title" id="pay-title">应付金额</span><span class="price" id="order_amount">￥0</span></p>
 		       	<div class="btns" id="btns"></div>
 	       </div>
 		</div>
@@ -117,14 +118,22 @@
 		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="weixin" >
-					<a href="#" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
+					<a style="color:#999">选择支付方式</a>
 				</li>
-				<li class="mui-table-view-cell" type="alipay">
-					<a href="#" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
+				<li class="mui-table-view-cell pay" type="wxpay" >
+					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
+				</li>
+				<li class="mui-table-view-cell pay" type="alipay">
+					<a href="#pay_list" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
 						支付宝支付</a>
 				</li>
-				<li class="mui-table-view-cell" type="hdfk">
+				<!--<li class="mui-table-view-cell" type="hdfk">
 					<a href="#" >货到付款</a>
+				</li>-->
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" type="cansel">
+					<a href="#pay_list" style="color: #999;" >取消</a>
 				</li>
 			</ul>
 		</div>
@@ -137,8 +146,9 @@
 			h.d={
 				address:d.getElementById('address'),
 				loader:d.getElementById('loader'),
+//				return_status:d.getElementById('return-status')
 			}
-			h.getOrderDetail=function(){
+			h.getOrderDetail=function(w){
 				if(!h.order_id>0){
 					h.noContent()
 					return
@@ -153,6 +163,10 @@
 						id:h.order_id
 					},
 					success:function(ret){
+						if(w){
+							w.close();
+							w=null;
+						}
 						if(ret.code==0){
 							h.d.loader.style.display="none";
 			        		d.getElementById('order').style.display="block";
@@ -172,7 +186,13 @@
 							d.getElementById('goods-list').innerHTML=html.join('')
 							//基本信息
 							d.getElementById('goods_sn').innerText=ret.data.order_sn
-							d.getElementById('status').innerText=ret.data.return_status_desc||ret.data.order_status_desc
+							d.getElementById('status').innerHTML=h.getOrderStatus(ret.data)
+//							if(ret.data.return_status>0){
+//								h.d.return_status.innerHTML=h.getReturnStatus(ret.data)
+//								h.d.return_status.parentElement.style.display="block";
+//							}else{
+//								h.d.return_status.parentElement.style.display="none";
+//							}
 							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.add_time,1)
 							var time_p=[];
 							if(ret.data.pay_time>0){
@@ -194,13 +214,30 @@
 							d.getElementById('point').innerText="-￥"+ret.data.integral_money
 							d.getElementById('coupon').innerText="-￥"+ret.data.coupon_price
 							d.getElementById('order_amount').innerText="￥"+ret.data.order_amount
+							d.getElementById('pay-title').innerText=(ret.data.pay_code=='alipay'||ret.data.pay_code=='wxpay')?"已付金额":"未付金额";
 							var btn=[]
 							if(ret.data.order_status>=3){//已完成、已取消、已关闭交易、退款单
+								if(ret.data.order_status==4){//已完成
+									btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+								}
 			        			btn.push('<span class="mui-btn mui-btn-link del-order" type="del-order">删除订单</span>');
 				        	}else{
 				        		if(ret.data.pay_status>0){
 				        			if(ret.data.return_status>0){
 				        				btn.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
+				        				if(ret.data.return_status<3){//待审核，已拒绝，订单可进行后续操作
+				        					if(ret.data.order_status==2){
+						        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
+						        			}else{
+						        				if(ret.data.shipping_status>0){
+						        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+						        				}
+						        			}
+				        				}else{
+				        					if(ret.data.return_status==4){
+				        						btn.push('<span class="mui-btn mui-btn-link del-order" style="border: 1px solid #007aff;" type="del-order">删除订单</span>');
+				        					}
+				        				}
 				        			}else{
 				        				if(ret.data.order_status==2){
 					        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
@@ -208,8 +245,8 @@
 					        				if(ret.data.shipping_status>0){
 					        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
 					        				}
-					        				btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 					        			}
+					        			btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 				        			}
 					        	}else{
 					        		if(ret.data.pay_code=='cod'){
@@ -232,7 +269,30 @@
 					}
 				});
 			}
-			
+			h.getReturnStatus=function(order){
+				var color='';
+				switch(order.return_status){
+					case 1:
+						color="orange";
+						break;
+					case 2:
+						color="#FF5053;";
+						break;
+					case 3:
+						color="#41cea9";
+						break;
+				}
+				return '<font'+(color?' color="'+color+'"':'')+'>'+order.return_status_desc+'</font>';
+			}
+			h.getOrderStatus=function(order){
+				if(order.return_status>0){
+					return h.getReturnStatus(order)
+				}
+				if(order.order_status_code=='CANCELLED'&&order.pay_status==0){
+					order.order_status_desc+='(未支付)'
+				}
+				return '<font class="'+(order.order_status_code=='WAITPAY'?" red":"")+'">'+order.order_status_desc+'</font>'
+			}
 			h.noContent=function(){
 				h.d.loader.style.display="none";
 				d.getElementById('no-order').setAttribute('style','')
@@ -241,41 +301,26 @@
 					$.back()
 				},1500)
 			}
-			/**
-			 * 订单操作
-			 * @param {string} type
-			 */
-			h.orderService=function(type){
-				
-			}
 			$.plusReady(function(){
 				h._self=plus.webview.currentWebview();
 				h.order_id=h._self.order_id
 				h.service=h._self.btn
 				h.token=ms.getItem('token')
 				h.getOrderDetail()
+				h.getchannel()
 				
-				h.orderService=function(type,order_id,o){
+				/**
+				 * 订单操作
+				 * @param {Object} type
+				 * @param {Object} order_id
+				 * @param {Object} o
+				 */
+				h.orderService=function(type,o){
 					var txt=o.innerText
 					switch(type){
 						case 'pay-order':
-							$.ajax(h.apiurl,{
-								type:"post",
-								async:true,
-								dataType:'json',
-								data:{
-									m:'order_service',
-									type:type,
-									token:h.token,
-									id:order_id
-								},
-								success:function(ret){
-									alert(JSON.stringify(ret))
-								},
-								error:function(){
-									
-								}
-							});
+							h.d.payBtn=o;
+							$('#pay_list').popover('toggle')
 							break
 						case 'del-order':
 						case 'cansel-order':
@@ -287,7 +332,7 @@
 								data:{
 									m:'order_service',
 									token:h.token,
-									id:order_id,
+									id:h.order_id,
 									type:type,
 								},
 								success:function(ret){
@@ -313,7 +358,7 @@
 							});
 							break
 						case 'return-order':
-							h.openWin('order-return.html','order-return',{order_id:order_id})
+							h.openWin('order-return.html','order-return',{order_id:h.order_id})
 							break
 						case 'comment-order':
 							alert('评价订单')
@@ -322,16 +367,30 @@
 							alert('确认收货')
 							break
 						case 'show-order':
-							h.openWin('return-detail.html','return-detail',{order_id:order_id})
+							h.openWin('return-detail.html','return-detail',{order_id:h.order_id})
 							break;
 					}
 				}
 				
 				d.getElementById('del').addEventListener('tap',function(){
-					h.orderService(h.del.type,h.del.order_id,h.del.obj)
+					h.orderService('del-order',h.del.obj)
 				})
 				d.getElementById('cansel_order').addEventListener('tap',function(){
-					h.orderService(h.cansel.type,h.cansel.order_id,h.cansel.obj)
+					h.orderService('cansel-order',h.cansel.obj)
+				})
+				
+				$('#pay_list').on('tap','.pay',function(){
+					var pay_type=this.getAttribute('type');
+					h.pay('pay_order',pay_type,h.order_id,function(ret){
+						if(ret.status){
+							//隐藏支付按钮
+							h.d.payBtn.style.display="none";
+							var w=plus.nativeUI.showWaiting('订单支付成功')
+							h.getOrderDetail(w)
+						}else{
+							$.toast(ret.msg)
+						}
+					})
 				})
 				
 				/**
@@ -341,22 +400,19 @@
 					var type=this.getAttribute('type')
 					if(type=='del-order'){
 						h.del={
-							type:type,
-							order_id:h.order_id,
 							obj:this
 						}
 						$('#delete').popover('toggle')
 					}else if(type=='cansel-order'){
 						h.cansel={
-							type:type,
-							order_id:h.order_id,
 							obj:this
 						}
 						$('#cansel').popover('toggle')
 					}else{
-						h.orderService(type,h.order_id,this)
+						h.orderService(type,this)
 					}
 				})
+				
 				//查看商品详情
 				$('#goods-list').on('tap','li',function(){
 					var goods_id = this.getAttribute('goods_id');

@@ -251,7 +251,8 @@
 					"cart/cart-header.html",
 					"cart/cart-content.html",
 					"cart/buy-header.html",
-					"cart/buy-content.html"
+					"cart/buy-content.html",
+					"barItem/message.html"
 				],
 				"priority": 0
 			},
@@ -543,7 +544,9 @@
 					"mine/collect-list.html",
 					"mine/personal.html",
 					"mine/wallet.html",
-					"mine/wallet-coupon.html"
+					"mine/wallet-coupon.html",
+					"mine/message.html",
+					"mine/about.html"
 				],
 				"priority": 0
 			},

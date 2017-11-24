@@ -45,19 +45,19 @@
 	       
 	       <div class="order">
 		       	<p id="xz_peisong">
-		       		<span class="title">配送方式</span><a id="peisong">送货上门</a>
+		       		<span class="title">配送方式</span><a id="peisong">配送到家</a>
 		       		<span class="mui-icon mui-icon-arrowright"></span>
 		       	</p>
-		       	<p id="xz_fdbs">
+		       	<p id="xz_fdbs" style="display: none;">
 		       		<span class="title">选择门店</span><a id="fdbs">总店</a>
 		       		<span class="mui-icon mui-icon-arrowright"></span>
 		       	</p>
-		       	<p>
+		       	<!--<p>
 		       		<span class="title">使用余额</span><input id="ye" type="number" class="mui-input-clear number" min="0" max="0" placeholder="可用余额0" />
 		       	</p>
 		       	<p>
 		       		<span class="title">使用积分</span><input id="jf" type="number" class="mui-input-clear number" min="0" max="0" placeholder="可用积分0" />
-		       	</p>
+		       	</p>-->
 		       	<p>
 		       		<span class="title">使用券码 </span><input id="qm" type="text" class="mui-input-clear number" placeholder="填写优惠券券码" />
 		       	</p>
@@ -72,8 +72,8 @@
 	       <div class="amout-list">
 	       		<p><span class="title">商品金额:</span><span class="price" id="sum_amount">￥123</span></p>
 	       		<p><span class="title">配送费用:</span><span class="price" id="sum_ps">￥0</span></p>
-	       		<p><span class="title">使用余额:</span><span class="price" id="blance">-￥0</span></p>
-	       		<p><span class="title">使用积分:</span><span class="price" id="point">-￥0</span></p>
+	       		<p><span class="title">余额抵扣:</span><span class="price" id="blance">-￥0</span></p>
+	       		<p><span class="title">积分抵扣:</span><span class="price" id="point">-￥0</span></p>
 	       		<p><span class="title">折扣优惠<font id="discount_txt"></font>:</span><span class="price" id="discount">-￥0</span></p>
 	       		<!--<p><span class="title">活动优惠:</span><span class="price" id="ladder">-￥0</span></p>-->
 	       		<p><span class="title">使用优惠券:</span><span class="price" id="coupon">-￥0</span></p>
@@ -156,16 +156,18 @@
 		</div>
 		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" type="weixin" >
+				<li class="mui-table-view-cell" type="wxpay" >
 					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
 				</li>
 				<li class="mui-table-view-cell" type="alipay">
 					<a href="#pay_list" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
 						支付宝支付</a>
 				</li>
-				<li class="mui-table-view-cell" type="hdfk">
+				<!--<li class="mui-table-view-cell" type="hdfk">
 					<a href="#pay_list" >货到付款</a>
-				</li>
+				</li>-->
+			</ul>
+			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="cansel">
 					<a href="#pay_list" style="color: #999;" >取消</a>
 				</li>
@@ -197,8 +199,8 @@
 				quan: document.getElementById('quan'),
 				sum_amount: document.getElementById('sum_amount'),
 				sum_ps: document.getElementById('sum_ps'),
-				ye: document.getElementById('ye'),
-				jf: document.getElementById('jf'),
+//				ye: document.getElementById('ye'),
+//				jf: document.getElementById('jf'),
 				qm: document.getElementById('qm'),
 				blance: document.getElementById('blance'),
 				point: document.getElementById('point'),
@@ -223,13 +225,13 @@
 				success:false,//提交成功
 				status:false//提交状态
 			}
-			h.pay_type='weixin';
+			h.pay_type='wxpay';
 			h.cityData = JSON.parse(cityData);
 			h.address_list = null;
 			h.discount=100;
 			h.pslist = [{
 				id: 1,
-				name: '送货上门'
+				name: '配送到家'
 			}, {
 				id: 2,
 				name: '门店自取'
@@ -243,6 +245,7 @@
 					li.push('<li class="mui-table-view-cell" psid="' + v.id + '">' + v.name + '</li>')
 				})
 				h.d.psfs.innerHTML = li.join('')
+				h.d.xz_fdbs.style.display="none"
 			}
 			/**
 			 * 获取购物流程配置
@@ -264,6 +267,7 @@
 						}
 					},
 					error: function(ret) {
+//						alert(ret.responseText)
 						$.toast('获取配置异常')
 					}
 				})
@@ -371,26 +375,32 @@
 					h.d.coupon.innerText = "-￥0";
 				}
 				//使用积分
-				if(h.d.jf.value > 0) {
-					var totalPayPoint = h.pay_amount * h.conf.point_rate;
-					if(h.d.jf.value > totalPayPoint) {
-						h.d.jf.value = totalPayPoint
+				h._points=h.user.pay_points;
+				if(h._sum.exchange_integral > 0){
+					if(h._points>h._sum.exchange_integral){
+						h._points=h._sum.exchange_integral;
 					}
-					h.use_jf = h.fmoney(parseInt(h.d.jf.value) / parseFloat(h.conf.point_rate));
+//				if(h.d.jf.value > 0) {
+					var totalPayPoint = h.pay_amount * h.conf.point_rate;
+					if(h._points > totalPayPoint) {
+						h._points = totalPayPoint
+					}
+					h.use_jf = h.fmoney(parseInt(h._points) / parseFloat(h.conf.point_rate));
 					h.pay_amount -= h.use_jf;
 					h.d.point.innerText = "-￥" + h.use_jf;
 				} else {
+					h._points=0;
 					h.d.point.innerText = "-￥0";
 				}
 				//使用余额
-				var ye=h.d.ye.value
-				if( ye> 0) {
-					if(ye > h.pay_amount) {
-						ye=h.pay_amount
+				h._ye=h.user.user_money;
+				if( h._ye> 0) {
+					if(h._ye > h.pay_amount) {
+						h._ye=h.pay_amount
 					}
-					h.d.ye.value=h.fmoney(ye)
-					h.pay_amount -= ye;
-					h.d.blance.innerText = "-￥" + h.fmoney(h.d.ye.value)
+//					h.d.ye.value=h.fmoney(ye)
+					h.pay_amount -= h._ye;
+					h.d.blance.innerText = "-￥" + h.fmoney(h._ye)
 				} else {
 					h.d.blance.innerText = "-￥0"
 				}
@@ -474,7 +484,11 @@
 					h.d.address.querySelector('.user').innerHTML = '<p><span class="name">收货人：' + v.consignee + '</span>\
 							<span class="phone">电话：' + v.mobile + '</span></p>\
 							<p class="address">' + address + v.address + '</p>';
-					h.getShopList()
+					if(v.city==17999){
+						h.getShopList()
+					}else{
+						h.d.xz_fdbs.style.display="none";
+					}
 				} else {
 					h.d.address.querySelector('.user').innerHTML = '<p id="no-address">添加收货地址</p>';
 				}
@@ -560,37 +574,38 @@
 	    		h.mineWin=plus.webview.getWebviewById('mine');
 	    		h.buyWin=plus.webview.getWebviewById('buy');
 				h.fixFooter()
+				h.getchannel()
 				/**
 				 * 输入余额事件
 				 */
-				h.d.ye.addEventListener('change', function() {
-					if(h.user.ye > 0) {
-						h.showPayAmount()
-					} else {
-						this.value = 0;
-						$.toast('无可用余额')
-					}
-				})
+//				h.d.ye.addEventListener('change', function() {
+//					if(h.user.ye > 0) {
+//						h.showPayAmount()
+//					} else {
+//						this.value = 0;
+//						$.toast('无可用余额')
+//					}
+//				})
 				/**
 				 * 输入积分事件
 				 */
-				h.d.jf.addEventListener('change', function() {
-					if(h.user.pay_points > 0 && h._sum.exchange_integral > 0) {
-						var use_jf = this.value;
-						if(use_jf > h.user.pay_points) {
-							use_jf = h.user.pay_points
-						}
-						if(use_jf > h._sum.exchange_integral) {
-							use_jf = h._sum.exchange_integral;
-							//		    				$.toast('订单中商品可使用积分上限为'+h._sum.exchange_integral)
-						}
-						this.value = use_jf;
-						h.showPayAmount()
-					} else {
-						this.value = 0;
-						$.toast(h.user.pay_points > 0 ? '订单中的商品不能使用积分兑换' : '无可用积分')
-					}
-				})
+//				h.d.jf.addEventListener('change', function() {
+//					if(h.user.pay_points > 0 && h._sum.exchange_integral > 0) {
+//						var use_jf = this.value;
+//						if(use_jf > h.user.pay_points) {
+//							use_jf = h.user.pay_points
+//						}
+//						if(use_jf > h._sum.exchange_integral) {
+//							use_jf = h._sum.exchange_integral;
+//							//		    				$.toast('订单中商品可使用积分上限为'+h._sum.exchange_integral)
+//						}
+//						this.value = use_jf;
+//						h.showPayAmount()
+//					} else {
+//						this.value = 0;
+//						$.toast(h.user.pay_points > 0 ? '订单中的商品不能使用积分兑换' : '无可用积分')
+//					}
+//				})
 				/**
 				 * 输入优惠券码事件
 				 */
@@ -649,7 +664,7 @@
 						$.toast('未选择收货地址')
 						return
 					}
-					if(!h.fdbs) {
+					if(h.psfs==2&&!h.fdbs) {
 						$.toast('请选择门店')
 						return
 					}
@@ -664,15 +679,15 @@
 							token: h.token,
 							goods: h.goods,
 							address_id: h.order.address.address_id,
-							use_money: h.d.ye.value,
-							use_point: h.d.jf.value,
+							use_money: h._ye,
+							use_point: h._points,
 							quan_code: h.d.qm.value,
 							quan_id: h.order.quan?h.order.quan.id:0,
 							beizhu:h.d.bz_txt.value,
 							pay_amount:h.pay_amount,
 							discount_money:h.discount_money,
 							psfs:h.psfs,
-							shop_id:h.fdbs.shop_id,
+							shop_id:h.fdbs?h.fdbs.shop_id:0,
 							pay_type:h.pay_type
 						},
 						success: function(ret) {
@@ -729,8 +744,8 @@
 						},
 						error: function(ret) {
 							h._submit.status=false;
-							alert(JSON.stringify(ret))
-							$.toast('error')
+//							alert(JSON.stringify(ret))
+//							$.toast('error')
 						}
 					});
 					//	    			setTimeout(function(){
@@ -793,23 +808,25 @@
 					h.token = ms.getItem('token')
 					h.user = ms.getItem('user')
 					h.user.ye = parseFloat(h.user.user_money) - parseFloat(h.user.frozen_money);
-					h.d.ye.setAttribute('placeholder', '您的当前余额为' + (h.user.ye || 0))
-					h.d.jf.setAttribute('placeholder', '您的当前积分为' + (h.user.pay_points || 0))
-					h.d.ye.blur()
-					h.d.jf.blur()
+//					h.d.ye.value=h.user.ye || 0;
+//					h.d.jf.value=h.user.pay_points || 0
+//					h.d.ye.setAttribute('placeholder', '您的当前余额为' + (h.user.ye || 0))
+//					h.d.jf.setAttribute('placeholder', '您的当前积分为' + (h.user.pay_points || 0))
+//					h.d.ye.blur()
+//					h.d.jf.blur()
 					h.d.qm.blur()
-					h.d.ye.value = ""
-					h.d.jf.value = ""
+//					h.d.ye.value = ""
+//					h.d.jf.value = ""
 					h.d.qm.value = ""
 					h.d.yhq.innerText = '不使用优惠券';
 					h.d.peisong.innerText = honey.pslist[0].name
 					h.order = {}
 					h.d._address.setAttribute('style', '')
-					h.getPeisongfs()
 					h.showItemList(h.goods = o.detail)
 					h.showPayAmount()
 					h.getCouponList()
 					h.getAddressList()
+					h.getPeisongfs()
 					h._submit={
 						success:false,//提交成功
 						status:false//提交状态
@@ -896,7 +913,10 @@
 				 * 打开配送方式列表
 				 */
 				h.d._ps.addEventListener('tap', function() {
-					$('#peisongfs').popover('toggle');
+					if(h.order.address.city==17999){
+						$('#peisongfs').popover('toggle');
+					}
+					
 				})
 		
 				/**
@@ -908,8 +928,15 @@
 						h.psfs = psid;
 						h.d._address.setAttribute('style', h.psfs == 1 ? '' : 'display:none');
 						h.d.peisong.innerText = this.innerText;
+						if(h.psfs==2){
+							h.d.fdbs.innerText="请选择门店";
+							h.d.xz_fdbs.style.display="block";
+						}else{
+							h.fdbs=null;
+							h.d.xz_fdbs.style.display="none";
+						}
 						//重新加载店铺列表
-						h.getShopList(-1)
+//						h.getShopList(-1)
 						h.showPayAmount()
 					}
 					$(this.parentElement.parentElement).popover('toggle');
@@ -937,7 +964,16 @@
 				//选择支付方式
 				$(h.d.pay_list).on('tap','li',function(){
 					h.pay_type=this.getAttribute('type')
-					$(h.d.pay_list).popover('toggle')
+					h.pay('pay_order',h.pay_type,h.order_id,function(ret){
+						$.toast(ret.msg)
+						h.orderSuccess()
+//						if(ret.status){
+//							$.toast('支付成功')
+//						}else{
+//							$.toast(ret.msg)
+//						}
+						
+					})
 				})
 		
 				//关闭列表 

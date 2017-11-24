@@ -706,6 +706,22 @@ var honey = (function(win, $) {
 //		var box=document.getElementById(id);
 		var leftBoxDom=document.getElementById('BoxLeft')
 		var rightBoxDom=document.getElementById('BoxRight')
+		if(ad) {
+			$.each(ad, function(i,v) {
+				var li=document.createElement('li');
+				li.className="ad";
+				li.setAttribute('ad_id',v.id||1)
+				li.setAttribute('ad_type',v.type||1)
+				var img=v.src.indexOf('http://')>=0?h.apiurl+v.src:v.src;
+			    li.innerHTML = '<p class="product_picture"><img class="lazy" data-lazyload="'+(img)+'" default-src="../images/default.png"/></p>'
+			            +'<p class="product_ie">'+v.name+'</p>';
+			    if(leftBoxDom.offsetHeight<rightBoxDom.offsetHeight ){
+			        leftBoxDom.appendChild(li)
+			    }else{
+			    	rightBoxDom.appendChild(li)
+			    }
+			});
+		}
 		$.each(data, function(i,v) {
 			var li=document.createElement('li');
 			li.className="goods-list";
@@ -719,7 +735,6 @@ var honey = (function(win, $) {
 		    }else{
 		    	rightBoxDom.appendChild(li)
 		    }
-//		    console.log('left:'+leftBoxDom.offsetHeight+' right:'+rightBoxDom.offsetHeight)
 		});
 		 $('#'+id).imageLazyload({
 			placeholder: '../images/default.png'
@@ -1241,6 +1256,114 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 	    	}
 	    	$.fire(honey.mineWin,'login',{show:show})
 	    }
+	    
+	    h.getchannel=function(){
+	    	// 获取支付通道
+			plus.payment.getChannels(function(channels){
+				for(var i in channels){
+					var channel=channels[i];
+					if(channel.id=='alipay' || channel.id=='wxpay'){
+						if(!h.paychannel){
+							h.paychannel={}
+						}
+						h.paychannel[channel.id]=channel;
+					}
+				}
+			},function(e){
+				$.toast('获取支付通道失败：'+e.message);
+			});
+	    }
+			
+		// 检测是否安装支付服务
+		h.checkServices=function(pc){
+			if(!pc.serviceReady){
+				var txt=null;
+				switch(pc.id){
+					case 'alipay':
+					txt='检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？';
+					break;
+					default:
+					txt='系统未安装“'+pc.description+'”服务，无法完成支付，是否立即安装？';
+					break;
+				}
+				plus.nativeUI.confirm(txt, function(e){
+					if(e.index==0){
+						pc.installService();
+					}
+				}, pc.description);
+			}
+		}
+	    h.pay_waitting=null;
+		h.pay=function (m,payType,id,callback){
+			console.log(h.token)
+			if(h.pay_waitting){
+				callback({status:false,msg:'已有订单在支付'})
+				return;
+			}
+//			console.log('开始获取支付通道')
+			//获取支付通道
+//			h.getchannel();
+//			console.log(JSON.stringify(h.paychannel))
+			if(!h.paychannel[payType]){
+				return
+			}
+			//检测是否安装服务
+			h.checkServices(h.paychannel[payType]);
+			//请求支付
+			if(payType!='alipay'&&payType!='wxpay'){
+				callback({status:false,msg:'不支持此类型支付'})
+				return
+			}
+			var appid=plus.runtime.appid;
+			if(navigator.userAgent.indexOf('StreamApp')>=0){
+				appid='Stream';
+			}
+			var data={
+				m:m,
+				pay_type:payType,
+				appid:appid,
+				id:id,
+				token:h.token
+			}
+			console.log(JSON.stringify(data))
+			h.pay_waitting=plus.nativeUI.showWaiting();
+			$.ajax(h.apiurl,{
+				type:"post",
+				async:false,
+				data:data,
+				dataType:'text',
+				success:function(ret){
+					h.pay_waitting.close()
+					h.pay_waitting=null;
+					console.log(ret)
+					ret=JSON.parse(ret);
+					if(!ret.data){
+						callback({status:false,msg:'请求支付失败'})
+						return
+					}
+					var order=ret.data;
+					plus.payment.request(h.paychannel[payType],order,function(result){
+						console.log(result)
+						callback({status:true,msg:'支付成功'})
+					},function(e){
+						switch(e.code){
+							case 62001:
+							case -2:
+								msg='取消支付';
+								break;
+							default:
+								msg='支付失败';
+						}
+						callback({status:false,msg:msg})
+					})
+				},
+				error:function(ret){
+					h.pay_waitting.close()
+					h.pay_waitting=null;
+					callback({status:false,msg:'订单请求失败'})
+				}
+			});
+		}
     })
     
 	return h;
