@@ -263,6 +263,10 @@
 				
 				win.addEventListener('refresh',refresh,false)
 				
+				win.addEventListener('login',function(){
+					h.token=ms.getItem('token');
+					getMessage()
+				})
 			})
 		
 		}(window,document, mui, honey, myStorage))

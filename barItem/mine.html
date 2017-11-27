@@ -353,6 +353,10 @@
 			    		honey.indexWin=plus.webview.getLaunchWebview()
 			    	}
 			    	$.fire(honey.indexWin,'login')
+			    	if(!honey.messageWin){
+			    		honey.messageWin=plus.webview.getWebviewById('message');
+			    	}
+			    	$.fire(honey.messageWin,'login')
 			    }
 				h.getUserInfo=function(is_preload){
 					if(h.token){

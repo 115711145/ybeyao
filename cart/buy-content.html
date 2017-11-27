@@ -352,7 +352,7 @@
 				var psf = 0;
 				if(h.psfs == 1) { //送货上门
 					//不免运费或者未满足要求或者未选择门店或收货地址或者不在配送范围内
-					if(!h._sum.is_free_shipping &&(h.conf.freight_free == 0 || h.conf.freight_free > h._sum.amount || !h.fdbs || !h.order.address || h.fdbs.district_id != h.order.address.district)) {
+					if(!h._sum.is_free_shipping &&(h.conf.freight_free == 0 || h.conf.freight_free > h._sum.amount )) {//|| !h.fdbs || !h.order.address || h.fdbs.district_id != h.order.address.district
 						psf = 10
 					}
 				}
