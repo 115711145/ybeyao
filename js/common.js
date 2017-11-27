@@ -555,10 +555,10 @@ var common =
 
 var honey = (function(win, $) {
 	var h={
-//		apiurl : "http://ybuser.ybyiyao.com/api/app/data/",
-//		apihost : "http://ybuser.ybyiyao.com",
-		apiurl : "http://192.168.11.226/api/app/data/",
-		apihost : "http://192.168.11.226",
+		apiurl : "http://www.ybeyao.com/api/app/data/",
+		apihost : "http://www.ybeyao.com",
+//		apiurl : "http://192.168.11.226/api/app/data/",
+//		apihost : "http://192.168.11.226",
 		page:1,
 		total:0,
 		pageSize:10,
@@ -1329,7 +1329,7 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 			h.pay_waitting=plus.nativeUI.showWaiting();
 			$.ajax(h.apiurl,{
 				type:"post",
-				async:false,
+				async:true,
 				data:data,
 				dataType:'text',
 				success:function(ret){
@@ -1358,6 +1358,7 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 					})
 				},
 				error:function(ret){
+					console.log(ret.responseText)
 					h.pay_waitting.close()
 					h.pay_waitting=null;
 					callback({status:false,msg:'订单请求失败'})
