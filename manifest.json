@@ -841,7 +841,8 @@
 				],
 				"refer": [
 					"mine/order-return.html",
-					"mine/return-detail.html"
+					"mine/return-detail.html",
+					"mine/comment-list.html"
 				],
 				"priority": 0
 			},

@@ -259,8 +259,12 @@
 					dataType: 'json',
 					success: function(ret) {
 						if(ret.code == 0 && ret.data) {
-							h.config = ret.data.shopping;
-							h.config.time=new Date().getTime();
+							var config = ret.data.shopping;
+							config.time=new Date().getTime();
+							h.config = {};
+							$.each(config, function(i, v) {
+								h.config[v.name] = v.value;
+							});
 							ms.setItem('conf_shopping', h.config)
 						} else {
 							$.toast('获取配置失败')
@@ -268,7 +272,7 @@
 					},
 					error: function(ret) {
 //						alert(ret.responseText)
-						$.toast('获取配置异常')
+//						$.toast('获取配置异常')
 					}
 				})
 			}
@@ -331,10 +335,6 @@
 			h.showPayAmount = function() {
 				h.d.sum_amount.innerText = "￥" + h.fmoney(h._sum.amount)
 				h.pay_amount = h._sum.amount;
-				h.conf = {};
-				$.each(h.config, function(i, v) {
-					h.conf[v.name] = v.value;
-				});
 				//折扣优惠
 				h.discount_money=h.discount<100?h.fmoney(h._sum.amount*(100-h.discount)/100):0;
 				h.d.discount.innerText="-￥"+h.discount_money;
@@ -352,7 +352,7 @@
 				var psf = 0;
 				if(h.psfs == 1) { //送货上门
 					//不免运费或者未满足要求或者未选择门店或收货地址或者不在配送范围内
-					if(!h._sum.is_free_shipping &&(h.conf.freight_free == 0 || h.conf.freight_free > h._sum.amount )) {//|| !h.fdbs || !h.order.address || h.fdbs.district_id != h.order.address.district
+					if(!h._sum.is_free_shipping &&(h.config.freight_free == 0 || h.config.freight_free > h._sum.amount )) {//|| !h.fdbs || !h.order.address || h.fdbs.district_id != h.order.address.district
 						psf = 10
 					}
 				}
@@ -381,11 +381,11 @@
 						h._points=h._sum.exchange_integral;
 					}
 //				if(h.d.jf.value > 0) {
-					var totalPayPoint = h.pay_amount * h.conf.point_rate;
+					var totalPayPoint = h.pay_amount * h.config.point_rate;
 					if(h._points > totalPayPoint) {
 						h._points = totalPayPoint
 					}
-					h.use_jf = h.fmoney(parseInt(h._points) / parseFloat(h.conf.point_rate));
+					h.use_jf = h.fmoney(parseInt(h._points) / parseFloat(h.config.point_rate));
 					h.pay_amount -= h.use_jf;
 					h.d.point.innerText = "-￥" + h.use_jf;
 				} else {
@@ -714,21 +714,27 @@
 									case 2:
 										//获取购物车中的商品
 										var cart=ms.getItem('cart');
-										if(ret.data.not_find&&ret.data.not_find.length>0){
-											//商品不存在（已过期）
-											cart=h.update_cart(cart,ret.data.not_find,'not_find')
+										if(ret.data){
+											if(ret.data.not_find&&ret.data.not_find.length>0){
+												//商品不存在（已过期）
+												cart=h.update_cart(cart,ret.data.not_find,'not_find')
+											}
+											if(ret.data.off_sale&&ret.data.off_sale.length>0){
+												//商品已下架
+												cart=h.update_cart(cart,ret.data.off_sale,'off_sale')
+											}
+											if(ret.data.store_nomore&&ret.data.store_nomore.length>0){
+												//库存不足，更新库存
+												cart=h.update_cart(cart,ret.data.store_nomore,'store_nomore')
+											}
+											//更新购物车
+											ms.setItem('cart',cart)
+											setTimeout(function(){
+												$.fire(h.cartContent,'showCart'); 
+											},500)
+											
 										}
-										if(ret.data.off_sale&&ret.data.off_sale.length>0){
-											//商品已下架
-											cart=h.update_cart(cart,ret.data.off_sale,'off_sale')
-										}
-										if(ret.data.store_nomore&&ret.data.store_nomore.length>0){
-											//库存不足，更新库存
-											cart.h.update_cart(cart,ret.data.store_nomore,'store_nomore')
-										}
-										//更新购物车
-										ms.setItem('cart',cart)
-										$.fire(h.cartContent,'showCart'); 
+										
 										break;
 									case 3://提交失败，更新配置参数
 										h.getShopConfig()
@@ -744,6 +750,7 @@
 						},
 						error: function(ret) {
 							h._submit.status=false;
+							alert(ret.responseText)
 //							alert(JSON.stringify(ret))
 //							$.toast('error')
 						}
@@ -767,15 +774,26 @@
 					$.each(items,function(i,v){
 						for(var j=0;j<cart.length;j++){
 							if(v.goods_id==cart[j].goods_id){
-								if(((!v.spec_key||v.spec_key=='undefined')&&(!cart[j].spec_key||cart[j].spec_key=='undefined'))||v.spec_key==cart[j].spec_key){
+								if((!cart[j].spec_key && !v.spec_key) || (cart[j].spec_key && v.spec_key && cart[j].spec_key==v.spec_key)){
+//								if(((!v.spec_key||v.spec_key=='undefined')&&(!cart[j].spec_key||cart[j].spec_key=='undefined'))||v.spec_key==cart[j].spec_key){
 									switch(type){
+//										case 'not_find':
+//										case 'off_sale':
+//											cart[j][type]=true;
+//										break;
+										case 'store_nomore'://库存不足
+											cart[j].num=v.max_store;
+								    		if(cart[j].num>0&&cart[j].price_ladder&&cart[j].price_ladder.length>0){
+								    			$.each(cart[j].price_ladder,function(k,val){
+								    				if(cart[j].num>=val.amount){
+				//				    					honey.cart[i].ladder_price=honey.fmoney(val.price*honey.discount/100)
+								    					cart[j].ladder_price=val.price
+								    				}
+								    			})
+								    		}
+										break;
 										case 'not_find':
 										case 'off_sale':
-											cart[j][type]=true;
-										break;
-										case 'store_nomore'://库存不足
-											cart[j].store=v.store;
-										break;
 										case 'delete':
 											//删除商品
     										cart.splice(j,1)

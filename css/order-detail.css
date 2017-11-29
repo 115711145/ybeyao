@@ -190,3 +190,9 @@
 	color: #FF5053;
 	border-color: #FF5053;
 }
+.is-return{
+	/*background: #ddd ;*/
+}
+.is-return span,.is-return p{
+	color: #999 !important;
+}

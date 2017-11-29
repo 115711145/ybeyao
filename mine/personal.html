@@ -357,15 +357,24 @@
 							var arr=h.user.birthday.split('-');
 							dDate.setFullYear(arr[0], arr[1]-1, arr[2]);
 						}else{
-							dDate.setFullYear(year-20, 0, 1);
+							dDate.setFullYear(year-50, 0, 1);
 						}
 						var minDate = new Date();
-						minDate.setFullYear(1900, 0, 1);
+						minDate.setFullYear(1910, 0, 1);
 						var maxDate = new Date();
 						maxDate.setFullYear(year, month, day);
 						plus.nativeUI.pickDate(function(e) {
-							var dt = h.getYmdTime(e.date.getTime()/1000);
-//							$.toast('您选择的日期是:' + h.getYmdTime(d.getTime()/1000));
+							var year_=e.date.getFullYear();
+							var month_=e.date.getMonth()+1;
+							if(month_<10){
+								month_='0'+month_;
+							}
+							var day_=e.date.getDate();
+							if(day_<10){
+								day_='0'+day_;
+							}
+							var dt = year_+'-'+month_+'-'+day_;
+//							$.toast('您选择的日期是:' + h.getYmdTime(dt.getTime()/1000));
 							h.editUserInfo('birthday',dt,function(ret){
 								if(ret){
 									if(ret.code==0){
@@ -378,7 +387,7 @@
 							})
 							
 						}, function(e) {
-							info.innerText = "您没有选择日期";
+							$.toast("您没有选择日期")
 						}, {
 							title: "请选择生日",
 							date: dDate,
