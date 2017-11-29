@@ -896,7 +896,7 @@
 							if(ret.code==0){
 								$.toast('申请成功，请等待审核')
 								$.fire(h.mineWin,'reloadUser')
-								$.fire(h.orderListWin,'returnCallback')
+								$.fire(h.orderListWin,'reloadOrderStatus')
 								setTimeout(function(){
 									$.back()
 								},1000)

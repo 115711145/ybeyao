@@ -253,7 +253,7 @@
 							plus.nativeUI.closeWaiting()
 							if(ret.code==0){
 								$.toast('取消退款已成功！')
-								$.fire(h.orderListWin,'returnCallback')
+								$.fire(h.orderListWin,'reloadOrderStatus')
 								
 								setTimeout(function(){
 									$.back()

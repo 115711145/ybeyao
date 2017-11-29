@@ -1164,6 +1164,9 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
      * @param len: 需要截取的长度 
      */
     h.cutstr=function (str, len) {
+    	if(!str){
+    		return '';
+    	}
         var str_length = 0;
         var str_len = 0;
         len=len||56;

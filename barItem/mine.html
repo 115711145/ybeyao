@@ -336,10 +336,8 @@
 				}else{
 					setTimeout(function(){
 						$.fire(h.indexWin,'goHome')
-					},1500)
+					},500)
 				}
-				$.fire(h.indexWin,'goHome')
-
 			}
 			$.plusReady(function(){
 				h.token=ms.getItem('token')
@@ -453,7 +451,7 @@
 				})
 				
 				win.addEventListener('logout',function(){
-					h.logout()
+					h.logout(true)
 				})
 				
 				win.addEventListener('show_head',function(o){
