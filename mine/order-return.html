@@ -581,19 +581,25 @@
 								if(ret.data.coupon_price>0){
 									html.push('<p class="mui-inline" id="rg_'+v.rec_id+'"><img src="'+img+'" width="20"><font>*'+v.goods_num+'</font></p>')
 								}else{
-									html.push('<li rec_id="'+v.rec_id+'" price="'+v.member_goods_price+'"><div class="radio fl ">\
-				                    <div class="mui-input-row mui-checkbox mui-left box">\
-										<label>&nbsp;</label><input name="checkbox" type="checkbox" class="checkbox"></div></div>\
-				                	<div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl">\
-				                    <p class="title">'+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p><p class="sc_pri fl">\
-				                        <span class="price">￥'+v.member_goods_price+'</span>\
-				                    </p><div class="mui-numbox fr">\
-										<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>\
-										<input class="mui-input-numbox" type="number" min="1" max="'+v.goods_num+'" value="'+v.goods_num+'"/>\
-										<button class="mui-btn mui-btn-numbox-plus" type="button">+</button></div></div></li>')
+									if(v.goods_num>v.return_num){
+										html.push('<li rec_id="'+v.rec_id+'" price="'+v.member_goods_price+'"><div class="radio fl ">\
+					                    <div class="mui-input-row mui-checkbox mui-left box">\
+											<label>&nbsp;</label><input name="checkbox" type="checkbox" class="checkbox"></div></div>\
+					                	<div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl">\
+					                    <p class="title">'+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p><p class="sc_pri fl">\
+					                        <span class="price">￥'+v.member_goods_price+'</span>\
+					                    </p><div class="mui-numbox fr">\
+											<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>\
+											<input class="mui-input-numbox" type="number" min="1" max="'+v.goods_num+'" value="'+v.goods_num+'"/>\
+											<button class="mui-btn mui-btn-numbox-plus" type="button">+</button></div></div></li>')
+									}
 								}
 							});
-							if(ret.data.coupon_price>0){
+							if(ret.data.coupon_price>0||html.length==0){
+								if(ret.data.coupon_price==0){
+									h.disableReturn('此订单已申请退款')
+									return
+								}
 								h.d.amount.innerText="￥"+h.max_amount;
 								h.goods_enabled=false;
 //								h.d.goods_row.setAttribute('style','display: none;')
@@ -659,8 +665,8 @@
 					h.index++
 				}
 				//禁止申请退款
-				h.disableReturn=function(){
-					$.alert('此订单申请退款的次数过多','申请被拒绝');
+				h.disableReturn=function(msg){
+					$.alert(msg||'此订单申请退款的次数过多','申请被拒绝');
 					$.back()
 				}
 				
@@ -891,6 +897,7 @@
 					},function(upload,status){
 						plus.nativeUI.closeWaiting()
 						h.d.progressbar.progressbar().hide();
+//						console.log(upload.responseText)
 						if(status==200){
 							ret=JSON.parse(upload.responseText)
 							if(ret.code==0){
