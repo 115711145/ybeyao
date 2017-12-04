@@ -226,9 +226,9 @@
 							num+=num+parseInt(val.goods_num)
 							var img=h.getGoodsImgUrl(val.goods_id,val.img_id)
 							var cls='';
-							if(val.return_status>2&&val.return_status<5){
+							if(val.return_status>0&&val.return_status<5){
 								cls=' is-return';
-								val.goods_name='<font color="red">[已退]</font>'+h.cutstr(val.goods_name);
+								val.goods_name='<font color="red">[退]</font>'+h.cutstr(val.goods_name);
 							}
 							li.push('<div class="order-goods fl'+cls+'" goods_id="'+val.goods_id+'">'
 			                +'<div class="goods-img fl">'
@@ -285,6 +285,7 @@
 	        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
 	        	}else{
 	        		if(order.pay_status>0){
+	        			li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 	        			if(order.return_status>0){
 	        				li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
 	        				if(order.return_status<3 || (order.return_status>2&&order.return_status<5&&order.return_info&&order.return_info.type==0)){
@@ -307,7 +308,6 @@
 		        				if(order.shipping_status>0){
 		        					li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
 		        				}
-	        					li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 		        			}			        				
 	        			}
 		        	}else{
@@ -433,6 +433,7 @@
 								},
 								success:function(ret){
 									plus.nativeUI.closeWaiting()
+									console.log(JSON.stringify(ret))
 									if(ret.code==0){
 										$.toast(txt+'成功')
 										h.reloadOrderStatus()
@@ -442,6 +443,7 @@
 								},
 								error:function(ret){
 									plus.nativeUI.closeWaiting()
+//									alert(ret.responseText)
 								}
 							});
 							break

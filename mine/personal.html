@@ -330,6 +330,9 @@
 					})
 					
 					h.d.sex.addEventListener('tap',function(){
+						if(h.user.sex>0){
+							return
+						}
 						$('#sel-sex').popover('toggle')
 					})
 					
@@ -349,6 +352,9 @@
 					})
 					
 					h.d.birthday.addEventListener('tap',function(){
+						if(h.user.birthday){
+							return
+						}
 						var dDate = new Date();
 						var year=dDate.getFullYear();
 						var month=dDate.getMonth();

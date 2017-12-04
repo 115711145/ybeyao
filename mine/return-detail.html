@@ -11,7 +11,7 @@
 		<link type="text/css" rel="stylesheet" href="../css/order-detail.css" />
 		<style>
 			body{
-				background: #fff;
+				/*background: #fff;*/
 			}
 			#no-content{
 				background: #fff;
@@ -26,6 +26,52 @@
 				width: 50%;
 				white-space: nowrap;
 				text-overflow:ellipsis;
+			}
+			.order-info{
+				padding: 10px;
+				font-size: 18px;
+				color: #4e5e71;
+				background: #fff;
+				margin: 0 !important;
+			}
+			.return-list{
+				margin: 4px 0 10px 0;
+			}
+			.desc{
+				clear: both;
+				font-size: 14px;
+				color: #4e5e71;;
+				background: #fff;
+				padding: 5px 15px 5px 15px;
+				border-bottom: 1px solid #eee !important;
+				height: 32px;
+			}
+			.desc span{
+				display: inline-block;
+			}
+			.desc span:last-child{
+				text-align: right;
+			}
+			.sc_list{
+				clear: both;
+			}
+			.return-item{
+				background: #fff;
+				margin-bottom: 10px;
+			}
+			#order{
+				background: none;
+			}
+			.imgs img{
+				border: 1px solid #efefef;
+				border-radius: 5px;
+				margin: 5px !important;
+				width: 45px;
+				height: 45px;
+			}
+			.btns{
+				text-align: center;
+				padding: 5px;
 			}
 		</style>
 	</head>
@@ -47,7 +93,7 @@
 				<p>您已取消退款</p>
 			</div>
 		</div>
-		<div class="mui-content" id="order" style="display: none;">
+		<div class="mui-content" id="order" >
 			<div class="user-address" id="address">
 				<!--<p>
 					<span class="name">收货人：张三</span>
@@ -60,56 +106,69 @@
 					<span class="mui-icon mui-icon-arrowright"></span>
 				</p>-->
 			</div>
-			<ul class="sc_list" id="goods-list">
-				<!--<li>
-	                <div class="goods-img fl">
-	                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
-	                </div>
-	                <div class="goods-info fl">
-	                    <p class="title">
-	                    	云南白药 气血康胶囊24粒（买五送一送原品）
-	                    </p>
-	                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
-	                </div>
-	                <div class="price-num fr">
-	                	 <p class="price">
-	                        <span>￥</span><span>10001.00</span>
-	                	</p>
-	                	<p>
-	                		<span>×</span><span>1100</span>
-	                	</p>
-	                </div>
-		        </li>-->
-	       </ul>
-	       <div class="amout-list" style="padding-bottom: 20px;">
-	       		<p class="bold-title">退款信息</p>
-	       		<p><span class="title">订单编号</span><span id="goods_sn"></span></p>
-	       		<p><span class="title">申请时间</span><span id="add_time"></span></p>
-	       		<p><span class="title">退款状态</span><span id="status"></span></p>
-	       		<p style="display: none;"><span class="title">审核说明</span><span id="remark"></span></p>
-	       		<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥0</span></p>
-	       		<p><span class="title">退款原因</span><span id="reason"></span></p>
-	       		<p><span class="title">问题描述</span><span></span></p>
-	       		<p id="describe"></p>
-	       		<div class="btns" id="btns">
-	       			
-	       		</div>
+			<div class="return-list" id="return-list">
+				<!--<div class="return-item">
+				   <div class="desc">
+						<span class="fl">等待系统退款</span>
+						<span class="fr">2017-10-10 10:10:10</span>
+					</div>
+					<ul class="sc_list">
+						<li>
+			                <div class="goods-img fl">
+			                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+			                </div>
+			                <div class="goods-info fl">
+			                    <p class="title">
+			                    	云南白药 气血康胶囊24粒（买五送一送原品）
+			                    </p>
+			                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+			                </div>
+			                <div class="price-num fr">
+			                	 <p class="price">
+			                        <span>￥</span><span>10001.00</span>
+			                	</p>
+			                	<p>
+			                		<span>×</span><span>1100</span>
+			                	</p>
+			                </div>
+				        </li>
+				        <li>
+			                <div class="goods-img fl">
+			                	<img src="http://ybuser.ybyiyao.com/public/upload/goods/thumb/3580/goods_thumb_3580_200_200.jpeg">
+			                </div>
+			                <div class="goods-info fl">
+			                    <p class="title">
+			                    	云南白药 气血康胶囊24粒（买五送一送原品）
+			                    </p>
+			                    <p class="weight">套餐:套餐一 买赠:买赠一</p>
+			                </div>
+			                <div class="price-num fr">
+			                	 <p class="price">
+			                        <span>￥</span><span>10001.00</span>
+			                	</p>
+			                	<p>
+			                		<span>×</span><span>1100</span>
+			                	</p>
+			                </div>
+				        </li>
+			       </ul>
+			        <div class="amout-list" style="padding-bottom: 20px;">
+			       		<p style="display: none;"><span class="title">审核说明</span><span id="remark"></span></p>
+			       		<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥0</span></p>
+			       		<p><span class="title">退款原因</span><span id="reason"></span></p>
+			       		<p><span class="title">问题描述</span><span></span></p>
+			       		<p class="describe">
+			       			<div class="imgs">
+			       				<img src="../images/ad1.jpg" width="50" height="50"/>
+			       			</div>
+			       		</p>
+			       		<div class="btns" id="btns">
+			       			
+			       		</div>
+			       </div>
+			     </div>-->
+				</div>
 	       </div>
-		</div>
-		
-		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" type="weixin" >
-					<a href="#" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
-				</li>
-				<li class="mui-table-view-cell" type="alipay">
-					<a href="#" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
-						支付宝支付</a>
-				</li>
-				<li class="mui-table-view-cell" type="hdfk">
-					<a href="#" >货到付款</a>
-				</li>
-			</ul>
 		</div>
 		<div id="cancel" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
@@ -132,7 +191,7 @@
 			h.d={
 				address:d.getElementById('address'),
 				loader:d.getElementById('loader'),
-				remark:d.getElementById('remark'),
+				return_list:d.getElementById('return-list'),
 			}
 			h.getOrderDetail=function(){
 				if(!h.order_id>0){
@@ -154,9 +213,11 @@
 			        		d.getElementById('order').style.display="block";
 							h.data=ret.data;
 							//收货地址
-							h.d.address.innerHTML='<div class="user"><p><span class="name">收货人：'+ret.data.consignee+'</span>\
-							<span class="phone">电话：'+ret.data.mobile+'</span></p><p class="address">\
-							收件地址：'+ret.data.address+'</p></div>';
+							h.d.address.innerHTML='<div class="user"><p><span class="name">收货人：'+ret.data[0].consignee+'</span>\
+							<span class="phone">电话：'+ret.data[0].mobile+'</span></p><p class="address">\
+							收件地址：'+ret.data[0].address+'</p></div>';
+							h.d.return_list.innerHTML=h.getReturnListHtml(h.data)
+							return
 							//商品列表
 							var html=[];
 							$.each(ret.data.goods_list, function(i,v) {
@@ -206,6 +267,46 @@
 					}
 				});
 			}
+			h.getReturnListHtml=function(data){
+				var str=[];
+				$.each(data, function(i,v) {
+					str.push('<div class="return-item"><div class="desc"><span class="fl">'+v.return_status_desc+'</span><span class="fr">'+h.getYmdTime(v.addtime,1)+'</span></div>');
+					str.push(h.getGoodsListHtml(v.goods_list));
+					str.push('<div class="amout-list" style="padding-bottom: 20px;">')
+			       	str.push('<p><span class="title">退款原因</span><span id="reason">'+v.reason+'</span></p>')
+			       	str.push('<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥'+h.fmoney((v.refund_deposit*100+v.refund_money*100)/100)+'</span></p>')
+			       	v.status==2&&str.push('<p><span class="title">审核说明</span><span class="remark">'+v.remark+'</span></p>')
+			       	str.push('<p><span class="title">问题描述</span><span></span></p>')
+			       	var img_str=[];
+			       	if(v.imgs){
+			       		img_str.push('<div class="imgs">');
+			       		var imgs=v.imgs.split(',');
+			       		for(var j=0;j<imgs.length;j++){
+			       			img_str.push('<img src="'+h.apihost+imgs[j]+'"/>')
+			       		}
+			       		img_str.push('</div>')
+			       	}
+			       	str.push('<p id="describe">'+v.describe+img_str.join('')+'</p>')
+		       		if(v.status<3){
+						str.push('<div class="btns"><span class="mui-btn mui-btn-grey"  return-id="'+v.return_id+'">取消退款</span></div>')
+		       		}
+			       	str.push('</div></div>');	
+				});
+				return str.join('')
+			}
+			
+			h.getGoodsListHtml=function(list){
+				var html=['<ul class="sc_list">'];
+				$.each(list, function(i,v) {
+					var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+					html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
+					+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
+        	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
+				});
+				html.push('</ul>');
+				return html.join('');
+			}
+			
 			
 			h.noContent=function(){
 				h.d.loader.style.display="none";
@@ -231,7 +332,7 @@
 					$('#cancel').popover('toggle')
 				})
 				
-				d.getElementById('cansel-btn').addEventListener('tap',function(){
+				$(h.d.return_list).on('tap','.mui-btn-grey',function(){
 					if(h.is_cansel){
 						return
 					}
@@ -246,6 +347,7 @@
 							m:'order_service',
 							type:'cansel-return',
 							id:h.order_id,
+							return_id:return_id,
 							token:h.token
 						},
 						success:function(ret){
@@ -271,7 +373,7 @@
 				h.swipeClose(win)
 				
 				
-				h.d.remark.addEventListener('tap',function(){
+				$(h.d.return_list).on('tap','.remark',function(){
 					$.alert(this.innerText,'审核说明')
 				})
 				

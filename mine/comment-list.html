@@ -156,9 +156,8 @@
 			<h1 class="mui-title" id="header-title">我的评价</h1>
 			<div class="top-btn">
 				<div class="mui-segmented-control mui-segmented-control-honey" id="type-item">
-					<a class="mui-control-item mui-active" type="ALL" index="0">全部</a>
-					<a class="mui-control-item" type="WAITCCOMMENT" index="1">待评价</a>
-					<a class="mui-control-item" type="COMMENTED" index="2">已评价</a>
+					<a class="mui-control-item" type="WAITCCOMMENT" index="0">待评价</a>
+					<a class="mui-control-item" type="COMMENTED" index="1">已评价</a>
 				</div>
 			</div>
 		</header>
@@ -227,15 +226,10 @@
 				if(h.is_loading){
 					return;
 				}
-				switch(h.type){
-					case 'WAITCCOMMENT':
-						type=0;
-						break;
-					case 'COMMENTED':
-						type=1;
-						break;
-					default:
-						type=2;
+				if(h.type=='WAITCCOMMENT'){
+					type=0;
+				}else{
+					type=1;
 				}
 				if(h.page==1){
 					h.d.list.innerHTML='';
@@ -249,7 +243,8 @@
 					data:{
 						m:'comment_list',
 						token:h.token,
-						type:type
+						type:type,
+						page:h.page,
 					},
 					success:function(ret){
 						h.is_loading=false;
@@ -283,7 +278,7 @@
 						var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
 						html.push('<li class="comment-list" order_id="'+v.order_id+'" rec_id="'+v.rec_id+'"><div class="goods-img fl">\
 				                	<img src="'+img+'"></div><div class="goods-info fl"><p class="title">'+v.goods_name
-				                	+'</p><p class="buy-time">购买时间:'+h.getYmdTime(v.order_time,1)+'</p><p class="fr btns">\
+				                	+'</p><p class="buy-time">购买时间:'+h.getYmdTime(v.add_time,1)+'</p><p class="fr btns">\
 						        		<span class="mui-btn mui-btn-nav'+(v.is_comment==1?' order-btn"><span class="mui-icon mui-icon-search"></span>查看评价':' comment-btn"><span class="mui-icon mui-icon-compose"></span>评价订单')+'</span>\
 						        		</p></div></li>')
 					});
@@ -309,7 +304,7 @@
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
 				h._self=plus.webview.currentWebview();
-				h.type='ALL';
+				h.type='WAITCCOMMENT';
 				h.index=0;
 				h.mineWin=plus.webview.getWebviewById('mine')
 				h.showType()
@@ -377,7 +372,7 @@
 				
 				win.addEventListener('swipeleft',function(e){
 					var angle = Math.abs(e.detail.angle);
-					if(angle>177&&angle<185&&h.index<2){
+					if(angle>177&&angle<185&&h.index<1){
 						$.trigger(h.d.type_item.querySelectorAll('a')[h.index*1+1],'tap')
 					}
 				})
