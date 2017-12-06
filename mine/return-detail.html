@@ -270,7 +270,8 @@
 			h.getReturnListHtml=function(data){
 				var str=[];
 				$.each(data, function(i,v) {
-					str.push('<div class="return-item"><div class="desc"><span class="fl">'+v.return_status_desc+'</span><span class="fr">'+h.getYmdTime(v.addtime,1)+'</span></div>');
+					var color=v.status>1?(v.status>2?"green":"red"):"orange";
+					str.push('<div class="return-item"><div class="desc"><span class="fl"><font color="'+color+'">'+v.return_status_desc+'</font></span><span class="fr">'+h.getYmdTime(v.addtime,1)+'</span></div>');
 					str.push(h.getGoodsListHtml(v.goods_list));
 					str.push('<div class="amout-list" style="padding-bottom: 20px;">')
 			       	str.push('<p><span class="title">退款原因</span><span id="reason">'+v.reason+'</span></p>')
@@ -301,7 +302,7 @@
 					var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
 					html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
 					+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
-        	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
+        	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.return_num+'</span></p></div></li>')
 				});
 				html.push('</ul>');
 				return html.join('');
@@ -336,6 +337,7 @@
 					if(h.is_cansel){
 						return
 					}
+					var return_id=this.getAttribute('return-id');
 					h.is_cansel=true;
 					plus.nativeUI.showWaiting('正在取消退款...');
 					$.ajax(h.apiurl,{

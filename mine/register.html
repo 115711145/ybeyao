@@ -51,179 +51,179 @@
 	<script src="../js/common.js" charset="UTF-8"></script>
 	<script src="../js/jsencrypt.js" charset="UTF-8"></script>
 	<script type="text/javascript" charset="UTF-8">
-		mui.init({
-			swipeBack: true
-		});
-		honey.codeTime=0;
-		honey.autoTimeout=function(start){
-			if(start){
-				honey.codeTime=120; 
-				honey.d.getCode.setAttribute('style','background:#ccc;border:1px solid #ccc');
+		(function(win,d,$,h,ms){
+			$.init({
+				swipeBack: true
+			});
+			h.codeTime=0;
+			h.autoTimeout=function(start){
+				if(start){
+					h.codeTime=120; 
+					h.d.getCode.setAttribute('style','background:#ccc;border:1px solid #ccc');
+				}
+				if(h.codeTime>0){ 
+					h.codeTime--;
+					h.d.codeTime.innerText=h.codeTime;
+					setTimeout(h.autoTimeout,1000)
+				}else{
+					h.d.codeTime.innerText='';
+					h.d.getCode.setAttribute('style','')
+				}
 			}
-			if(honey.codeTime>0){ 
-				honey.codeTime--;
-				honey.d.codeTime.innerText=honey.codeTime;
-				setTimeout(honey.autoTimeout,1000)
-			}else{
-				honey.d.codeTime.innerText='';
-				honey.d.getCode.setAttribute('style','')
-			}
-		}
-		
-		mui.plusReady(function(){
-			honey.d={
-				account: document.getElementById('account'),
-				pwd : document.getElementById('pwd'),
-				repwd : document.getElementById('repwd'),
-				submitBtn : document.getElementById('submit'),
-				code : document.getElementById('code'),
-				getCode : document.getElementById('get-code'),
-				codeTime:document.getElementById('code-time'),
-				back:document.getElementById('back')
-			}
-			//获取设备信息和系统信息
-			honey.getSysInfo()
-			honey.getDeviceInfo()
-			/**
-			 * 监听手机号码输入
-			 */
-			honey.d.account.addEventListener('input',function(){
-				var v=this.value;
-				if(isNaN(v)){
-					v=v.substr(0,v.length-1)
-				}
-				if(v.length>11){
-					v=v.substr(0,11);
-				}
-				this.value=v;
-				if(v.length==11){
-					isPhone(v)?honey.d.account.setAttribute('style','')
-					:honey.d.account.setAttribute('style','color:#DD5044')
-				}
-			})
-			/**
-			 * 监听密码输入
-			 */
-			honey.d.pwd.addEventListener('input',function(){
-				var v=this.value;
-				if(v.length>20){
-					v=v.substr(0,20);
-				}
-				this.value=v;
-			})
-			/**
-			 * 监听确认密码
-			 */
-			honey.d.repwd.addEventListener('input',function(){
-				var v=this.value;
-				if(v.length>20){
-					v=v.substr(0,20);
-				}
-				this.value=v;
-			})
 			
-			/**
-			 * 监听验证码
-			 */
-			honey.d.code.addEventListener('input',function(){
-				var v=this.value;
-				if(v.length>4){
-					v=v.substr(0,4);
+			$.plusReady(function(){
+				h.d={
+					account: document.getElementById('account'),
+					pwd : document.getElementById('pwd'),
+					repwd : document.getElementById('repwd'),
+					submitBtn : document.getElementById('submit'),
+					code : document.getElementById('code'),
+					getCode : document.getElementById('get-code'),
+					codeTime:document.getElementById('code-time'),
+					back:document.getElementById('back')
 				}
-				this.value=v;
-			})
-			
-			/**
-			 * 获取验证码
-			 */
-			honey.d.getCode.addEventListener('tap',function(){
-				if(honey.codeTime==0){
-					if(!isPhone(honey.d.account.value)){
-						mui.toast('请输入正确的手机号')
+				//获取设备信息和系统信息
+				h.getSysInfo()
+				h.getDeviceInfo()
+				/**
+				 * 监听手机号码输入
+				 */
+				h.d.account.addEventListener('input',function(){
+					var v=this.value;
+					if(isNaN(v)){
+						v=v.substr(0,v.length-1)
+					}
+					if(v.length>11){
+						v=v.substr(0,11);
+					}
+					this.value=v;
+					if(v.length==11){
+						h.isPhone(v)?h.d.account.setAttribute('style','')
+						:h.d.account.setAttribute('style','color:#DD5044')
+					}
+				})
+				/**
+				 * 监听密码输入
+				 */
+				h.d.pwd.addEventListener('input',function(){
+					var v=this.value;
+					if(v.length>20){
+						v=v.substr(0,20);
+					}
+					this.value=v;
+				})
+				/**
+				 * 监听确认密码
+				 */
+				h.d.repwd.addEventListener('input',function(){
+					var v=this.value;
+					if(v.length>20){
+						v=v.substr(0,20);
+					}
+					this.value=v;
+				})
+				
+				/**
+				 * 监听验证码
+				 */
+				h.d.code.addEventListener('input',function(){
+					var v=this.value;
+					if(v.length>4){
+						v=v.substr(0,4);
+					}
+					this.value=v;
+				})
+				
+				/**
+				 * 获取验证码
+				 */
+				h.d.getCode.addEventListener('tap',function(){
+					if(h.codeTime==0){
+						if(!h.isPhone(h.d.account.value)){
+							$.toast('请输入正确的手机号')
+							return
+						}
+						$.ajax(h.h.apiurl,{
+							data:{m:'get_register_code',mobile:h.d.account.value},
+							type:'post',
+							dataType:'json',
+							timeout:h.ajaxTimeout,
+							success:function(ret){ 
+								if(ret.code==0){
+									h.autoTimeout(1)
+									$.toast('短信发送成功')
+								}else{
+									$.toast(ret.msg)
+									if(ret.code==3){
+										h.autoTimeout(1)
+									}
+								}
+							},
+							error:function(ret){
+								$.toast('短信发送失败')
+							}
+						})
+					}
+				})
+				
+				/**
+				 * 注册按钮事件
+				 */
+				h.d.submitBtn.addEventListener('tap',function(){
+					if (!h.isPhone(h.d.account.value)){
+						$.toast('请输入正确的手机号');
+						h.d.account.setAttribute('style','color:#DD5044')
+						return;
+					}
+					if (h.d.pwd.value.length < 6){
+						$.toast('请输入6至20位密码');
+						return;
+					}
+					if (h.d.repwd.value.length <= 0 || h.d.pwd.value != h.d.repwd.value	){
+						$.toast('两次输入密码必须一致');
+						return;
+					}
+					if(h.d.code.value.length<4){
+						$.toast('验证码错误')
 						return
 					}
-					mui.ajax(honey.apiurl,{
-						data:{m:'get_register_code',mobile:honey.d.account.value},
+					$.ajax(h.apiurl,{
+						data:{
+							m:'register',
+							mobile:h.d.account.value,
+							password:h.encryptString(h.d.pwd.value),
+							code:h.d.code.value,
+							system:h.systemInfo.name,
+							system_model:h.deviceInfo.model,
+							system_version:h.systemInfo.version,
+							resolution:h.deviceInfo.screen,
+							imei:h.deviceInfo.imei,
+							app_version:plus.runtime.version
+						},
 						type:'post',
 						dataType:'json',
-						timeout:honey.ajaxTimeout,
-						success:function(ret){ 
+						success:function(ret){
 							if(ret.code==0){
-								honey.autoTimeout(1)
-								mui.toast('短信发送成功')
+								$.toast('注册成功')
+								localStorage.setItem('token',ret.data.token)
+								h.loginFire()
+								//触发登录事件
+								//关闭注册和登录窗口
+								h.closeWin('login')
+								h.closeWin('register',1000)
 							}else{
-								mui.toast(ret.msg)
-								if(ret.code==3){
-									honey.autoTimeout(1)
-								}
+								$.toast(ret.msg||'注册失败')
 							}
 						},
 						error:function(ret){
-							mui.toast('短信发送失败')
+	//						alert(JSON.stringify(ret))
+							$.toast('注册失败')
 						}
 					})
-				}else{
-					alert('aa')
-				}
-			})
-			
-			/**
-			 * 注册按钮事件
-			 */
-			honey.d.submitBtn.addEventListener('tap',function(){
-				if (!isPhone(honey.d.account.value)){
-					mui.toast('请输入正确的手机号');
-					honey.d.account.setAttribute('style','color:#DD5044')
-					return;
-				}
-				if (honey.d.pwd.value.length < 6){
-					mui.toast('请输入6至20位密码');
-					return;
-				}
-				if (honey.d.repwd.value.length <= 0 || honey.d.pwd.value != honey.d.repwd.value	){
-					mui.toast('两次输入密码必须一致');
-					return;
-				}
-				if(honey.d.code.value.length<4){
-					mui.toast('验证码错误')
-					return
-				}
-				mui.ajax(apiurl,{
-					data:{
-						m:'register',
-						mobile:honey.d.account.value,
-						password:encryptString(honey.d.pwd.value),
-						code:honey.d.code.value,
-						system:honey.systemInfo.name,
-						system_model:honey.deviceInfo.model,
-						system_version:honey.systemInfo.version,
-						resolution:honey.deviceInfo.screen,
-						imei:honey.deviceInfo.imei,
-						app_version:plus.runtime.version
-					},
-					type:'post',
-					dataType:'json',
-					success:function(ret){
-						if(ret.code==0){
-							mui.toast('注册成功')
-							localStorage.setItem('token',ret.data.token)
-							honey.loginFire()
-							//触发登录事件
-							//关闭注册和登录窗口
-							honey.closeWin('login')
-							honey.closeWin('register',1000)
-						}else{
-							mui.toast(ret.msg||'注册失败')
-						}
-					},
-					error:function(ret){
-//						alert(JSON.stringify(ret))
-						mui.toast('注册失败')
-					}
-				})
-				return 
-			},false);
-		});
+					return 
+				},false);
+			});
+		}(window,document,mui,honey,myStorage))
 		
 	</script>
 	

@@ -581,7 +581,8 @@
 								if(ret.data.coupon_price>0){
 									html.push('<p class="mui-inline" id="rg_'+v.rec_id+'"><img src="'+img+'" width="20"><font>*'+v.goods_num+'</font></p>')
 								}else{
-									if(v.goods_num>v.return_num){
+									if(!v.return_num||v.goods_num>v.return_num){
+										var num=(v.return_num>0?v.goods_num-v.return_num:v.goods_num);
 										html.push('<li rec_id="'+v.rec_id+'" price="'+v.member_goods_price+'"><div class="radio fl ">\
 					                    <div class="mui-input-row mui-checkbox mui-left box">\
 											<label>&nbsp;</label><input name="checkbox" type="checkbox" class="checkbox"></div></div>\
@@ -590,7 +591,7 @@
 					                        <span class="price">￥'+v.member_goods_price+'</span>\
 					                    </p><div class="mui-numbox fr">\
 											<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>\
-											<input class="mui-input-numbox" type="number" min="1" max="'+v.goods_num+'" value="'+v.goods_num+'"/>\
+											<input class="mui-input-numbox" type="number" min="1" max="'+num+'" value="'+num+'"/>\
 											<button class="mui-btn mui-btn-numbox-plus" type="button">+</button></div></div></li>')
 									}
 								}
@@ -897,7 +898,6 @@
 					},function(upload,status){
 						plus.nativeUI.closeWaiting()
 						h.d.progressbar.progressbar().hide();
-//						console.log(upload.responseText)
 						if(status==200){
 							ret=JSON.parse(upload.responseText)
 							if(ret.code==0){
