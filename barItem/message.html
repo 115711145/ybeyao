@@ -139,6 +139,13 @@
 			}
 			//加载列表 
 			function getMessage(){
+				if(!h.token){
+					h.d.list.style.display="block";
+					h.d.innerHTML='<li class="no-comment">您还未登录</li>';
+					h.d.loader.style.display="none";
+					h.openWin('../mine/login.html','login')
+					return
+				}
 				if(h.is_loading){
 					return;
 				}

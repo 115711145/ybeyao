@@ -1297,7 +1297,7 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 			}
 		}
 	    h.pay_waitting=null;
-		h.pay=function (m,payType,id,callback){
+		h.pay=function (ajaxData,callback){
 			console.log(h.token)
 			if(h.pay_waitting){
 				callback({status:false,msg:'已有订单在支付'})
@@ -1307,13 +1307,13 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 			//获取支付通道
 //			h.getchannel();
 //			console.log(JSON.stringify(h.paychannel))
-			if(!h.paychannel[payType]){
+			if(!h.paychannel[ajaxData.pay_type]){
 				return
 			}
 			//检测是否安装服务
-			h.checkServices(h.paychannel[payType]);
+			h.checkServices(h.paychannel[ajaxData.pay_type]);
 			//请求支付
-			if(payType!='alipay'&&payType!='wxpay'){
+			if(ajaxData.pay_type!='alipay'&&ajaxData.pay_type!='wxpay'){
 				callback({status:false,msg:'不支持此类型支付'})
 				return
 			}
@@ -1321,31 +1321,25 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 			if(navigator.userAgent.indexOf('StreamApp')>=0){
 				appid='Stream';
 			}
-			var data={
-				m:m,
-				pay_type:payType,
-				appid:appid,
-				id:id,
-				token:h.token
-			}
-			console.log(JSON.stringify(data))
+			
+//			console.log(JSON.stringify(data))
 			h.pay_waitting=plus.nativeUI.showWaiting();
 			$.ajax(h.apiurl,{
 				type:"post",
 				async:true,
-				data:data,
+				data:ajaxData,
 				dataType:'text',
 				success:function(ret){
 					h.pay_waitting.close()
 					h.pay_waitting=null;
-					console.log(ret)
+//					console.log(ret)
 					ret=JSON.parse(ret);
 					if(!ret.data){
 						callback({status:false,msg:'请求支付失败'})
 						return
 					}
 					var order=ret.data;
-					plus.payment.request(h.paychannel[payType],order,function(result){
+					plus.payment.request(h.paychannel[ajaxData.pay_type],order,function(result){
 						console.log(result)
 						callback({status:true,msg:'支付成功'})
 					},function(e){

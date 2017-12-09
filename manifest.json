@@ -952,6 +952,13 @@
 					"mine/wallet-coupon.html"
 				],
 				"priority": 0
+			},
+			"barItem/message.html": {
+				"resources": [],
+				"refer": [
+					"mine/login.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

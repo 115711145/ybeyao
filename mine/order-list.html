@@ -117,7 +117,7 @@
 		</div>
 		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" type="weixin" >
+				<li class="mui-table-view-cell">
 					<a style="color:#999">选择支付方式</a>
 				</li>
 				<li class="mui-table-view-cell pay" type="wxpay" >
@@ -276,8 +276,39 @@
 				}
 			}
 			
+			/**
+			 * 获取购物流程配置
+			 */
+			h.getShopConfig = function() {
+				$.ajax(h.apiurl, {
+					data: {
+						m: 'get_config'
+					},
+					type: 'post',
+					dataType: 'json',
+					success: function(ret) {
+						if(ret.code == 0 && ret.data) {
+							var config = ret.data.shopping;
+							config.time=new Date().getTime();
+							h.config = {};
+							$.each(config, function(i, v) {
+								h.config[v.name] = v.value;
+							});
+							ms.setItem('conf_shopping', h.config)
+						} else {
+							$.toast('获取配置失败')
+						}
+					},
+					error: function(ret) {
+//						alert(ret.responseText)
+//						$.toast('获取配置异常')
+					}
+				})
+			}
+			
 			h.getOrderBtn=function(order){
 				var li=[];
+				var btn_return=(order.confirm_time==0||(order.confirm_time>0 &&(order.time_now-order.confirm_time)<24*3600*parseInt(h.config.auto_service_date)));
 				if(order.order_status>=3){//已完成、已取消、已作废
 	        		if(order.return_status>0){
 	        			li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
@@ -285,9 +316,9 @@
 	        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
 	        	}else{
 	        		if(order.pay_status>0){
-	        			li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+	        			btn_return&&li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
 	        			if(order.return_status>0){
-	        				li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
+        					li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
 	        				if(order.return_status<3 || (order.return_status>2&&order.return_status<5&&order.return_info&&order.return_info.type==0)){
 	        					if(order.order_status==2){
 			        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价订单</span>');
@@ -339,6 +370,7 @@
 			
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
+				h.config=ms.getItem('conf_shopping');
 				h._self=plus.webview.currentWebview();
 				h.type=h._self.type|| 'ALL';
 				h.index=0;
@@ -346,6 +378,9 @@
 				h.showType()
 				getOrderList()
 				h.getchannel();
+				if(!h.config){
+					h.getShopConfig()
+				}
 				
 				/**
 				 * 切换订单类型
@@ -443,7 +478,8 @@
 								},
 								error:function(ret){
 									plus.nativeUI.closeWaiting()
-//									alert(ret.responseText)
+									alert(ret.responseText)
+									console.log(ret.responseText)
 								}
 							});
 							break
@@ -505,7 +541,13 @@
 				//选择支付方式
 				$(h.d.pay_list).on('tap','.pay',function(){
 					h.pay_type=this.getAttribute('type')
-					h.pay('pay_order',h.pay_type,h.order_id,function(ret){
+					var data={
+						m:'pay_order',
+						pay_type:h.pay_type,
+						id:h.order_id,
+						token:h.token
+					}
+					h.pay(data,function(ret){
 						$.toast(ret.msg)
 					})
 				})
@@ -521,7 +563,6 @@
 				
 				
 				h.reloadOrderStatus=function(){
-					console.log(h._jump)
 					$.ajax(h.apiurl,{
 						type:"post",
 						async:true,
