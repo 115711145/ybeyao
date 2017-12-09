@@ -686,5 +686,10 @@
 			"mine/wallet-recharge.html",
 			"mine/wallet-coupon.html"
 		]
+	},
+	"barItem/message.html": {
+		"refer": [
+			"mine/login.html"
+		]
 	}
 }

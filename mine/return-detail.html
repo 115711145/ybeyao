@@ -276,6 +276,7 @@
 					str.push('<div class="amout-list" style="padding-bottom: 20px;">')
 			       	str.push('<p><span class="title">退款原因</span><span id="reason">'+v.reason+'</span></p>')
 			       	str.push('<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥'+h.fmoney((v.refund_deposit*100+v.refund_money*100)/100)+'</span></p>')
+			       	v.refund_integral>0&&str.push('<p><span class="title">退还积分</span><span id="reason">'+v.refund_integral+'</span></p>')
 			       	v.status==2&&str.push('<p><span class="title">审核说明</span><span class="remark">'+v.remark+'</span></p>')
 			       	str.push('<p><span class="title">问题描述</span><span></span></p>')
 			       	var img_str=[];
@@ -367,7 +368,7 @@
 							}
 						},
 						error:function(ret){
-							$.toast('取消退款失败')
+//							$.toast('取消退款失败')
 						}
 					});
 				})

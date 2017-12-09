@@ -659,7 +659,7 @@
 	         * 查看商品详情
 	         */
 	        mui(honey.d.list).on('tap','.goods-img',function(){
-	        	var goods_id = this.parentElement.getAttribute('goods_id');
+	        	var goods_id = this.parentElement.parentElement.getAttribute('goods_id');
 				if(!honey.detailHeader) {
 					honey.detailHeader = plus.webview.getWebviewById('goods-header');
 				}

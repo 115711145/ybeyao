@@ -97,10 +97,10 @@
 	</div>
 	<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" >
-					<span style="color: #aaa;">选择支付方式</span>
+				<li class="mui-table-view-cell">
+					<a style="color:#999">选择支付方式</a>
 				</li>
-				<li class="mui-table-view-cell pay" type="weixin" >
+				<li class="mui-table-view-cell pay" type="wxpay" >
 					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
 				</li>
 				<li class="mui-table-view-cell pay" type="alipay">
@@ -123,11 +123,14 @@
 			$.plusReady(function(){
 				h.token=ms.getItem('token');
 				h.self=plus.webview.currentWebview();
+				h.walletWin=plus.webview.getWebviewById('wallet');
+				h.mineWin=plus.webview.getWebviewById('mine');
 				h.user=h.self.user;
 				h.d={
 					money:d.getElementById('money'),
 					clear:d.getElementById('clear'),
 				}
+				h.getchannel();
 				d.getElementById('ye').innerText=h.user.user_money||0;
 				$('.money-box').on('tap','li',function(){
 					h.d.money.value=this.innerText
@@ -148,8 +151,22 @@
 				})
 				
 				$('#pay_list').on('tap','.pay',function(){
-					var type=this.getAttribute('type')
-					$.toast(type)
+					h.pay_type=this.getAttribute('type')
+					var data={
+						m:'pay_recharge',
+						pay_type:h.pay_type,
+						account:h.d.money.value,
+						token:h.token
+					}
+					h.pay(data,function(ret){
+						$.toast(ret.msg)
+						//更新余额
+						$.fire(h.mineWin,'reloadUser');
+						setTimeout(function(){
+							h.walletWin.close('slide-out-right')
+							h.back();
+						},1500)
+					})
 				})
 				
 				$.back=function(){
