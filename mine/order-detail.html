@@ -188,7 +188,7 @@
 								var cls='';
 								if(v.return_status>0&&v.return_status<5){
 									cls=' class="is-return" ';
-									v.goods_name='<font color="red">[退]</font>'+v.goods_name;
+									v.goods_name='<font color="#FF5053">[退]</font>'+v.goods_name;
 								}
 								html.push('<li '+cls+'goods_id="'+v.goods_id+'"><div class="goods-img fl"><img src="'+img+'" onerror="javascript:this.src=\'../images/default.png\'"/></div><div class="goods-info fl"><p class="title">'
 								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
@@ -230,7 +230,7 @@
 							d.getElementById('sum_amount').innerText="￥"+h.fmoney(ret.data.goods_price-ret.data.discount_money)
 							d.getElementById('sum_ps').innerText="￥"+ret.data.shipping_price
 							h.showPriceText(h.d.blance,ret.data.user_money,'-')
-							h.showPriceText(h.d.point,ret.data.integral_money,'-('+ret.data.integral+'积分)')
+							h.showPriceText(h.d.point,ret.data.integral_money,'(-'+ret.data.integral+'积分)-')
 							h.showPriceText(h.d.coupon,ret.data.coupon_price,'-')
 							h.showPriceText(h.d.order_amount,ret.data.order_amount)
 //							d.getElementById('blance').innerText="-￥"+ret.data.user_money

@@ -371,6 +371,13 @@
 	proto.isShown = function() {
 		return this.element.classList.contains($.className('preview-in'));
 	};
+	
+	//释放当前对象及清除DOM
+	proto.dispose = function() {
+	    var prevdom = document.getElementById("__MUI_PREVIEWIMAGE");
+	    prevdom && prevdom.parentNode.removeChild(prevdom);
+	    previewImageApi = null;
+	};
 
 	var previewImageApi = null;
 	$.previewImage = function(options) {

@@ -132,6 +132,9 @@
 		.warm-number{
 			position: absolute;
 			right: 2px;
+			background: #fff;
+			color: #41CEA9;
+			border: 1px solid #41CEA9;
 		}
 		.menu{
 			margin: 0;
@@ -267,8 +270,8 @@
 		</div>-->
 		<div class="center">
 			<ul class="menu">
-				<li><img src="../images/mine-help.png"/>帮助中心</li>
-				<li><img src="../images/mine-feed.png"/>意见反馈</li>
+				<li id="help"><img src="../images/mine-help.png"/>帮助中心</li>
+				<!--<li><img src="../images/mine-feed.png"/>意见反馈</li>-->
 				<li id="about"><img src="../images/mine-us.png"/>关于我们</li>
 			</ul>
 		</div>
@@ -299,7 +302,8 @@
 				personal:{id:'personal',url:'../mine/personal.html'},
 				wallet:{id:'wallet',url:'../mine/wallet.html'},
 				message:{id:'message',url:'../mine/message.html'},
-				about:{id:'about',url:'../mine/about.html'}
+				about:{id:'about',url:'../mine/about.html'},
+				help:{id:'help',url:'../mine/help.html'}
 			}
 			h.showUserInfo=function(user){
 				if(!user||user.length==0){

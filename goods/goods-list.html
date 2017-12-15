@@ -194,9 +194,9 @@
 				})
 				
 				$('#list').on('tap','.ad',function(){
-					var ad_id=this.getAttribute('ad_id');
+					var ad_link=this.getAttribute('ad_link');
 					var ad_type=this.getAttribute('ad_type');
-					alert(ad_id)
+					h.openAd(ad_type,ad_link)
 				})
 				
 				h.d.goTop.addEventListener('tap',function(){
@@ -274,9 +274,9 @@
 									}
 								}
 								if(ret.data.length>0){
-									var ad=[];
-									ad.push({name:'广告名称广告名称广告名称广告名称广告名称',type:1,src:'../images/ad'+honey.page+'.jpg'});
-									h.showGoodsList(ret.data,'list',(honey.page>1),honey.page<3?ad:false)
+//									var ad=[];
+//									ad.push({name:'广告名称广告名称广告名称广告名称广告名称',type:1,src:'../images/ad'+honey.page+'.jpg'});
+									h.showGoodsList(ret.data,'list',(h.page>1),ret.ad)
 								}
 								h.total=ret.total;
 								if(h.page==1&&honey.total<=honey.pageSize){

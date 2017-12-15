@@ -4921,6 +4921,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 
 		_fixedSlideNumber: function(page) {
 			page = page || this.currentPage;
+//			console.log(page.pageX)
 			var slideNumber = page.pageX;
 			if (this.loop) {
 				if (page.pageX === 0) {
@@ -5018,6 +5019,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 				}
 				slideNumber = Math.min(Math.max(0, slideNumber), this.itemLength - 1);
 			}
+//			return this.pages[slideNumber]?this.pages[slideNumber][0]:(console.log(this.pages[0]),this.pages[0][0]);
 			return this.pages[slideNumber][0];
 		},
 		_gotoItem: function(slideNumber, time) {

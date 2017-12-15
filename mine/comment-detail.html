@@ -311,7 +311,9 @@
 								str.push('</div>')
 							}
 							str.push('<p class="zan"><span class="zan_num" comment_id="' + data.comment_id + '"><img src="../images/zan.png"/> ' + data.zan_num + '</span></p>')
-							str.push('<p class="btns"><span class="mui-btn mui-btn-nav">追加评论</span><span class="mui-btn mui-btn-danger">删除评价</span></p>')
+							if(new Date().getTime()/1000-data.add_time<3600*24*30){
+								str.push('<p class="btns"><span class="mui-btn mui-btn-nav">追加评论</span><span class="mui-btn mui-btn-danger">删除评价</span></p>')
+							}
 							h.d.comment_info.innerHTML=str.join('');
 							
 							$('.user-photo').imageLazyload({
@@ -401,7 +403,8 @@
 					$('#delete').popover('toggle')
 				})
 				//删除评价
-				d.getElementById('del').addEventListener(function(){
+				$('#delete').on('tap','#del',function(){
+//				d.getElementById('del').addEventListener(function(){
 					if(h.is_del || !h.comment_id){
 						return
 					}

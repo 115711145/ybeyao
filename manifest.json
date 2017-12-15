@@ -541,7 +541,8 @@
 					"mine/wallet.html",
 					"mine/wallet-coupon.html",
 					"mine/message.html",
-					"mine/about.html"
+					"mine/about.html",
+					"mine/help.html"
 				],
 				"priority": 0
 			},

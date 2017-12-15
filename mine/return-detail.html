@@ -270,13 +270,13 @@
 			h.getReturnListHtml=function(data){
 				var str=[];
 				$.each(data, function(i,v) {
-					var color=v.status>1?(v.status>2?"green":"red"):"orange";
+					var color=v.status>1?(v.status>2?"#41cea9":"#FF5053"):"orange";
 					str.push('<div class="return-item"><div class="desc"><span class="fl"><font color="'+color+'">'+v.return_status_desc+'</font></span><span class="fr">'+h.getYmdTime(v.addtime,1)+'</span></div>');
 					str.push(h.getGoodsListHtml(v.goods_list));
 					str.push('<div class="amout-list" style="padding-bottom: 20px;">')
 			       	str.push('<p><span class="title">退款原因</span><span id="reason">'+v.reason+'</span></p>')
 			       	str.push('<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥'+h.fmoney((v.refund_deposit*100+v.refund_money*100)/100)+'</span></p>')
-			       	v.refund_integral>0&&str.push('<p><span class="title">退还积分</span><span id="reason">'+v.refund_integral+'</span></p>')
+			       	v.refund_integral>0&&str.push('<p><span class="title">积分</span><span id="reason">'+v.refund_integral+'</span></p>')
 			       	v.status==2&&str.push('<p><span class="title">审核说明</span><span class="remark">'+v.remark+'</span></p>')
 			       	str.push('<p><span class="title">问题描述</span><span></span></p>')
 			       	var img_str=[];

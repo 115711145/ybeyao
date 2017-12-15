@@ -198,7 +198,7 @@ var common =
 		try {
 			window.localStorage.setItem(k, value);
 		} catch (e) {
-			console.log(e);
+//			console.log(e);
 			//TODO 超出localstorage容量限制则存到plus.storage中
 			//且删除localStorage重复的数据
 			removeItem(k);
@@ -356,13 +356,13 @@ var common =
 		var filePathCache = getLocalFileCache(netPath);
 		isExist(filePathCache, function(exist) {
 			if (exist) {
-				//console.log('EXIST_' + filePathCache)
+//				console.log('EXIST_' + filePathCache)
 				cb(filePathCache);
 			} else {
-				//console.log('UNEXIST_' + filePathCache+"_"+netPath)
+//				console.log('UNEXIST_' + filePathCache+"_"+netPath)
 				Filedownload(netPath, function(localPath) {
 					cb(localPath);
-					console.log('downcallback:localPath='+localPath)
+//					console.log('downcallback:localPath='+localPath)
 				});
 			}
 		});
@@ -394,7 +394,7 @@ var common =
 				console.log('download.state:' + d.state + "____download.status" + status);
 				//下载失败 只递归一次，再次失败返回默认图片
 				if (++couDwn <= 1) {
-					console.log(couDwn);
+//					console.log(couDwn);
 					arguments.callee(netPath, callback);
 				} else {
 					//重置
@@ -406,9 +406,12 @@ var common =
 		});
 		//TODO 监听当前下载状态，当云服务器中不存在该文件时，查询的特别慢，估计过了3分钟以上才返回status:404，其他时间一直在刷d.state:2
 		//具体的报文格式看这http://wenku.baidu.com/link?url=JtC5q4w4D8DCzid6ahpQGgir2JCxuQq_uHfJ-_G9ZxvySL1oStV6oS447QKLEMFT5JpmQCSl4gmYdotk1JfmcUBLPKO_WbaDirQulDWMK7_
-		//		dtask.addEventListener( "statechanged", function(d, status){
-		//			console.log(d.state);
-		//		}, false );
+				dtask.addEventListener( "statechanged", function(d, status){
+//					console.log(d.state);
+					if(status==404){
+						callback()
+					}
+				}, false );
 		dtask.start();
 	};
 
@@ -516,12 +519,13 @@ var common =
 		} else {
 			imgs = doc.querySelectorAll('img.lazy');
 		}
-
 		com.myasync(/*makeArray(imgs)*/$.slice.call(imgs), function(img, next) {
 			var data_src = img.getAttribute('data-src');
-			//console.log("data_src: "+data_src);
+//			console.log("data_src: "+data_src);
 			if (data_src && data_src.indexOf('http://') >= 0) {
+//				console.log('开始读取缓存文件')
 				com.cache.getFile(data_src, function(localUrl) {
+//					console.log('文件路径:'+localUrl)
 					setPath(img, localUrl);
 					next();
 				});
@@ -538,8 +542,9 @@ var common =
 	};
 
 	function setPath(img, src) {
-		src=src||img.getAttribute('default-src');
-		img.setAttribute('src', src);
+		if(src){
+			img.setAttribute('src', src);
+		}
 		img.classList.remove("lazy");
 	};
 
@@ -710,9 +715,9 @@ var honey = (function(win, $) {
 			$.each(ad, function(i,v) {
 				var li=document.createElement('li');
 				li.className="ad";
-				li.setAttribute('ad_id',v.id||1)
-				li.setAttribute('ad_type',v.type||1)
-				var img=v.src.indexOf('http://')>=0?h.apiurl+v.src:v.src;
+				li.setAttribute('ad_link',v.link);
+				li.setAttribute('ad_type',v.type)
+				var img=v.src.indexOf('http://')>=0?v.src:h.apihost+v.src;
 			    li.innerHTML = '<p class="product_picture"><img class="lazy" data-lazyload="'+(img)+'" default-src="../images/default.png"/></p>'
 			            +'<p class="product_ie">'+v.name+'</p>';
 			    if(leftBoxDom.offsetHeight<rightBoxDom.offsetHeight ){
@@ -736,9 +741,41 @@ var honey = (function(win, $) {
 		    	rightBoxDom.appendChild(li)
 		    }
 		});
-		 $('#'+id).imageLazyload({
+		$('#'+id).imageLazyload({
 			placeholder: '../images/default.png'
 		});
+	}
+	/**
+	 * 打开广告页
+	 * @param {Object} type
+	 * @param {Object} link
+	 */
+	h.openAd=function(type,link){
+		if(!type||!link){
+			return
+		}
+		switch(parseInt(type)){
+			case 0://产品
+				if(!h.detailWebView) {
+					h.detailWebView = plus.webview.getWebviewById('goods-header');
+				}
+				if(!h.detailSubpage) {
+					h.detailSubpage = plus.webview.getWebviewById('goods-detail');
+				}
+				$.fire(h.detailWebView, 'goodsId', {
+					goods_id:link
+				})
+				h.detailWebView.show('slide-in-right', 300)
+				break;
+			case 1://文章
+				$.toast('打开文章'+link)
+				openWin('../mine/article.html','article',{id:link});
+				break;
+			case 2://分类
+				$.toast('打开分类'+link)
+				
+				break;
+		}
 	}
 	
 	/**
@@ -826,7 +863,7 @@ var honey = (function(win, $) {
 		$('.user-photo').imageLazyload({
 			placeholder: '../images/default.png'
 		});
-		$('.user-photo').off('tap', 'img').on('tap', 'img', function() {
+		$('.user-photo').off('tap', '.photos').on('tap', '.photos', function() {
 			$.previewImage()
 		})
 	}
@@ -1364,5 +1401,13 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 		}
     })
     
+    h.htmlspecialchars_decode=function(str){           
+		str = str.replace(/&amp;/g, '&'); 
+		str = str.replace(/&lt;/g, '<');
+		str = str.replace(/&gt;/g, '>');
+		str = str.replace(/&quot;/g, "''");  
+		str = str.replace(/&#039;/g, "'");  
+		return str;  
+    }
 	return h;
 }(window, mui))
