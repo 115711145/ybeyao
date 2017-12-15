@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/own.css"/>
+		<style>
+			#list p{
+				color: #333;
+			}
+			#list .mui-navigate-right{
+				color: dodgerblue;
+			}
+			.mui-collapse-content p,.mui-collapse-content span,.mui-collapse-content img,.mui-collapse-content div{
+				max-width: 100% !important;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">详情</h1>
+	</header>
+		<div class="mui-content" style="padding-top:35px ;">
+			<div class="loader" id="loader">
+				<a>
+					<span class="mui-spinner"></span>
+				</a>
+				<br />
+				<span>加载中...</span>
+			</div>
+			<div class="content" id="content">
+				
+			</div>
+		</div>
+		<script type="text/javascript" src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/common.js"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
+		<!--<script type="text/javascript" src="../js/lazyloadimages.js" charset="UTF-8"></script>-->
+		
+		<script>
+			(function(win,$,d,h){
+				$.init({
+					swipeBack:true //启用右滑关闭功能
+				});
+				h.d={
+					list:d.getElementById('content'),
+					loader:d.getElementById('loader')
+				}
+				$.plusReady(function(){
+					h.self=plus.webview.currentWebview();
+					h.articleId=h.self.id;
+					console.log(h.articleId)
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						data:{
+							m:'article_detail',
+						},
+						success:function(ret){
+							if(ret.code==0){
+								
+							}
+						},
+						error:function(ret){
+							alert(ret)
+						}
+					});
+					$.back=function(){
+						h.self.close('slide-out-right')
+					}
+				})
+				
+			}(window,mui,document,honey))
+			
+		</script>
+	</body>
+
+</html>

@@ -109,8 +109,7 @@
 		        </ul>
 		    </div>-->
 		</div>
-
-		<script type="text/javascript" src="../js/mui.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
@@ -156,15 +155,15 @@
 					for(var i = 0; i <= len; i++) {
 						if(i == 0) {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img class="lazy ad" name="'+adList[len-1].ad_name+'" type="'+adList[len-1].ad_link_type+'" link="'+adList[len-1].ad_link_id+'" data-src="' + h.apihost+adList[len-1].ad_code + '"></a></div>')
+								<img class="lazy ad" name="'+adList[len-1].name+'" type="'+adList[len-1].type+'" link="'+adList[len-1].link+'" data-src="' + h.apihost+adList[len-1].src + '"></a></div>')
 						}
 						if(i<len){
 							group.push('<div class="mui-slider-item"><a href="#">\
-								<img class="lazy ad"  name="'+adList[i].ad_name+'" type="'+adList[i].ad_link_type+'" link="'+adList[i].ad_link_id+'" data-src="' + h.apihost+adList[i].ad_code + '"></a></div>')
+								<img class="lazy ad"  name="'+adList[i].name+'" type="'+adList[i].type+'" link="'+adList[i].link+'" data-src="' + h.apihost+adList[i].src + '"></a></div>')
 							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
 						}else {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img class="lazy ad"  name="'+adList[0].ad_name+'" type="'+adList[0].ad_link_type+'" link="'+adList[0].ad_link_id+'"  data-src="' + h.apihost+adList[0].ad_code + '"></a></div>')
+								<img class="lazy ad"  name="'+adList[0].name+'" type="'+adList[0].type+'" link="'+adList[0].link+'"  data-src="' + h.apihost+adList[0].src + '"></a></div>')
 						}
 					}
 					document.getElementById('productSlider').innerHTML = '<div class="mui-slider-group mui-slider-loop">' + group.join('') +
@@ -182,39 +181,21 @@
 					var obj=mui('.adImg'+number);
 					for(var i=0;i<obj.length;i++){
 						if(ad[i]){
-							console.log()
-							obj[i].setAttribute('data-src',h.apihost+ad[i].ad_code)
-							obj[i].setAttribute('type',h.apihost+ad[i].ad_link_type)
-							obj[i].setAttribute('name',h.apihost+ad[i].ad_name)
+							console.log(JSON.stringify(ad[i]))
+							obj[i].setAttribute('data-src',h.apihost+ad[i].src)
+							obj[i].setAttribute('type',h.apihost+ad[i].type)
+							obj[i].setAttribute('name',h.apihost+ad[i].name)
+							obj[i].setAttribute('link',h.apihost+ad[i].link)
 						}
 					}
 				}
 				h.bindListTap= function() {
 					//添加slider点击事件
 					$('.mui-content').on('tap', '.ad', function() {
-						var linkId=this.getAttribute('link')
+						var link=this.getAttribute('link')
 						var type=parseInt(this.getAttribute('type'))
-						$.toast('type='+type+'  id='+linkId)
-						switch(type){
-							case 0://产品
-								if(!h.detailWebView) {
-									h.detailWebView = plus.webview.getWebviewById('goods-header');
-								}
-								if(!h.detailSubpage) {
-									h.detailSubpage = plus.webview.getWebviewById('goods-detail');
-								}
-								$.fire(h.detailWebView, 'goodsId', {
-									goods_id:linkId
-								})
-								h.detailWebView.show('slide-in-right', 300)
-								break;
-							case 1://文章
-								$.toast('打开文章'+linkId)
-								break;
-							case 2://分类
-							
-								break;
-						}
+						console.log(''+type+':'+link )
+						h.openAd(type,link)
 					})
 					
 					//添加每个item点击的监听事件
