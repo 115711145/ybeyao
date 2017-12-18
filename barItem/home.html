@@ -62,7 +62,7 @@
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
 						<a href="#" cate="8" name="优惠券">
 							<span><img src="../images/youhuiquan.png" height="40"/></span>
-							<div class="mui-media-body">优惠券</div>
+							<div class="mui-media-body">免费领券</div>
 						</a>
 					</li>
 				</ul>
@@ -139,8 +139,8 @@
 							}
 						},
 						error:function(ret){
-							alert('error')
-							alert(JSON.stringify(ret)) 
+//							alert('error')
+//							alert(JSON.stringify(ret)) 
 						} 
 					})
 				}
@@ -181,11 +181,10 @@
 					var obj=mui('.adImg'+number);
 					for(var i=0;i<obj.length;i++){
 						if(ad[i]){
-							console.log(JSON.stringify(ad[i]))
 							obj[i].setAttribute('data-src',h.apihost+ad[i].src)
-							obj[i].setAttribute('type',h.apihost+ad[i].type)
-							obj[i].setAttribute('name',h.apihost+ad[i].name)
-							obj[i].setAttribute('link',h.apihost+ad[i].link)
+							obj[i].setAttribute('type',ad[i].type)
+							obj[i].setAttribute('name',ad[i].name)
+							obj[i].setAttribute('link',ad[i].link)
 						}
 					}
 				}
@@ -193,11 +192,10 @@
 					//添加slider点击事件
 					$('.mui-content').on('tap', '.ad', function() {
 						var link=this.getAttribute('link')
-						var type=parseInt(this.getAttribute('type'))
-						console.log(''+type+':'+link )
-						h.openAd(type,link)
+						var type=this.getAttribute('type')
+						var name=this.getAttribute('name')
+						h.openAd(type,link,name)
 					})
-					
 					//添加每个item点击的监听事件
 					$('#recommend').on('tap', '.goods-list', function() {
 						var goods_id = this.getAttribute('goods_id');
@@ -275,7 +273,8 @@
 						var name=this.getAttribute('name');
 						var cate=this.getAttribute('cate');
 						if(cate=='8'){
-							alert('优惠券')
+//							alert('优惠券')
+							h.openWin('../home/coupon.html','coupon')
 						}else{
 //							openWin("../goods/goods-list-header.html","goods-list-header",{cate:cate},{top:0,bottom:'51px'})
 							$.fire(h.goodsListHeader,'cateId',{name:name,cate:cate})

@@ -202,20 +202,20 @@
 		<script type="text/javascript" charset="UTF-8">
 			mui.init({
 				swipeBack: false,
-				pullRefresh: {
-					container: '#detailcontent',
-					up: {
-						auto: true,
-						height: 80,
-						contentinit: '<font style="font-size:12px;color:#999">上拉查看更多评价</font>',
-						contentdown: '<font style="font-size:12px;color:#999">上拉查看更多评价</font>',
-						contentrefresh: '<font style="font-size:12px;color:#999">正在加载...</font>',
-						contentnomore: '<font style="font-size:12px;color:#999">暂无更多评价!</font>',
-						callback: function(){
-							ajaxGetComments()
-						}
-					}
-				}
+//				pullRefresh: {
+//					container: '#detailcontent',
+//					up: {
+//						auto: true,
+//						height: 80,
+//						contentinit: '<font style="font-size:12px;color:#999">上拉查看更多评价</font>',
+//						contentdown: '<font style="font-size:12px;color:#999">上拉查看更多评价</font>',
+//						contentrefresh: '<font style="font-size:12px;color:#999">正在加载...</font>',
+//						contentnomore: '<font style="font-size:12px;color:#999">暂无更多评价!</font>',
+//						callback: function(){
+//							ajaxGetComments()
+//						}
+//					}
+//				}
 			});
 
 			honey.lastId = 0;
@@ -368,6 +368,7 @@
 							})
 							honey.d.table.innerHTML = goodsAttr.join('');
 							//评价
+							honey.comment=data.comment;
 							mui.each(honey.d.ctype, function(i, v) {
 								var num = data.comment ? data.comment['c' + i] : 0
 								v.innerText = num;
@@ -401,8 +402,8 @@
 								})
 							}
 							setTimeout(ajaxGetComments, 10)
-						} else if(ret.code == 2) { //商品不存在或以下架
-							honey.getDataFailed()
+						} else{ //商品不存在或以下架
+							honey.getDataFailed(ret.code==2)
 						}
 					},
 					error: function(ret) {
@@ -450,14 +451,14 @@
 								ret.data.statistics && (honey.d.c0.innerText = ret.data.statistics.c0);
 								honey.showCommentList(ret.list, 'evaluate-list', 1);
 							}
-							honey.content.pullRefresh().endPullupToRefresh((!ret.list || (ret.list && ret.list.length < 5)))
+//							honey.content.pullRefresh().endPullupToRefresh((!ret.list || (ret.list && ret.list.length < 5)))
 						},
 						error: function(ret) {
 							//							alert(JSON.stringify(ret))
 						}
 					})
 				} else {
-					honey.content.pullRefresh().endPullupToRefresh()
+//					honey.content.pullRefresh().endPullupToRefresh()
 				}
 			}
 			
@@ -521,17 +522,7 @@
 				 */
 				mui('.statistics').on('tap', 'span', function() {
 					var ctype = this.getAttribute('ctype')
-					var num = this.querySelector('font').innerText;
-					if(ctype != honey.ctype && num > 0) {
-						honey.ctype = ctype;
-						//						honey.d.evaluateList.innerHTML='';
-						honey.content.pullRefresh().refresh(true);
-						honey.lastId = 0;
-						ajaxGetComments()
-					} else {
-						honey.d.evaluateList.innerHTML = '';
-						honey.content.pullRefresh().endPullupToRefresh(1)
-					}
+					honey.openWin('goods-comment.html','goods-comment',{ctype:ctype,comment:honey.comment,goods_id:honey.goods.goods_id})
 				})
 				/**
 				 * 收藏商品
@@ -687,7 +678,7 @@
 					honey.goods = {};
 					honey.goods.goods_id = o.detail.goods_id;
 					honey.lastId = 0;
-					honey.content.pullRefresh().refresh(true);
+//					honey.content.pullRefresh().refresh(true);
 					if(!honey.goodsDetail) {
 						honey.goodsDetail = plus.webview.currentWebview();
 					}

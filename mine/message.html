@@ -155,9 +155,11 @@
 					success:function(ret){
 						h.is_loading=false;
 						if(ret.code==-1){
+							h.d.loader.style.display="none";
+							h.d.list.innerHTML = '<li class="no-comment">您还没有登录！<li>'
 							$.fire(plus.webview.getWebviewById('mine'),'logout')
 							h.openWin('login.html','login')
-							$.back()
+//							$.back()
 							return
 						}
 						h.d.loader.style.display="none";
@@ -227,14 +229,18 @@
 				});
 			})
 			
+			function refresh(){
+				h.page=1;
+				getMessage()
+			}
 					
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
 				h._self=plus.webview.currentWebview();
 				getMessage()
-				$.back=function(){
-					plus.webview.currentWebview().close('slide-out-right');
-				}
+//				$.back=function(){
+//					plus.webview.currentWebview().close('slide-out-right');
+//				}
 				
 				win.addEventListener('refresh',refresh,false)
 			})

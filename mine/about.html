@@ -30,6 +30,7 @@
 	
 	.mui-content .mui-table-view{
 		border-top: 1px solid #ddd;
+		margin: 0 !important;
 	}
 	.mui-content .mui-table-view:before {
 		border: 0;
@@ -37,6 +38,7 @@
 	}
 	.mui-table-view .mui-table-view-cell{
 		border-bottom: 1px solid #ddd;
+		color: #333;
 	}
 	.mui-table-view .mui-table-view-cell:after{
 		height: 0;
@@ -64,11 +66,10 @@
 		<h1 class="mui-title" id="header-title">关于我们</h1>
 	</header>
 	<div class="mui-content">
-		<div class="content">
-			<p>最新版本：<font id="version_new">v1.0.1.1</font></p>
-			<p>当前版本：<font id="version_now">v1.0.0.1</font></p>
-			<button type="button" class="mui-btn mui-btn-success mui-btn-block">检查更新</button>
-		</div>
+		<ul class="mui-table-view">
+			 <li class="mui-table-view-cell" id="shop">友邦门店</li>
+	         <!--<li class="mui-table-view-cell" id="version">检查版本</li>-->
+		</ul>
 		<div class="bottom">
 		<p class="copy">
 			Copyright ©2016-<font id="year"></font>
@@ -83,6 +84,18 @@
 			$.init();
 			$.plusReady(function(){
 				d.getElementById('year').innerText=new Date().getFullYear()
+				$('.mui-table-view').on('tap','li',function(){
+					var id=this.getAttribute('id');
+					switch(id){
+						case 'version':
+							alert('检查版本') 
+							break;
+						default:
+							h.openWin(id+'.html',id)
+					}
+					
+					
+				})
 				$.back=function(){
 					plus.webview.currentWebview().close('slide-out-right')
 				}

@@ -247,7 +247,8 @@
 					"cart/cart-content.html",
 					"cart/buy-header.html",
 					"cart/buy-content.html",
-					"barItem/message.html"
+					"barItem/message.html",
+					"guide.html"
 				],
 				"priority": 0
 			},
@@ -301,7 +302,9 @@
 					null
 				],
 				"refer": [
-					"goods/goods-list-header.html"
+					"goods/goods-list-header.html",
+					"home/map.html",
+					"home/coupon.html"
 				],
 				"priority": 0
 			},
@@ -372,7 +375,8 @@
 					"images/service-ps.png"
 				],
 				"refer": [
-					"mine/login.html"
+					"mine/login.html",
+					"goods/goods-comment.html"
 				],
 				"priority": 0
 			},
@@ -958,6 +962,27 @@
 				"resources": [],
 				"refer": [
 					"mine/login.html"
+				],
+				"priority": 0
+			},
+			"home/map.html": {
+				"resources": [
+					"home/maps_map_sub.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mine/about.html": {
+				"resources": [],
+				"refer": [
+					"mine/shop.html"
+				],
+				"priority": 0
+			},
+			"mine/wallet-coupon.html": {
+				"resources": [],
+				"refer": [
+					"home/coupon.html"
 				],
 				"priority": 0
 			}
