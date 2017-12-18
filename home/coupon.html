@@ -10,47 +10,6 @@
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
 		<style>
-			.top-btn {
-				position: absolute;
-				top: 44px;
-				left: 0;
-				width: 100%;
-				background: #fff;
-				padding: 0 10px;
-				height: 45px;
-			}
-			
-			.mui-segmented-control .mui-control-item {
-				font-size: 12px;
-				line-height: 28px;
-			}
-			
-			.mui-segmented-control-honey {
-				border: 1px solid #41CEA9;
-			}
-			
-			.mui-segmented-control-honey .mui-control-item {
-				color: #41CEA9;
-				border-color: inherit;
-			}
-			
-			.mui-segmented-control-honey .mui-control-item.mui-active {
-				color: #fff;
-				background-color: #41CEA9;
-			}
-			
-			.mui-segmented-control-honey.mui-segmented-control-inverted .mui-control-item.mui-active {
-				color: #4cd964;
-				border-bottom: 2px solid #41CEA9;
-				background: none;
-			}
-			
-			.mui-segmented-control-honey.mui-segmented-control-inverted~.mui-slider-progress-bar {
-				background-color: #41CEA9;
-			}
-			.mui-content {
-				margin-top: 45px;
-			}
 			.fl{
 				float: left;
 			}
@@ -77,11 +36,11 @@
 			}
 			
 			.quan .quan-con .title {
-				width: 74%;
+				width: 70%;
 			}
 			
 			.quan .quan-con .title .number {
-				margin: 10px 0 0 10px;
+				margin: 10px 0 0 20px;
 			}
 			
 			.quan .quan-con .title .number span {
@@ -89,9 +48,18 @@
 			}
 			
 			.quan .quan-con .title .number font {
-				font-size: 26px;
+				font-size: 16px;
 			}
 			
+			.quan .quan-con .title .coupon_name{
+				white-space:nowrap; 
+			    text-overflow:ellipsis; 
+			    overflow:hidden;
+			    max-width: 65%;
+			    position: relative;
+				display: inline-block;
+				margin: 0 !important;
+			}
 			.quan .quan-con .title font {
 				font-size: 35px;
 				margin: 5px;
@@ -103,13 +71,13 @@
 			
 			.quan .quan-con .title .use-time {
 				font-size: 11px;
-				margin: 5px 0 0 15px;
-				line-height: 16px;
+				margin: 3px 0 0 20px;
+				line-height: 12px;
 			}
 			
 			.quan .quan-con .getquan {
 				width: 26%;
-				margin-top: 30px;
+				padding: 30px 0 10px 0;
 				text-align: center;
 			}
 			
@@ -145,15 +113,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-			<h1 class="mui-title" id="header-title">我的优惠券</h1>
-			<a class="mui-icon mui-icon-right-nav mui-pull-right" id="right-btn">免费领券</a>
-			<div class="top-btn">
-				<div class="mui-segmented-control mui-segmented-control-honey">
-					<a class="mui-control-item mui-active" type="0">未使用</a>
-					<a class="mui-control-item" type="1">已使用</a>
-					<a class="mui-control-item" type="2">已过期</a>
-				</div>
-			</div>
+			<h1 class="mui-title" id="header-title">免费领券</h1>
 		</header>
 		<div class="mui-content" id="content">
 			<div class="loader" id="loader">
@@ -193,7 +153,17 @@
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, d, $, h, ms) {
-			$.init({});
+			$.init({
+				pullRefresh: {
+					container: '#content',
+					down: {
+						style:'circle',
+					    color:'#41cea9',
+					    height:'80px',
+						callback: refresh
+					},
+				}
+			});
 			h.d = {
 				content:$('#content'),
 				btn_items:$('.mui-control-item'),
@@ -201,6 +171,10 @@
 				loader:d.getElementById('loader')
 			}
 			
+			function refresh(){
+				h.d.content.pullRefresh().refresh(true);
+				h.getCouponList()
+			}
 			
 			/**
 			 * 获取优惠券列表
@@ -209,51 +183,33 @@
 				h.coupon = []
 				$.ajax(h.apiurl, {
 					data: {
-						m: 'get_coupon_list',
+						m: 'coupon_list',
 						token: ms.getItem('token'),
 						type:h.type
 					},
 					type: 'post',
 					dataType: 'json',
 					success: function(ret) {
+						h.d.content.pullRefresh().endPulldownToRefresh();
 						h.d.loader.style.display='none';
 						if(ret.code == 0 && ret.data && ret.data.length > 0) {
 							var list = [];
 							var time = new Date().getTime() / 1000;
 							h.coupon = ret.data;
 							$.each(ret.data, function(i, v) {
-								var txt,expire=false;
-								if(v.use_time>0||v.order_id>0){
-									txt='已使用';
-									expire=true;
-								}else{
-									if(v.use_start_time>time){
-										txt='不可用'
-									}else if(v.use_end_time<time){
-										txt='已过期'
-										expire=true
-									}else{
-										txt='未使用'
-									}
-								}
-								
-								list.push('<div class="quan'+(expire?" expire":"")+'"><div class="quan-con"><div class="fl title">\
-									<p class="number"><font>'+parseFloat(v.money)+'</font><span>元 (满' + parseFloat(v.condition) + '元可用)</span></p>\
-									<p class="use-time">可用时间：' + h.getYmdTime(v.use_start_time,1)+'<br/>有效期至：'
-									+ h.getYmdTime(v.use_end_time,1) + '</p></div><div class="fr getquan"><p>'+txt+'</p></div></div></div>')
+								var num=v.createnum-v.send_num;
+								list.push('<div class="quan"><div class="quan-con"><div class="fl title">\
+									<p class="number"><font class="coupon_name">'+v.name+'</font><span style="float:right">剩余：<span class="left_num">' +num+ '</span></span></p>\
+									<p class="use-time">满'+parseFloat(v.condition)+'元减'+parseFloat(v.money)+'元</p>\
+									<p class="use-time">有效期至: ' + h.getYmdTime(v.use_end_time,1) + '</p></div><div class="fr getquan" coupon_id="'+v.id+'" num="'+num+'" send_time="'+v.send_time+'"><p>'+(num>0?(v.send_time>0?'已领取':'立即领取'):'抢光啦！')+'</p></div></div></div>')
 							});
 							if(list.length > 0) {
 								h.d.list.innerHTML = list.join('')
 							} else {
-								h.d.list.innerHTML = '<div class="no-quan">没有可用的券</div>';
+								h.d.list.innerHTML = '<div class="no-quan">暂时还没有发放免费券哦，敬请期待！</div>';
 							}
-						} else {
-							if(ret.code == -1) {
-								$.toast(ret.msg)
-								honey.openWin('../mine/login.html', 'login')
-								return
-							}
-							h.d.list.innerHTML = '<div class="no-quan">没有相关优惠券</div>';
+						}else{
+							h.d.list.innerHTML = '<div class="no-quan">暂时还没有发放免费券哦，敬请期待！</div>';
 						}
 					},
 					error: function(ret) {
@@ -262,35 +218,50 @@
 				});
 			}
 			
-			h.showType=function(type){
-				var type=type||h.type;
-				$.each(h.d.btn_items, function(i,v) {
-					v.setAttribute('class','mui-control-item'+(v.getAttribute('type')==type?' mui-active':''))
-				});
-			}
-			
 			$.plusReady(function() {
 				h.token=ms.getItem('token');
 				h._self=plus.webview.currentWebview();
 				h.type=h._self.type|| 0;
-				h.showType()
-				h.getCouponList()
+				if(!h.token){
+					h.d.list.innerHTML = '<div class="no-quan">您还没有登录哦！</div>';
+					honey.openWin('../mine/login.html', 'login')
+				}else{
+					h.getCouponList()
+				}
 				
-				/**
-				 * 切换
-				 */
-				$('.top-btn').on('tap','.mui-control-item',function(){
-					var type=this.getAttribute('type')
-					if(type!=h.type){
-						h.d.list.innerHTML='';
-						h.d.loader.style.display='block';
-						h.type=type;
-						h.getCouponList()
+				$('#quan-list').on('tap','.getquan',function(){
+					var that=this;
+					var id=this.getAttribute('coupon_id');
+					var num=this.getAttribute('num');
+					var send_time=this.getAttribute('send_time');
+					if(num>0){
+						if(send_time>0){
+							$.toast('您已经领取过啦！')
+							return
+						}
+						$.ajax(h.apiurl,{
+							type:"post",
+							async:true,
+							data:{
+								m:'get_coupon',
+								token:h.token,
+								coupon_id:id,
+							},
+							dataType:'json',
+							success:function(ret){
+								$.toast(ret.msg)
+								if(ret.code==0){
+									var o=that.parentElement.parentElement.querySelector('.left_num');
+									var num=parseFloat(o.innerText)-1;
+									o.innerText=num>0?num:0;
+									that.setAttribute('send_time',1);
+									that.innerHTML='<p>已领取</p>';
+								}
+							},
+						});
+					}else{
+						$.toast('抢光啦！！！')
 					}
-				})
-				
-				d.getElementById('right-btn').addEventListener('tap',function(){
-					h.openWin('../home/coupon.html','coupon');
 				})
 				
 				$.back=function(){

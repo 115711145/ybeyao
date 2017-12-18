@@ -749,8 +749,9 @@ var honey = (function(win, $) {
 	 * 打开广告页
 	 * @param {Object} type
 	 * @param {Object} link
+	 * @param String name
 	 */
-	h.openAd=function(type,link){
+	h.openAd=function(type,link,name){
 		if(!type||!link){
 			return
 		}
@@ -768,12 +769,14 @@ var honey = (function(win, $) {
 				h.detailWebView.show('slide-in-right', 300)
 				break;
 			case 1://文章
-				$.toast('打开文章'+link)
 				openWin('../mine/article.html','article',{id:link});
 				break;
 			case 2://分类
-				$.toast('打开分类'+link)
-				
+				if(!h.goodsListHeader){
+					h.goodsListHeader=plus.webview.getWebviewById('goods-header')
+				}
+				$.fire(h.goodsListHeader,'cateId',{name:name,cid:link})
+				h.goodsListHeader.show('slide-in-right',300)
 				break;
 		}
 	}
@@ -851,7 +854,7 @@ var honey = (function(win, $) {
 					}
 				}
 			}
-			str.push('<p class="zan"><span class="zan_num" comment_id="' + v.comment_id + '"><img src="../images/zan.png"/> ' + v.zan_num + '</span></p>')
+//			str.push('<p class="zan"><span class="zan_num" comment_id="' + v.comment_id + '"><img src="../images/zan.png"/> ' + v.zan_num + '</span></p>')
 			li.innerHTML = str.join('');
 			document.getElementById(id).appendChild(li)
 		});

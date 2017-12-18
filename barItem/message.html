@@ -138,12 +138,14 @@
 				getMessage()
 			}
 			//加载列表 
-			function getMessage(){
+			function getMessage(is_preload){
 				if(!h.token){
 					h.d.list.style.display="block";
 					h.d.innerHTML='<li class="no-comment">您还未登录</li>';
 					h.d.loader.style.display="none";
-					h.openWin('../mine/login.html','login')
+					if(!is_preload){
+						h.openWin('../mine/login.html','login')
+					}
 					return
 				}
 				if(h.is_loading){
@@ -263,10 +265,10 @@
 				h.token=ms.getItem('token');
 				h._self=plus.webview.currentWebview();
 				h.indexWin=plus.webview.getLaunchWebview();
-				getMessage()
-				$.back=function(){
-					plus.webview.currentWebview().close('slide-out-right');
-				}
+				getMessage(1)
+//				$.back=function(){
+//					plus.webview.currentWebview().close('slide-out-right');
+//				}
 				
 				win.addEventListener('refresh',refresh,false)
 				

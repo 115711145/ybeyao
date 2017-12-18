@@ -169,12 +169,17 @@
 								h.openWin('mine/login.html','login')
 								e&&e.stopPropagation()
 								return
-							}else{
-								$.fire(h.barWebViews[id],'reloadUser',{time:true})
 							}
+							$.fire(h.barWebViews[id],'reloadUser',{time:true})
 //						}else if(id=="cart"){
 //							$.fire(h.barWebViews[id], 'showCart')
 						}else if(id=='message'){
+							if(!h.token){
+//									document.getElementById('#'+h.curBarItemWebview)
+								h.openWin('mine/login.html','login')
+								e&&e.stopPropagation()
+								return
+							}
 							$.fire(h.barWebViews[id],'refresh')
 						}
 						if(h.curBarItemWebview=='home'){
@@ -238,7 +243,24 @@
 					h.getMessageCount(time)
 				},time)
 			}
+			h.showGuide=function(){
+				h.version=ms.getItem('version');
+				if(h.version!=plus.runtime.version){
+					$.openWindow({
+					    url:'guide.html',
+					    id:'guide',
+					    createNew:false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+					    show:{
+					      autoShow:true,//页面loaded事件发生后自动显示，默认为true
+					      aniShow:'fade-in',//页面显示动画，默认为”slide-in-right“；
+					      duration:200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					      extras:{}//窗口动画是否使用图片加速
+					    },
+					})
+				}
+			}
 			$.plusReady(function(){
+				h.showGuide();
 				if(!h.home){
 					h.home=plus.webview.currentWebview();
 				}
