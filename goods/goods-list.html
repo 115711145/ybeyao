@@ -175,6 +175,7 @@
 				noItem:d.getElementById('no-item')
 			}
 			$.plusReady(function() {
+				h.token=myStorage.getItem('token')
 				if(!h.goodsListHeader) {
 					h.goodsListHeader = plus.webview.getWebviewById('goods-list-header');
 				}
@@ -188,7 +189,8 @@
 						h.detailSubpage = plus.webview.getWebviewById('goods-detail');
 					}
 					$.fire(h.detailWebView, 'goodsId', {
-						goods_id:goods_id
+						goods_id:goods_id,
+						f:h.f
 					})
 					h.detailWebView.show('slide-in-right', 300)
 				})
@@ -196,7 +198,9 @@
 				$('#list').on('tap','.ad',function(){
 					var ad_link=this.getAttribute('ad_link');
 					var ad_type=this.getAttribute('ad_type');
-					h.openAd(ad_type,ad_link)
+					var name=this.innerText
+					var f=this.getAttribute('f')
+					h.openAd(ad_type,ad_link,name,f)
 				})
 				
 				h.d.goTop.addEventListener('tap',function(){
@@ -241,8 +245,10 @@
 				h.d.content.pullRefresh().refresh(true);
 				h.page=1;
 				h.total=0;
-				h.cate=e.detail.cate;
-				h.cid=e.detail.cid;
+				h.cate=e.detail.cate||'';
+				h.cid=e.detail.cid||'';
+				h.f=e.detail.f||'';
+				h.keyword=e.detail.keyword||'';
 				h.sort="";
 				h.desc="";
 				ajaxGetData()
@@ -260,7 +266,10 @@
 							cate:h.cate,
 							cid:h.cid,
 							sort:h.sort,
-							desc:h.desc
+							desc:h.desc,
+							f:h.f,
+							token:h.token,
+							keywords:h.keyword
 						},
 						type:'post',
 						dataType:'json',
@@ -276,7 +285,7 @@
 								if(ret.data.length>0){
 //									var ad=[];
 //									ad.push({name:'广告名称广告名称广告名称广告名称广告名称',type:1,src:'../images/ad'+honey.page+'.jpg'});
-									h.showGoodsList(ret.data,'list',(h.page>1),ret.ad)
+									h.showGoodsList(ret.data,'list',ret.ad,h.f)
 								}
 								h.total=ret.total;
 								if(h.page==1&&honey.total<=honey.pageSize){
@@ -289,7 +298,7 @@
 							}
 						},
 						error:function(ret){
-//							alert(JSON.stringify(ret))
+							alert(JSON.stringify(ret))
 							$.toast('数据加载失败')
 						} 
 					})

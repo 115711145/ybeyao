@@ -69,15 +69,16 @@
 			</div>
 			<div class="yb-ad1">
 				<p class="ad-left">
-					<img src="../images/default.png" class="lazy ad adImg2"/>
+					<img src="../images/default.png" f="home-ad1" class="lazy ad adImg2"/>
 				</p>
 				<p class="ad-right">
-					<img src="../images/default.png" class="lazy ad adImg3"/>
-					<img src="../images/default.png" class="lazy ad adImg3"/>
+					<img src="../images/default.png" f="home-ad2" class="lazy ad adImg3"/>
+					<img src="../images/default.png" f="home-ad3" class="lazy ad adImg3"/>
 				</p>
 			</div>
-			<div class="yb-ad1" style="clear: both;margin-top:0 ;margin-bottom:15px !important;">
-				<img src="../images/default.png" class="lazy ad adImg4"/>
+			<div class="yb-ad4" id="yb-ad4">
+				<img src="../images/default.png" f="home-ad4" class="lazy ad adImg4"/>
+				<img src="../images/default.png" f="home-ad4" class="lazy ad adImg4"/>
 			</div>
 			<!--<div class="mui-content recommend">-->
 				<!--<ul class="mui-table-view mui-grid-view" id="recommend">
@@ -159,7 +160,7 @@
 						}
 						if(i<len){
 							group.push('<div class="mui-slider-item"><a href="#">\
-								<img class="lazy ad"  name="'+adList[i].name+'" type="'+adList[i].type+'" link="'+adList[i].link+'" data-src="' + h.apihost+adList[i].src + '"></a></div>')
+								<img class="lazy ad"  f="slider" name="'+adList[i].name+'" type="'+adList[i].type+'" link="'+adList[i].link+'" data-src="' + h.apihost+adList[i].src + '"></a></div>')
 							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
 						}else {
 							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
@@ -188,17 +189,32 @@
 						}
 					}
 				}
+				/**
+				 * 显示广告4
+				 * @param {Object} data
+				 */
+				h.showAd4=function(data){
+					var html=[];
+					$.each(data, function(i,v) {
+						if(v.pid==4){
+							html.push('<img src="../images/default.png" f="home-ad4" class="lazy ad adImg4"/>')
+						}
+						
+					});
+				}
 				h.bindListTap= function() {
 					//添加slider点击事件
 					$('.mui-content').on('tap', '.ad', function() {
 						var link=this.getAttribute('link')
 						var type=this.getAttribute('type')
 						var name=this.getAttribute('name')
-						h.openAd(type,link,name)
+						var f=this.getAttribute('f')
+						h.openAd(type,link,name,f)
 					})
 					//添加每个item点击的监听事件
 					$('#recommend').on('tap', '.goods-list', function() {
 						var goods_id = this.getAttribute('goods_id');
+						var f=this.getAttribute('f');
 //						var title = this.querySelector('.goods-title').innerText;
 						if(!h.detailWebView) {
 							h.detailWebView = plus.webview.getWebviewById('goods-header');
@@ -207,7 +223,8 @@
 							h.detailSubpage = plus.webview.getWebviewById('goods-detail');
 						}
 						$.fire(h.detailWebView, 'goodsId', {
-							goods_id:goods_id
+							goods_id:goods_id,
+							f:f
 						})
 						h.detailWebView.show('slide-in-right', 300)
 					});
@@ -222,8 +239,7 @@
 						dataType:'json',
 						success:function(ret){ 
 							if(ret.code==0){
-								h.showGoodsList(ret.data.recommend,'recommend')
-//								h.showGoodsList(ret.data.hot,'hot')
+								h.showGoodsList(ret.data.recommend,'recommend',null,'home-recommend')
 							}
 						},
 						error:function(ret){
@@ -231,16 +247,6 @@
 //							alert(JSON.stringify(ret)) 
 						} 
 					})
-//					var recommend = document.getElementById('recommend');
-//					var li=[];
-//					for(var i = 0; i < 4; i++) {
-//						var imageUrl = 'http://www.dcloud.io/hellomui/images/' + (i + 1) + '.jpg';
-//						var innerHTML = '<div class="goods-list-item"><a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/muwu.jpg"\
-//							data-lazyload="' + imageUrl + '"/>\
-//			                <div class="mui-media-body goods-info"><p class="goods-title">幸福就是可以一起睡觉...</p><p><span class="goods-price-one">￥120</span><span class="goods-price-two">￥200</span><p></div></a></div>';
-//						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">'+innerHTML+'</li>');
-//					}
-//					recommend.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
 				}
 				/**
 				 * 显示商品列表
@@ -272,12 +278,13 @@
 					mui('#menus').on('tap','a',function(){
 						var name=this.getAttribute('name');
 						var cate=this.getAttribute('cate');
+						var f='home-icon'+cate;
 						if(cate=='8'){
 //							alert('优惠券')
-							h.openWin('../home/coupon.html','coupon')
+							h.openWin('../home/coupon.html','coupon',{f:f})
 						}else{
 //							openWin("../goods/goods-list-header.html","goods-list-header",{cate:cate},{top:0,bottom:'51px'})
-							$.fire(h.goodsListHeader,'cateId',{name:name,cate:cate})
+							$.fire(h.goodsListHeader,'cateId',{name:name,cate:cate,f:f})
 							h.goodsListHeader.show('slide-in-right',300)
 						}
 					})

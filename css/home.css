@@ -119,6 +119,18 @@
 	height: 80px;
 }
 
+.yb-ad4 {
+	clear: both;
+	margin: 5px;
+	background: #fff;
+	border-radius: 1px;
+	padding: 0 !important;
+}
+
+.yb-ad4 img{
+	width: 100%;
+}
+
 .yb-ad1 {
 	margin: 5px;
 	float: left;
@@ -159,5 +171,7 @@
 }
 
 .twoRankedBox{
+	margin-top: 0 !important;
 	padding-bottom: 0px;
+	padding-top:0 !important ;
 }

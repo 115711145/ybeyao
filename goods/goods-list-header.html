@@ -152,13 +152,14 @@
 						honey.d.sort.className="";
 						honey.d.sort=this;
 						honey.sort=sort;
-						mui.fire(honey.goodsList,'GoodsListSort',{sort:honey.sort,desc:honey.desc})
+						mui.fire(honey.goodsList,'GoodsListSort',{sort:honey.sort,desc:honey.desc,f:honey.f})
 					}
 				})
 			})
 			window.addEventListener('cateId',function(o){
+				honey.f=o.detail.f
 				honey.d.title.innerHTML=o.detail.name;
-				mui.fire(honey.goodsList,'showGoodsList',{cate:o.detail.cate,cid:o.detail.cid})
+				mui.fire(honey.goodsList,'showGoodsList',{cate:o.detail.cate,cid:o.detail.cid,f:honey.f,keyword:o.detail.keyword})
 				if(honey.sort!='default'){
 					honey.d.desc.className="hide";
 					honey.d.sort.className="";

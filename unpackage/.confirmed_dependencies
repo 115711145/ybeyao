@@ -35,7 +35,8 @@
 			"cart/buy-header.html",
 			"cart/buy-content.html",
 			"barItem/message.html",
-			"guide.html"
+			"guide.html",
+			"home/search.html"
 		]
 	},
 	"barItem/home.html": {
@@ -89,7 +90,8 @@
 		"refer": [
 			"goods/goods-list-header.html",
 			"home/map.html",
-			"home/coupon.html"
+			"home/coupon.html",
+			"mine/article.html"
 		]
 	},
 	"template.html": {

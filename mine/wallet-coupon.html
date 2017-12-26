@@ -290,15 +290,13 @@
 				})
 				
 				d.getElementById('right-btn').addEventListener('tap',function(){
-					h.openWin('../home/coupon.html','coupon');
+					h.openWin('../home/coupon.html','coupon',{f:'mine'});
 				})
 				
 				$.back=function(){
 					plus.webview.currentWebview().close('slide-out-right');
 				}
-		
 			})
-		
 		}(window,document, mui, honey, myStorage))
     </script>
 	</body>

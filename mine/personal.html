@@ -105,12 +105,18 @@
 					<span class="mui-icon mui-icon-arrowright fr"></span>
 				</div>
 			</div>
-			<div class="mui-input-row">
+			<!--<div class="mui-input-row">
 				<label>昵 称</label>
-				<!--<input type="number" class="mui-input-clear" id="mobile" placeholder="手机号码">-->
 				<div class="mui-inline dialog" type-id="nickname">
 				<span class="info" id="nickname"></span>
 				<span class="mui-icon mui-icon-arrowright fr"></span>
+				</div>
+			</div>-->
+			<div class="mui-input-row">
+				<label>姓 名</label>
+				<div class="mui-inline dialog" type-id="truename">
+					<span class="info" id="truename"></span>
+					<span class="mui-icon mui-icon-arrowright fr"></span>
 				</div>
 			</div>
 			<div class="mui-input-row">
@@ -204,13 +210,14 @@
 			$.init();
 			h.d={
 				head_pic:d.getElementById('head_pic'),
-				name:d.getElementById('nickname'),
+//				name:d.getElementById('nickname'),
 				sex:d.getElementById('sex'),
 				mobile:d.getElementById('mobile'),
 				email:d.getElementById('email'),
 				repwd:d.getElementById('reset-pwd'),
 				birthday:d.getElementById('birthday'),
-				qq:d.getElementById('qq')
+				qq:d.getElementById('qq'),
+				truename:d.getElementById('truename')
 			}
 			h.getPersonal=function(){
 				$.ajax(h.apiurl,{
@@ -249,7 +256,8 @@
 					var head_pic=h.trim(h.user.head_pic)?(h.user.head_pic.indexOf('http://')>=0?h.user.head_pic:h.apihost+h.user.head_pic)+'?v='+Math.random():'../images/profile.png';
 					h.d.head_pic.src=head_pic
 				}
-				h.d.name.innerText=h.user.nickname;
+//				h.d.name.innerText=h.user.nickname;
+				h.d.truename.innerText=h.user.truename||"未设置";
 				h.d.sex.innerText=h.user.sex>0?(h.user.sex==1?"男":"女"):"未知";
 				h.d.mobile.innerText=h.user.mobile||"未绑定";
 				h.d.email.innerText=h.user.email||"未绑定";
@@ -295,6 +303,9 @@
 					
 					$('.mui-content').on('tap','.dialog',function(){
 						var type=this.getAttribute('type-id');
+						if(type=='truename'&&h.user.truename){
+							return
+						}
 						var span=this.querySelector('#'+type)
 						var txt=span.innerText;
 						var title=h.trim(this.parentElement.querySelector('label').innerText);
@@ -316,12 +327,19 @@
 										$.toast('QQ号码错误')
 										return
 									}
+									if(type=='truename'){
+										var p = /[0-9a-z]/i; 
+										if(value.length<2||p.test(value)){//true,说明有英文字母或数字
+											$.toast('请输入正确的姓名')
+											return
+										}
+									}
 									if(value==h.user[type]){
 										return
 									}
 									h.editUserInfo(type,value,function(ret){
 										if(ret){
-											ret.code==0?(span.innerText=h.user[type]=ret.data||value,$.fire(h.mineWin,'show_name',{nickname:value})):(ret.msg&&$.toast(ret.msg))
+											ret.code==0?(span.innerText=h.user[type]=ret.data||value,$.fire(h.mineWin,'show_name',{truename:value})):(ret.msg&&$.toast(ret.msg))
 										}
 									})
 								}
@@ -403,6 +421,12 @@
 					})
 				}
 				
+				/**
+				 * 修改个人资料
+				 * @param {Object} index 键
+				 * @param {Object} value 值
+				 * @param {Object} callback 回调
+				 */
 				h.editUserInfo=function(index,value,callback){
 					$.ajax(h.apiurl,{
 						type:"post",

@@ -10,6 +10,9 @@
 		<link rel="stylesheet" href="../css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/own.css"/>
 		<style>
+			body{
+				color: #fff !important;
+			}
 			#list p{
 				color: #333;
 			}
@@ -18,6 +21,31 @@
 			}
 			.mui-collapse-content p,.mui-collapse-content span,.mui-collapse-content img,.mui-collapse-content div{
 				max-width: 100% !important;
+			}
+			#content{
+				padding:15px 10px;
+			}
+			#content img{
+				max-width: 100% !important;
+			}
+			h4{
+				color: #1692F0;
+				font-size: 14px;
+			}
+			.attr{
+				margin: 0;
+			}
+			.attr span{
+				font-size:12px;
+				padding-right: 5px;
+			}
+			#cate{
+				color: #ff6633;
+			}
+			#con,#con p,#con span,#con a{
+				clear: both;
+				font-size:12px;
+				color: #666;
 			}
 		</style>
 		
@@ -36,7 +64,12 @@
 				<span>加载中...</span>
 			</div>
 			<div class="content" id="content">
+				<div>
+					<h4 id="title"></h4>
+					<p class="attr"><span id="cate"></span><span id="date"></span></p>
+				</div>
 				
+				<div id="con"></div>
 			</div>
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js"></script>
@@ -52,27 +85,50 @@
 				});
 				h.d={
 					list:d.getElementById('content'),
-					loader:d.getElementById('loader')
+					loader:d.getElementById('loader'),
+					title:d.getElementById('title'),
+					con:d.getElementById('con')
 				}
-				$.plusReady(function(){
-					h.self=plus.webview.currentWebview();
-					h.articleId=h.self.id;
-					console.log(h.articleId)
+				h.getArticle=function(){
 					$.ajax(h.apiurl,{
 						type:"post",
 						async:true,
 						data:{
-							m:'article_detail',
+							m:'article_info',
+							article_id:h.self.article_id,
+							f:h.self.f
 						},
 						success:function(ret){
-							if(ret.code==0){
-								
+							if(ret.code==0&&ret.data){
+								h.d.loader.style.display="none"
+								h.d.title.innerHTML=ret.data.title
+								d.getElementById('cate').innerText='['+ret.data.cat_name+']';
+								d.getElementById('date').innerText=h.getYmdTime(ret.data.add_time)
+								h.d.con.innerHTML=h.htmlspecialchars_decode(ret.data.content);
+								var imgs=h.d.con.querySelectorAll('img')
+								$.each(imgs, function(i,v) {
+									var u=v.getAttribute('src')
+									if(u.indexOf('http://')<0){
+//										v.setAttribute('src','../images/default.png')
+										v.setAttribute('data-lazyload',h.apihost+u)
+										v.removeAttribute('src')
+										v.removeAttribute('style')
+									}
+								});
+								$('#content').imageLazyload({
+									placeholder: '../images/default.png'
+								});
 							}
 						},
 						error:function(ret){
-							alert(ret)
+							alert(ret.responseText)
 						}
 					});
+				}
+				$.plusReady(function(){
+					h.self=plus.webview.currentWebview();
+					h.getArticle()
+					
 					$.back=function(){
 						h.self.close('slide-out-right')
 					}

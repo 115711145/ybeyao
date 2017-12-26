@@ -103,12 +103,15 @@
 				codeTime:d.getElementById('code-time'),
 				_submit:d.getElementById('submit'),
 				note:d.getElementById('note'),
-				loader:d.getElementById('loader')
+				loader:d.getElementById('loader'),
+				title:d.getElementById('header-title')
 			}
 			if(h.step==1){
 				h.d.mobile.value=h.user.mobile
 				h.d.mobile.setAttribute('disabled','disabled')
+				h.d.title.innerText="变更手机号码";
 			}else{
+				h.d.title.innerText="绑定手机号码";
 				h.d.mobile.value='';
 				h.d.mobile.placeholder="请输入要绑定的手机号码";
 				h.d.mobile.removeAttribute('disabled');
@@ -149,7 +152,8 @@
 					$.ajax(h.apiurl,{
 						data:{
 							m:'get_bind_code',
-							mobile:h.d.mobile.value
+							mobile:h.d.mobile.value,
+							token:h.token
 						},
 						type:'post',
 						dataType:'text',
@@ -229,6 +233,7 @@
 						if(ret.code==0){
 							$.toast(ret.msg)
 							if(h.step==1){
+								h.codeTime=0;
 								h.step=2;
 								h.d.mobile.value='';
 								h.d.mobile.placeholder="请输入要绑定的手机号码";
