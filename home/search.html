@@ -1,0 +1,323 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>搜索</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link type="text/css" rel="stylesheet" href="../css/mui.min.css" />
+		<link type="text/css" rel="stylesheet" href="../css/own.css" />
+		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
+		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
+		<style>
+			body{
+				background: #fff;
+			}
+			input[type='search']
+			{
+				color: #fff;
+			    background-color: none;
+			    height: 35px !important;
+		    	margin-top:4px !important;
+			}
+			.mui-search:before{
+				color: #fff;
+			}
+			.mui-search .mui-placeholder
+			{
+			    color: #fff;
+			}
+			.mui-search .mui-placeholder .mui-icon
+			{
+			    color: #fff;
+			}
+			.mui-input-row .mui-input-speech ~ .mui-icon-speech {
+				color: #fff;
+			}
+			#header-title{
+				float: left;
+				width: 88%;
+			}
+			#cansel-btn{
+				color: #fff;
+				line-height: 40px;
+			}
+			.mui-input-row.mui-search .mui-icon-clear
+			{
+			    color: #fff;
+			}
+			#content h4{
+				color: #333;
+				font-size: 15px;
+				padding: 10px;
+				background: #fff;
+				margin: 0;
+			}
+			#content .mui-table-view-cell{
+				color: #666;
+				font-size: 15px;
+			}
+			.search-record{
+				clear: both;
+				color: #666;
+			}
+			.search-record ul{
+				float: left;
+				background: #fff;
+			}
+			.search-record li{
+				float: left;
+				display: inline;
+				margin: 5px 2px;
+				border: 1px solid #ccc;
+				padding: 3px 8px;
+				border-radius: 3px;
+				color: #666;
+				font-size: 12px;
+			}
+			.right{
+				float: right;
+				font-size: 13px;
+			}
+			.right font{
+				color: #ff6633;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<div class="" id="header-title">
+				<div class="mui-input-row mui-search" id="search">
+					<input type="search" id="search-input" class="mui-input-clear" placeholder="友邦大药房" 
+						oncomplete="test()"/>
+				</div>
+			</div>
+			<a id="cansel-btn" class="mui-action-back mui-pull-right">取消</a>
+		</header>
+		<div class="mui-content" id="content">
+			<div id="record-box">
+				<div class="search-record" id="record">
+					<h4 class="title">历史搜索：</h4>
+					<ul>
+						 <li>历史搜索</li>
+				         <li>史搜索</li>
+				         <li>史搜索历史搜</li>
+				         <li>I史搜索历</li>
+				         <li>I史搜</li>
+					</ul>
+				</div>
+				<div class="search-record" id="hot">
+					<h4 class="title">热门搜索：</h4>
+					<ul>
+						 <li>历史搜索历史搜索历史搜索</li>
+				         <li>史搜索历史搜史</li>
+				         <li>史搜索历史搜</li>
+				         <li>I史搜索历</li>
+				         <li>I史搜</li>
+					</ul>
+				</div>
+			</div>
+			<div id="keyword-list" style="display: none;">
+				<ul class="mui-table-view">
+					 <li class="mui-table-view-cell">Item 1<span class="right"><font>360</font>个相关商品</span></li>
+			         <li class="mui-table-view-cell">Item 2</li>
+			         <li class="mui-table-view-cell">Item 3</li>
+				</ul>
+			</div>
+		</div>
+    <script type="text/javascript" src="../js/mui.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+    	(function(win, d, $, h, ms) {
+			$.init();
+			h.d = {
+				content:$('#content'),
+				_input: d.getElementById('search-input'),
+				keywordList:d.getElementById('keyword-list'),
+				recordBox:d.getElementById('record-box'),
+				search:d.getElementById('search'),
+				hot:d.getElementById('hot'),
+				record:d.getElementById('record')
+			}
+			h.getRecord=function(){
+				$.ajax(h.apiurl,{
+					type:"post",
+					async:true,
+					data:{
+						m:'get_keyword_record',
+						token:h.token
+					},
+					dataType:'json',
+					success:function(ret){
+						if(ret.data){
+							if(ret.data.hot){
+								var hot=[];
+								$.each(ret.data.hot, function(i,v) {
+									hot.push('<li><span class="key">'+v.keywords+'</span></li>')
+								});
+								h.d.hot.querySelector('ul').innerHTML=hot.join('')
+							}
+							if(ret.data.record){
+								h.record=ret.data.record;
+								h.showRecord(h.record)
+							}
+						}
+					},
+					error:function(ret){
+						
+					}
+				});
+			}
+			h.showRecord=function(data){
+				if(data){
+					var record=[];
+					$.each(data, function(i,v) {
+						record.push('<li><span class="key">'+v.keywords+'</span></li>')
+					});
+					h.d.record.querySelector('ul').innerHTML=record.join('')
+					h.d.record.style.display="block"
+				}else{
+					h.d.record.style.display="none"
+				}
+			}
+			$.plusReady(function() {
+				h.loading=false;
+				h.token=ms.getItem('token');
+				h._self=plus.webview.currentWebview();
+				h.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
+				h.getRecord()
+				
+				h.d._input.addEventListener('input',function(){
+					var val=h.trim(this.value);
+					if(val&&val.length>0&&!h.loading){
+						h.d.keywordList.style.display="block";
+						h.d.recordBox.style.display="none";
+						h.getKeywordList(val)
+					}else{
+						h.d.recordBox.style.display="block";
+						h.d.keywordList.style.display="none";
+					}
+				})
+				$('#search').on('search','#search-input', function(){
+					h.openGoodsList()
+				});
+				
+				$('#content').on('tap','li',function(){
+					var keyword=this.querySelector('.key').innerText;
+					h.d._input.focus();
+					h.openGoodsList(keyword)
+				})
+				
+				
+				
+				h.openGoodsList=function(keyword){
+					var keyword=keyword||h.trim(h.d._input.value);
+					var arr=[],tag;
+					$.each(h.record, function(i,v) {
+						if(v.keywords==keyword){
+							arr.unshift(v)
+							tag=true;
+						}else{
+							arr.push(v)
+						}
+					});
+					if(!tag){
+						arr.unshift({keywords:keyword})
+					}
+					if(arr.length>10){
+						arr.pop()
+					}
+					h.record=arr;
+					h.showRecord(h.record)
+					$.fire(h.goodsListHeader,'cateId',{name:'搜索',f:'search',keyword:keyword})
+					h.goodsListHeader.show('slide-in-right',300)
+				}
+				
+				h.getKeywordList=function(keywrod){
+					var keyword=keyword||h.trim(h.d._input.value);
+					if(keyword){
+						if(!h.token){
+							h.token=myStorage.getItem('token')
+						}
+						h.loading=true;
+						$.ajax(h.apiurl,{
+							type:"post",
+							async:true,
+							data:{
+								m:'get_keyword',
+								keyword:keyword
+							},
+							dataType:'json',
+							timeout:h.ajaxTimeout,
+							success:function(ret){
+								h.loading=false;
+								var tag=false;
+								var html=[];
+								if(ret.data&&ret.data.length>0){
+									$.each(ret.data, function(i,v) {
+										if(v.keywords==keyword){
+											tag=true;
+										}
+										html.push('<li class="mui-table-view-cell"><span class="key">'+v.keywords+'</span><span class="right"><font>'+v.goods_num+'</font>个相关商品</span></li>')
+									});
+								}
+								if(!tag){
+									html.unshift('<li class="mui-table-view-cell"><span class="key">'+keyword+'</span></li>')
+								}
+								h.d.keywordList.querySelector('ul').innerHTML=html.join('')
+							},
+							error:function(ret){
+								h.loading=false;
+//								alert(ret.responseText)
+							}
+						});
+					}
+				}
+				
+				
+				win.addEventListener('refresh',function(){
+					h.d._input.value='';
+					h.d.recordBox.style.display="block";
+					h.d.keywordList.style.display="none";
+					open_soft_keyboard({input:'#search-input'})
+				})
+				
+				/**
+				 * 默认打开软键盘
+				 * @param options{
+				 *   input: '#nickname' // 容器节点
+				 * }
+				 * @author 蔡繁荣
+				 * @version 1.0.3 build 20151226
+				 */
+				function open_soft_keyboard(options){
+				    if(plus.os.name == 'iOS'){
+				        setTimeout(function(){
+				            var wv_current = plus.webview.currentWebview().nativeInstanceObject();
+				            wv_current.plusCallMethod({"setKeyboardDisplayRequiresUserAction":false});
+				            document.querySelector(options['input']).focus();
+				        }, 330);
+				    }else{
+				        // 因为安卓autofocus只有4.0版本以上才支持，所以这里使用native.js来强制弹出
+				        setTimeout(function(){
+				            // 在执行的时候需要让当前webview获取焦点
+				            var wv_current = plus.android.currentWebview();
+				            plus.android.importClass(wv_current);
+				            wv_current.requestFocus();
+				            var Context = plus.android.importClass("android.content.Context");
+				            var InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");
+				            var main = plus.android.runtimeMainActivity();
+				            var imm = main.getSystemService(Context.INPUT_METHOD_SERVICE);
+				            imm.toggleSoftInput(0,InputMethodManager.SHOW_FORCED);
+				            document.querySelector(options['input']).focus();
+				        }, 330);
+				    }
+				}
+			})
+			
+		}(window,document, mui, honey, myStorage))
+    </script>
+	</body>
+
+</html>
+

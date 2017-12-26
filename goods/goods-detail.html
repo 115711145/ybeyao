@@ -265,7 +265,8 @@
 					data: {
 						m: 'goods_info',
 						goods_id: honey.goods.goods_id,
-						token:honey.token
+						token:honey.token,
+						f:honey.goods.f
 					},
 					type: 'post',
 					dataType: 'json',
@@ -435,6 +436,7 @@
 					mui.ajax(honey.apiurl, {
 						data: {
 							m: 'goods_comments_list',
+							token:honey.token,
 							goods_id: honey.goods.goods_id,
 							last_id: honey.lastId,
 							ctype: honey.ctype,
@@ -677,6 +679,7 @@
 				window.addEventListener('showGoods', function(o) {
 					honey.goods = {};
 					honey.goods.goods_id = o.detail.goods_id;
+					honey.goods.f=o.detail.f;
 					honey.lastId = 0;
 //					honey.content.pullRefresh().refresh(true);
 					if(!honey.goodsDetail) {

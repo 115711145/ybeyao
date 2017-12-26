@@ -317,7 +317,7 @@
 					h.d.head_pic.setAttribute('src','../images/profile.png')
 //					h.d.head_pic.style.background="url(../images/profile.png) no-repeat"
 				}else{
-					h.d.nickname.innerText=user.nickname;
+					h.d.nickname.innerText=user.truename||user.nickname;
 					h.d.user_money.innerText=user.user_money;
 					h.d.pay_points.innerText=user.pay_points;
 					h.d.coupon_num.innerText=user.coupon_count;
@@ -467,7 +467,9 @@
 //					h.d.head_pic.style.backgroundPosition="center center";
 				})
 				win.addEventListener('show_name',function(o){
-					h.d.nickname.innerText=o.detail.nickname
+					if(o.detail.truename){
+						h.d.nickname.innerText=o.detail.truename
+					}
 				})
 				
 				$('.menu').on('tap','li',function(){

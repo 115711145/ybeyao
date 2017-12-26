@@ -358,7 +358,7 @@
 						var cid=this.getAttribute('cid')
 						var name=this.innerText
 						h.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
-						$.fire(h.goodsListHeader,'cateId',{name:name,cid:cid})
+						$.fire(h.goodsListHeader,'cateId',{name:name,cid:cid,f:'category'})
 						h.goodsListHeader.show('slide-in-right',300)
 					})
 				}

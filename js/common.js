@@ -707,7 +707,7 @@ var honey = (function(win, $) {
 	 * @param {Object} append
 	 * @param {Object} ad
 	 */
-	h.showGoodsList=function(data,id,append,ad){
+	h.showGoodsList=function(data,id,ad,f){
 //		var box=document.getElementById(id);
 		var leftBoxDom=document.getElementById('BoxLeft')
 		var rightBoxDom=document.getElementById('BoxRight')
@@ -716,7 +716,8 @@ var honey = (function(win, $) {
 				var li=document.createElement('li');
 				li.className="ad";
 				li.setAttribute('ad_link',v.link);
-				li.setAttribute('ad_type',v.type)
+				li.setAttribute('ad_type',v.type);
+				li.setAttribute('f',f?f+'-ad':'ad');
 				var img=v.src.indexOf('http://')>=0?v.src:h.apihost+v.src;
 			    li.innerHTML = '<p class="product_picture"><img class="lazy" data-lazyload="'+(img)+'" default-src="../images/default.png"/></p>'
 			            +'<p class="product_ie">'+v.name+'</p>';
@@ -731,7 +732,12 @@ var honey = (function(win, $) {
 			var li=document.createElement('li');
 			li.className="goods-list";
 			li.setAttribute('goods_id',v.goods_id)
+			li.setAttribute('f',f);
 			var img=h.getGoodsImgUrl(v.goods_id,v.img_id);
+			if(h.keyword){
+				v.goods_name=v.goods_name.replace(eval('/'+h.keyword+'/g'), '<font color="red">'+h.keyword+'</font>')
+				v.goods_remark=v.goods_remark.replace(eval('/'+h.keyword+'/g'), '<font color="red">'+h.keyword+'</font>')
+			}
 		    li.innerHTML = '<p class="product_picture"><img class="lazy" data-lazyload="'+(img)+'" default-src="../images/default.png"/></p>'
 		            +'<p class="product_np"><a>'+v.goods_name+'</a><a class="price">￥'+v.shop_price+'</a></p>'
 		            +'<p class="product_ie">'+v.goods_remark+'</p>';
@@ -751,7 +757,7 @@ var honey = (function(win, $) {
 	 * @param {Object} link
 	 * @param String name
 	 */
-	h.openAd=function(type,link,name){
+	h.openAd=function(type,link,name,f){
 		if(!type||!link){
 			return
 		}
@@ -764,18 +770,19 @@ var honey = (function(win, $) {
 					h.detailSubpage = plus.webview.getWebviewById('goods-detail');
 				}
 				$.fire(h.detailWebView, 'goodsId', {
-					goods_id:link
+					goods_id:link,
+					f:f
 				})
 				h.detailWebView.show('slide-in-right', 300)
 				break;
 			case 1://文章
-				openWin('../mine/article.html','article',{id:link});
+				h.openWin('../mine/article.html','article',{article_id:link,f:f});
 				break;
 			case 2://分类
 				if(!h.goodsListHeader){
 					h.goodsListHeader=plus.webview.getWebviewById('goods-header')
 				}
-				$.fire(h.goodsListHeader,'cateId',{name:name,cid:link})
+				$.fire(h.goodsListHeader,'cateId',{name:name,cid:link,f:f})
 				h.goodsListHeader.show('slide-in-right',300)
 				break;
 		}
@@ -1203,7 +1210,7 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
      * @param str：需要截取的字符串 
      * @param len: 需要截取的长度 
      */
-    h.cutstr=function (str, len) {
+    h.cutstr=function (str, len ,tag) {
     	if(!str){
     		return '';
     	}
@@ -1221,7 +1228,7 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
             }
             str_cut = str_cut.concat(a);
             if (str_length >= len) {
-                str_cut = str_cut.concat("...");
+                str_cut = str_cut.concat(tag||"...");
                 return str_cut;
             }
         }
@@ -1403,14 +1410,29 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 			});
 		}
     })
-    
+ 	/*1.用正则表达式实现html转码*/
+    h.htmlspecialchars_encode=function (str){  
+         var s = "";
+         if(str.length == 0) return "";
+         s = str.replace(/&/g,"&amp;");
+         s = s.replace(/</g,"&lt;");
+         s = s.replace(/>/g,"&gt;");
+         s = s.replace(/ /g,"&nbsp;");
+         s = s.replace(/\'/g,"&#39;");
+         s = s.replace(/\"/g,"&quot;");
+         return s;  
+   },
+     /*2.用正则表达式实现html解码*/
     h.htmlspecialchars_decode=function(str){           
-		str = str.replace(/&amp;/g, '&'); 
-		str = str.replace(/&lt;/g, '<');
-		str = str.replace(/&gt;/g, '>');
-		str = str.replace(/&quot;/g, "''");  
-		str = str.replace(/&#039;/g, "'");  
-		return str;  
+		 var s = "";
+         if(str.length == 0) return "";
+         s = str.replace(/&amp;/g,"&");
+         s = s.replace(/&lt;/g,"<");
+         s = s.replace(/&gt;/g,">");
+         s = s.replace(/&nbsp;/g," ");
+         s = s.replace(/&#39;/g,"\'");
+         s = s.replace(/&quot;/g,"\"");
+         return s;  
     }
 	return h;
 }(window, mui))

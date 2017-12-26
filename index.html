@@ -21,6 +21,8 @@
 		{
 			color: #fff;
 		    background-color: none;
+		    height: 35px !important;
+		    margin-top:4px !important;
 		}
 		.mui-search:before{
 			color: #fff;
@@ -106,7 +108,8 @@
 				h.bindBaritem()
 				//搜索框事件
 				$('header').on('click','#search',function(){
-					alert('aa')
+					$.fire(h.searchWin,'refresh')
+					h.searchWin.show('slide-in-right',300)
 				})
 			}
 			h.preloadDetailView=function(){
@@ -118,6 +121,8 @@
 				h.preloadCartWin()
 				//预加载分类
 				h.cateWin=h.preloadWin('barItem/category.html','category')
+				//预加载搜索
+				h.searchWin=h.preloadWin('home/search.html','search')
 			}
 			h.preloadWebViews=function(){//预加载页面
 				h.mainWebview = plus.webview.currentWebview();

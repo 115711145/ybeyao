@@ -306,13 +306,16 @@
 								str.push('<div id="replys">')
 								for(var i = 0; i < data.reply.length; i++) {
 									var reply = data.reply[i];
+									if(!reply.user_id>0){
+										h.reply=true;
+									}
 									str.push('<p class="reply"><span>' + (reply.user_id>0?"<font>客服</font> 回复":(reply.is_anonymous>0?"<font class=\"user\">匿名</font>":reply.username)+' 追加') + '：</span><span>' + reply.content +'</span></p>');
 								}
 								str.push('</div>')
 							}
 							str.push('<p class="zan"><span class="zan_num" comment_id="' + data.comment_id + '"><img src="../images/zan.png"/> ' + data.zan_num + '</span></p>')
 							if(new Date().getTime()/1000-data.add_time<3600*24*30){
-								str.push('<p class="btns"><span class="mui-btn mui-btn-nav">追加评论</span><span class="mui-btn mui-btn-danger">删除评价</span></p>')
+								str.push('<p class="btns">'+(h.reply?'':'<span class="mui-btn mui-btn-nav">追加评论</span>')+'<span class="mui-btn mui-btn-danger">删除评价</span></p>')
 							}
 							h.d.comment_info.innerHTML=str.join('');
 							

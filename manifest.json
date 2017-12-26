@@ -112,7 +112,7 @@
 		"runmode": "normal",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
-			"plugins": {"payment":{"alipay":{"description":"阿里支付","scheme":""},"weixin":{"description":"微信支付","appid":"wx54265f7cbe5be204"}},
+			"plugins": {"maps":{"baidu":{"appkey_ios":"PhhdubUR3XZiAqTqNjCsx87cj70lDroo","appkey_android":"jx6dSRUyxRyaNmPT9eOfSKz6gQTyvbXX","appkey":"","description":""}},"payment":{"alipay":{"description":"阿里支付","scheme":""},"weixin":{"description":"微信支付","appid":"wx54265f7cbe5be204"}},
 				"share": {
 					"weixin": {
 						"appid": "wx54265f7cbe5be204",
@@ -248,7 +248,8 @@
 					"cart/buy-header.html",
 					"cart/buy-content.html",
 					"barItem/message.html",
-					"guide.html"
+					"guide.html",
+					"home/search.html"
 				],
 				"priority": 0
 			},
@@ -304,7 +305,8 @@
 				"refer": [
 					"goods/goods-list-header.html",
 					"home/map.html",
-					"home/coupon.html"
+					"home/coupon.html",
+					"mine/article.html"
 				],
 				"priority": 0
 			},
