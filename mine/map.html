@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/own.css" />
+		<script type="text/javascript" src="../js/h5common.js"></script>
+		<link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+		<style type="text/css">
+			#map {
+				width: 100%;
+				position: fixed;
+				top: 45px;
+				bottom: 0px;
+				line-height: 200px;
+				text-align: center;
+				background: #FFFFFF;
+				height: 260px;
+			}
+			.ipos {
+				background: no-repeat center center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAsCAYAAAAn4+taAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNC8wMS8xNExYUU4AAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAACTklEQVRoge2YO2gUURSGv7PjEkULO4UoFooIFgtzprAPWMiWKewSTadgYWEhBjHCloGUQtYHaGEjGAQtUmgnZO9YpsqC2NgYIwjRInMscoPrYkzhGTIs8zdnzoP578ewM/eumBmjoMZ+L8BLNUjVVINUTTVI1VSDVE0jA3KgjJuGEE6LyI2iKC6JyBkzWxORF8ADVV0rw1O891ohhCngPnDyL+1PZjabZdkTV1OcQUIIV4CHMf0JvAK+A0eANjAWe1dV9ZGbMY6/kTzPzwHzMV0VkZaqTgLTqjopIi1gNfbnQwhnvbzBEcTMbgFHgXURaRdFsRFCWAa+hhCWi6LYEJE2sB7nbnp5g+9b62KMIU3Tvoh0gQm2Fz0hIt00TftAADCztqO3K8h4jJsAZnZ+sDmQ/wAQkXEc5QnyJcZjACLybLApIk/j5YmheRd5gryLMev1elOqesfMrpvZczO7pqqzvV5vGmgNzbvIDUREXsbLRES6IYTbzWZzMcuyy0mSPA4h3BWRxR3PgXkff6/vSJ7nx83sPXBqoLwJFEACHByofxSRC2mafnYxx/GJxEW9GSofAg7zJwTAa08I8N80doG9HrHx++vvJlcQVV0xs6V/zZjZkqquePpCOdv4OWBrl96WiNwrwdMfJMuyHFjYpb2gqh+8PaG8g9Uc0B+q9WO9FJUCoqrfgBm2X73EOBPrpai0o66qvgU6Me3EvDSVctTdUZIknaIoxhqNRmfv6f+T+1F3vzQy/6LUIFVTDVI11SBVUw1SNdUgVdPIgPwCtt+2JPQRVicAAAAASUVORK5CYII=);
+				background-size: 50px 44px;
+			}
+			.near{
+				clear: both;
+				margin-top:305px;
+				background: #fff;
+				padding: 0;
+			}
+			.near .tag {
+				background: #efefef;
+				padding:5px 10px;
+			}
+			.near .tag img{
+				position: relative;
+				top:5px
+			}
+			#list{
+				padding-left: 10px;
+				overflow: auto;
+				overflow-y: scroll;
+			}
+			#list li{
+				padding: 10px 0;
+				border-bottom: 1px solid #eee;
+			}
+			#list .address{
+				color: #333;
+				margin: 0;
+			}
+			#list .area{
+				color: #999;
+				margin: 0;
+				font-size: 13px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">我的地址</h1>
+			<a id="rightBar" class="mui-icon-extra mui-icon-extra-cart mui-pull-right" onclick="userLocation();"></a>
+		</header>
+		<div id="map">地图加载中...</div>
+		<div class="near">
+			<p class="tag"><img src="../images/map_999.png" width="20"/>附近地址</p>
+			<ul id="list">
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/immersed.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		(function(win,d,$,h){
+			$.init({
+				swipeBack: false,
+			});
+			var ws,wo,map,center;
+			var em=d.getElementById('map')
+			h.d={
+				list:d.getElementById('list'),
+			}
+			var height=win.screen.height-em.clientHeight-124;
+			h.d.list.setAttribute('style','height:'+height+'px')
+			
+			
+			h.geocoder=function(longitude,latitude){
+				var u='http://api.map.baidu.com/geocoder/v2/';
+				$.ajax(u,{
+					type:"get",
+					async:true,
+					data:{
+						callback:'renderReverse',
+						location:latitude+','+longitude,
+						ak:'7M8ZsypQKQAw2TjtLfcTyvofu9NMrSdu',
+						pois:1,
+						coordtype:'bd09ll',
+						ret_coordtype:'bd09ll',
+						output:'json',
+					},
+					dataType:'text',
+					success:function(ret){
+//						console.log(ret)
+						ret=h.trim(ret).replace('renderReverse&&renderReverse(','')
+						ret=ret.substr(0,ret.length-1)
+						ret=JSON.parse(ret)
+						if(ret.status==0){
+							var data=ret.result;
+							h.addr={
+								adcode:data.addressComponent.adcode,
+								country:data.addressComponent.country,
+								province:data.addressComponent.province,
+								city:data.addressComponent.city,
+								district:data.addressComponent.district,
+								name:data.sematic_description,
+								addr:data.addressComponent.street,
+								jd:data.location.lng,//经度
+								wd:data.location.lat,//维度
+							}
+							
+							var html=[];
+							$.each(data.pois,function(i,v){
+								html.push('<li jd="'+v.point.x+'" wd="'+v.point.y+'"><p class="address">'+v.name+'</p><p class="area"><font>'+v.addr+v.direction+'</font>'+(v.distance>0?v.distance+'米':'')+'</p></li>');
+							})
+							h.d.list.innerHTML=html.join('')
+						}
+					}
+				});
+			}
+			$.plusReady(function(){
+				h.editWin=plus.webview.getWebviewById('adress-add')
+				ws=plus.webview.currentWebview();
+				wo = ws.opener();
+				
+				h.init=function(){
+					setTimeout(function() {
+						map = new plus.maps.Map("map");
+//						map.showUserLocation(true);
+//						map.centerAndZoom(pcenter, 12);
+						map.getUserLocation(function(state, o) {
+							if(0 == state) {
+								h.userLocation=o;
+								map.setCenter(o);
+								map.centerAndZoom(new plus.maps.Point(o.longitude,o.latitude), 18);
+								h.showMarker(o)
+							}
+						});
+						map.onclick = function( o ){
+							map.setCenter(o);
+							map.centerAndZoom(new plus.maps.Point(o.longitude,o.latitude), 18);
+							h.showMarker(o)
+						}
+					}, 300);
+				}
+				
+				$('#list').on('tap','li',function(){
+					h.addr.jd=this.getAttribute('jd');
+					h.addr.wd=this.getAttribute('wd');
+					h.addr.name=this.querySelector('.address').innerText;
+					h.addr.addr=this.querySelector('.area').querySelector('font').innerText;
+					$.fire(plus.webview.getWebviewById('address-add'),'getLocation',h.addr);
+					$.back()
+				})
+				
+				h.showMarker=function(o){
+					if(h.marker){
+						map.removeOverlay(h.marker)
+					}
+					h.marker=new plus.maps.Marker(new plus.maps.Point(o.longitude,o.latitude));
+					h.marker.setIcon("../images/map_marker.png"); 
+					h.marker.setLabel("我的位置");
+					map.addOverlay(h.marker);
+					h.geocoder(o.longitude,o.latitude)
+				}
+				
+				h.getShopList=function(){
+					$.ajax(h.apiurl, {
+						type: "post",
+						async: true,
+						dataType: 'json',
+						data: {
+							m: 'shop_list',
+						},
+						success: function(ret) {
+							if(ret.code==0){
+								h.createMarker(ret.data)
+							}
+						},
+						error: function(ret) {
+						}
+					});
+				}
+				
+				h.createMarker=function(posData) {
+					$.each(posData,function(i,v){
+						if(v.longitude&&v.latitude){
+							var marker = new plus.maps.Marker(new plus.maps.Point(v.longitude,v.latitude));
+							marker.setIcon("../images/logo_s.png"); 
+							marker.setLabel("友邦大药房");
+							var bubble = new plus.maps.Bubble(h.trim(v.shop_name));
+							marker.setBubble(bubble);
+							map.addOverlay(marker);
+						}
+					})
+				}
+				
+				$.back=function(e){
+					ws.hide('fade-out')
+				}
+				
+				win.addEventListener('showMap',function(o){
+					var point=o.detail.point?new plus.maps.Point(o.detail.point.longitude,o.detail.point.latitude):h.userLocation
+					map.setCenter(point);
+					h.showMarker(point)
+					setTimeout(function(){
+						map.centerAndZoom(new plus.maps.Point(point.longitude,point.latitude), 18);
+					},1000)
+				})
+				h.init()
+			})
+		}(window,document,mui,honey))
+		</script>
+</html>

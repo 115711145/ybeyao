@@ -12,6 +12,7 @@
 	ul,li{
 		padding: 0;
 		margin: 0;
+		background: #efefef;
 	}
 	li{
 		list-style: none;
@@ -81,6 +82,11 @@
 	.pro-btn .right-btn font{
 		padding: 2px 5px;
 		margin: 0 5px;
+	}
+	.mui-btn-nav{
+		background: #41CEA9;
+		color: #fff;
+		border-color: #41CEA9;
 	}
 </style>
 <body>
@@ -156,10 +162,13 @@
 					if(data&&data.length>0){
 						var html=[]
 						$.each(data, function(i,v) {
-							var address=h.getAddressText(v,h.cityData)+v.address;
+							v.addr=v.addr.replace(v.province_name,'',v.addr)
+							v.addr=v.addr.replace(v.city_name,'',v.addr)
+							v.addr=v.addr.replace(v.district_name,'',v.addr)
+							console.log(JSON.stringify(v))
 							var src='../images/checked'+(v.is_default==1?"":"-no")+'.png';
 							html.push('<li address_id="'+v.address_id+'"><p class="title"><span class="fl name">'+v.consignee+'</span><span class="fr phone">'+v.mobile+'</span></p>\
-								<p class="detail">'+address+'</p>\
+								<p class="detail">'+v.name+'<br/><font color="#999" size="2">'+v.province_name+v.city_name+v.district_name+v.addr+'</font></p>\
 								<p class="pro-btn">\
 									 <span '+(v.is_default==1?'class="default-btn">默认地址':'class="default-btn set-default">设为默认')+'<img src="'+src+'" width="25" /></span>\
 									 <span class="right-btn"><font class="mui-btn mui-btn-nav edit">编辑</font><font class="mui-btn mui-btn-danger del">删除</font></span>\
@@ -212,7 +221,7 @@
 							}
 						},
 						error:function(ret){
-							alert(JSON.stringify(ret))
+//							alert(JSON.stringify(ret))
 						}
 					});
 				})

@@ -184,7 +184,8 @@
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="../js/city.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, d, $, h, ms) {
 			$.init();
@@ -217,47 +218,55 @@
 							<span class="phone">电话：'+ret.data[0].mobile+'</span></p><p class="address">\
 							收件地址：'+ret.data[0].address+'</p></div>';
 							h.d.return_list.innerHTML=h.getReturnListHtml(h.data)
-							return
-							//商品列表
-							var html=[];
-							$.each(ret.data.goods_list, function(i,v) {
-								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
-								html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
-								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
-	                	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
+							$('#return-list').imageLazyload({
+								placeholder: '../images/default.png'
 							});
-							d.getElementById('goods-list').innerHTML=html.join('')
-							//退款信息
-							d.getElementById('goods_sn').innerText=ret.data.order_sn
-							var d_status=d.getElementById('status');
-							d_status.innerText=ret.data.return_status_desc
-							var color='';
-							switch(ret.data.status){
-								case 1:
-									color="orange";
-									break;
-								case 2:
-									color="#FF5053";
-									h.d.remark.innerText=ret.data.remark;
-									h.d.remark.parentElement.style.display="block";
-									break;
-								case 3:
-									color="#41cea9";
-									break;
-							}
-							if(color){
-								d_status.setAttribute('style','color: '+color+';')
-							}
-							if(ret.data.status!=2){
-								h.d.remark.parentElement.style.display="none";
-							}
-							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.addtime,1)
-							d.getElementById('sum_amount').innerText="￥"+h.fmoney((ret.data.refund_deposit*100+ret.data.refund_money*100)/100)
-							d.getElementById('reason').innerText=ret.data.reason
-							d.getElementById('describe').innerText=ret.data.describe
-							if(ret.data.status<3){
-								d.getElementById('btns').innerHTML='<span class="mui-btn mui-btn-grey">取消退款</span>';
-							}
+//							return
+							//商品列表
+//							var html=[];
+//							$.each(ret.data.goods_list, function(i,v) {
+////								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+//								var img=h.getGoodsImgUrl(v.goods_id,v.img_id);
+//								console.log(img)
+//								html.push('<li><div class="goods-img fl"><img data-lazyload="'+img+'"></div><div class="goods-info fl"><p class="title">'
+//								+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
+//	                	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.goods_num+'</span></p></div></li>')
+//							});
+//							d.getElementById('goods-list').innerHTML=html.join('')
+//							$('#return-list').imageLazyload({
+//								placeholder: '../images/default.png'
+//							});
+//							//退款信息
+//							d.getElementById('goods_sn').innerText=ret.data.order_sn
+//							var d_status=d.getElementById('status');
+//							d_status.innerText=ret.data.return_status_desc
+//							var color='';
+//							switch(ret.data.status){
+//								case 1:
+//									color="orange";
+//									break;
+//								case 2:
+//									color="#FF5053";
+//									h.d.remark.innerText=ret.data.remark;
+//									h.d.remark.parentElement.style.display="block";
+//									break;
+//								case 3:
+//									color="#41cea9";
+//									break;
+//							}
+//							if(color){
+//								d_status.setAttribute('style','color: '+color+';')
+//							}
+//							if(ret.data.status!=2){
+//								h.d.remark.parentElement.style.display="none";
+//							}
+//							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.addtime,1)
+//							d.getElementById('sum_amount').innerText="￥"+h.fmoney((ret.data.refund_deposit*100+ret.data.refund_money*100)/100)
+//							d.getElementById('reason').innerText=ret.data.reason
+//							d.getElementById('describe').innerText=ret.data.describe
+//							if(ret.data.status<3){
+//								d.getElementById('btns').innerHTML='<span class="mui-btn mui-btn-grey">取消退款</span>';
+//							}
 						}else{
 							h.noContent()
 						}
@@ -301,7 +310,7 @@
 				var html=['<ul class="sc_list">'];
 				$.each(list, function(i,v) {
 					var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
-					html.push('<li><div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl"><p class="title">'
+					html.push('<li><div class="goods-img fl"><img data-lazyload="'+img+'"></div><div class="goods-info fl"><p class="title">'
 					+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
         	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.return_num+'</span></p></div></li>')
 				});

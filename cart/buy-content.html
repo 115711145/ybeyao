@@ -10,6 +10,24 @@
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
 		<link type="text/css" rel="stylesheet" href="../css/buy-content.css" />
+		<style>
+			#warm{
+				color: #FF5053;
+				font-size: 12px;
+			}
+			#warm span{
+				display: block;
+			}
+			#shops-fdbs .fr{
+				color: #999;
+				font-size:12px
+			}
+			#fdbs-list .shop_address,#fdbs-list .phone {
+				padding-left: 20px;
+				margin: 0;
+				font-size: 13px;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="mui-content">
@@ -48,7 +66,7 @@
 		       		<span class="title">配送方式</span><a id="peisong">配送到家</a>
 		       		<span class="mui-icon mui-icon-arrowright"></span>
 		       	</p>
-		       	<p id="xz_fdbs" style="display: none;">
+		       	<p id="xz_fdbs">
 		       		<span class="title">选择门店</span><a id="fdbs">总店</a>
 		       		<span class="mui-icon mui-icon-arrowright"></span>
 		       	</p>
@@ -67,6 +85,10 @@
 		       	</p>
 		       	<p>
 		       		<span class="title" id="beizhu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备 注 </span><textarea id="textarea" maxlength="50" rows="5" placeholder="备注内容(50字内)"></textarea>
+		       	</p>
+		       	<p id="warm">
+		       		<span id="free" style="display: none;"> * 本次订单的商品金额未满<font id="freight_free">100</font>元，将收取配送费用</span>
+		       		<span id="out-ps" style="display: none;"> * 您已超出<font id="ps-hour">5</font>小时配送服务区域,我们将在48小时内为您配送</span>
 		       	</p>
 	       </div>
 	       <div class="amout-list">
@@ -184,7 +206,6 @@
 		</nav>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="../js/city.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, $, h, ms) {
 			$.init();
@@ -218,7 +239,8 @@
 				discount:document.getElementById('discount'),
 				discount_txt:document.getElementById('discount_txt'),
 				bz_txt:document.getElementById('textarea'),
-				pay_list:document.getElementById('pay_list')
+				pay_list:document.getElementById('pay_list'),
+				warm:document.getElementById('warm'),
 			}
 			h.order = {}
 			h._submit={
@@ -226,7 +248,6 @@
 				status:false//提交状态
 			}
 			h.pay_type='wxpay';
-			h.cityData = JSON.parse(cityData);
 			h.address_list = null;
 			h.discount=100;
 			h.pslist = [{
@@ -245,7 +266,7 @@
 					li.push('<li class="mui-table-view-cell" psid="' + v.id + '">' + v.name + '</li>')
 				})
 				h.d.psfs.innerHTML = li.join('')
-				h.d.xz_fdbs.style.display="none"
+//				h.d.xz_fdbs.style.display="none"
 			}
 			/**
 			 * 获取购物流程配置
@@ -266,6 +287,8 @@
 								h.config[v.name] = v.value;
 							});
 							ms.setItem('conf_shopping', h.config)
+							h.d.warm.querySelector('#freight_free').innerText=h.config.freight_free;
+							h.d.warm.querySelector('#ps-hour').innerText=h.config.ps_hour||2;
 						} else {
 							$.toast('获取配置失败')
 						}
@@ -328,6 +351,7 @@
 					});
 				}
 				h.d.list.innerHTML = html.join('')
+				h.d.warm.querySelector('#free').style.display=(h._sum.amount>h.config.freight_free?"none":"block");
 			}
 			/**
 			 * 显示金额明细与应付金额
@@ -353,7 +377,7 @@
 				if(h.psfs == 1) { //送货上门
 					//不免运费或者未满足要求或者未选择门店或收货地址或者不在配送范围内
 					if(!h._sum.is_free_shipping &&(h.config.freight_free == 0 || h.config.freight_free > h._sum.amount )) {//|| !h.fdbs || !h.order.address || h.fdbs.district_id != h.order.address.district
-						psf = 10
+						psf = h.config.freight_money||10
 					}
 				}
 				h.pay_amount += psf;
@@ -473,6 +497,8 @@
 					},
 				});
 			}
+			
+			
 			/**
 			 * 选择收货地址
 			 * @param {Object} v
@@ -480,15 +506,19 @@
 			h.selectAddress = function(v) {
 				h.order.address = v;
 				if(v) {
-					var address = h.getAddressText(v, h.cityData) + v.address;
+//					var address = h.getAddressText(v, h.cityData) + v.address;
 					h.d.address.querySelector('.user').innerHTML = '<p><span class="name">收货人：' + v.consignee + '</span>\
 							<span class="phone">电话：' + v.mobile + '</span></p>\
-							<p class="address">' + address + v.address + '</p>';
-					if(v.city==17999){
-						h.getShopList()
-					}else{
-						h.d.xz_fdbs.style.display="none";
-					}
+							<p class="address">位置：' + v.name + '</p>';
+					h.getDistance();
+					h.showShopList()
+//					if(v.city_id==360700){
+//						h.showShopList()
+////						h.getShopList()
+//					}else{
+//						h.d.warm.querySelector('#out-ps').style.display="block"
+//						h.d.xz_fdbs.style.display="none";
+//					}
 				} else {
 					h.d.address.querySelector('.user').innerHTML = '<p id="no-address">添加收货地址</p>';
 				}
@@ -504,14 +534,14 @@
 					var html = []
 					_default = data[0];
 					$.each(data, function(i, v) {
-						var address = h.getAddressText(v, h.cityData) + v.address;
+//						var address = h.getAddressText(v, h.cityData) + v.address;
 						if(v.is_default > 0) {
 							_default = v;
 						}
 						html.push('<div class="address-item" address_id="' + v.address_id + '">\
 		                		<p><span class="name">收货人：' + v.consignee + '</span>\
 									<span class="phone">电话：' + v.mobile + '</span>\
-								</p><p class="address">' + address + '</p>\
+								</p><p class="address">位置：' + v.name + '</p>\
 								<p class="icon">\
 									<span class="mui-icon mui-icon-arrowright"></span>\
 								</p></div>')
@@ -526,22 +556,27 @@
 			 * 获取门店列表
 			 */
 			h.getShopList = function(district) {
-				h.fdbs = null;
-				h.d.fdbs.innerText = "请选择门店";
 				$.ajax(h.apiurl, {
 					type: "post",
 					async: true,
 					dataType: 'json',
 					data: {
 						m: 'shop_list',
-						district: district || h.order.address.district
+						district: district
 					},
 					success: function(ret) {
 						h.shop_list = ret.data;
-						h.showShopList(ret.data || false)
+						var html=['<div class="no-fdbs" id="no-fdbs" style="display:none">您附近没有可选的门店</div>'];
+						$.each(h.shop_list, function(i, v) {
+							html.push('<div class="fdbs-item" id="'+v.shop_fdbs+'" shop_id="' + v.shop_id + '">\
+		                		<p class="shop_name"><img src="../images/fdbs.png" height="15" /> ' + v.shop_name + '<font class="fr"></font></p>\
+		                		<p class="phone">电话：<font>'+v.phone+'</font><img src="../images/call.png" width="12" /></p><p class="shop_address">位置：' + v.shop_address + '</p></div>')
+						});
+						h.d.fdbs_list.innerHTML = html.join('')
+//						h.showShopList(ret.data || false)
 					},
 					error: function(ret) {
-						h.showShopList()
+//						h.showShopList()
 					}
 				});
 			}
@@ -549,18 +584,155 @@
 			 * 显示门店列表
 			 * @param {Object} data
 			 */
-			h.showShopList = function(data) {
-				if(data && data.length > 0) {
-					var html = []
-					$.each(data, function(i, v) {
-						html.push('<div class="fdbs-item" shop_id="' + v.shop_id + '">\
-		                		<p class="shop_name"><img src="../images/fdbs.png" height="15" /> ' + v.shop_name + '</p>\
-		                		<p class="shop_address">地址：' + v.shop_address + '</p></div>')
+			h.showShopList = function() {
+				h.fdbs = null;
+				h.d.fdbs.innerText = "请选择门店";
+				if(h.shop_list && h.shop_list.length > 0) {
+					var tag=false;
+					$.each(h.shop_list, function(i, v) {
+						var o=document.getElementById(v.shop_fdbs);
+						if(v.city_id==h.order.address.city_id){
+							o.style.display="block"; 
+							tag=true;
+						}else{
+							o.style.display="none";
+						}
 					});
-					h.d.fdbs_list.innerHTML = html.join('')
-				} else {
-					h.d.fdbs_list.innerHTML = '<div class="no-fdbs">您附近没有可选的门店</div>';
+					if(tag){
+//						h.d.fdbs_list.innerHTML = html.join('')
+						h.d.warm.querySelector('#out-ps').style.display="none";
+						document.getElementById('no-fdbs').style.display="none";
+						h.showDistance();
+						return
+					}
+//					h.getDistance(point)
 				}
+				if(h.psfs==1){
+					h.d.warm.querySelector('#out-ps').style.display="block";
+					document.getElementById('no-fdbs').style.display="block";
+				}
+//				h.d.fdbs_list.innerHTML = '<div class="no-fdbs">您附近没有可选的门店</div>';
+			}
+			
+			h.sortIntoDistanceArr=function(distance,distanceArr){
+				var lt=[],gt=[];
+				if(distanceArr.length==0){
+					return [distance];
+				}
+				for(var i=0;i<distanceArr.length;i++){
+					if(distance[0]<=distanceArr[i][0]){
+						lt.push(distance);
+					}else{
+						gt.push(distance);
+					}
+				}
+				if(lt.length==0){
+					distanceArr.push(distance)
+					return distanceArr;
+				}
+				var arr=[];
+				for(var i=0;i<lt.length;i++){
+					arr.push(lt[i])
+				}
+				for(var i=0;i<gt.length;i++){
+					arr.push(gt[i])
+				}
+				return arr;
+			}
+			
+			/**
+			 * 显示距离
+			 * @param {Object} address
+			 */
+			h.showDistance=function(address){
+				if(!address){
+					for(var i=0;i<h.address_list.length;i++){
+						if(h.address_list[i].address_id==h.order.address.address_id){
+							address=h.address_list[i];
+							break;
+						}
+					}
+				}
+				if(address&&address.distance){
+					var arr=[];
+					$.each(address.distance, function(i,v) {
+						var obj=document.getElementById(v.fdbs);
+						obj.setAttribute('distance',v.distance.value)
+						obj.querySelector('.fr').innerText=v.distance.text;
+						arr=h.sortIntoDistanceArr([v.distance.value||99999999,obj],arr)
+					});
+					$.each(arr, function(i,v) {
+						h.d.fdbs_list.removeChild(v[1])
+						h.d.fdbs_list.appendChild(v[1]) 
+					});
+				}
+			}
+			/**
+			 * 计算距离
+			 */
+			h.getDistance=function(){
+				var addr=[];
+				var is_show=false;
+				for(var i=0;i<h.address_list.length;i++){
+					var v=h.address_list[i];
+					if(!v.distance){
+						addr.push({jd:v.jd,wd:v.wd,address_id:v.address_id,index_:i});
+					}else{
+						if(v.address_id==h.order.address.address_id){
+							h.showDistance(v)
+							return
+						}
+					}
+				}
+				var origins=[],destinations=[];
+				$.each(addr, function(i,v) {
+					origins.push(v.wd+','+v.jd)
+				});
+				var point=[];
+				$.each(h.shop_list, function(i,v) {
+					if(v.jd>0){
+						point.push({jd:v.jd,wd:v.wd,fdbs:v.shop_fdbs,index_:i})
+						destinations.push(v.wd+','+v.jd);
+					}
+				});
+				origins=origins.join('|');
+				destinations=destinations.join('|');
+				$.ajax('http://api.map.baidu.com/routematrix/v2/riding',{
+					type:"get",
+					async:true,
+					dataType:'json',
+					data:{
+						origins:origins,
+						destinations:destinations,
+						output:'json',
+						tactics:11,
+						ak:'7M8ZsypQKQAw2TjtLfcTyvofu9NMrSdu',
+					},
+					success:function(ret){
+//						console.log(ret)
+//						alert(ret)
+						if(ret.status==0){
+							var index=0;
+							$.each(ret.result, function(i,v) {
+								var n=i%point.length;
+								if(i>0&&n==0){
+									index++;
+								}
+								var addr_n=addr[index].index_;
+								if(!h.address_list[index].distance){
+									h.address_list[index].distance=[];
+								}
+								h.address_list[addr_n].distance.push({fdbs:point[n].fdbs,distance:v.distance,duration:v.duration})
+							});
+							h.showDistance();
+//							console.log(JSON.stringify(addr))
+						}
+					},
+					error:function(ret){
+//						alert(ret.responseText)
+						
+					}
+				});
 			}
 			$.plusReady(function() {
 				h.user=myStorage.getItem('user')
@@ -575,37 +747,9 @@
 	    		h.buyWin=plus.webview.getWebviewById('buy');
 				h.fixFooter()
 				h.getchannel()
-				/**
-				 * 输入余额事件
-				 */
-//				h.d.ye.addEventListener('change', function() {
-//					if(h.user.ye > 0) {
-//						h.showPayAmount()
-//					} else {
-//						this.value = 0;
-//						$.toast('无可用余额')
-//					}
-//				})
-				/**
-				 * 输入积分事件
-				 */
-//				h.d.jf.addEventListener('change', function() {
-//					if(h.user.pay_points > 0 && h._sum.exchange_integral > 0) {
-//						var use_jf = this.value;
-//						if(use_jf > h.user.pay_points) {
-//							use_jf = h.user.pay_points
-//						}
-//						if(use_jf > h._sum.exchange_integral) {
-//							use_jf = h._sum.exchange_integral;
-//							//		    				$.toast('订单中商品可使用积分上限为'+h._sum.exchange_integral)
-//						}
-//						this.value = use_jf;
-//						h.showPayAmount()
-//					} else {
-//						this.value = 0;
-//						$.toast(h.user.pay_points > 0 ? '订单中的商品不能使用积分兑换' : '无可用积分')
-//					}
-//				})
+				h.getPeisongfs()
+				h.getShopList()
+				
 				/**
 				 * 输入优惠券码事件
 				 */
@@ -651,7 +795,9 @@
 				 * 提交订单
 				 */
 				h.d._submit.addEventListener('tap', function() {
+					  $.toast('tijiao..')
 					if(h._submit.status){
+					    $.toast('数据提交中..')
 						return
 					}
 					if(h._submit.success){//已提交成功关闭当前页面
@@ -664,7 +810,7 @@
 						$.toast('未选择收货地址')
 						return
 					}
-					if(h.psfs==2&&!h.fdbs) {
+					if(!h.fdbs) {
 						$.toast('请选择门店')
 						return
 					}
@@ -750,7 +896,7 @@
 						},
 						error: function(ret) {
 							h._submit.status=false;
-							alert(ret.responseText)
+//							alert(ret.responseText)
 //							alert(JSON.stringify(ret))
 //							$.toast('error')
 						}
@@ -844,7 +990,7 @@
 					h.showPayAmount()
 					h.getCouponList()
 					h.getAddressList()
-					h.getPeisongfs()
+//					h.getPeisongfs()
 					h._submit={
 						success:false,//提交成功
 						status:false//提交状态
@@ -873,6 +1019,9 @@
 				h.config = ms.getItem('conf_shopping')
 				if(!h.config || !h.config.time || nowTime - h.config.time > 7200000) { //3小时更新一次
 					h.getShopConfig()
+				}else{
+					h.d.warm.querySelector('#freight_free').innerText=h.config.freight_free;
+					h.d.warm.querySelector('#ps-hour').innerText=h.config.ps_hour||2;
 				}
 		
 				/**
@@ -899,8 +1048,20 @@
 				/**
 				 * 选择门店
 				 */
-				$(h.d.shops_fdbs).on('tap', '.fdbs-item', function() {
-					var shop_id = this.getAttribute('shop_id');
+				$(h.d.shops_fdbs).on('tap', '.shop_name', function() {
+					var p=this.parentElement;
+					var shop_id = p.getAttribute('shop_id');
+					var distance= p.getAttribute('distance');
+					if(!h.config.distance){
+						h.config.distance=2000;
+					}
+					if(!distance || distance>h.config.distance){
+						if(h.psfs==1){
+							h.d.warm.querySelector('#out-ps').style.display="block";
+						}
+					}else{
+						h.d.warm.querySelector('#out-ps').style.display="none"; 
+					}
 					for(var i = 0; i < h.shop_list.length; i++) {
 						if(shop_id == h.shop_list[i].shop_id) {
 							h.fdbs = h.shop_list[i];
@@ -911,6 +1072,35 @@
 					$(h.d.shops_fdbs).popover('toggle')
 					h.showPayAmount()
 				})
+				
+				$(h.d.shops_fdbs).on('tap', '.phone', function() {
+					var phone=this.querySelector('font').innerText;
+					phone=phone.replace(/[^0-9]/g,'');
+					if(phone){
+						$.confirm(phone,'拨号提示',['拨号','关闭'],function(e){
+							if(e.index==0){
+								h.call(phone) 
+							}
+						})
+						
+					}
+				})
+//				h.call = function(number) {
+//			        if(plus.os.name=="Android"){
+//			            var Intent = plus.android.importClass("android.content.Intent");
+//			            var Uri = plus.android.importClass("android.net.Uri");
+//			            var main = plus.android.runtimeMainActivity();
+//			            var uri = Uri.parse("tel:"+number);
+//			            var call = new Intent("android.intent.action.CALL", uri);
+//			            main.startActivity(call);
+//			        }else{
+//			            //plus.device.dial(number, false);
+//			            var UIAPP=plus.ios.importClass("UIApplication");
+//			            var NSURL=plus.ios.importClass("NSURL");
+//			            var app=UIAPP.sharedApplication();
+//			            app.openURL(NSURL.URLWithString("tel://"+number));
+//			        }
+//			    }
 				/**
 				 * 选择收货地址
 				 */
@@ -931,7 +1121,7 @@
 				 * 打开配送方式列表
 				 */
 				h.d._ps.addEventListener('tap', function() {
-					if(h.order.address.city==17999){
+					if(h.order.address.city_id==360700){
 						$('#peisongfs').popover('toggle');
 					}
 					
@@ -946,12 +1136,16 @@
 						h.psfs = psid;
 						h.d._address.setAttribute('style', h.psfs == 1 ? '' : 'display:none');
 						h.d.peisong.innerText = this.innerText;
+						h.fdbs=null;
+						h.d.fdbs.innerText="请选择门店";
 						if(h.psfs==2){
-							h.d.fdbs.innerText="请选择门店";
-							h.d.xz_fdbs.style.display="block";
-						}else{
-							h.fdbs=null;
-							h.d.xz_fdbs.style.display="none";
+							h.d.warm.querySelector('#out-ps').style.display="none"; 
+							h.d.warm.querySelector('#free').style.display="none"; 
+//							h.d.fdbs.innerText="请选择门店"; 
+//							h.d.xz_fdbs.style.display="block";
+//						}else{
+//							h.fdbs=null;
+//							h.d.xz_fdbs.style.display="none";
 						}
 						//重新加载店铺列表
 //						h.getShopList(-1)
