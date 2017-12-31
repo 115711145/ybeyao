@@ -915,6 +915,8 @@ var honey = (function(win, $) {
 	 * @param {Object} winId
 	 * @param {Object} data
 	 * @param {Object} styles
+	 * @param {Object} show
+	 * @param {Object} wait
 	 */
 	h.openWin = function(url, winId, data, styles,show,wait) {
 		var show=show||{}
@@ -1281,6 +1283,50 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
     }
     
     $.plusReady(function(){
+    	/**
+    	 * 拨打电话
+    	 * @param {Object} number
+    	 */
+    	h.call = function(number) {
+	        if(plus.os.name=="Android"){
+	            var Intent = plus.android.importClass("android.content.Intent");
+	            var Uri = plus.android.importClass("android.net.Uri");
+	            var main = plus.android.runtimeMainActivity();
+	            var uri = Uri.parse("tel:"+number);
+	            var call = new Intent("android.intent.action.CALL", uri);
+	            main.startActivity(call);
+	        }else{
+	            //plus.device.dial(number, false);
+	            var UIAPP=plus.ios.importClass("UIApplication");
+	            var NSURL=plus.ios.importClass("NSURL");
+	            var app=UIAPP.sharedApplication();
+	            app.openURL(NSURL.URLWithString("tel://"+number));
+	        }
+	    }
+    	/**
+    	 * 发送短信
+    	 * @param {Object} number
+    	 * @param {Object} text
+    	 */
+    	h.sms=function(number,text){
+	        if (plus.os.name == "Android") {
+	
+	            var Intent = plus.android.importClass("android.content.Intent");
+	            var Uri = plus.android.importClass("android.net.Uri");
+	
+	            var uri = Uri.parse("smsto:"+number);  
+	
+	            var intent = new Intent(Intent.ACTION_SENDTO, uri);  
+	            intent.putExtra("sms_body", "");  
+	
+	            plus.android.runtimeMainActivity().startActivity(intent);  
+	        } else {
+	            var UIAPP=plus.ios.importClass("UIApplication");
+	            var NSURL=plus.ios.importClass("NSURL");
+	            var app=UIAPP.sharedApplication();
+	            app.openURL(NSURL.URLWithString("sms://"+number));
+	        }
+	    }
     	h.logoutFire=function(){
 	    	if(!honey.indexWin){
 	    		honey.indexWin=plus.webview.getLaunchWebview()

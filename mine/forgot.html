@@ -96,7 +96,7 @@
 				}
 				this.value=v;
 				if(v.length==11){
-					isPhone(v)?honey.d.account.setAttribute('style','')
+					honey.isPhone(v)?honey.d.account.setAttribute('style','')
 					:honey.d.account.setAttribute('style','color:#DD5044')
 				}
 			})
@@ -138,7 +138,7 @@
 			 */
 			honey.d.getCode.addEventListener('tap',function(){
 				if(honey.codeTime==0){
-					if(!isPhone(honey.d.account.value)){
+					if(!honey.isPhone(honey.d.account.value)){
 						mui.toast('请输入正确的手机号')
 						return
 					}
@@ -148,7 +148,6 @@
 						dataType:'json',
 						timeout:honey.ajaxTimeout,
 						success:function(ret){ 
-							alert(JSON.stringify(ret))
 							if(ret.code==0){
 								honey.autoTimeout(1)
 								mui.toast('短信发送成功')

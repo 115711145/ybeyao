@@ -359,6 +359,12 @@
 			#re_goods_list .mui-checkbox>input{
 		        pointer-events: none;   
 		    }
+		    #order{
+		    	/*padding-top:35px !important;*/
+		    }
+		    .mui-content-padded{
+		    	margin: 0;
+		    }
 		</style>
 	</head>
 	<body>
@@ -532,6 +538,8 @@
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, d, $, h, ms) {
 			$.init();
@@ -577,16 +585,17 @@
 							var html=[];
 							h.goods_list=ret.data.goods_list;
 							$.each(ret.data.goods_list, function(i,v) {
-								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+//								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+								var img=h.getGoodsImgUrl(v.goods_id,v.img_id)
 								if(ret.data.coupon_price>0){
-									html.push('<p class="mui-inline" id="rg_'+v.rec_id+'"><img src="'+img+'" width="20"><font>*'+v.goods_num+'</font></p>')
+									html.push('<p class="mui-inline" id="rg_'+v.rec_id+'"><img data-lazyload="'+img+'" width="20"><font>*'+v.goods_num+'</font></p>')
 								}else{
 									if(!v.return_num||v.goods_num>v.return_num){
 										var num=(v.return_num>0?v.goods_num-v.return_num:v.goods_num);
 										html.push('<li rec_id="'+v.rec_id+'" price="'+v.member_goods_price+'"><div class="radio fl ">\
 					                    <div class="mui-input-row mui-checkbox mui-left box">\
 											<label>&nbsp;</label><input name="checkbox" type="checkbox" class="checkbox"></div></div>\
-					                	<div class="goods-img fl"><img src="'+img+'"></div><div class="goods-info fl">\
+					                	<div class="goods-img fl"><img data-lazyload="'+img+'"></div><div class="goods-info fl">\
 					                    <p class="title">'+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p><p class="sc_pri fl">\
 					                        <span class="price">￥'+v.member_goods_price+'</span>\
 					                    </p><div class="mui-numbox fr">\
@@ -605,8 +614,14 @@
 								h.goods_enabled=false;
 //								h.d.goods_row.setAttribute('style','display: none;')
 								h.d.re_goods.innerHTML=html.join('')
+								$('#re_goods').imageLazyload({
+									placeholder: '../images/default.png'
+								})
 							}else{
 								d.getElementById('goods-list').innerHTML=html.join('')
+								$('#goods-list').imageLazyload({
+									placeholder: '../images/default.png'
+								})
 							}
 //							d.getElementById('total_amount').innerText="￥"+ret.data.total_amount
 //							d.getElementById('integral_money').innerText="-￥"+ret.data.integral_money

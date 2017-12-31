@@ -157,6 +157,7 @@ nav.mui-bar:before {
 
 .user-address .address {
 	float: left;
+	width: 100%;
 }
 
 #no-address {
@@ -408,6 +409,6 @@ nav.mui-bar:before {
 	color: #333;
 }
 
-#fdbs-list .shop_address {
+#fdbs-list .shop_address,#fdbs-list .phone {
 	padding-left: 20px;
 }

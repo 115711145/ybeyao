@@ -192,6 +192,8 @@
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, d, $, h, ms) {
 			$.init({
@@ -275,14 +277,18 @@
 				if(data.length > 0) {
 					var html = [];
 					$.each(data, function(i,v) {
-						var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+//						var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+						var img=h.getGoodsImgUrl(v.goods_id,v.img_id);
 						html.push('<li class="comment-list" order_id="'+v.order_id+'" rec_id="'+v.rec_id+'"><div class="goods-img fl">\
-				                	<img src="'+img+'"></div><div class="goods-info fl"><p class="title">'+v.goods_name
+				                	<img data-lazyload="'+img+'"></div><div class="goods-info fl"><p class="title">'+v.goods_name
 				                	+'</p><p class="buy-time">购买时间:'+h.getYmdTime(v.add_time,1)+'</p><p class="fr btns">\
 						        		<span class="mui-btn mui-btn-nav'+(v.is_comment==1?' order-btn"><span class="mui-icon mui-icon-search"></span>查看评价':' comment-btn"><span class="mui-icon mui-icon-compose"></span>评价订单')+'</span>\
 						        		</p></div></li>')
 					});
 					h.d.list.innerHTML+=html.join('')
+					$('#list').imageLazyload({
+						placeholder: '../images/default.png'
+					});
 				}else{
 					h.page==1&&(h.d.list.innerHTML = '<li class="no-comment">暂无评价<li>');
 				}
