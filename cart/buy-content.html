@@ -30,7 +30,7 @@
 		</style>
 	</head>
 	<body>
-		<div class="mui-content">
+		<div class="mui-content" id="content">
 			<div class="user-address" id="address">
 				<div class="user">
 					<!--<p id="no-address">添加收货地址</p>-->
@@ -206,6 +206,8 @@
 		</nav>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, $, h, ms) {
 			$.init();
@@ -341,7 +343,7 @@
 						if(v.exchange_integral) {
 							h._sum.exchange_integral += parseInt(v.exchange_integral) * parseFloat(v.num)
 						}
-						var li = '<li><div class="goods-img fl"><img src="' + v.img + '"></div>\
+						var li = '<li><div class="goods-img fl"><img data-lazyload="' + v.img + '"></div>\
 			                <div class="goods-info fl"><p class="title">' + h.cutstr(v.name, 50) + '</p>\
 			                    <p class="weight">' + (v.spec_name ? v.spec_name.join('  ') : '') + '</p></div>\
 			                <div class="price-num fr"><p class="price">\
@@ -351,6 +353,9 @@
 					});
 				}
 				h.d.list.innerHTML = html.join('')
+				$('#buy-list').imageLazyload({
+					placeholder:'../images/default.png',
+				})
 				h.d.warm.querySelector('#free').style.display=(h._sum.amount>h.config.freight_free?"none":"block");
 			}
 			/**
@@ -608,12 +613,16 @@
 //					h.getDistance(point)
 				}
 				if(h.psfs==1){
+					h.d.fdbs.innerText = "友邦大药房";
 					h.d.warm.querySelector('#out-ps').style.display="block";
 					document.getElementById('no-fdbs').style.display="block";
 				}
 //				h.d.fdbs_list.innerHTML = '<div class="no-fdbs">您附近没有可选的门店</div>';
 			}
 			
+			/*
+			 * 自动按距离排序门店
+			 */
 			h.sortIntoDistanceArr=function(distance,distanceArr){
 				var lt=[],gt=[];
 				if(distanceArr.length==0){
@@ -663,7 +672,8 @@
 					});
 					$.each(arr, function(i,v) {
 						h.d.fdbs_list.removeChild(v[1])
-						h.d.fdbs_list.appendChild(v[1]) 
+//						h.d.fdbs_list.appendChild(v[1]) 
+						h.d.fdbs_list.insertBefore(v[1],h.d.fdbs_list.querySelector('.fdbs-item'))
 					});
 				}
 			}
@@ -795,7 +805,6 @@
 				 * 提交订单
 				 */
 				h.d._submit.addEventListener('tap', function() {
-					  $.toast('tijiao..')
 					if(h._submit.status){
 					    $.toast('数据提交中..')
 						return
@@ -810,7 +819,7 @@
 						$.toast('未选择收货地址')
 						return
 					}
-					if(!h.fdbs) {
+					if(h.psfs ==2 &&!h.fdbs) {
 						$.toast('请选择门店')
 						return
 					}
@@ -834,7 +843,8 @@
 							discount_money:h.discount_money,
 							psfs:h.psfs,
 							shop_id:h.fdbs?h.fdbs.shop_id:0,
-							pay_type:h.pay_type
+							pay_type:h.pay_type,
+							distance:h.distance
 						},
 						success: function(ret) {
 							if(ret.code==0){//订单提交成功,开始支付
@@ -982,6 +992,7 @@
 //					h.d.ye.value = ""
 //					h.d.jf.value = ""
 					h.d.qm.value = ""
+					h.mySrcollTo('content')
 					h.d.yhq.innerText = '不使用优惠券';
 					h.d.peisong.innerText = honey.pslist[0].name
 					h.order = {}
@@ -1051,11 +1062,11 @@
 				$(h.d.shops_fdbs).on('tap', '.shop_name', function() {
 					var p=this.parentElement;
 					var shop_id = p.getAttribute('shop_id');
-					var distance= p.getAttribute('distance');
+					h.distance= p.getAttribute('distance');
 					if(!h.config.distance){
 						h.config.distance=2000;
 					}
-					if(!distance || distance>h.config.distance){
+					if(!h.distance || h.distance>h.config.distance){
 						if(h.psfs==1){
 							h.d.warm.querySelector('#out-ps').style.display="block";
 						}
@@ -1143,7 +1154,8 @@
 							h.d.warm.querySelector('#free').style.display="none"; 
 //							h.d.fdbs.innerText="请选择门店"; 
 //							h.d.xz_fdbs.style.display="block";
-//						}else{
+						}else{
+							h.d.fdbs.innerText = "友邦大药房";
 //							h.fdbs=null;
 //							h.d.xz_fdbs.style.display="none";
 						}
@@ -1176,15 +1188,15 @@
 				//选择支付方式
 				$(h.d.pay_list).on('tap','li',function(){
 					h.pay_type=this.getAttribute('type')
-					h.pay('pay_order',h.pay_type,h.order_id,function(ret){
+					var data={
+						m:'pay_order',
+						pay_type:h.pay_type,
+						id:h.order_id,
+						token:h.token
+					}
+					h.pay(data,function(ret){
 						$.toast(ret.msg)
 						h.orderSuccess()
-//						if(ret.status){
-//							$.toast('支付成功')
-//						}else{
-//							$.toast(ret.msg)
-//						}
-						
 					})
 				})
 		

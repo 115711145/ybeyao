@@ -95,10 +95,10 @@
 				
 				function createMarker(posData) {
 					$.each(posData,function(i,v){
-						if(v.longitude&&v.latitude){
+						if(v.jd>0){
 //							console.log(JSON.stringify(v))
 							//高德地图坐标为(116.3406445236,39.9630878208), 百度地图坐标为(116.347292,39.968716
-							var marker = new plus.maps.Marker(new plus.maps.Point(v.longitude,v.latitude));
+							var marker = new plus.maps.Marker(new plus.maps.Point(v.jd,v.wd));
 							marker.setIcon("../images/logo_s.png"); 
 							marker.setLabel("友邦大药房");
 							var bubble = new plus.maps.Bubble(h.trim(v.shop_name));

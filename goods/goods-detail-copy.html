@@ -19,12 +19,6 @@
 			<span class="active" index="1">商品</span> <span index="2">详情</span> <span index="3">评论</span>
 		</header>
 		<div id="detailcontent" class="mui-content  detail-content-padding">
-			<div id="productSlider" class="mui-slider">
-				<div class="mui-slider-group mui-slider-loop" id="slider-loop">
-				</div>
-				<div class="mui-slider-indicator" id="slider-indicator">
-				</div>
-			</div>
 			<div id="attr">
 				<div class="goods-title">
 					<div class="fl title">
@@ -321,29 +315,12 @@
 										src: honey.apihost + v.image_url
 									})
 								}else{
-									honey.goods.img=honey.getGoodsImgUrl(honey.goods_id,v.img_id);
-//									honey.goods.img=honey.apihost+'/public/upload/goods/thumb/'
-//									+honey.goods.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
+									honey.goods.img=honey.apihost+'/public/upload/goods/thumb/'
+									+honey.goods.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
 								}
 							});
-							//显示图片
-							honey.showSlider(img)
-							//商品图片
-//							var img = [{
-//								src: honey.apihost + data.base.original_img
-//							}];
-//							mui.each(data.images, function(i, v) {
-//								if(v.image_url != data.base.original_img) {
-//									img.push({
-//										src: honey.apihost + v.image_url
-//									})
-//								}else{
-//									honey.goods.img=honey.apihost+'/public/upload/goods/thumb/'
-//									+honey.goods.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
-//								}
-//							});
-//							honey.imageSliderView.setImages(img)
-//							honey.imageSliderView.show() 
+							honey.imageSliderView.setImages(img)
+							honey.imageSliderView.show()
 							//是否有规格属性
 							if(data.spec) {
 								honey.spec_item = [];
@@ -442,7 +419,7 @@
 			honey.getDataFailed = function(err) {
 				honey.d.noContentTxt.innerText = err == 1 ? "很抱歉,网络不给力,请检查网络!" : "很抱歉,此商品已下架或不存在!";
 				honey.d.noContent.setAttribute('style', '')
-//				honey.imageSliderView.hide()
+				honey.imageSliderView.hide()
 				honey.d.header.setAttribute('style', 'display: none;')
 				honey.d.detailcontent.setAttribute('style', 'display: none;')
 			}
@@ -573,57 +550,7 @@
 					honey.buyHeader.append(honey.buyContent)
 //				}
 			}
-			/**
-			 * 轮播图
-			 * @param {Object} adList
-			 */
-			honey.showSlider= function(adList) {
-				var len=adList.length,
-				    group = [],
-					indicator = [];
-				for(var i = 0; i <= len; i++) {
-					if(i == 0) {
-						group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img class="lazy ad"  data-lazyload="' +adList[len-1].src + '"></a></div>')
-					}
-					if(i<len){
-						group.push('<div class="mui-slider-item"><a href="#">\
-							<img class="lazy ad detail-img"  data-lazyload="' + adList[i].src + '" data-preview-src="'+adList[i].src+'" data-preview-group="goods_'+honey.goods.goods_id+'"></a></div>')
-						if(len>1){
-							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
-						}
-					}else {
-						if(len>1){
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img class="lazy ad" data-lazyload="' +adList[0].src + '"></a></div>')
-						}
-					}
-				}
-				if(!honey.slider_loop){
-					honey.slider_loop=document.getElementById('slider-loop');
-					honey.slider_indicator=document.getElementById('slider-indicator');
-				}
-				honey.slider_loop.innerHTML=group.join('');
-				honey.slider_indicator.innerHTML=indicator.join('');
-				mui('.mui-slider-item').imageLazyload({
-					placeholder: '../images/default.png'
-				});
-				if(len>1){
-					if(honey.slider){
-						honey.slider._init() 
-					}else{
-						honey.slider = mui('#productSlider').slider({
-							interval: 0
-						});
-					}
-					honey.slider.gotoItem(0); 
-				}else{
-					honey.slider_indicator.innerHTML=''
-				}
-				mui('#slider-loop').off('tap', 'img').on('tap', 'img', function(e) {
-					mui.previewImage()
-				})
-			}
+			
 			
 			mui.plusReady(function() {
 				fei()
@@ -823,24 +750,24 @@
 					honey.goodsDetail.setStyle({
 						mask: "none"
 					})
-//					if(!honey.imageSliderView) {
-//						var data = {
-//							top: '0px',
-//							left: '0px',
-//							height: '220px',
-//							width: '100%',
-//							position: 'static',
-//							images: [{
-//								src: '../images/default.png'
-//							}]
-//						};
-//						honey.imageSliderView = new plus.nativeObj.ImageSlider('test', data);
-//						honey.goodsDetail.append(honey.imageSliderView);
-//					} else {
-//						honey.imageSliderView.setImages([{
-//							src: '../images/default.png'
-//						}]);
-//					}
+					if(!honey.imageSliderView) {
+						var data = {
+							top: '0px',
+							left: '0px',
+							height: '220px',
+							width: '100%',
+							position: 'static',
+							images: [{
+								src: '../images/default.png'
+							}]
+						};
+						honey.imageSliderView = new plus.nativeObj.ImageSlider('test', data);
+						honey.goodsDetail.append(honey.imageSliderView);
+					} else {
+						honey.imageSliderView.setImages([{
+							src: '../images/default.png'
+						}]);
+					}
 					honey.mySrcollTo()
 					honey.d.evaluateList.innerHTML = '';
 					honey.d.content.innerHTML = '';

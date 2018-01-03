@@ -88,7 +88,7 @@
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<div class="" id="header-title">
 				<div class="mui-input-row mui-search" id="search">
-					<input type="search" id="search-input" class="mui-input-clear" placeholder="友邦大药房" 
+					<input type="search" id="search-input" class="mui-input-speech mui-input-clear" placeholder="友邦大药房" 
 						oncomplete="test()"/>
 				</div>
 			</div>
@@ -99,21 +99,11 @@
 				<div class="search-record" id="record">
 					<h4 class="title">历史搜索：</h4>
 					<ul>
-						 <li>历史搜索</li>
-				         <li>史搜索</li>
-				         <li>史搜索历史搜</li>
-				         <li>I史搜索历</li>
-				         <li>I史搜</li>
 					</ul>
 				</div>
 				<div class="search-record" id="hot">
 					<h4 class="title">热门搜索：</h4>
 					<ul>
-						 <li>历史搜索历史搜索历史搜索</li>
-				         <li>史搜索历史搜史</li>
-				         <li>史搜索历史搜</li>
-				         <li>I史搜索历</li>
-				         <li>I史搜</li>
 					</ul>
 				</div>
 			</div>
@@ -186,13 +176,17 @@
 				h._self=plus.webview.currentWebview();
 				h.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
 				h.getRecord()
-				
 				h.d._input.addEventListener('input',function(){
-					var val=h.trim(this.value);
+					var val=h.trim(this.value.replace(/[，。, ]/g,""));
+					this.value=val||'';
+					if(val&&h.search_keyword==val){
+						return
+					}
 					if(val&&val.length>0&&!h.loading){
 						h.d.keywordList.style.display="block";
 						h.d.recordBox.style.display="none";
 						h.getKeywordList(val)
+						h.search_keyword=val;
 					}else{
 						h.d.recordBox.style.display="block";
 						h.d.keywordList.style.display="none";
@@ -207,9 +201,6 @@
 					h.d._input.focus();
 					h.openGoodsList(keyword)
 				})
-				
-				
-				
 				h.openGoodsList=function(keyword){
 					var keyword=keyword||h.trim(h.d._input.value);
 					var arr=[],tag;

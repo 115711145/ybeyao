@@ -123,6 +123,8 @@
 				h.cateWin=h.preloadWin('barItem/category.html','category')
 				//预加载搜索
 				h.searchWin=h.preloadWin('home/search.html','search')
+				//预加载搜索
+				h.mapWin=h.preloadWin('mine/map.html','map')
 			}
 			h.preloadWebViews=function(){//预加载页面
 				h.mainWebview = plus.webview.currentWebview();
@@ -133,7 +135,7 @@
 						url:'barItem/'+id+'.html',
 						styles:{
 							top:'44px',
-							bottom: '51px',
+							bottom:'51px',
 							left: '0px',
 							bounce: 'vertical',
 							bounceBackground: '#f8f8f8',
@@ -261,8 +263,8 @@
 					      duration:200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 					      extras:{}//窗口动画是否使用图片加速
 					    },
-					})
-				}
+					}) 
+				} 
 			}
 			$.plusReady(function(){
 				h.showGuide();

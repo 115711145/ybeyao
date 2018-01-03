@@ -28,8 +28,17 @@ p {
 
 
 .detail-content-padding {
-	padding-top: 220px;
+	/*padding-top: 220px;*/
 	margin-bottom: 51px;
+}
+#productSlider {
+	height: 220px;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+#productSlider img {
+	height: 220px;
 }
 
 .goods-title {
@@ -545,7 +554,7 @@ p {
 	max-width: 20%;
 }
 #detailcontent{
-	padding-top: 220px;
+	padding-top: 0px !important;
 }
 #store{
 	min-width: 20%;

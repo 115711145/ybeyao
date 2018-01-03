@@ -165,7 +165,6 @@
 							v.addr=v.addr.replace(v.province_name,'',v.addr)
 							v.addr=v.addr.replace(v.city_name,'',v.addr)
 							v.addr=v.addr.replace(v.district_name,'',v.addr)
-							console.log(JSON.stringify(v))
 							var src='../images/checked'+(v.is_default==1?"":"-no")+'.png';
 							html.push('<li address_id="'+v.address_id+'"><p class="title"><span class="fl name">'+v.consignee+'</span><span class="fr phone">'+v.mobile+'</span></p>\
 								<p class="detail">'+v.name+'<br/><font color="#999" size="2">'+v.province_name+v.city_name+v.district_name+v.addr+'</font></p>\
@@ -234,7 +233,7 @@
 				 * 新增地址
 				 */
 				h.d.add.addEventListener('tap',function(){
-					h.openWin('address-add.html','adress-add')
+					h.openWin('address-add.html','address-add')
 				})
 				
 				/**

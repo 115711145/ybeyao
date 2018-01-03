@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>product-detail</title>
+		<title>商品列表</title>
 		<link rel="stylesheet" type="text/css" href="../css/mui.min.css"  />
 		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
@@ -118,7 +118,6 @@
 			<div class="twoRankedBox" id="list">
 				<div id="no-item" style="display: none;">没有找到相关产品</div>
 		        <ul class="BoxLeft" id="BoxLeft">
-		
 		        </ul>
 		
 		        <ul class="BoxRight" id="BoxRight">
@@ -238,6 +237,9 @@
 			})
 			
 			win.addEventListener('showGoodsList',function(e){
+				if(plus.navigator.isFullscreen()){
+					plus.navigator.setFullscreen(false);
+				}
 				h.d.goTop.setAttribute('style','display: none;')
 				h.d.noItem.setAttribute('style','display: none;')
 				h.d.boxLeft.innerHTML='';
@@ -253,7 +255,6 @@
 				h.desc="";
 				ajaxGetData()
 			})
-			
 			function ajaxGetData(o){
 				if(h.page>1 &&(h.page*h.pageSize>=h.total)){
 					h.d.content.pullRefresh().endPullupToRefresh(true)
@@ -298,7 +299,7 @@
 							}
 						},
 						error:function(ret){
-							alert(JSON.stringify(ret))
+//							alert(JSON.stringify(ret))
 							$.toast('数据加载失败')
 						} 
 					})
