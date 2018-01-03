@@ -146,8 +146,13 @@
 								}
 								ret.data.statistics && (h.d.c0.innerText = ret.data.statistics.c0);
 								h.showCommentList(ret.list, 'evaluate-list', 1);
+								h.content.pullRefresh().endPullupToRefresh((!ret.list || (ret.list && ret.list.length < 5)))
+							}else{
+								if(h.lastId==0){ 
+									h.d.evaluateList.innerHTML='<li style="padding:10px 15px;color:#666">没有相关评论!</li>';
+								}
+								h.content.pullRefresh().disablePullupToRefresh(true);
 							}
-							h.content.pullRefresh().endPullupToRefresh((!ret.list || (ret.list && ret.list.length < 5)))
 						},
 						error: function(ret) {
 							//							alert(JSON.stringify(ret))
@@ -187,9 +192,10 @@
 					if(ctype != h.ctype && num > 0) {
 						h.ctype = ctype;
 						h.lastId = 0;
+						h.content.pullRefresh().enablePullupToRefresh(true);
 						ajaxGetComments()
 					} else {
-						h.d.evaluateList.innerHTML = '';
+						h.d.evaluateList.innerHTML='<li style="padding:10px 15px;color:#666">没有相关评论!</li>';
 					}
 				})
 				h.swipeClose(window)

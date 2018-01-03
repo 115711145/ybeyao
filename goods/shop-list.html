@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的地址</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+</head>
+<style>
+	ul,li{
+		padding: 0;
+		margin: 0;
+		background: #efefef;
+	}
+	li{
+		list-style: none;
+	}
+	.shop-list li{
+		margin-top:10px ;
+		background: #fff;
+		padding-bottom: 10px;
+	}
+	.shop-list li p{
+		padding: 3px 10px;
+		color: #666;
+	}
+	.shop-list li:first-child{
+		margin-top: 0;
+	}
+	.shop-list p{
+		margin: 0;
+		display: inline-block;
+		width: 100%;
+	}
+	.shop-list p.shop_name{
+		line-height: 20px;
+		font-weight: bold;
+		font-size: 15px;
+		color: #444;
+	}
+	.shop-list img{
+		width: 12px;
+	}
+</style>
+<body>
+	
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">咨询</h1>
+	</header>
+	<div class="mui-content">
+		<ul class="shop-list" id="shop-list">
+			<!--<div class="loader">
+				<a>
+					<span class="mui-spinner"></span>
+				</a>
+				<br />
+				<span>加载中...</span>
+			</div>-->
+			<li>
+        		<p class="shop_name">总部客服</p>
+        		<p>电话：<font class="phone">400-123-123</font><img src="../images/call.png"/></p>
+        		<p>地址 ：赣州市金岭路152号</p>
+			</li>
+		</ul>
+	</div>
+	<script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/common.js" charset="UTF-8"></script>
+	<script src="../js/city.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+		(function(win,h,$,d){
+			h.d={
+				shop_list:document.getElementById('shop-list')
+			}
+			
+			/**
+			 * 获取门店列表
+			 */
+			h.getShopList = function(district) {
+				$.ajax(h.apiurl, {
+					type: "post",
+					async: true,
+					dataType: 'json',
+					data: {
+						m: 'shop_list',
+						district: district
+					},
+					success: function(ret) {
+						h.shop_list = ret.data;
+						var html=['<div class="no-fdbs" id="no-fdbs" style="display:none">您附近没有可选的门店</div>'];
+						$.each(h.shop_list, function(i, v) {
+							var li=d.createElement('li');
+							li.innerHTML='<p class="shop_name">' + v.shop_name + '<font class="fr"></font></p>\
+		                		<p>电话：<font class="phone">'+v.phone+'</font><img src="../images/call.png" width="12" /></p><p class="shop_address">位置：' + v.shop_address + '</p>';
+							h.d.shop_list.appendChild(li)
+						});
+					},
+					error: function(ret) {
+//						h.showShopList()
+					}
+				});
+			}
+			$(h.d.shop_list).on('tap', 'li', function() {
+				var phone=this.querySelector('.phone').innerText;
+				phone=phone.replace(/[^0-9]/g,'');
+				if(phone){
+					$.confirm(phone,'拨号咨询',['拨号','关闭'],function(e){
+						if(e.index==0){
+							h.call(phone) 
+						}
+					})
+					
+				}
+			})
+			$.plusReady(function(){
+				h.getShopList()
+				$.back=function(){
+					plus.webview.currentWebview().hide() 
+				}
+				h.swipeClose(win)
+			})
+		}(window,honey,mui,document))
+		
+	</script>
+	
+</body>
+</html>

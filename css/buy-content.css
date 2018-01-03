@@ -407,8 +407,10 @@ nav.mui-bar:before {
 
 #fdbs-list .shop_name {
 	color: #333;
+	border-bottom: 1px dashed #dedede;
 }
 
 #fdbs-list .shop_address,#fdbs-list .phone {
 	padding-left: 20px;
+	margin: 0 !important;
 }

@@ -220,8 +220,13 @@
 		<script src="js/mui.min.js"></script>
 		<script src="js/common.js"></script>
 		<script>
+			var color,style;
 			mui.back = function() {};
 			mui.plusReady(function() {
+				color=plus.navigator.getStatusBarBackground();
+				style=plus.navigator.getStatusBarStyle();
+				plus.navigator.setStatusBarBackground('#000000');
+				plus.navigator.setStatusBarStyle('light') 
 				if(mui.os.ios){
 					plus.navigator.setFullscreen(true);
 				}
@@ -229,9 +234,10 @@
 			});
 			//立即体验按钮点击事件
 			document.getElementById("close").addEventListener('tap', function(event) {
-				plus.storage.setItem("lauchFlag", "true");
 				plus.navigator.setFullscreen(false);
 				myStorage.setItem('version',plus.runtime.version)
+				plus.navigator.setStatusBarBackground(color);
+				plus.navigator.setStatusBarStyle(style) 
 				plus.webview.currentWebview().close();
 			}, false);
 			//图片切换时，触发动画

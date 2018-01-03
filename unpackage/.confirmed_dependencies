@@ -161,7 +161,8 @@
     "refer": [
       "goods/goods-detail-bottom.html",
       "mine/login.html",
-      "goods/goods-comment.html"
+      "goods/goods-comment.html",
+      "goods/shop-list.html"
     ]
   },
   "goods/goods-quan.html": {

@@ -504,6 +504,7 @@
 				
 				$('.top-btns').on('tap','.wallet',function(){
 					h.openWin('../mine/wallet.html','wallet',{user:h.user})
+					h.getUserInfo()
 				})
 				
 				$('.top-btns').on('tap','.coupon',function(){
