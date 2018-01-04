@@ -14,7 +14,7 @@
 	</head>
 
 	<body id="body">
-		<span id="flytop" style="position: fixed;top:0;right:25px ;"></span>
+		<span id="flytop"></span>
 		<header class="mui-bar mui-bar-nav" id="header">
 			<span class="active" index="1">商品</span> <span index="2">详情</span> <span index="3">评论</span>
 		</header>
@@ -185,7 +185,6 @@
 			<p id="no-content-text">很抱歉,此商品已下架或不存在!</p>
 		</div>
 		<nav class="mui-bar mui-bar-tab footer-bar" id="footerBar">
-			<span id="flyItem" style="text-align: center;color: red;position: absolute;right:40%;border: 1px solid red;border-radius: 20px;width: 20px;height:20px;">12</span>
 			<a id="consult">
 				<span class="mui-icon mui-icon-phone"></span>
 				<span class="mui-tab-label">咨询</span>
@@ -265,7 +264,10 @@
 				buynow: document.getElementById('buy-now'),
 				points:document.getElementById('points'),
 				price_ladder:document.getElementById('price-ladder'),
-				ladder_list:document.getElementById('ladder-list')
+				ladder_list:document.getElementById('ladder-list'),
+//				flyItem:document.getElementById('flyItem'),
+				flyTop:document.getElementById('flytop'),
+				footbar:document.getElementById('footerBar')
 			};
 			honey.goods = {};
 			honey.scrollMenu = true;
@@ -321,7 +323,7 @@
 										src: honey.apihost + v.image_url
 									})
 								}else{
-									honey.goods.img=honey.getGoodsImgUrl(honey.goods_id,v.img_id);
+									honey.goods.img=honey.getGoodsImgUrl(honey.goods.goods_id,v.img_id);
 //									honey.goods.img=honey.apihost+'/public/upload/goods/thumb/'
 //									+honey.goods.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
 								}
@@ -489,56 +491,38 @@
 				} else {
 //					honey.content.pullRefresh().endPullupToRefresh()
 				}
-			}
-			var fly;
-			function fei(){
-				var eleFlyElement = document.querySelector("#flyItem"), eleShopCart = document.querySelector("#flytop");
-				if(!fly){
-					fly={
-						left:eleFlyElement.style.left,
-						top:eleFlyElement.style.top,
-						visibility:eleFlyElement.style.visibility
-					}
-					console.log(JSON.stringify(fly))
 				}
-				var numberItem = 0;
-				// 抛物线运动
-				var myParabola = funParabola(eleFlyElement, eleShopCart, {
-				  speed: 300,
-				  curvature: 0.002,
-				  complete: function() {
-				    eleFlyElement.style.visibility = "hidden";
-				    setTimeout(function(){
-				      	eleFlyElement.style.left=fly.left;
-				      	eleFlyElement.style.top=fly.top;
-				      	eleFlyElement.style.visibility=fly.visibility;
-				      	setTimeout(function(){
-				      		fei()
-				      	},500)
-				      },1000)
-//				    eleShopCart.querySelector("span").innerHTML = ++numberItem;
-				  }
-				});
-				// 绑定点击事件
-//				if (eleFlyElement ) {
-//				  [].slice.call(document.getElementsByClassName("btnCart")).forEach(function(button) {
-//				    button.addEventListener("click", function() {
-				      // 滚动大小
-//				      var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0,
-//				        scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
-//				 	  console.log('left:'+scrollLeft+' scrollTop:'+scrollTop)
-//				      eleFlyElement.style.right =  "55%";
-				      eleFlyElement.style.top =  50+ "px";
-				      eleFlyElement.style.visibility = "visible";
-				       
-				      // 需要重定位
-				      myParabola.position().move(); 
-				      
-//				    });
-//				  });
-//				}
-			}
-			/**
+				var fly;
+
+				function fei(cart) {
+					var flyItem = document.createElement('span');
+					flyItem.setAttribute('class', 'flyItem');
+					flyItem.style.display = "inline";
+					flyItem.innerHTML = '<img src="' + honey.goods.img + '"/>';
+					honey.d.footbar.appendChild(flyItem)
+					if(!fly) {
+						fly = {
+							left: flyItem.style.left,
+							top: flyItem.style.top,
+							visibility: flyItem.style.visibility
+						}
+					}
+					var numberItem = 0;
+					// 抛物线运动
+					var myParabola = funParabola(flyItem, honey.d.flyTop, {
+						speed: 500,
+						curvature: 0.0002,
+						complete: function() {
+							document.getElementById('footerBar').removeChild(flyItem)
+							honey.countCartGoodsNum(cart)
+						}
+					});
+					flyItem.style.right = "40%";
+					flyItem.style.top = 40 + "px";
+					flyItem.style.visibility = "visible";
+					// 需要重定位
+					myParabola.position().move();
+				}/**
 			 * 预加载提交订单
 			 */
 			honey.preloadBuyWin = function() {
@@ -626,17 +610,14 @@
 			}
 			
 			mui.plusReady(function() {
-				fei()
 				honey.token = myStorage.getItem('token')
 //				if(honey.token&&(honey.user=myStorage.getItem('user'))){
 //					honey.discount=parseInt(honey.user.level.discount)
 //				}
 				honey.fixFooter('footerBar')
-				
 				if(!honey.detailSubpage) {
 					honey.detailSubpage = plus.webview.currentWebview();
 				}
-				
 				/**
 				 * 分享事件
 				 */
@@ -849,6 +830,7 @@
 					honey.ajaxGetData()
 					honey.goodsDetail.show()
 					honey.preloadBuyWin()
+					honey.countCartGoodsNum()
 				})
 
 				/**
@@ -880,8 +862,9 @@
 						}, 200)
 					}
 				})
+				
 				//加入购物车事件
-				honey.d.addcart.addEventListener('tap', function() {
+				honey.d.addcart.addEventListener('tap', function(event) {
 					//获取已经选择的商品
 					var cart=myStorage.getItem('cart');
 					honey.goods.num=parseInt(honey.d.buyNum.value);
@@ -915,12 +898,13 @@
 						}
 						myStorage.setItem('cart',cart)
 						if(!honey.show_success){
-							mui.toast('加入购物车成功')
+//							mui.toast('加入购物车成功')
 							honey.show_success=true;
 							setTimeout(function(){
 								honey.show_success=false
 							},1500)
 						}
+						(honey.show_success&&fei(cart))
 					}else{
 						mui.toast('该商品已售罄')
 					}

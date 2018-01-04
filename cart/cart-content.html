@@ -380,6 +380,7 @@
     					}
     					//更新购物车
     					myStorage.setItem('cart',honey.cart)
+    					honey.countCartGoodsNum(honey.cart)
     					break
     				}
     			}
@@ -700,6 +701,7 @@
 	        	honey.d.list.innerHTML='';
 		        honey.d.amount.innerText='￥0';
 	        	mui(honey.d._clean).popover('toggle')
+	        	honey.countCartGoodsNum()
 	        })
 	        
     	})

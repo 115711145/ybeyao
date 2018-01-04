@@ -589,7 +589,8 @@
 			"barItem/category.html": {
 				"resources": [
 					"js/mui.min.js",
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"images/logo.png"
 				],
 				"refer": [],
 				"priority": 0

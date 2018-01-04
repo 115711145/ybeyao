@@ -191,7 +191,7 @@
 			</ul>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="cansel">
-					<a href="#pay_list" style="color: #999;" >取消</a>
+					<a  style="color: #999;" >取消</a>
 				</li>
 			</ul>
 		</div>
@@ -591,7 +591,7 @@
 			 */
 			h.showShopList = function() {
 				h.fdbs = null;
-				h.d.fdbs.innerText = "请选择门店";
+				h.d.fdbs.innerText =h.psfs==1? "友邦大药房":"请选择门店";
 				if(h.shop_list && h.shop_list.length > 0) {
 					var tag=false;
 					$.each(h.shop_list, function(i, v) {
@@ -604,7 +604,6 @@
 						}
 					});
 					if(tag){
-//						h.d.fdbs_list.innerHTML = html.join('')
 						h.d.warm.querySelector('#out-ps').style.display="none";
 						document.getElementById('no-fdbs').style.display="none";
 						h.showDistance();
@@ -613,7 +612,7 @@
 //					h.getDistance(point)
 				}
 				if(h.psfs==1){
-					h.d.fdbs.innerText = "友邦大药房";
+//					h.d.fdbs.innerText = "友邦大药房";
 					h.d.warm.querySelector('#out-ps').style.display="block";
 					document.getElementById('no-fdbs').style.display="block";
 				}
@@ -755,6 +754,7 @@
 	    		h.cartContent=plus.webview.getWebviewById('cart-content');
 	    		h.mineWin=plus.webview.getWebviewById('mine');
 	    		h.buyWin=plus.webview.getWebviewById('buy');
+	    		h.goodsHeader=plus.webview.getWebviewById('goods-header');
 				h.fixFooter()
 				h.getchannel()
 				h.getPeisongfs()
@@ -858,6 +858,7 @@
 								}else{
 									ms.removeItem('cart')
 								}
+								h.countCartGoodsNum(cart)
 								//提交成功，跳转支付
 								if(h.pay_amount>0){
 									$(h.d.pay_list).popover('toggle')
@@ -1188,6 +1189,10 @@
 				//选择支付方式
 				$(h.d.pay_list).on('tap','li',function(){
 					h.pay_type=this.getAttribute('type')
+					if(h.pay_type=='cansel'){
+						h.orderSuccess()
+						return
+					}
 					var data={
 						m:'pay_order',
 						pay_type:h.pay_type,
