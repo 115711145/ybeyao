@@ -43,10 +43,20 @@
 			position: absolute;
 			display: none;
 			right: 42.5%;
-			margin-top:0px;
-			background: #fff;
-			color: #41CEA9;
-			border: 1px solid #41CEA9;
+			margin-top:2px;
+			background: #FF5053;
+			color: #FFFFFF;
+			border: 1px solid #FF5053;
+		}
+		#cart-num{
+			z-index:99;
+			position: absolute;
+			display: none;
+			right: 23.5%;
+			margin-top:2px;
+			background: #FF5053;
+			color: #FFFFFF;
+			border: 1px solid #FF5053;
 		}
    	</style>
 </head>
@@ -73,6 +83,7 @@
 		</a>
 		<a class="mui-tab-item" id="cart">
 			<span class="mui-icon iconfont icon-cart"></span>
+			<span class="mui-badge mui-badge-danger" id="cart-num"></span>
 			<span class="mui-tab-label">购物车</span>
 		</a>
 		<a class="mui-tab-item" id="mine">
@@ -303,6 +314,18 @@
 				win.addEventListener('msgCount',function(){
 					h.getMessageCount()
 				},false)
+				
+				win.addEventListener('showCartNum',function(o){
+					if(!h.cartNum){
+						h.cartNum=d.getElementById('cart-num');
+					}
+					if(o.detail.num>0){
+						h.cartNum.innerText=o.detail.num;
+						h.cartNum.style.display="inline-block"
+					}else{
+						h.cartNum.style.display="none"
+					}
+				})
 			})
 		}(window,honey,mui,document,myStorage))
 

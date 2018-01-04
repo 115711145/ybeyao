@@ -54,6 +54,16 @@
 			}
 			#rightBar{
 				margin-top: 10px;
+				padding-right:10px ;
+			}
+			#cart-num{
+				position: absolute;
+				top: 10px;
+				right: 5px;
+				display: none;
+				background: #FF5053;
+				color: #FFFFFF;
+				border: 1px solid #FF5053;
 			}
 			
 		</style>
@@ -62,7 +72,9 @@
 		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
 			<h1 class="mui-title" id="header-title">商品详情</h1>
-			<a id="rightBar" class="mui-icon-extra mui-icon-extra-cart mui-pull-right"></a>
+			<a id="rightBar" class="mui-icon-extra mui-icon-extra-cart mui-pull-right">
+				<span class="mui-badge mui-badge-danger" id="cart-num">1</span>
+			</a>
 		</header>
 		<div class="loader">
 			<a>
@@ -79,7 +91,8 @@
 			var honey={
 				title:document.getElementById('header-title'),
 				rightBar:document.getElementById('rightBar'),
-				back:document.getElementById('back')
+				back:document.getElementById('back'),
+				cartNum:document.getElementById('cart-num')
 			};
 			mui.plusReady(function(){
 				if(!honey.detailSubpage){
@@ -103,6 +116,15 @@
 //					honey.title.innerHTML=o.detail.title;
 					mui.fire(honey.detailSubpage,'showGoods',{goods_id:o.detail.goods_id,f:o.detail.f})
 //					honey.detailSubpage.show()
+				})
+				window.addEventListener('showCartNum',function(o){
+					if(o.detail.num>0){
+						honey.cartNum.innerText=o.detail.num;
+						honey.cartNum.style.display="inline"
+					}else{
+						honey.cartNum.style.display="none"
+					}
+					mui.fire(honey.indexPage,'showCartNum',{num:o.detail.num})
 				})
 				
 			})

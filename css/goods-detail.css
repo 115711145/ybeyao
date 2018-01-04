@@ -564,3 +564,38 @@ p {
 .has-collect:before{
 	color: #ff6633;
 }
+/*#flyItem {
+	text-align: center;
+	color: red;
+	position: absolute;
+	right: 40%;
+	border-radius: 25px;
+	width: 25px;
+	height: 25px;
+	display: none;
+}
+#flyItem img{
+	width: 25px;
+	height: 25px;
+}*/
+#flytop {
+	position: fixed;
+	top: -10px;
+	right: 25px
+}
+#footerBar .flyItem {
+	text-align: center;
+	color: red;
+	position: absolute;
+	right: 40%;
+	/*border: 1px solid red;*/
+	border-radius: 25px;
+	width: 25px;
+	height: 25px;
+	display: none;
+}
+#footerBar .flyItem img{
+	width: 25px;
+	height: 25px;
+	border-radius: 10px;
+}

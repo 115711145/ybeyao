@@ -826,7 +826,7 @@ var honey = (function(win, $) {
 	 * @param {Object} px
 	 */
 	h.getGoodsImgUrl=function(goodsId,imgId,px){
-		var px=px?px:150;
+		var px=px?px:400;
 		return h.apihost+'/public/upload/goods/thumb/'+goodsId+'/goods_sub_thumb_'+imgId+'_'+px+'_'+px+'.jpg';
 	}
 
@@ -1283,6 +1283,21 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
     }
     
     $.plusReady(function(){
+    	h.countCartGoodsNum=function(cart){
+			if(!cart){
+				cart=myStorage.getItem('cart');
+			}
+			var num=0;
+			if(cart&&cart.length>0){
+				for(var i=0;i<cart.length;i++){
+					num+=parseFloat(cart[i].num)
+				}
+			}
+			if(!honey.goodsHeader){
+				honey.goodsHeader=plus.webview.getWebviewById('goods-header');
+			}
+			mui.fire(honey.goodsHeader,'showCartNum',{num:num})
+		}
     	/**
     	 * 拨打电话
     	 * @param {Object} number
