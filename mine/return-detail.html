@@ -208,6 +208,7 @@
 						token:h.token,
 						id:h.order_id
 					},
+					timeout:h.ajaxTimeout,
 					success:function(ret){
 						if(ret.code==0){
 							h.d.loader.style.display="none";
@@ -331,6 +332,7 @@
 			$.plusReady(function(){
 				h._self=plus.webview.currentWebview();
 				h.orderListWin=plus.webview.getWebviewById('order-list');
+				h.mineWin=plus.webview.getWebviewById('mine');
 				h.order_id=h._self.order_id
 				h.service=h._self.btn
 				h.token=ms.getItem('token')
@@ -367,8 +369,8 @@
 							plus.nativeUI.closeWaiting()
 							if(ret.code==0){
 								$.toast('取消退款已成功！')
+								$.fire(h.mineWin,'reloadUser')
 								$.fire(h.orderListWin,'reloadOrderStatus')
-								
 								setTimeout(function(){
 									$.back()
 								})

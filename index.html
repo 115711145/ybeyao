@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title></title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
     <script src="js/mui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
    	<link rel="stylesheet" type="text/css" href="css/own.css"/>
@@ -12,7 +14,7 @@
    		html,body{background-color: #efeff4;}
 		.mui-active .mui-icon,
 		.mui-active .mui-tab-label {
-			color: #41cea9;
+			color: #F10A0F;
 		}
 		#nav-title{
 			display: none;
@@ -58,10 +60,13 @@
 			color: #FFFFFF;
 			border: 1px solid #FF5053;
 		}
+		.mui-bar-transparent {
+			background-color: rgba(241, 10, 15, 0.0);
+		}
    	</style>
 </head>
 <body class="own-gray-color">
-	<header class="mui-bar mui-bar-nav own-main-background-color">
+	<header class="mui-bar mui-bar-nav mui-bar-transparent own-main-background-color">
 		<div class="mui-input-row mui-search" id="search">
 			<input type="search" readonly="readonly" disabled="disabled" id="search-input" class="mui-input-clear" placeholder="友邦大药房">
 		</div>
@@ -112,7 +117,8 @@
 		    	//预加载页面
 				h.preloadWebViews()
 				//设置状态栏颜色
-				plus.navigator.setStatusBarBackground( "#41cea9" );
+				plus.navigator.setStatusBarBackground('#000000');
+				plus.navigator.setStatusBarStyle('light') 
 				//设置只支持竖屏幕显示
 				plus.screen.lockOrientation("portrait-primary");
 				//绑定菜单事件
@@ -128,13 +134,13 @@
 				h.preloadGoodsDetail()
 				//加载列表页
 				h.preloadGoodsListWin()
-				//加载购物车
+//				//加载购物车
 				h.preloadCartWin()
-				//预加载分类
+//				//预加载分类
 				h.cateWin=h.preloadWin('barItem/category.html','category')
-				//预加载搜索
+//				//预加载搜索
 				h.searchWin=h.preloadWin('home/search.html','search')
-				//预加载搜索
+//				//预加载搜索
 				h.mapWin=h.preloadWin('mine/map.html','map')
 			}
 			h.preloadWebViews=function(){//预加载页面
@@ -148,9 +154,12 @@
 							top:'44px',
 							bottom:'51px',
 							left: '0px',
-							bounce: 'vertical',
+							bounce: 'none',//vertical
 							bounceBackground: '#f8f8f8',
-							scrollIndicator:'none'
+							scrollIndicator:'none',
+							render: "always",//一直渲染
+				            popGesture: "hide",
+				            titleNView: "titleNView"//使用原生渐变导航
 						},
 						waiting:{
 							autoShow:false
@@ -290,6 +299,8 @@
 				d.getElementById('footerBar').style.top = (plus.display.resolutionHeight - 51) + "px";
 				h.initWebViews()
 				h.preloadDetailView()
+				h.getSystemConfig()
+				
 				
 				win.addEventListener('goHome',function(){
 					h.showBarItemPage('home')
@@ -328,7 +339,6 @@
 				})
 			})
 		}(window,honey,mui,document,myStorage))
-
 	</script>
 </body>
 </html>

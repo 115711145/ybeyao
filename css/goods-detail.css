@@ -5,10 +5,10 @@ p {
 	font-size: 12px;
 }
 #header{
-	background: #41CEA9;
-	filter:alpha(opacity=60);  
-	-moz-opacity:0.6;  
-	opacity: 0.6;  
+	background: #F10A0F;
+	filter:alpha(opacity=70);  
+	-moz-opacity:0.7;  
+	opacity: 0.7;  
 	height: 38px;
 	width: 100%;
 	padding: 0;
@@ -22,8 +22,9 @@ p {
 }
 
 #header .active{
-	color: #ff6633;
-	border-bottom: 2px solid #ff6633;
+	background: #FFFFFF;
+	color: #F10A0F;
+	border-bottom: 2px solid #F10A0F;
 }
 
 
@@ -32,13 +33,13 @@ p {
 	margin-bottom: 51px;
 }
 #productSlider {
-	height: 220px;
+	height: 300px;
 	text-align: center;
 	padding: 0;
 	margin: 0;
 }
 #productSlider img {
-	height: 220px;
+	width: 100%;
 }
 
 .goods-title {
@@ -160,7 +161,7 @@ p {
 }
 
 .service .mui-icon-checkmarkempty {
-	color: #41CEA9;
+	color: #F10A0F;
 	font-size: 15px;
 }
 
@@ -202,10 +203,10 @@ p {
 }
 
 .service .point icon {
-	border: 1px solid #41CEA9;
+	border: 1px solid #F10A0F;
 	padding: 1px 3px;
 	border-radius: 3px;
-	color: #41CEA9;
+	color: #F10A0F;
 	font-size: 10px;
 	margin-right: 5px;
 }
@@ -335,7 +336,7 @@ p {
 }
 
 .evaluate .evaluate-list p.reply font{
-	color: #41cea9;
+	color: #F10A0F;
 }
 
 .evaluate .evaluate-list p.zan{
@@ -386,7 +387,7 @@ p {
 	line-height: 20px;
 }
 #buy-number .mui-btn{
-	background: #41CEA9;
+	background: #F10A0F;
 	color:#fff
 }
 
@@ -408,14 +409,14 @@ p {
 }
 
 .user-do .mui-btn:active {
-	border-color: #41CEA9;
-	background: #41CEA9;
+	border-color: #F10A0F;
+	background: #F10A0F;
 	color: #fff;
 }
 
 .mui-btn-active {
-	border-color: #41CEA9;
-	background: #41CEA9;
+	border-color: #F10A0F;
+	background: #F10A0F;
 	color: #fff;
 }
 
@@ -471,7 +472,7 @@ p {
 
 .footer-bar .add-cart:active,
 .footer-bar .buy-now:active {
-	background: #40a98e;
+	background: #e05c5f;
 }
 
 #spec p {
@@ -502,28 +503,11 @@ p {
 #goods-attr-table tr td:first-child{
 	text-align: center;
 	width: 25%;
-	/*background: #41CEA9;
-	color: #fff;*/
 }
 #goods-attr-table td{
 	border: 1px solid #eee;
 	padding: 5px;
 }
-.hide{
-	/*display: none;*/
-}
-/*#statistics{
-	padding: 3px 5px;
-	margin-top: 5px;
-	border-top: 1px solid #eee;
-}
-#statistics span{
-	width: 19%;
-	display: inline-block;
-	color:#41CEA9;
-	text-align: center;
-}*/
-
 #remark{
 	padding: 5px 10px;
 	background: #fff;
@@ -564,20 +548,6 @@ p {
 .has-collect:before{
 	color: #ff6633;
 }
-/*#flyItem {
-	text-align: center;
-	color: red;
-	position: absolute;
-	right: 40%;
-	border-radius: 25px;
-	width: 25px;
-	height: 25px;
-	display: none;
-}
-#flyItem img{
-	width: 25px;
-	height: 25px;
-}*/
 #flytop {
 	position: fixed;
 	top: -10px;

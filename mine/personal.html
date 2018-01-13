@@ -163,7 +163,7 @@
 	<div id="sel-sex" class="mui-popover mui-popover-action mui-popover-bottom">
 		<ul class="mui-table-view">
 			<li class="mui-table-view-cell">
-				<a style="color:#ccc">设置性别</a>
+				<a style="color:#ccc">设置性别<font color="#FF5053">[只能设置一次]</font></a>
 			</li>
 			<li class="mui-table-view-cell sex" sex="1">
 				<a href="#sel-sex">男</a>
@@ -309,7 +309,11 @@
 						var span=this.querySelector('#'+type)
 						var txt=span.innerText;
 						var title=h.trim(this.parentElement.querySelector('label').innerText);
-						$.prompt(title, txt, '友邦到家', ['取消','确定'], function(e) {
+						if(type=='truename'){
+							title+='[只能设置一次]';
+							txt='姓名设置后将不得修改';
+						}
+						$.prompt(title, txt, '设置', ['取消','确定'], function(e) {
 							if (e.index == 1) {
 								var value=h.trim(e.value)
 								if(value){
@@ -371,53 +375,58 @@
 					
 					h.d.birthday.addEventListener('tap',function(){
 						if(h.user.birthday){
+							$.toast('为不影响您的会员权益,生日设置后不得修改')
 							return
 						}
-						var dDate = new Date();
-						var year=dDate.getFullYear();
-						var month=dDate.getMonth();
-						var day=dDate.getDate();
-						if(h.user.birthday){
-							var arr=h.user.birthday.split('-');
-							dDate.setFullYear(arr[0], arr[1]-1, arr[2]);
-						}else{
-							dDate.setFullYear(year-50, 0, 1);
-						}
-						var minDate = new Date();
-						minDate.setFullYear(1910, 0, 1);
-						var maxDate = new Date();
-						maxDate.setFullYear(year, month, day);
-						plus.nativeUI.pickDate(function(e) {
-							var year_=e.date.getFullYear();
-							var month_=e.date.getMonth()+1;
-							if(month_<10){
-								month_='0'+month_;
+						$.confirm('为不影响您的会员权益,生日设置后将不得修改。','提示',['确认'],function(e){
+							var dDate = new Date();
+							var year=dDate.getFullYear();
+							var month=dDate.getMonth();
+							var day=dDate.getDate();
+							if(h.user.birthday){
+								var arr=h.user.birthday.split('-');
+								dDate.setFullYear(arr[0], arr[1]-1, arr[2]);
+							}else{
+								dDate.setFullYear(year-50, 0, 1);
 							}
-							var day_=e.date.getDate();
-							if(day_<10){
-								day_='0'+day_;
-							}
-							var dt = year_+'-'+month_+'-'+day_;
-//							$.toast('您选择的日期是:' + h.getYmdTime(dt.getTime()/1000));
-							h.editUserInfo('birthday',dt,function(ret){
-								if(ret){
-									if(ret.code==0){
-										h.user.birthday=dt;
-										h.d.birthday.innerText=dt;
-									}else{
-										$.toast(ret.msg)
-									}
+							var minDate = new Date();
+							minDate.setFullYear(1910, 0, 1);
+							var maxDate = new Date();
+							maxDate.setFullYear(year, month, day);
+							plus.nativeUI.pickDate(function(e) {
+								var year_=e.date.getFullYear();
+								var month_=e.date.getMonth()+1;
+								if(month_<10){
+									month_='0'+month_;
 								}
-							})
+								var day_=e.date.getDate();
+								if(day_<10){
+									day_='0'+day_;
+								}
+								var dt = year_+'-'+month_+'-'+day_;
+	//							$.toast('您选择的日期是:' + h.getYmdTime(dt.getTime()/1000));
+								h.editUserInfo('birthday',dt,function(ret){
+									if(ret){
+										if(ret.code==0){
+											h.user.birthday=dt;
+											h.d.birthday.innerText=dt;
+										}else{
+											$.toast(ret.msg)
+										}
+									}
+								})
+								
+							}, function(e) {
+								$.toast("您没有选择日期")
+							}, {
+								title: "请选择生日",
+								date: dDate,
+								minDate: minDate,
+								maxDate: maxDate
+							});
 							
-						}, function(e) {
-							$.toast("您没有选择日期")
-						}, {
-							title: "请选择生日",
-							date: dDate,
-							minDate: minDate,
-							maxDate: maxDate
-						});
+						})
+						
 					})
 				}
 				

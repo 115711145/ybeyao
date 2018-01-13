@@ -198,10 +198,10 @@
 				
 				$('#content').on('tap','li',function(){
 					var keyword=this.querySelector('.key').innerText;
-					h.d._input.focus();
 					h.openGoodsList(keyword)
 				})
 				h.openGoodsList=function(keyword){
+					h.d._input.focus();
 					var keyword=keyword||h.trim(h.d._input.value);
 					var arr=[],tag;
 					$.each(h.record, function(i,v) {
@@ -221,7 +221,9 @@
 					h.record=arr;
 					h.showRecord(h.record)
 					$.fire(h.goodsListHeader,'cateId',{name:'搜索',f:'search',keyword:keyword})
-					h.goodsListHeader.show('slide-in-right',300)
+					setTimeout(function(){
+						h.goodsListHeader.show('slide-in-right',300)
+					},300)
 				}
 				
 				h.getKeywordList=function(keywrod){

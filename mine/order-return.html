@@ -147,8 +147,8 @@
 			}
 			.row .mui-btn-success{
 				padding: 10px;
-				background: #41CEA9;
-				border-color: #41CEA9;
+				background: #e33c3f;
+				border-color: #e33c3f;
 			}
 			.row .mui-btn-success:active{
 				background: #ccc;
@@ -172,7 +172,7 @@
 			}
 			.mui-content.hide-name input{
 				left:10px;
-				color: #41CEA9 !important;
+				color: #e33c3f !important;
 			}
 			.mui-content .hide-name input:before{
 				font-size:18px;
@@ -180,7 +180,7 @@
 				top:3px;
 			}
 			.mui-checkbox input:before{
-				color: #41CEA9 !important;
+				color: #e33c3f !important;
 			}
 			#progress{
 				padding: 1px 0 !important;
@@ -219,7 +219,7 @@
 				margin: 0 !important;
 			}
 			.mui-checkbox input:before{
-				color: #41CEA9 !important;
+				color: #e33c3f !important;
 			}
 			.sc_list .radio .box input{
 				left: 10px;
@@ -309,7 +309,7 @@
 				border: 1px solid red;
 			}
 			.close-btn {
-				background: #41CEA9;
+				background: #e33c3f;
 				color: #fff;
 				text-align: center;
 				height: 44px;
@@ -341,7 +341,7 @@
 				padding:0 2px;
 			}
 			.add-btn{
-				background: #41CEA9;
+				background: #e33c3f;
 				height: 51px;
 				color: #fff;
 				line-height: 51px;
@@ -587,15 +587,16 @@
 							$.each(ret.data.goods_list, function(i,v) {
 //								var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
 								var img=h.getGoodsImgUrl(v.goods_id,v.img_id)
+								var src=lazyLoad.getImageLocalUrl(img);
 								if(ret.data.coupon_price>0){
-									html.push('<p class="mui-inline" id="rg_'+v.rec_id+'"><img data-lazyload="'+img+'" width="20"><font>*'+v.goods_num+'</font></p>')
+									html.push('<p class="mui-inline" id="rg_'+v.rec_id+'"><img src="'+src+'" data-lazyload="'+img+'" width="20" onerror="lazyLoad.load(this)"/><font>*'+v.goods_num+'</font></p>')
 								}else{
 									if(!v.return_num||v.goods_num>v.return_num){
 										var num=(v.return_num>0?v.goods_num-v.return_num:v.goods_num);
 										html.push('<li rec_id="'+v.rec_id+'" price="'+v.member_goods_price+'"><div class="radio fl ">\
 					                    <div class="mui-input-row mui-checkbox mui-left box">\
 											<label>&nbsp;</label><input name="checkbox" type="checkbox" class="checkbox"></div></div>\
-					                	<div class="goods-img fl"><img data-lazyload="'+img+'"></div><div class="goods-info fl">\
+					                	<div class="goods-img fl"><img src="'+src+'" data-lazyload="'+img+'" onerror="lazyLoad.load(this)"/></div><div class="goods-info fl">\
 					                    <p class="title">'+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p><p class="sc_pri fl">\
 					                        <span class="price">￥'+v.member_goods_price+'</span>\
 					                    </p><div class="mui-numbox fr">\
@@ -614,14 +615,14 @@
 								h.goods_enabled=false;
 //								h.d.goods_row.setAttribute('style','display: none;')
 								h.d.re_goods.innerHTML=html.join('')
-								$('#re_goods').imageLazyload({
-									placeholder: '../images/default.png'
-								})
+//								$('#re_goods').imageLazyload({
+//									placeholder: '../images/default.png'
+//								})
 							}else{
 								d.getElementById('goods-list').innerHTML=html.join('')
-								$('#goods-list').imageLazyload({
-									placeholder: '../images/default.png'
-								})
+//								$('#goods-list').imageLazyload({
+//									placeholder: '../images/default.png'
+//								})
 							}
 //							d.getElementById('total_amount').innerText="￥"+ret.data.total_amount
 //							d.getElementById('integral_money').innerText="-￥"+ret.data.integral_money
@@ -653,10 +654,11 @@
 					h.parent_win=plus.webview.getWebviewById(h._self.parent_id)
 				}
 				h.orderListWin=plus.webview.getWebviewById('order-list');
-				h.order_id=h._self.order_id
-				h.service=h._self.btn
-				h.token=ms.getItem('token')
-				h.getOrderDetail()
+				h.mineWin=plus.webview.getWebviewById('mine');
+				h.order_id=h._self.order_id;
+				h.service=h._self.btn;
+				h.token=ms.getItem('token');
+				h.getOrderDetail();
 				h.data={
 					token:ms.getItem('token'),
 					m:'order_service',
@@ -941,7 +943,6 @@
 					}
 					
 					uploader.addEventListener( "statechanged", function(e){
-						console.log(parseInt(e.uploadedSize*100/e.totalSize));
 						if(e.state==3){
 							var progress=parseInt(e.uploadedSize*100/e.totalSize)
 	//						h.simulateLoading(h.d.progressbar, parseInt(e.uploadedSize*100/e.totalSize));

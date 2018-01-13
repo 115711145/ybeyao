@@ -4,13 +4,22 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>商品详情</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
 		<link rel="stylesheet" type="text/css" href="../css/own.css" />
 		<link rel="stylesheet" type="text/css" href="../css/previewimage.css" />
 		<link rel="stylesheet" type="text/css" href="../css/goods-detail.css" />
+		<style>
+			.mui-content .footer-bar{
+				border: 0 !important;
+			}
+			#slider-loop img{
+				/*width: 100%;*/
+			}
+		</style>
 	</head>
 
 	<body id="body">
@@ -202,8 +211,6 @@
 		</nav>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/parapola.js" charset="UTF-8"></script>
@@ -286,7 +293,6 @@
 						if(ret.code == 0) {
 							//初始化显示
 							honey.d.noContent.setAttribute('style', 'display:none')
-							honey.d.header.setAttribute('style', '')
 							honey.d.detailcontent.setAttribute('style', '')
 							var data = ret.data;
 							//标题
@@ -567,20 +573,22 @@
 					indicator = [];
 				for(var i = 0; i <= len; i++) {
 					if(i == 0) {
+						var img= adList[len-1].src;
+						var src=lazyLoad.getImageLocalUrl(img);
 						group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img class="lazy ad"  data-lazyload="' +adList[len-1].src + '"></a></div>')
+							<img class="lazy ad" src="'+src+'" data-lazyload="' +img+ '" onerror="lazyLoad.load(this)" /></a></div>')
 					}
 					if(i<len){
+						var img= adList[i].src;
+						var src=lazyLoad.getImageLocalUrl(img);
 						group.push('<div class="mui-slider-item"><a href="#">\
-							<img class="lazy ad detail-img"  data-lazyload="' + adList[i].src + '" data-preview-src="'+adList[i].src+'" data-preview-group="goods_'+honey.goods.goods_id+'"></a></div>')
-						if(len>1){
-							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
-						}
+							<img class="lazy ad detail-img"  f="slider" src="'+src+'" data-lazyload="' +img+ '" data-preview-src="'+img+'" data-preview-group="goods_'+honey.goods.goods_id +'" onerror="lazyLoad.load(this)"/></a></div>')
+						indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
 					}else {
-						if(len>1){
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-							<img class="lazy ad" data-lazyload="' +adList[0].src + '"></a></div>')
-						}
+						var img= adList[0].src;
+						var src=lazyLoad.getImageLocalUrl(img);
+						group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
+							<img class="lazy ad" src="'+src+'" data-lazyload="' +img+ '" name="'+adList[0].name+'" type="'+adList[0].type+'" link="'+adList[0].link+'" onerror="lazyLoad.load(this)"/></a></div>')
 					}
 				}
 				if(!honey.slider_loop){
@@ -589,10 +597,11 @@
 				}
 				honey.slider_loop.innerHTML=group.join('');
 				honey.slider_indicator.innerHTML=indicator.join('');
-				mui('.mui-slider-item').imageLazyload({
-					placeholder: '../images/default.png'
-				});
+//				mui('.mui-slider-item').imageLazyload({
+//					placeholder: '../images/default.png'
+//				});
 				if(len>1){
+//					lazyImg.lazyLoad(honey.slider_loop) 
 					if(honey.slider){
 						honey.slider._init() 
 					}else{
@@ -618,12 +627,6 @@
 				if(!honey.detailSubpage) {
 					honey.detailSubpage = plus.webview.currentWebview();
 				}
-				/**
-				 * 分享事件
-				 */
-				//				honey.d.share.addEventListener('tap',function(){
-				//					mySrcollTo('evaluate',1,1)
-				//				})
 
 				/**
 				 * 查看更多评论
@@ -670,8 +673,6 @@
 							}
 						},
 						error: function(ret) {
-							//							alert(JSON.stringify(ret))
-							//							mui.toast('失败')
 						}
 					})
 				})
@@ -779,20 +780,11 @@
 					mui.previewImage().close();
 				})
 				
-//				window.addEventListener('logout',function(){
-//					honey.discount=100;
-//				})
-				
-//				window.addEventListener('login',function(){
-//					honey.user=myStorage.getItem('user')
-//		    		if(honey.user&&honey.user.level.discount>0){
-//		    			honey.discount=parseInt(honey.user.level.discount);
-//		    		}
-//				})
 				/**
 				 * 显示商品事件
 				 */
 				window.addEventListener('showGoods', function(o) {
+					honey.mySrcollTo()
 					honey.goods = {};
 					honey.goods.goods_id = o.detail.goods_id;
 					honey.goods.f=o.detail.f;
@@ -804,25 +796,6 @@
 					honey.goodsDetail.setStyle({
 						mask: "none"
 					})
-//					if(!honey.imageSliderView) {
-//						var data = {
-//							top: '0px',
-//							left: '0px',
-//							height: '220px',
-//							width: '100%',
-//							position: 'static',
-//							images: [{
-//								src: '../images/default.png'
-//							}]
-//						};
-//						honey.imageSliderView = new plus.nativeObj.ImageSlider('test', data);
-//						honey.goodsDetail.append(honey.imageSliderView);
-//					} else {
-//						honey.imageSliderView.setImages([{
-//							src: '../images/default.png'
-//						}]);
-//					}
-					honey.mySrcollTo()
 					honey.d.evaluateList.innerHTML = '';
 					honey.d.content.innerHTML = '';
 					honey.d.buyNum.value = 1;
@@ -837,10 +810,10 @@
 				 * 滚动事件
 				 */
 				document.addEventListener('scroll', function() {
-					if(honey.scrollMenu) {
+//					if(honey.scrollMenu) {
 						honey.scrollMenu = false;
 						var h1 = window.innerHeight;
-						var h = document.body.scrollTop + 220;
+						var h = document.body.scrollTop + 300;
 						var s1 = honey.d.goodsContent.offsetTop;
 						var s2 = honey.d.evaluate.offsetTop;
 						var i = 0;
@@ -852,15 +825,15 @@
 						honey.d.topMenu.className = '';
 						honey.d.topMenu = honey.d.topSpan[i];
 						honey.d.topMenu.className = "active";
-						if((h + 220) > h1) {
+						if(h > h1) {
 							honey.d.header.setAttribute('style', '')
 						} else {
 							honey.d.header.setAttribute('style', 'display:none')
 						}
-						setTimeout(function() {
-							honey.scrollMenu = true;
-						}, 200)
-					}
+//						setTimeout(function() {
+//							honey.scrollMenu = true;
+//						}, 200)
+//					}
 				})
 				
 				//加入购物车事件

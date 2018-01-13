@@ -6,6 +6,7 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../iconfont/iconfont.css">
 	</head>
 	<style type="text/css">
 		li{
@@ -16,8 +17,8 @@
 			display: block;
 			padding-top:20px;
 			color: #fff; 
-			background:url(../images/mine-bg.jpg) no-repeat;
-			background-size:100% 85%;
+			background:url(../images/mine-bg.png) no-repeat;
+			background-size:100% 100%;
 		}
 		.top .user-face{
 			height: 70px;
@@ -135,8 +136,8 @@
 			position: absolute;
 			right: 0px;
 			background: #FFFFFF;
-			color: #41CEA9;
-			border: 1px solid #41CEA9;
+			color: #F10A0F;
+			border: 1px solid #F10A0F;
 		}
 		.menu{
 			margin: 0;
@@ -176,6 +177,16 @@
 		#level_name{
 			font-size: 12px;
 		}
+		.myorder i{
+			position: relative;
+			top: 3px;
+			font-size: 24px;
+			color: #F10A0F;
+		}
+		.menu i{
+			margin: 0 10px;
+			font-size: 16px;
+		}
 	</style>
 	<body>
 		<div class="top">
@@ -199,7 +210,7 @@
 				<ul>
 					<li type="WAITPAY">
 						<p>
-							<img src="../images/dd-dfk.png"/>
+							<i class="icon iconfont icon-daifukuan"></i> 
 							<span class="mui-badge mui-badge-danger warm-number" style="display: none;">5</span>
 						</p>
 						<p>
@@ -208,7 +219,7 @@
 					</li>
 					<li type="WAITSEND">
 						<p>
-							<img src="../images/dd-dfh.png"/>
+							<i class="icon iconfont icon-daifahuo"></i> 
 							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
@@ -217,7 +228,7 @@
 					</li>
 					<li type="WAITRECEIVE">
 						<p>
-							<img src="../images/dd-dsh.png"/>
+							<i class="icon iconfont icon-daishouhuo"></i> 
 							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
@@ -226,7 +237,7 @@
 					</li>
 					<li type="WAITCCOMMENT">
 						<p>
-							<img src="../images/dd-dpj.png"/>
+							<i class="icon iconfont icon-daipingjia"></i> 
 							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
@@ -235,7 +246,7 @@
 					</li>
 					<li type="RETURNBACK">
 						<p>
-							<img src="../images/dd-tk.png"/>
+							<i class="icon iconfont icon-tuikuan"></i> 
 							<span class="mui-badge mui-badge-danger warm-number" style="display: none;"></span>
 						</p>
 						<p>
@@ -247,21 +258,15 @@
 		<div class="center">
 			<ul class="menu">
 				<!--<li><img src="../images/mine-safe.png"/>账号安全</li>-->
-				<li id="personal"><img src="../images/mine-info.png"/>个人资料</li>
-				<li id="wallet"><img src="../images/mine-qb.png"/>我的钱包</li>
-				<li id="address"><img src="../images/mine-adress.png"/>收货地址</li>
+				<li id="personal"><i class="icon iconfont icon-gerenziliao" style="color:#4781f8"></i>个人资料</li>
+				<li id="wallet"><i class="icon iconfont icon-wallet" style="color:#F10A0F"></i>我的钱包</li>
+				<li id="address"><i class="icon iconfont icon-shouhuodizhi" style="color:#f71a9c"></i>收货地址</li>
 			</ul>
 		</div>
-		<!--<div class="center">
-			<ul class="menu">
-				<li id="address"><img src="../images/mine-adress.png"/>收货地址</li>
-				<li id="message"><img src="../images/mine-msg.png"/>消息通知</li>
-			</ul>
-		</div>-->
 		<div class="center">
 			<ul class="menu">
-				<li id="comment"><img src="../images/mine-pj.png"/>我的评价</li>
-				<li id="collect"><img src="../images/mine-sc.png"/>我的收藏</li>
+				<li id="comment"><i class="icon iconfont icon-wodepingjia" style="color:#FF6633"></i>我的评价</li>
+				<li id="collect"><i class="icon iconfont icon-shoucang" style="color:#FF5053"></i>我的收藏</li>
 			</ul>
 		</div>
 		<!--<div class="center">
@@ -272,14 +277,16 @@
 		</div>-->
 		<div class="center">
 			<ul class="menu">
-				<li id="help"><img src="../images/mine-help.png"/>帮助中心</li>
+				<li id="help"><i class="icon iconfont icon-bangzhu" style="color:#f4951a"></i>帮助中心</li>
 				<!--<li><img src="../images/mine-feed.png"/>意见反馈</li>-->
-				<li id="about"><img src="../images/mine-us.png"/>关于我们</li>
+				<li id="about"><i class="icon iconfont icon-guanyuwomen" style="color:#41CEA9"></i>关于我们</li>
 			</ul>
 		</div>
 		<div class="center">
 			<ul class="menu">
-				<li id="logout"><img src="../images/mine-logout.png"/>退出登录</li>
+				<li id="logout">
+				<i class="icon iconfont icon-tuichudenglu" style="color:#666"></i>
+				退出登录</li>
 			</ul>
 		</div>
 	</body>

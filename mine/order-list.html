@@ -219,34 +219,13 @@
 						var li=[];
 						li.push('<li class="order-list" order_id="'+v.order_id+'" return_status="'+v.return_status+'"><div class="order_sn">订单编号：'+v.order_sn
 						+'<span class="status">'+h.getOrderStatus(v)+'</span></div>');
-						var num=0;
 						//商品列表
-						for(var j=0;j<v.goods_list.length;j++){
-							var val=v.goods_list[j];
-							num+=num+parseInt(val.goods_num)
-							var img=h.getGoodsImgUrl(val.goods_id,val.img_id)
-							var cls='';
-							val.goods_name=h.cutstr(val.goods_name);
-							if(val.return_status>0&&val.return_status<5){
-								cls=' is-return';
-								val.goods_name='<font color="#FF5053">[退]</font>'+val.goods_name;
-							}
-							li.push('<div class="order-goods fl'+cls+'" goods_id="'+val.goods_id+'">'
-			                +'<div class="goods-img fl">'
-			                	+'<img src="'+img+'" onerror="javascript:this.src=\'../images/default.png\'"/>'
-			                +'</div>'
-			                +'<div class="goods-info fl">'
-			                    +'<p class="title">'+val.goods_name+'</p>'
-			                    +'<p class="weight">'+val.spec_key_name+'</p></div>'
-			                +'<div class="price-num fr">'
-			                	 +'<p class="price">'
-			                        +'<span>￥</span><span>'+val.member_goods_price+'</span>'
-			                	+'</p><p><span>×</span><span>'+val.goods_num+'</span></p></div></div>');
-						}
+						var goodsHtml=h.getGoodsListHtml(v.goods_list);
+						li.push('<div class="order-goods-list">'+goodsHtml.html+'</div>');
 						//应付金额
 						li.push('<div class="sum"><p class="fl sum-price-num">'
 			        		+'<span class="price">￥'+h.fmoney(v.total_amount-v.discount_money)+'</span>'
-			        		+'<span>共'+num+'件</span></p><p class="fr btns">');
+			        		+'<span>共'+goodsHtml.num+'件</span></p><p class="fr btns">');
 			        		li.push(h.getOrderBtn(v));
 				        	li.push('</p></div></li>')
 							html.push(li.join(''))
@@ -255,6 +234,35 @@
 				}else{
 					h.page==1&&(h.d.list.innerHTML = '<li class="no-order">没有相关订单<li>');
 				}
+			}
+			
+			h.getGoodsListHtml=function(goods){
+				var num=0;
+				var li=[];
+				for(var j=0;j<goods.length;j++){
+					var val=goods[j];
+					num+=num+parseInt(val.goods_num)
+					var img=h.getGoodsImgUrl(val.goods_id,val.img_id);
+					var src=lazyLoad.getImageLocalUrl(img);
+					var cls='';
+					val.goods_name=h.cutstr(val.goods_name);
+					if(val.return_status>0&&val.return_status<5){
+						cls=' is-return';
+						val.goods_name='<font color="#FF5053">[退]</font>'+val.goods_name;
+					}
+					li.push('<div class="order-goods fl'+cls+'" goods_id="'+val.goods_id+'">'
+	                +'<div class="goods-img fl">'
+	                	+'<img src="'+src+'" data-lazyload="'+img+'"  onerror="lazyLoad.load(this)"/>'
+	                +'</div>'
+	                +'<div class="goods-info fl">'
+	                    +'<p class="title">'+val.goods_name+'</p>'
+	                    +'<p class="weight">'+val.spec_key_name+'</p></div>'
+	                +'<div class="price-num fr">'
+	                	 +'<p class="price">'
+	                        +'<span>￥</span><span>'+val.member_goods_price+'</span>'
+	                	+'</p><p><span>×</span><span>'+val.goods_num+'</span></p></div></div>');
+				}
+				return {num:num,html:li.join('')}
 			}
 			h.getOrderStatus=function(order){
 				if(order.return_status>0&&order.return_info.type==1){
@@ -317,7 +325,7 @@
 	        		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
 	        	}else{
 	        		if(order.pay_status>0){
-	        			btn_return&&li.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+	        			btn_return&&li.push('<span class="mui-btn mui-btn-warning" type="return-order">申请退款</span>');
 	        			if(order.return_status>0){
         					li.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
 	        				if(order.return_status<3 || (order.return_status>2&&order.return_status<5&&order.return_info&&order.return_info.type==0)){
@@ -502,7 +510,7 @@
 				$(h.d.list).on('tap','.order_sn',function(){
 					h.showDetail(this)
 				})
-				$(h.d.list).on('tap','.order-goods',function(){
+				$(h.d.list).on('tap','.order-goods-list',function(){
 					h.showDetail(this)
 				})
 				h.showDetail=function(o){
@@ -578,6 +586,8 @@
 							if(ret.code==0){
 								h._jump.p.querySelector('.status').innerHTML=h.getOrderStatus(ret.data)
 								h._jump.p.querySelector('.btns').innerHTML=h.getOrderBtn(ret.data)
+								var goodsHtml=h.getGoodsListHtml(ret.data.goods_list)
+								h._jump.p.querySelector('.order-goods-list').innerHTML=goodsHtml.html;
 							}
 						}
 					});

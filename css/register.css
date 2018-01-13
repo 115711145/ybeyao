@@ -30,9 +30,9 @@
 
 .login button {
 	padding: 8px 0;
-	background: #41cea9;
+	background: #F10A0F;
 	border-radius: 10px;
-	border: 1px solid #41cea9;
+	border: 1px solid #F10A0F;
 }
 
 .login .active {
@@ -72,7 +72,7 @@
 	font-size: 40px;
 	border-radius: 50px;
 	color: #fff;
-	background: #41cea9;
+	background: #08AD13;
 	padding: 5px;
 }
 
@@ -114,9 +114,9 @@
 
 .register button {
 	padding: 8px 0;
-	background: #41cea9;
+	background: #F10A0F;
 	border-radius: 10px;
-	border: 1px solid #41cea9;
+	border: 1px solid #F10A0F;
 }
 
 .register .active {
@@ -126,8 +126,8 @@
 
 #get-code{
 	position: absolute;
-	border: 1px solid #41CEA9;
-	background: #41CEA9;
+	border: 1px solid #FF6633;
+	background: #FF6633;
 	color: #fff;
 	padding: 6px 20px;
 	top: 4px;

@@ -218,10 +218,12 @@
 						for(var j=0;j<v.goods_list.length;j++){
 							var val=v.goods_list[j];
 							num+=num+parseInt(val.goods_num)
-							var img=h.apihost+'/public/upload/goods/thumb/'+val.goods_id+'/goods_sub_thumb_'+val.img_id+'_150_150.jpg';
+//							var img=h.apihost+'/public/upload/goods/thumb/'+val.goods_id+'/goods_sub_thumb_'+val.img_id+'_150_150.jpg';
+							var img=h.getGoodsImgUrl(val.goods_id,val.img_id,150);
+							var src=lazyLoad.getImageLocalUrl(img);
 							li.push('<div class="order-goods fl" goods_id="'+val.goods_id+'">'
 			                +'<div class="goods-img fl">'
-			                	+'<img src="'+img+'" onerror="javascript:this.src=\'../images/default.png\'"/>'
+			                	+'<img src="'+src+'" data-lazyload="'+img+'" onerror="lazyLoad.load(this)"/>'
 			                +'</div>'
 			                +'<div class="goods-info fl">'
 			                    +'<p class="title">'+h.cutstr(val.goods_name)+'</p>'

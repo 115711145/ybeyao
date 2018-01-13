@@ -3,7 +3,7 @@
 	}
 	
 	.own-main-color {
-		color: #41cea9;
+		color: #F10A0F;
 	}
 	/*设置背景色*/
 	
@@ -32,7 +32,8 @@
 	}
 	
 	.own-main-background-color {
-		background-color: #41cea9;
+		/*background-color: #F10A0F;*/
+		background: url(../images/header-bg.png) repeat center;
 	}
 	
 	.own-header-hidden {
@@ -45,8 +46,8 @@
 	
 	.own-btn-green {
 		color: #fff;
-		border: 1px solid #41cea9;
-		background-color: #41cea9;
+		border: 1px solid #F10A0F;
+		background-color: #F10A0F;
 	}
 	
 	.own-btn-green.mui-active:enabled,

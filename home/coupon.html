@@ -201,7 +201,7 @@
 								list.push('<div class="quan"><div class="quan-con"><div class="fl title">\
 									<p class="number"><font class="coupon_name">'+v.name+'</font><span style="float:right">剩余：<span class="left_num">' +num+ '</span></span></p>\
 									<p class="use-time">满'+parseFloat(v.condition)+'元减'+parseFloat(v.money)+'元</p>\
-									<p class="use-time">有效期至: ' + h.getYmdTime(v.use_end_time,1) + '</p></div><div class="fr getquan" coupon_id="'+v.id+'" num="'+num+'" send_time="'+v.send_time+'"><p>'+(num>0?(v.send_time>0?'已领取':'立即领取'):'抢光啦！')+'</p></div></div></div>')
+									<p class="use-time">有效期至: ' + h.getYmdTime(v.use_end_time,1) + '</p></div><div class="fr getquan" coupon_id="'+v.id+'" num="'+num+'" send_time="'+v.send_time+'"><p>'+(num>0?(v.send_time>0?'您已领取':'立即领取'):'抢光啦！')+'</p></div></div></div>')
 							});
 							if(list.length > 0) {
 								h.d.list.innerHTML = list.join('')
