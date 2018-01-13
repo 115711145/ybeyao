@@ -2,23 +2,31 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>我的钱包</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
     <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="../css/own.css"/>
     <style>
+    	header .mui-title{
+    		color: #fff;
+    	}
     	.banner{
-    		height: 165px;
-    		background: url(../images/wallet-bk.jpg) no-repeat;
+    		height: 100%;
+    		background: url(../images/mine-bg.png) no-repeat;
     		background-size: 100% 130%;
     		text-align: center;
     	}
     	.banner img{
-    		width: 50px;
-    		height: 50px;
-    		border-radius:50px ;
+    		width: 70px;
+    		height: 70px;
+    		border-radius:70px ;
     		margin-top:50px;
+    	}
+    	.banner p,.banner div{
+    		width: 50%;
     	}
     	.banner p{
     		color: #fff;
@@ -26,7 +34,7 @@
     	.banner p a{
     		color: #ff6633;
     		border: 1px solid #FF6633;
-    		padding: 2px 15px;
+    		padding: 5px 30px;
     		border-radius: 5px;
     		font-size: 12px;
     		background: #fff;
@@ -46,21 +54,10 @@
     		width: 48%;
     		margin: 1%;
     		float: left;
-    		height: 70px;
-    	}
-    	.wallet-icon{
-    		position: absolute;
-    	}
-    	.wallet-icon img{
-    		max-height: 35px;
-    		max-width:35px;
-    		border-radius:50px ;
-    		margin:8px 0 0 5px;
     	}
     	.item-info{
     		width: 85%;
     		display: block;
-    		float: right;
     		text-align: center;
     	}
     	.price{
@@ -115,12 +112,18 @@
 			text-align: center;
 			color: #666;
 		}
+		.mui-bar-transparent {
+			background-color: rgba(241, 10, 15, 0.0);
+		}
+		.mui-content{
+			padding: 0 !important;
+		}
     </style>
 </head>
 <body>
-	<header class="mui-bar mui-bar-nav own-main-background-color">
+	<header id="header" class="mui-bar mui-bar-transparent">
 		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-		<h1 class="mui-title" id="header-title">我的钱包</h1>
+		<h1 class="mui-title">我的钱包</h1>
 	</header>
 	<div class="mui-content">
 		<!--<div class="loader" id="loader">
@@ -137,36 +140,24 @@
 		</div>
 		<ul class="wallet">
 			<li class="wallet-item link-btn" type="amount">
-				<span class="wallet-icon">
-					<img src="../images/wallet-cz.png" width="40"/>
-				</span>
 				<span class="item-info">
 					<p class="title">余额</p>
 					<p class="price" id="money">123456.00</p>
 				</span>
 			</li>
 			<li class="wallet-item link-btn" type="amount">
-				<span class="wallet-icon">
-					<img src="../images/wallet-xf.png"/>
-				</span>
 				<span class="item-info">
 					<p class="title">累计消费</p>
 					<p class="price" id="amount">123456.00</p>
 				</span>
 			</li>
 			<li class="wallet-item link-btn" type="points">
-				<span class="wallet-icon">
-					<img src="../images/wallet-jf.png"/>
-				</span>
 				<span class="item-info">
 					<p class="title">积分</p>
 					<p class="price" id="points">123456.00</p>
 				</span>
 			</li>
 			<li class="wallet-item" id="coupon">
-				<span class="wallet-icon">
-					<img src="../images/wallet-yhq.png"/>
-				</span>
 				<span class="item-info">
 					<p class="title">优惠券</p>
 					<p class="price" id="quan">5</p>

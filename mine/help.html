@@ -48,9 +48,6 @@
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js"></script>
 		<script type="text/javascript" src="../js/common.js"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
-		<!--<script type="text/javascript" src="../js/lazyloadimages.js" charset="UTF-8"></script>-->
 		
 		<script>
 			(function(win,$,d,h){
@@ -73,19 +70,16 @@
 								h.d.loader.style.display="none";
 								var html=[];
 								$.each(ret.data, function(i,v) {
+									var img=h.apihost+v.thumb;
+									var src=lazyLoad.getImageLocalUrl(img);
 									html.push('<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#"><font color="#999">['+v.cat_name+']</font>'+v.title+'</a>'
-									+'<div class="mui-collapse-content">'+(v.thumb?'<img class="lazy" src="../images/default.png" data-src="'+h.apihost+v.thumb+'" />':'')+h.htmlspecialchars_decode(v.content)+'</div></li>');
+									+'<div class="mui-collapse-content">'+(v.thumb?'<img class="lazy" src="'+src+'" data-lazyload="'+img+'" onerror="lazyLoad.load(this)"/>':'')+h.htmlspecialchars_decode(v.content)+'</div></li>');
 								});
 								h.d.list.innerHTML=html.join('')
-								loadImages()
 							}
 						}
 					});
 				})
-				
-				function loadImages(){
-					lazyImg.lazyLoad(h.d.list)
-				}
 			}(window,mui,document,honey))
 			
 		</script>

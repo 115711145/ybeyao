@@ -68,33 +68,33 @@
 				</ul>
 			</div>
 			<div class="yb-ad1">
-				<p class="ad-left">
-					<img src="../images/default.png" f="home-ad1" class="lazy ad adImg2"/>
+				<p class="ad-left" id="yb-ad2">
+					<!--<img src="../images/ad-default.png" f="home-ad1" class="lazy ad"/>-->
 				</p>
-				<p class="ad-right">
-					<img src="../images/default.png" f="home-ad2" class="lazy ad adImg3"/>
-					<img src="../images/default.png" f="home-ad3" class="lazy ad adImg3"/>
+				<p class="ad-right" id="yb-ad3">
+					<!--<img src="../images/ad-default.png" f="home-ad2" class="lazy ad"/>
+					<img src="../images/ad-default.png" f="home-ad3" class="lazy ad"/>-->
 				</p>
 			</div>
 			<div class="yb-ad4" id="yb-ad4">
-				<img src="../images/default.png" f="home-ad4" class="lazy ad adImg4"/>
-				<img src="../images/default.png" f="home-ad4" class="lazy ad adImg4"/>
+				<!--<img src="../images/ad-default.png" f="home-ad4" class="lazy ad"/>
+				<img src="../images/ad-default.png" f="home-ad4" class="lazy ad"/>-->
 			</div>
 			<!--<div class="mui-content recommend">-->
-				<!--<ul class="mui-table-view mui-grid-view" id="recommend">
+			<!--<ul class="mui-table-view mui-grid-view" id="recommend">
 					
 				</ul>-->
-				<div class="twoRankedBox" id="recommend">
-			        <ul class="BoxLeft" id="BoxLeft">
-			
-			        </ul>
-			
-			        <ul class="BoxRight" id="BoxRight">
-			
-			        </ul>
-			    </div>
+			<div class="twoRankedBox" id="recommend">
+				<ul class="BoxLeft" id="BoxLeft">
+
+				</ul>
+
+				<ul class="BoxRight" id="BoxRight">
+
+				</ul>
+			</div>
 			<!--</div>-->
-			
+
 			<!--<div class="mui-content recommend">
 				<ul class="mui-table-view mui-grid-view" id="hot">
 					
@@ -112,198 +112,212 @@
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
-			
-			(function(h,$,win,d,ms){
+			(function(h, $, win, d, ms) {
 				$.init({
-					swipeBack: true //启用右滑关闭功能
+					swipeBack: true,
+					//					pullRefresh: {
+					//						container: '#homeDiv',
+					//						up: {
+					//							auto:false,
+					//							height:80,
+					//							contentinit: honey.contentinit,
+					//		                    contentdown: honey.contentdown,
+					//		                    contentrefresh: honey.contentrefresh,
+					//							contentnomore:honey.contentnomore,
+					//							callback: ajaxIndexGoods 
+					//						}
+					//					}
 				});
-				/**
-				 * 自动加载广告
-				 */
-				h.autoAd=function(){
-					mui.ajax(h.apiurl,{
-						data:{m:'ad_list'},
-						type:'post',
-						dataType:'json',
-						success:function(ret){
-							if(ret.code==0){
-								h.showSlider(ret.data[1]);
-								h.showAdImges(ret.data[2],2)
-								h.showAdImges(ret.data[3],3)
-								h.showAdImges(ret.data[4],4)
-								lazyImg.lazyLoad(h.d.homeDiv)
-							}
-						},
-						error:function(ret){
-//							alert('error')
-//							alert(JSON.stringify(ret)) 
-						} 
-					})
+
+				function refresh() {
+					h.d.content.pullRefresh().endPulldown();
 				}
-				/**
-				 * 轮播图
-				 * @param {Object} adList
-				 */
-				h.showSlider= function(adList) {
-					var len=adList.length,
-					    group = [],
-						indicator = [];
-					for(var i = 0; i <= len; i++) {
-						if(i == 0) {
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img class="lazy ad" name="'+adList[len-1].name+'" type="'+adList[len-1].type+'" link="'+adList[len-1].link+'" data-src="' + h.apihost+adList[len-1].src + '"></a></div>')
-						}
-						if(i<len){
-							group.push('<div class="mui-slider-item"><a href="#">\
-								<img class="lazy ad"  f="slider" name="'+adList[i].name+'" type="'+adList[i].type+'" link="'+adList[i].link+'" data-src="' + h.apihost+adList[i].src + '"></a></div>')
-							indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
-						}else {
-							group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
-								<img class="lazy ad"  name="'+adList[0].name+'" type="'+adList[0].type+'" link="'+adList[0].link+'"  data-src="' + h.apihost+adList[0].src + '"></a></div>')
-						}
-					}
-					document.getElementById('productSlider').innerHTML = '<div class="mui-slider-group mui-slider-loop">' + group.join('') +
-						'</div><div class="mui-slider-indicator">' + indicator.join('') + '</div>';
-					h.slider = $('.mui-slider').slider({
-						interval: 5000
-					});
+
+				h.d = {
+					homeDiv: d.getElementById('homeDiv')
 				}
-				/**
-				 * 显示广告图
-				 * @param {Object} ad  广告数组
-				 * @param {Object} obj 广告位置id
-				 */
-				h.showAdImges=function(ad,number){
-					var obj=mui('.adImg'+number);
-					for(var i=0;i<obj.length;i++){
-						if(ad[i]){
-							obj[i].setAttribute('data-src',h.apihost+ad[i].src)
-							obj[i].setAttribute('type',ad[i].type)
-							obj[i].setAttribute('name',ad[i].name)
-							obj[i].setAttribute('link',ad[i].link)
-						}
-					}
-				}
-				/**
-				 * 显示广告4
-				 * @param {Object} data
-				 */
-				h.showAd4=function(data){
-					var html=[];
-					$.each(data, function(i,v) {
-						if(v.pid==4){
-							html.push('<img src="../images/default.png" f="home-ad4" class="lazy ad adImg4"/>')
-						}
-						
-					});
-				}
-				h.bindListTap= function() {
-					//添加slider点击事件
-					$('.mui-content').on('tap', '.ad', function() {
-						var link=this.getAttribute('link')
-						var type=this.getAttribute('type')
-						var name=this.getAttribute('name')
-						var f=this.getAttribute('f')
-						h.openAd(type,link,name,f)
-					})
-					//添加每个item点击的监听事件
-					$('#recommend').on('tap', '.goods-list', function() {
-						var goods_id = this.getAttribute('goods_id');
-						var f=this.getAttribute('f');
-//						var title = this.querySelector('.goods-title').innerText;
-						if(!h.detailWebView) {
-							h.detailWebView = plus.webview.getWebviewById('goods-header');
-						}
-						if(!h.detailSubpage) {
-							h.detailSubpage = plus.webview.getWebviewById('goods-detail');
-						}
-						$.fire(h.detailWebView, 'goodsId', {
-							goods_id:goods_id,
-							f:f
-						})
-						h.detailWebView.show('slide-in-right', 300)
-					});
-				}
-				/**
-				 * 获取首页商品
-				 */
-				h.loadGoods= function() {
-					$.ajax(h.apiurl,{
-						data:{m:'index_goods'},
-						type:'post',
-						dataType:'json',
-						success:function(ret){ 
-							if(ret.code==0){
-								h.showGoodsList(ret.data.recommend,'recommend',null,'home-recommend')
-							}
-						},
-						error:function(ret){
-//							alert('error')
-//							alert(JSON.stringify(ret)) 
-						} 
-					})
-				}
-				/**
-				 * 显示商品列表
-				 * @param {Object} data
-				 * @param {Object} id
-				 */
-//				showGoodsList:function(data,id){
-//					var dom = document.getElementById(id);
-//					var li=[];
-//					mui.each(data,function(i,v){
-//						li.push('<li class="mui-table-view-cell mui-media mui-col-xs-6 goods-list">\
-//						<div class="goods-list-item">\
-//							<a href="' + i + '"><img class="mui-media-object goods-logo" src="../images/logo.png" data-lazyload="' + apihost + v.sub_image + '_150_150.jpeg"/>\
-//			                <div class="mui-media-body goods-info">\
-//			                <p class="goods-title">'+v.goods_name +'</p>\
-//			                <p><span class="goods-price-one">￥'+v.shop_price+'</span><p>\
-//			                </div></a>\
-//		                </div></li>');
-//					})
-//					dom.innerHTML='<ul class="mui-table-view mui-grid-view">'+li.join('')+'</ul>';
-//					mui('#'+id).imageLazyload({
-//						placeholder: '../images/60x60.gif'
-//					});
-//				},
-				/**
-				 * 绑定图标菜单触摸事件
-				 */
-				h.bindIconMenuTap=function(){
-					mui('#menus').on('tap','a',function(){
-						var name=this.getAttribute('name');
-						var cate=this.getAttribute('cate');
-						var f='home-icon'+cate;
-						if(cate=='8'){
-//							alert('优惠券')
-							h.openWin('../home/coupon.html','coupon',{f:f})
-						}else{
-//							openWin("../goods/goods-list-header.html","goods-list-header",{cate:cate},{top:0,bottom:'51px'})
-							$.fire(h.goodsListHeader,'cateId',{name:name,cate:cate,f:f})
-							h.goodsListHeader.show('slide-in-right',300)
-						}
-					})
-				}
-				
-				h.d={
-					homeDiv:d.getElementById('homeDiv')
-				}
-				
+
 				$.plusReady(function() {
-					if(!honey.goodsListHeader){
-						honey.goodsListHeader=plus.webview.getWebviewById('goods-list-header');
+					if(!honey.goodsListHeader) {
+						honey.goodsListHeader = plus.webview.getWebviewById('goods-list-header');
 					}
+
+					/**
+					 * 自动加载广告
+					 */
+					h.autoAd = function() {
+						mui.ajax(h.apiurl, {
+							data: {
+								m: 'ad_list'
+							},
+							type: 'post',
+							dataType: 'json',
+							success: function(ret) {
+								if(ret.code == 0) {
+									h.showSlider(ret.data.slider);
+									h.showAdImage(ret.data.ad);
+								}
+							},
+							error: function(ret) {
+								//							alert('error')
+								//							alert(JSON.stringify(ret)) 
+							}
+						})
+					}
+					/**
+					 * 轮播图
+					 * @param {Object} adList
+					 */
+					h.showSlider = function(adList) {
+						var len = adList.length,
+							group = [],
+							indicator = [];
+						for(var i = 0; i <= len; i++) {
+							if(i == 0) {
+								var img = h.apihost + adList[len - 1].src;
+								var src = lazyLoad.getImageLocalUrl(img);
+								group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
+								<img class="lazy ad" src="' + src + '" data-lazyload="' + img + '" name="' + adList[len - 1].name + '" type="' + adList[len - 1].type + '" link="' + adList[len - 1].link + '" onerror="lazyLoad.load(this)" /></a></div>')
+							}
+							if(i < len) {
+								var img = h.apihost + adList[i].src;
+								var src = lazyLoad.getImageLocalUrl(img);
+								group.push('<div class="mui-slider-item"><a href="#">\
+								<img class="lazy ad"  f="slider" src="' + src + '" data-lazyload="' + img + '" name="' + adList[i].name + '" type="' + adList[i].type + '" link="' + adList[i].link + '" onerror="lazyLoad.load(this)"/></a></div>')
+								indicator.push('<div class="mui-indicator' + (i == 0 ? ' mui-active' : '') + '"></div>')
+							} else {
+								var img = h.apihost + adList[0].src;
+								var src = lazyLoad.getImageLocalUrl(img);
+								group.push('<div class="mui-slider-item mui-slider-item-duplicate"><a href="#">\
+								<img class="lazy ad" src="' + src + '" data-lazyload="' + img + '" name="' + adList[0].name + '" type="' + adList[0].type + '" link="' + adList[0].link + '" onerror="lazyLoad.load(this)"/></a></div>')
+							}
+						}
+						document.getElementById('productSlider').innerHTML = '<div class="mui-slider-group mui-slider-loop">' + group.join('') +
+							'</div><div class="mui-slider-indicator">' + indicator.join('') + '</div>';
+						h.slider = $('.mui-slider').slider({
+							interval: 5000
+						});
+					}
+					/**
+					 * 显示广告图
+					 * @param {Object} adList
+					 */
+					h.showAdImage = function(adList) {
+						$.each(adList, function(i, v) {
+							var obj = d.getElementById('yb-ad' + i)
+							var html = [];
+							for(var j = 0; j < v.length; j++) {
+								var img = h.apihost + v[j].src;
+								var src = lazyLoad.getImageLocalUrl(img);
+								html.push('<img src="' + src + '" data-lazyload="' + img + '" name="' + v[j].name + '" type="' + v[j].type + '" link="' + v[j].link + '"  onerror="lazyLoad.load(this)" default-src="../images/ad-default.png" f="home-ad' + i + '" class="lazy ad"/>');
+							}
+							obj.innerHTML = html.join('');
+						});
+					}
+					h.bindListTap = function() {
+						//添加slider点击事件
+						$('.mui-content').on('tap', '.ad', function() {
+							var link = this.getAttribute('link')
+							var type = this.getAttribute('type')
+							var name = this.getAttribute('name')
+							var f = this.getAttribute('f')
+							h.openAd(type, link, name, f)
+						})
+						//添加每个item点击的监听事件
+						$('#recommend').on('tap', '.goods-list', function() {
+							var goods_id = this.getAttribute('goods_id');
+							var f = this.getAttribute('f');
+							//						var title = this.querySelector('.goods-title').innerText;
+							if(!h.detailWebView) {
+								h.detailWebView = plus.webview.getWebviewById('goods-header');
+							}
+							if(!h.detailSubpage) {
+								h.detailSubpage = plus.webview.getWebviewById('goods-detail');
+							}
+							$.fire(h.detailWebView, 'goodsId', {
+								goods_id: goods_id,
+								f: f
+							})
+							h.detailWebView.show('slide-in-right', 300)
+						});
+					}
+
+					function ajaxIndexGoods() {
+						h.loadGoods();
+					}
+					/**
+					 * 获取首页商品
+					 */
+					h.loadGoods = function() {
+						var pageSize = 4;
+						if(!h.page) {
+							h.page = 1;
+						}
+						if(!h.d.content) {
+							h.d.content = $('#homeDiv');
+						}
+						$.ajax(h.apiurl, {
+							data: {
+								m: 'index_goods',
+								page: h.page
+							},
+							type: 'post',
+							dataType: 'json',
+							success: function(ret) {
+								if(ret.code == 0) {
+									h.total = ret.total;
+									h.showGoodsList(ret.data, 'recommend', null, 'home-recommend')
+									if(!ret.data || ret.data.length == 0) {
+										h.loadEnd = true;
+									}
+									h.page += 1;
+								}
+							},
+							error: function(ret) {
+								//							alert('error')
+								//							alert(JSON.stringify(ret)) 
+							}
+						})
+					}
+					/**
+					 * 绑定图标菜单触摸事件
+					 */
+					h.bindIconMenuTap = function() {
+						mui('#menus').on('tap', 'a', function() {
+							var name = this.getAttribute('name');
+							var cate = this.getAttribute('cate');
+							var f = 'home-icon' + cate;
+							if(cate == '8') {
+								//							alert('优惠券')
+								h.openWin('../home/coupon.html', 'coupon', {
+									f: f
+								})
+							} else {
+								//							openWin("../goods/goods-list-header.html","goods-list-header",{cate:cate},{top:0,bottom:'51px'})
+								$.fire(h.goodsListHeader, 'cateId', {
+									name: name,
+									cate: cate,
+									f: f
+								})
+								h.goodsListHeader.show('slide-in-right', 300)
+							}
+						})
+					}
+					
 					honey.autoAd()
 					honey.bindIconMenuTap()
 					honey.loadGoods()
 					honey.bindListTap()
+					d.addEventListener("plusscrollbottom", function(e) {
+						if(!h.loadEnd) {
+							h.loadGoods()
+						}
+					});
 				})
-			}(honey,mui,window,document,myStorage))
+			}(honey, mui, window, document, myStorage))
 		</script>
 	</body>
 

@@ -196,3 +196,13 @@
 .is-return span,.is-return p{
 	color: #999 !important;
 }
+.mui-btn-warning{
+	background: #FFFFFF;
+	border-color: #fe5004;
+	color: #fe5004;
+}
+.mui-btn-link{
+	border: 1px solid #ccc;
+	border-color: #ccc;
+	color: #999;
+}

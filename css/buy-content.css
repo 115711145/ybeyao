@@ -76,7 +76,7 @@
 }
 
 .submit-btn {
-	background: #41CEA9;
+	background: #e33c3f;
 	color: #fff;
 	height: 50px;
 	width: 100px;
@@ -88,8 +88,8 @@
 }
 
 .footer-bar {
-	border-bottom: 1px solid #41CEA9;
-	border-top: 1px solid #41CEA9;
+	border-bottom: 1px solid #e33c3f;
+	border-top: 1px solid #e33c3f;
 	color: #333;
 	-webkit-box-shadow: none !important;
 	box-shadow: none;
@@ -320,7 +320,7 @@ nav.mui-bar:before {
 #quan .close-btn,
 #user-address .close-btn,
 #shops-fdbs .close-btn {
-	background: #41CEA9;
+	background: #e33c3f;
 	color: #fff;
 	text-align: center;
 	height: 44px;

@@ -74,7 +74,7 @@
 				color: #fff;
 				padding: 8px;
 				margin: 0;
-				background: #6bcc92;
+				background: #e33c3f;
 			}
 			.mui-control-item{
 				background: #fff;
@@ -82,7 +82,7 @@
 				border-bottom:1px solid #ddd !important;
 			}
 			.mui-control-item.mui-active{
-				background: #6bcc92 !important;
+				background: #e33c3f !important;
 				color: #fff !important;
 			}
 			.mui-col-xs-3{
@@ -131,8 +131,6 @@
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js"></script>
 		<script type="text/javascript" src="../js/common.js"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<script type="text/javascript">
 			(function(win,$,h,d,ms){
 				$.init({
@@ -215,8 +213,14 @@
 									right_.push('<ul class="last-cates">')
 									for(key in val['sub_cate']){
 										var value=val['sub_cate'][key]
-										var img=value['img']?h.apihost+value['img']:'../images/logo.png';
-										right_.push('<li class="view-item" cid="'+value['id']+'"><p><img class="lazy" data-lazyload="'+img+'" /></p><p>'+value['name']+'</p></li>')
+										if(value['img']){
+											var img=h.apihost+value['img'];
+											var src=lazyLoad.getImageLocalUrl(img);
+										}else{
+											var img=src='../images/default.png';
+										}
+//										var img=value['img']?h.apihost+value['img']:'../images/logo.png';
+										right_.push('<li class="view-item" cid="'+value['id']+'"><p><img class="lazy" src="'+src+'" data-lazyload="'+img+'" onerror="lazyLoad.load(this)" /></p><p>'+value['name']+'</p></li>')
 									}
 									right_.push('</ul>')
 								}
@@ -224,10 +228,6 @@
 							}
 						}
 						right_.push('</ul></div>');
-//						if(i==2){
-//							console.log(right_.join(''))
-//							alert(right_.join(''))
-//						}
 					}
 					h.d.left.innerHTML=left_.join('')
 					h.d.right.innerHTML=right_.join('')
@@ -235,12 +235,6 @@
 					h.d.left.querySelector('.mui-control-item').classList.add('mui-active');
 					//监听事件
 					h.cateTreeEvents()
-					//加载图片
-					$(h.d.right).imageLazyload({
-						placeholder:"../images/logo.png"
-					})
-					//缓存图片
-//					lazyImg.lazyLoad(h.d.right)
 				}
 				
 				$.plusReady(function(){
@@ -252,24 +246,6 @@
 					$.getCateList()
 				})
 				
-				
-//				h.cateTreeEvents=function(){
-//					var leftList=h.d.left.querySelectorAll('.mui-control-item');
-//					var rightList=h.d.right.querySelectorAll('.mui-control-content')
-//					var leftWrapperElem=h.d.left.parentNode;
-//					var leftWrapperHeight=leftWrapperElem.leftWrapperHeight;
-//					var leftMaxScroll=leftWrapperElem.scrollHeight-leftHeight;//左侧类别最大可滚动高度
-//					var rightMaxScroll=h.d.right.scrollHeight-h.d.right.offsetHeight;//右侧内容最大可滚动高度
-//					var leftHeight=leftList[0].offsetHeight //左侧类别每一项的高度
-//					var leftTops=[];//存储control的scrollTop值
-//					var rightTops=[];//存储content的scrollTop值
-//					for(var i=0;i<leftList.length;i++){
-//						leftTops.push(leftList[i].offsetHeight+leftHeight*i)
-////						console.log(leftList[i].offsetHeight+leftHeight*i)
-//					}
-//					
-//				}
-//				
 				h.cateTreeEvents=function() {
 					var controlsElem = document.getElementById("segmentedControls");
 					var contentsElem = document.getElementById("segmentedControlContents");

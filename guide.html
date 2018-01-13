@@ -223,10 +223,10 @@
 			var color,style;
 			mui.back = function() {};
 			mui.plusReady(function() {
-				color=plus.navigator.getStatusBarBackground();
-				style=plus.navigator.getStatusBarStyle();
-				plus.navigator.setStatusBarBackground('#000000');
-				plus.navigator.setStatusBarStyle('light') 
+//				color=plus.navigator.getStatusBarBackground();
+//				style=plus.navigator.getStatusBarStyle();
+//				plus.navigator.setStatusBarBackground('#000000');
+//				plus.navigator.setStatusBarStyle('light') 
 				if(mui.os.ios){
 					plus.navigator.setFullscreen(true);
 				}
@@ -236,8 +236,8 @@
 			document.getElementById("close").addEventListener('tap', function(event) {
 				plus.navigator.setFullscreen(false);
 				myStorage.setItem('version',plus.runtime.version)
-				plus.navigator.setStatusBarBackground(color);
-				plus.navigator.setStatusBarStyle(style) 
+//				plus.navigator.setStatusBarBackground(color);
+//				plus.navigator.setStatusBarStyle(style) 
 				plus.webview.currentWebview().close();
 			}, false);
 			//图片切换时，触发动画

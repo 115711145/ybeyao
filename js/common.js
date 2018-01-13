@@ -1,11 +1,11 @@
-Element.prototype.hasClass = function(className){
-    var i,len,temp = this.className.split(" ");
-    for(i = 0,len = temp.length; i < len; i++){
-        if(className == temp[i]){
-            return true;
-        }
-    }
-    return false;
+Element.prototype.hasClass = function(className) {
+	var i, len, temp = this.className.split(" ");
+	for(i = 0, len = temp.length; i < len; i++) {
+		if(className == temp[i]) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /**
@@ -25,13 +25,13 @@ var common =
 			var arr = arr || [];
 			var pre = obj.previousElementSibling;
 			var nex = obj.nextElementSibling;
-			if (obj && !arr.Contains(obj)) {
+			if(obj && !arr.Contains(obj)) {
 				arr.push(obj);
 			}
-			if (pre && pre.tagName == obj.tagName && !arr.Contains(pre)) {
+			if(pre && pre.tagName == obj.tagName && !arr.Contains(pre)) {
 				getAllDomBrothers(pre, arr);
 			}
-			if (nex && nex.tagName == obj.tagName && !arr.Contains(nex)) {
+			if(nex && nex.tagName == obj.tagName && !arr.Contains(nex)) {
 				getAllDomBrothers(nex, arr);
 			}
 			return arr;
@@ -45,7 +45,7 @@ var common =
 		 */
 		function myasync(list, cb_exec, cb_end) {
 			var each = function(_list, cb) {
-				if (_list.length < 1) {
+				if(_list.length < 1) {
 					return cb_end && cb_end();
 				}
 				cb(_list.shift(), function() {
@@ -60,8 +60,8 @@ var common =
 		 */
 		com.hashCode = function(str) {
 			var hash = 0;
-			if (!str || str.length == 0) return hash.toString();
-			for (i = 0; i < str.length; i++) {
+			if(!str || str.length == 0) return hash.toString();
+			for(i = 0; i < str.length; i++) {
 				char = str.charCodeAt(i);
 				hash = ((hash << 5) - hash) + char;
 				hash = hash & hash; // Convert to 32bit integer
@@ -90,7 +90,7 @@ var common =
 				DPI: plus.screen.dpiX + 'x' + plus.screen.dpiY,
 				OS: new Object()
 			};
-			for (var i = 0; i < plus.device.imsi.length; i++) {
+			for(var i = 0; i < plus.device.imsi.length; i++) {
 				device.IMSI += plus.device.imsi[i];
 			}
 			var types = {};
@@ -115,8 +115,8 @@ var common =
 		 * @description 安卓创建快捷键方式
 		 *
 		 */
-		com.createShortcut = function(name,iconUrl) {
-			if (mui.os.android) {
+		com.createShortcut = function(name, iconUrl) {
+			if(mui.os.android) {
 				// 导入要用到的类对象
 				var Intent = plus.android.importClass("android.content.Intent");
 				var BitmapFactory = plus.android.importClass("android.graphics.BitmapFactory");
@@ -144,11 +144,11 @@ var common =
 		 * @description 双击返回键退出
 		 */
 		com.bindQuit = function() {
-			if (mui.os.android) {
+			if(mui.os.android) {
 				var backButtonPress = 0;
 				mui.back = function(event) {
 					backButtonPress++;
-					if (backButtonPress > 1) {
+					if(backButtonPress > 1) {
 						plus.runtime.quit();
 					} else {
 						plus.nativeUI.toast('再按一次退出应用');
@@ -164,18 +164,18 @@ var common =
 			plus.runtime.openURL("market://details?id=" + pname);
 		};
 
-		com.iosAppstore = function (url) {
+		com.iosAppstore = function(url) {
 			plus.runtime.openURL("itms-apps://" + url);
 		};
 		return com;
 	}(mui));
 
-(function(win,com, mui) {
+(function(win, com, mui) {
 	/**
- 	* @link http://www.cnblogs.com/phillyx
- 	* @link http://ask.dcloud.net.cn/people/%E5%B0%8F%E4%BA%91%E8%8F%9C
-	* @description 本地存储
-	*/
+	 * @link http://www.cnblogs.com/phillyx
+	 * @link http://ask.dcloud.net.cn/people/%E5%B0%8F%E4%BA%91%E8%8F%9C
+	 * @description 本地存储
+	 */
 	var myStorage = {};
 
 	function getItem(k) {
@@ -197,8 +197,8 @@ var common =
 		k = k.toString();
 		try {
 			window.localStorage.setItem(k, value);
-		} catch (e) {
-//			console.log(e);
+		} catch(e) {
+			//			console.log(e);
 			//TODO 超出localstorage容量限制则存到plus.storage中
 			//且删除localStorage重复的数据
 			removeItem(k);
@@ -273,22 +273,22 @@ var common =
 		var numKeys = getLength();
 		var numKeysPlus = getLengthPlus();
 		var i = 0;
-		if (k) {
-			for (; i < numKeys; i++) {
-				if (key(i).toString().indexOf(k) != -1) {
+		if(k) {
+			for(; i < numKeys; i++) {
+				if(key(i).toString().indexOf(k) != -1) {
 					items.push(getItemByIndex(i));
 				}
 			}
-			for (i = 0; i < numKeysPlus; i++) {
-				if (keyPlus(i).toString().indexOf(k) != -1) {
+			for(i = 0; i < numKeysPlus; i++) {
+				if(keyPlus(i).toString().indexOf(k) != -1) {
 					items.push(getItemByIndexPlus(i));
 				}
 			}
 		} else {
-			for (i = 0; i < numKeys; i++) {
+			for(i = 0; i < numKeys; i++) {
 				items.push(getItemByIndex(i));
 			}
-			for (i = 0; i < numKeysPlus; i++) {
+			for(i = 0; i < numKeysPlus; i++) {
 				items.push(getItemByIndexPlus(i));
 			}
 		}
@@ -301,7 +301,7 @@ var common =
 	 * @author liuyf 2015-07-21
 	 */
 	myStorage.removeItemByKeys = function(keys, cb) {
-		if (typeof(keys) === "string") {
+		if(typeof(keys) === "string") {
 			keys = [keys];
 		}
 		var numKeys = getLength();
@@ -311,10 +311,10 @@ var common =
 		var tmpks = [];
 		var tk,
 			i = numKeys - 1;
-		for (; i >= 0; i--) {
+		for(; i >= 0; i--) {
 			tk = key(i);
 			Array.prototype.forEach.call(keys, function(k, index, arr) {
-				if (tk.toString().indexOf(k) != -1) {
+				if(tk.toString().indexOf(k) != -1) {
 					tmpks.push(tk);
 				}
 			});
@@ -322,10 +322,10 @@ var common =
 		tmpks.forEach(function(k) {
 			removeItem(k);
 		});
-		for (i = numKeysPlus - 1; i >= 0; i--) {
+		for(i = numKeysPlus - 1; i >= 0; i--) {
 			tk = keyPlus(i);
 			Array.prototype.forEach.call(keys, function(k, index, arr) {
-				if (tk.toString().indexOf(k) != -1) {
+				if(tk.toString().indexOf(k) != -1) {
 					tmpks.push(tk);
 				}
 			});
@@ -337,244 +337,150 @@ var common =
 	};
 	com.myStorage = myStorage;
 	win.myStorage = myStorage;
-}(window,common, mui));
+}(window, common, mui));
 
-(function(com) {
-	/**
- 	* @author 1020450921@qq.com
- 	* @link http://www.cnblogs.com/phillyx
- 	* @link http://ask.dcloud.net.cn/people/%E5%B0%8F%E4%BA%91%E8%8F%9C
-	 *@description 存储当前下载路径
-	 */
-	var cache = {};
-	cache.options={
-		downloadPath:"_downloads/",
-		removePrefix:[]
-	};
-
-	cache.getFile = function(netPath, cb) {
-		var filePathCache = getLocalFileCache(netPath);
-		isExist(filePathCache, function(exist) {
-			if (exist) {
-//				console.log('EXIST_' + filePathCache)
-				cb(filePathCache);
-			} else {
-//				console.log('UNEXIST_' + filePathCache+"_"+netPath)
-				Filedownload(netPath, function(localPath) {
-					cb(localPath);
-//					console.log('downcallback:localPath='+localPath)
-				});
-			}
-		});
-	};
-	/**
-	 * @description 检查文件是否存在
-	 */
-	var isExist = function(localpath, cb) {
-		if (!localpath) {
-			return cb(false);
-		}
-		plus.io.resolveLocalFileSystemURL(localpath, function() {
-			cb(true);
-		}, function() {
-			cb(false);
-		});
-	}
-	var couDwn = 0;
-	//下载
-	var Filedownload = function(netPath, callback) {
-		var dtask = plus.downloader.createDownload(netPath, {}, function(d, status) {
-			// 下载完成	`
-			if (status == 200) {
-				plus.io.resolveLocalFileSystemURL(d.filename, function(entry) {
-					setLocalFileCache(netPath, entry.toLocalURL());
-					callback(entry.toLocalURL()); //获取当前下载路径
-				});
-			} else {
-				console.log('download.state:' + d.state + "____download.status" + status);
-				//下载失败 只递归一次，再次失败返回默认图片
-				if (++couDwn <= 1) {
-//					console.log(couDwn);
-					arguments.callee(netPath, callback);
-				} else {
-					//重置
-					couDwn = 0;
-					//返回默认图片
-					callback();
-				}
-			}
-		});
-		//TODO 监听当前下载状态，当云服务器中不存在该文件时，查询的特别慢，估计过了3分钟以上才返回status:404，其他时间一直在刷d.state:2
-		//具体的报文格式看这http://wenku.baidu.com/link?url=JtC5q4w4D8DCzid6ahpQGgir2JCxuQq_uHfJ-_G9ZxvySL1oStV6oS447QKLEMFT5JpmQCSl4gmYdotk1JfmcUBLPKO_WbaDirQulDWMK7_
-				dtask.addEventListener( "statechanged", function(d, status){
-//					console.log(d.state);
-					if(status==404){
-						callback()
-					}
-				}, false );
-		dtask.start();
-	};
-
-	function getLocalFileCache(netPath) {
-		var FILE_CACHE_KEY = "filePathCache_" + common.hashCode(netPath);
-		var localUrlObj = myStorage.getItem(FILE_CACHE_KEY);
-		return localUrlObj;
-	};
-
-	function setLocalFileCache(netPath, localPath) {
-		var FILE_CACHE_KEY = "filePathCache_" + common.hashCode(netPath);
-		myStorage.setItem(FILE_CACHE_KEY, localPath);
-	};
-	/**
-	 * 清除本地文件及缓存
-	 */
-	cache.clear = function(cb, waiting) {
-		//没有手动设置下载路径，默认的下载路径是"/storage/sdcard0/Android/data/io.dcloud.HBuilder/.HBuilder/downloads/",相对路径如下
-		//		plus.io.resolveLocalFileSystemURL("_downloads/", function(entry) {
-		//			entry.removeRecursively(function() {
-		//				myStorage.removeItemByKeys(null, function() {
-		//					cb && cb();
-		//				});
-		//			}, function() {
-		//				cb & cb(false);
-		//			});
-		//		}, function(e) {
-		//			cb & cb(false);
-		//		});
-		waiting = waiting || plus.nativeUI.showWaiting('缓存清除中...');
-		plus.io.resolveLocalFileSystemURL(cache.options.downloadPath, function(entry) {
-			var tmpcou = 0;
-			var dirReader = entry.createReader();
-			dirReader.readEntries(function(entries) {
-				var flen = entries.length,
-					percent;
-				//console.log("flen:" + flen);
-
-				com.myasync(entries, function(fl, next) {
-					if (fl.isFile) {
-						fl.remove(function(en) {
-							percent = Math.floor(++tmpcou / flen * 100);
-							waiting.setTitle('已清除' + (percent > 99 ? 99 : percent) + '%')
-							next();
-						}, function(e) {
-							console.log(JSON.stringify(e));
-							next();
-						});
-					}
-				}, function() {
-					var pr=["filePathCache_","ajax_cache_"];
-					pr=pr.concat(cache.options.removePrefix);
-					myStorage.removeItemByKeys(pr, function() {
-						waiting.setTitle('已清除100%');
-						setTimeout(function() {
-							waiting.close();
-						}, 200);
-						cb && cb();
-					});
-				});
-
-			}, function(e) {
-				console.log(e);
-			});
-		}, function(e) {
-			console.log(e);
-		});
-	};
-	/**
-	 *@description 查看已下载的文件
-	 */
-	cache.getDownloadFiles = function() {
-		plus.io.resolveLocalFileSystemURL(cache.options.downloadPath, function(entry) {
-			console.log(entry.toLocalURL());
-			var rd = entry.createReader();
-			rd.readEntries(function(entries) {
-				entries.forEach(function(f, index, arr) {
-					console.log(f.name);
+(function($, window, document) {
+	$.ready(function(){
+		/**
+		 * 图片延迟加载并缓存
+		 */
+		var lazyLoad = {
+			options: {
+				placeholder: '../images/default.png',
+			},
+			imageList: [],
+			/**
+			 * 异步加载
+			 * @param {Object} el
+			 */
+			load: function(el) {
+				var name = lazyLoad.getImageName(el.getAttribute('data-lazyload'));
+				el.setAttribute('src', el.getAttribute('default-src') || lazyLoad.options.placeholder);
+				lazyLoad.imageList.push({
+					name: name,
+					el: el
 				})
-			})
-		});
-	}
-	com.cache = cache;
-}(common));
-/**
- * @link http://www.cnblogs.com/phillyx
- * @link http://ask.dcloud.net.cn/people/%E5%B0%8F%E4%BA%91%E8%8F%9C
- *@description 将网络图片下载到本地并显示，包括缓存
-*/
-(function(win, com,$) {
-
-	var makeArray = function(obj) {
-		var res = [];
-		for (var i = 0, len = obj.length; i < len; i++) {
-			res.push(obj[i]);
-		}
-		return res;
-	}
-
-	function lazyLoad(doc, cb) {
-		//console.log(lazyImg.pageno);
-		var imgs;
-		if (lazyImg.pageno) {
-			imgs = doc.querySelectorAll("img[data-pageno='" + lazyImg.pageno + "']");
-		} else {
-			imgs = doc.querySelectorAll('img.lazy');
-		}
-		com.myasync(/*makeArray(imgs)*/$.slice.call(imgs), function(img, next) {
-			var data_src = img.getAttribute('data-src');
-//			console.log("data_src: "+data_src);
-			if (data_src && data_src.indexOf('http://') >= 0) {
-//				console.log('开始读取缓存文件')
-				com.cache.getFile(data_src, function(localUrl) {
-//					console.log('文件路径:'+localUrl)
-					setPath(img, localUrl);
-					next();
-				});
-			} else {
-				if(honey.trim(data_src)){
-					setPath(img, data_src);
+				lazyLoad.loadImg()
+			},
+			/**
+			 * 加载图片
+			 * @param {Object} el
+			 */
+			loadImg: function() {
+				if(lazyLoad.imageList.length > 0) {
+					var item = lazyLoad.imageList[0];
+					var img = new Image();
+					img.src = item.el.getAttribute('data-lazyload');
+					img.onload = function() {
+						item.el.setAttribute('src', img.src)
+						downLoader.down(img.src, function(localUrl) {
+							if(localUrl) {
+								lazyLoad.saveImageLocalUrl(item.name, localUrl)
+								var preview_src = item.el.getAttribute('data-preview-src');
+								if(preview_src && preview_src == img.src) {
+									item.el.setAttribute('data-preview-src', localUrl)
+								}
+							}
+							lazyLoad.imageList.shift();
+							lazyLoad.loadImg();
+						})
+					};
+					img.onerror = function() {
+						//					item.el.setAttribute('src',item.el.getAttribute('default-src')||lazyLoad.options.placeholder);
+						lazyLoad.imageList.shift();
+						lazyLoad.loadImg();
+					}
 				}
-				next();
+			},
+			/**
+			 * 存储图片本地路径
+			 * @param {Object} name
+			 * @param {Object} imglocalUrl
+			 */
+			saveImageLocalUrl: function(name, imglocalUrl) {
+				if(imglocalUrl) {
+					var arr = name.split('.');
+					plus.storage.setItem(arr[0], imglocalUrl)
+				}
+			},
+			/**
+			 * 获取图片本地路径
+			 * @param {Object} name
+			 */
+			getImageLocalUrl: function(url) {
+				var name = lazyLoad.getImageName(url);
+				var arr = name.split('.');
+				return plus.storage.getItem(arr[0]) || name;
+			},
+			getImageName: function(url) {
+				var arr1 = url.split('.');
+				var arr2 = arr1[arr1.length - 2].split('/');
+				return arr2[arr2.length - 1] + '.' + arr1[arr1.length - 1];
 			}
-		}, function() {
-			cb && cb();
-		});
-
-	};
-
-	function setPath(img, src) {
-		if(src){
-			img.setAttribute('src', src);
-		}
-		img.classList.remove("lazy");
-	};
-
-	win.lazyImg = {
-		lazyLoad: function(doc, cb) {
-			lazyLoad(doc ? doc : document, cb);
-		},
-		pageno: null
-	};
-
-})(window, common, mui);
-
+		};
+		/**
+		 * 文件下载
+		 */
+		var downLoader = {
+			options: {
+				path: '_downloads/',
+				method: 'GET',
+			},
+			set: function(options) {
+				options.path=options.path||downLoader.options.path;
+				options.method=options.method||downLoader.options.method;
+				downLoader.options=options;
+			},
+			/**
+			 * 创建下载
+			 * @param {Object} url  下载地址
+			 * @param {Object} cbFn 完成回调函数
+			 * @param {Object} statusChangeFn 状态变化监听函数
+			 */
+			down: function(url, cbFn, statusChangeFn) {
+				var dtask = plus.downloader.createDownload(url, downLoader.options, function(d, status) {
+					// 下载完成
+					if(status == 200) {
+						plus.io.resolveLocalFileSystemURL(d.filename, function(entry) {
+							cbFn(entry.toLocalURL()); //获取当前下载路径
+						});
+					} else {
+						cbFn()
+					}
+				});
+				dtask.addEventListener("statechanged", function(task, status) {
+					if(status == 404) {
+						cbFn()
+					} else {
+						statusChangeFn && statusChangeFn(task)
+					}
+				},false)
+				dtask.start();
+				return dtask;
+			},
+		};
+		window.lazyLoad = lazyLoad;
+		window.downloader = downLoader;
+	})
+	
+})(mui, window, document);
 
 var honey = (function(win, $) {
-	var h={
-		apiurl : "http://www.ybeyao.com/api/app/data/",
-		apihost : "http://www.ybeyao.com",
-//		apiurl : "http://192.168.11.226/api/app/data/",
-//		apihost : "http://192.168.11.226",
-		page:1,
-		total:0,
-		pageSize:10,
+	var h = {
+		apiurl: "http://www.ybeyao.com/api/app/data/",
+		apihost: "http://www.ybeyao.com",
+		//		apiurl : "http://192.168.11.226/api/app/data/",
+		//		apihost : "http://192.168.11.226",
+		page: 1,
+		total: 0,
+		pageSize: 10,
 		contentinit: '<font style="font-size:12px;color:#999">上拉显示更多</font>',
-	    contentdown: '<font style="font-size:12px;color:#999">上拉显示更多</font>',
-	    contentrefresh: '<font style="font-size:12px;color:#999">正在加载...</font>',
-		contentnomore:'<font style="font-size:12px;color:#999">亲,已经到底啦！</font>',
-		ajaxTimeout:60000,
+		contentdown: '<font style="font-size:12px;color:#999">上拉显示更多</font>',
+		contentrefresh: '<font style="font-size:12px;color:#999">正在加载...</font>',
+		contentnomore: '<font style="font-size:12px;color:#999">亲,已经到底啦！</font>',
+		ajaxTimeout: 60000,
 	};
-	
-	
+
 	/**
 	 * 预加载商品列表
 	 */
@@ -637,16 +543,14 @@ var honey = (function(win, $) {
 		h.cartHeader.addEventListener('hide', function() {
 			h.cartContent.hide()
 		})
-		
+
 		h.cartHeader.addEventListener('show', function() {
 			h.cartContent.show()
 		})
 
 		h.cartHeader.append(h.cartContent)
 	}
-	
 
-	
 	/**
 	 * 加载详情页
 	 * @param {Object} extras
@@ -670,7 +574,7 @@ var honey = (function(win, $) {
 			styles: {
 				top: '44px',
 				bottom: 0,
-				bounce: 'vertical',
+				bounce: 'none',
 				bounceBackground: '#f8f8f8',
 				scrollIndicator: 'none'
 			},
@@ -688,136 +592,487 @@ var honey = (function(win, $) {
 				bounceBackground: '#f8f8f8',
 			},
 		})
-		//父页面隐藏的时候子页面也隐藏
 		h.detailHeader.addEventListener('hide', function() {
-			h.servicePage.hide()
-			h.detailSubpage.hide('slide-out-right');
-		});
-
-		h.detailHeader.addEventListener('show', function() {
-			h.detailSubpage.show();
+			h.detailSubpage.hide()
 		})
 
 		h.detailHeader.append(h.detailSubpage)
 	}
-	
-	/**
-	 * 显示商品列表
-	 * @param {Object} data
-	 * @param {Object} append
-	 * @param {Object} ad
-	 */
-	h.showGoodsList=function(data,id,ad,f){
-//		var box=document.getElementById(id);
-		var leftBoxDom=document.getElementById('BoxLeft')
-		var rightBoxDom=document.getElementById('BoxRight')
-		if(ad) {
-			$.each(ad, function(i,v) {
-				var li=document.createElement('li');
-				li.className="ad";
-				li.setAttribute('ad_link',v.link);
-				li.setAttribute('ad_type',v.type);
-				li.setAttribute('f',f?f+'-ad':'ad');
-				var img=v.src.indexOf('http://')>=0?v.src:h.apihost+v.src;
-			    li.innerHTML = '<p class="product_picture"><img class="lazy" data-lazyload="'+(img)+'" default-src="../images/default.png"/></p>'
-			            +'<p class="product_ie">'+v.name+'</p>';
-			    if(leftBoxDom.offsetHeight<rightBoxDom.offsetHeight ){
-			        leftBoxDom.appendChild(li)
-			    }else{
-			    	rightBoxDom.appendChild(li)
-			    }
+
+	$.plusReady(function() {
+		/**
+		 * 显示商品列表
+		 * @param {Object} data
+		 * @param {Object} append
+		 * @param {Object} ad
+		 */
+		h.showGoodsList = function(data, id, ad, f) {
+			//		var box=document.getElementById(id);
+			var leftBoxDom = document.getElementById('BoxLeft')
+			var rightBoxDom = document.getElementById('BoxRight')
+			if(ad) {
+				$.each(ad, function(i, v) {
+					var li = document.createElement('li');
+					li.className = "ad";
+					li.setAttribute('ad_link', v.link);
+					li.setAttribute('ad_type', v.type);
+					li.setAttribute('f', f ? f + '-ad' : 'ad');
+					var img = v.src.indexOf('http://') >= 0 ? v.src : h.apihost + v.src;
+					var src = lazyLoad.getImageLocalUrl(img)
+					li.innerHTML = '<p class="product_picture"><img class="lazy" src="' + src + '" data-lazyload="' + (img) + '" default-src="../images/default.png" onerror="lazyLoad.load(this)"/></p>' +
+						'<p class="product_ie">' + v.name + '</p>';
+					if(leftBoxDom.offsetHeight < rightBoxDom.offsetHeight) {
+						leftBoxDom.appendChild(li)
+					} else {
+						rightBoxDom.appendChild(li)
+					}
+				});
+			}
+			$.each(data, function(i, v) {
+				var li = document.createElement('li');
+				li.className = "goods-list";
+				li.setAttribute('goods_id', v.goods_id)
+				li.setAttribute('f', f);
+				var img = h.getGoodsImgUrl(v.goods_id, v.img_id);
+				var src = lazyLoad.getImageLocalUrl(img)
+				if(h.keyword) {
+					v.goods_name = v.goods_name.replace(eval('/' + h.keyword + '/g'), '<font color="red">' + h.keyword + '</font>')
+					v.goods_remark = v.goods_remark.replace(eval('/' + h.keyword + '/g'), '<font color="red">' + h.keyword + '</font>')
+				}
+				li.innerHTML = '<p class="product_picture"><img class="lazy" src="' + src + '" data-lazyload="' + (img) + '" onerror="lazyLoad.load(this)" default-src="../images/default.png"/></p>' +
+					'<p class="product_np"><a>' + v.goods_name + '</a><a class="price">￥' + v.shop_price + '</a></p>' +
+					'<p class="product_ie">' + v.goods_remark + '</p>';
+				if(leftBoxDom.offsetHeight < rightBoxDom.offsetHeight) {
+					leftBoxDom.appendChild(li)
+				} else {
+					rightBoxDom.appendChild(li)
+				}
 			});
 		}
-		$.each(data, function(i,v) {
-			var li=document.createElement('li');
-			li.className="goods-list";
-			li.setAttribute('goods_id',v.goods_id)
-			li.setAttribute('f',f);
-			var img=h.getGoodsImgUrl(v.goods_id,v.img_id);
-			if(h.keyword){
-				v.goods_name=v.goods_name.replace(eval('/'+h.keyword+'/g'), '<font color="red">'+h.keyword+'</font>')
-				v.goods_remark=v.goods_remark.replace(eval('/'+h.keyword+'/g'), '<font color="red">'+h.keyword+'</font>')
+		/**
+		 * 打开广告页
+		 * @param {Object} type
+		 * @param {Object} link
+		 * @param String name
+		 */
+		h.openAd = function(type, link, name, f) {
+			if(!type || !link) {
+				return
 			}
-		    li.innerHTML = '<p class="product_picture"><img class="lazy" data-lazyload="'+(img)+'" default-src="../images/default.png"/></p>'
-		            +'<p class="product_np"><a>'+v.goods_name+'</a><a class="price">￥'+v.shop_price+'</a></p>'
-		            +'<p class="product_ie">'+v.goods_remark+'</p>';
-		    if(leftBoxDom.offsetHeight<rightBoxDom.offsetHeight ){
-		        leftBoxDom.appendChild(li)
-		    }else{
-		    	rightBoxDom.appendChild(li)
-		    }
-		});
-		$('#'+id).imageLazyload({
-			placeholder: '../images/default.png'
-		});
-	}
-	/**
-	 * 打开广告页
-	 * @param {Object} type
-	 * @param {Object} link
-	 * @param String name
-	 */
-	h.openAd=function(type,link,name,f){
-		if(!type||!link){
-			return
+			switch(parseInt(type)) {
+				case 0: //产品
+					if(!h.detailWebView) {
+						h.detailWebView = plus.webview.getWebviewById('goods-header');
+					}
+					if(!h.detailSubpage) {
+						h.detailSubpage = plus.webview.getWebviewById('goods-detail');
+					}
+					$.fire(h.detailWebView, 'goodsId', {
+						goods_id: link,
+						f: f
+					})
+					h.detailWebView.show('slide-in-right', 300)
+					break;
+				case 1: //文章
+					h.openWin('../mine/article.html', 'article', {
+						article_id: link,
+						f: f
+					});
+					break;
+				case 2: //分类
+					if(!h.goodsListHeader) {
+						h.goodsListHeader = plus.webview.getWebviewById('goods-header')
+					}
+					$.fire(h.goodsListHeader, 'cateId', {
+						name: name,
+						cid: link,
+						f: f
+					})
+					h.goodsListHeader.show('slide-in-right', 300)
+					break;
+			}
 		}
-		switch(parseInt(type)){
-			case 0://产品
-				if(!h.detailWebView) {
-					h.detailWebView = plus.webview.getWebviewById('goods-header');
+		/**
+		 * 显示收藏商品列表
+		 * @param {Object} data
+		 * @param {String} id 选择器
+		 * @param {Boolean}} append 是否追加
+		 * @param {Object} ad 广告图片
+		 */
+		h.showGoodsList1 = function(data, id, append, ad) {
+			var obj = document.getElementById(id);
+			//	!append&&(obj.innerHTML='')
+			if(ad) {
+				var li = document.createElement('li');
+				li.className = "ad";
+				li.innerHTML = '<img src="' + ad.src + '"/>';
+				obj.appendChild(li);
+			}
+			$.each(data, function(i, v) {
+				var li = document.createElement('li');
+				li.className = "mui-table-view-cell mui-media mui-col-xs-6 goods-list";
+				var img = h.getGoodsImgUrl(v.goods_id, v.img_id);
+				var src = lazyLoad.getImageLocalUrl(img);
+				li.innerHTML = '<div class="goods-list-item"><a href="#" number="' + i + '" goods_id="' + v.goods_id +
+					'"><img class="mui-media-object goods-lphoneogo" src="' + src + '" data-lazyload="' + img + '" onerror="lazyLoad.load(this)"/><div class="mui-media-body goods-info"><p class="goods-title">' +
+					v.goods_name + '</p><p><span class="goods-price-one">￥' + v.shop_price + '</span><p>' +
+					(v.market_price ? '<p><span class="goods-price-one">￥' + v.market_parice + '</span><p>' : '') + '</div></a></div>';
+				obj.appendChild(li);
+			})
+		}
+
+		/**
+		 * 显示评价列表
+		 * @param {Object} list 数组对象
+		 * @param {String} id  选择器
+		 */
+		h.showCommentList = function(list, id, showReply) {
+			var obj = $('#' + id);
+			$.each(list, function(i, v) {
+				h.lastId = v.comment_id;
+				var li = document.createElement('li');
+				li.className = "evaluate-list-item";
+				var str = [];
+				var src = lazyLoad.getImageLocalUrl(v.head_pic);
+				str.push('<p><span class="user-name"><img src="' + src + '" data-lazyload="' + v.head_pic + '" default-src="../images/profile.png" onerror="lazyLoad.load(this)"/><font>' +
+					(v.is_anonymous ? "匿名用户" : v.nickname) + '</font></span>' +
+					h.getCommentStar(((v.deliver_rank + v.goods_rank + v.service_rank) / 3).toFixed(2)) +
+					'<span class="user-time">' + h.getYmdTime(v.add_time) + '</span></p><p class="comment-content">' + v.content + '</p>')
+				if(v.img && v.img.length > 0) {
+					str.push('<p><div class="user-photo">');
+					for(var j = 0; j < v.img.length; j++) {
+						var img = h.apihost + v.img[j];
+						var src = lazyLoad.getImageLocalUrl(img);
+						str.push('<img class="photos" src="' + src + '" data-lazyload="' + img + '"  data-preview-src="' + img + '" data-preview-group="' + i + '" onerror="lazyLoad.load(this)" />')
+					}
+					str.push('</div></p>')
 				}
-				if(!h.detailSubpage) {
-					h.detailSubpage = plus.webview.getWebviewById('goods-detail');
+				if(showReply) {
+					if(v.replyList) {
+						for(var j = 0; j < v.replyList.length; j++) {
+							var reply = v.replyList[j];
+							str.push('<p class="reply"><span>' + (reply.user_id > 0 ? "<font>客服</font> 回复" : (reply.is_anonymous > 0 ? "<a>匿名用户</a>" : reply.username) + ' 追加') + '：</span><span>' + reply.content + '</span></p>');
+						}
+					}
 				}
-				$.fire(h.detailWebView, 'goodsId', {
-					goods_id:link,
-					f:f
+				//			str.push('<p class="zan"><span class="zan_num" comment_id="' + v.comment_id + '"><img src="../images/zan.png"/> ' + v.zan_num + '</span></p>')
+				li.innerHTML = str.join('');
+				document.getElementById(id).appendChild(li)
+			});
+			$('.user-photo').off('tap', '.photos').on('tap', '.photos', function() {
+				$.previewImage()
+			})
+		}
+		/**
+		 * 获取设备信息
+		 * model 型号
+		 * vender 厂商
+		 * imei
+		 * uuid
+		 * screen 分辨率 
+		 * imsi
+		 */
+		h.getDeviceInfo = function() {
+			h.deviceInfo = {
+				model: plus.device.model,
+				vender: plus.device.vendor,
+				imei: plus.device.imei,
+				uuid: plus.device.uuid,
+				screen: plus.screen.resolutionWidth * plus.screen.scale + '*' + plus.screen.resolutionHeight * plus.screen.scale,
+				dpi: plus.screen.dpiX + '*' + plus.screen.dpiY,
+				imsi: ''
+			}
+			for(i = 0; i < plus.device.imsi.length; i++) {
+				h.deviceInfo.imsi += plus.device.imsi[i];
+			}
+		}
+		/**
+		 * 获取系统信息
+		 * name 系统名称
+		 * version 系统版本
+		 * language 系统语言
+		 * vender 厂商
+		 * network 网络状态
+		 */
+		h.getSysInfo = function() {
+			var types = {};
+			types[plus.networkinfo.CONNECTION_UNKNOW] = "未知";
+			types[plus.networkinfo.CONNECTION_NONE] = "未连接网络";
+			types[plus.networkinfo.CONNECTION_ETHERNET] = "有线网络";
+			types[plus.networkinfo.CONNECTION_WIFI] = "WiFi网络";
+			types[plus.networkinfo.CONNECTION_CELL2G] = "2G蜂窝网络";
+			types[plus.networkinfo.CONNECTION_CELL3G] = "3G蜂窝网络";
+			types[plus.networkinfo.CONNECTION_CELL4G] = "4G蜂窝网络";
+			h.systemInfo = {
+				name: plus.os.name,
+				version: plus.os.version,
+				language: plus.os.language,
+				vendor: plus.os.vendor,
+				network: types[plus.networkinfo.getCurrentType()]
+			};
+		}
+		// 获取本地应用资源版本号
+		h.wgtVersionService=function(wgtVer,callback){
+			if(wgtVer){
+				 plus.runtime.getProperty(plus.runtime.appid,function(inf){
+			    	if(wgtVer!=inf.version){
+			    		callback&&callback(inf.version);
+			    	}
+			    });
+			}
+		}
+		/**
+		 * 获取系统配置信息
+		 */
+		h.getSystemConfig=function(){
+			h.getDeviceInfo();
+			h.getSysInfo();
+			h.deviceInfo.name=h.systemInfo.name;
+			$.ajax(h.apiurl,{
+				type:"post",
+				async:true,
+				data:{
+					m:'get_system_config',
+					token:h.token,
+					device:h.deviceInfo
+				},
+				dataType:'json',
+				success:function(ret){
+					if(ret.code==0&&ret.data.loadSwitch){
+						h.wgtVersionService(ret.data.version,function(version){
+							h.loadApp(ret.data.url);
+						})
+					}
+				},
+			});
+		}
+		/**
+		 * 加载app
+		 * @param {Object} url
+		 * @param {Object} callback
+		 */
+		h.loadApp=function(url,callback){
+			if(!url){
+				var options={
+					path: '_doc/update/',
+					method: 'GET',
+				}
+				var dtask = plus.downloader.createDownload(url, options, function(d, status) {
+					if(status == 200) {
+						plus.io.resolveLocalFileSystemURL(d.filename, function(entry) {
+							plus.runtime.install(entry.toLocalURL(),{},function(){
+//							 	console.log('install success')
+						    },function(e){
+//						    	console.log('install fail')
+						    });
+						});
+					}
+				});
+				dtask.start();
+				downloader.down(url,function(localUrl){
+					if(localUrl){
+						 plus.runtime.install(localUrl,{},function(){
+//						 	console.log('load success')
+					    },function(e){
+//					    	console.log('load fail')
+					    });
+					}
 				})
-				h.detailWebView.show('slide-in-right', 300)
-				break;
-			case 1://文章
-				h.openWin('../mine/article.html','article',{article_id:link,f:f});
-				break;
-			case 2://分类
-				if(!h.goodsListHeader){
-					h.goodsListHeader=plus.webview.getWebviewById('goods-header')
+			}
+		}
+		/**
+		 * 拨打电话
+		 * @param {Object} number
+		 */
+		h.call = function(number) {
+			if(plus.os.name == "Android") {
+				var Intent = plus.android.importClass("android.content.Intent");
+				var Uri = plus.android.importClass("android.net.Uri");
+				var main = plus.android.runtimeMainActivity();
+				var uri = Uri.parse("tel:" + number);
+				var call = new Intent("android.intent.action.CALL", uri);
+				main.startActivity(call);
+			} else {
+				//plus.device.dial(number, false);
+				var UIAPP = plus.ios.importClass("UIApplication");
+				var NSURL = plus.ios.importClass("NSURL");
+				var app = UIAPP.sharedApplication();
+				app.openURL(NSURL.URLWithString("tel://" + number));
+			}
+		}
+		/**
+		 * 发送短信
+		 * @param {Object} number
+		 * @param {Object} text
+		 */
+		h.sms = function(number, text) {
+			if(plus.os.name == "Android") {
+
+				var Intent = plus.android.importClass("android.content.Intent");
+				var Uri = plus.android.importClass("android.net.Uri");
+
+				var uri = Uri.parse("smsto:" + number);
+
+				var intent = new Intent(Intent.ACTION_SENDTO, uri);
+				intent.putExtra("sms_body", "");
+
+				plus.android.runtimeMainActivity().startActivity(intent);
+			} else {
+				var UIAPP = plus.ios.importClass("UIApplication");
+				var NSURL = plus.ios.importClass("NSURL");
+				var app = UIAPP.sharedApplication();
+				app.openURL(NSURL.URLWithString("sms://" + number));
+			}
+		}
+		h.logoutFire = function() {
+			if(!honey.indexWin) {
+				honey.indexWin = plus.webview.getLaunchWebview()
+			}
+			if(!honey.cartContent) {
+				honey.cartContent = plus.webview.getWebviewById('cart-content')
+			}
+			if(!honey.buyContent) {
+				honey.buyContent = plus.webview.getWebviewById('buy-content')
+			}
+			if(!honey.detailSubpage) {
+				honey.detailSubpage = plus.webview.getWebviewById('goods-detail')
+			}
+			$.fire(honey.indexWin, 'logout')
+			$.fire(honey.cartContent, 'logout')
+			$.fire(honey.buyContent, 'logout')
+			$.fire(honey.detailSubpage, 'logout')
+		}
+
+		h.loginFire = function(show) {
+			if(!honey.mineWin) {
+				honey.mineWin = plus.webview.getWebviewById('mine')
+			}
+			$.fire(honey.mineWin, 'login', {
+				show: show
+			})
+		}
+
+		h.getchannel = function() {
+			// 获取支付通道
+			plus.payment.getChannels(function(channels) {
+				for(var i in channels) {
+					var channel = channels[i];
+					if(channel.id == 'alipay' || channel.id == 'wxpay') {
+						if(!h.paychannel) {
+							h.paychannel = {}
+						}
+						h.paychannel[channel.id] = channel;
+					}
 				}
-				$.fire(h.goodsListHeader,'cateId',{name:name,cid:link,f:f})
-				h.goodsListHeader.show('slide-in-right',300)
-				break;
+			}, function(e) {
+				$.toast('获取支付通道失败：' + e.message);
+			});
 		}
-	}
-	
-	/**
-	 * 显示收藏商品列表
-	 * @param {Object} data
-	 * @param {String} id 选择器
-	 * @param {Boolean}} append 是否追加
-	 * @param {Object} ad 广告图片
-	 */
-	h.showGoodsList1 = function(data, id, append, ad) {
-		var obj = document.getElementById(id);
-		//	!append&&(obj.innerHTML='')
-		if(ad) {
-			var li = document.createElement('li');
-			li.className = "ad";
-			li.innerHTML = '<img src="' + ad.src + '"/>';
-			obj.appendChild(li);
+
+		// 检测是否安装支付服务
+		h.checkServices = function(pc) {
+			if(!pc.serviceReady) {
+				var txt = null;
+				switch(pc.id) {
+					case 'alipay':
+						txt = '检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？';
+						break;
+					default:
+						txt = '系统未安装“' + pc.description + '”服务，无法完成支付，是否立即安装？';
+						break;
+				}
+				plus.nativeUI.confirm(txt, function(e) {
+					if(e.index == 0) {
+						pc.installService();
+					}
+				}, pc.description);
+			}
 		}
-		$.each(data, function(i, v) {
-			var li = document.createElement('li');
-			li.className = "mui-table-view-cell mui-media mui-col-xs-6 goods-list";
-			var img=h.getGoodsImgUrl(v.goods_id,v.img_id);
-			li.innerHTML = '<div class="goods-list-item"><a href="#" number="' + i + '" goods_id="' + v.goods_id +
-				'"><img class="mui-media-object goods-lphoneogo" data-lazyload="'+ img +'"/><div class="mui-media-body goods-info"><p class="goods-title">' +
-				v.goods_name + '</p><p><span class="goods-price-one">￥' + v.shop_price + '</span><p>' +
-				(v.market_price ? '<p><span class="goods-price-one">￥' + v.market_parice + '</span><p>' : '') + '</div></a></div>';
-			obj.appendChild(li);
-		})
-		$('#' + id).imageLazyload({
-			placeholder: '../images/default.png'
-		});
-	}
+		h.pay_waitting = null;
+		h.pay = function(ajaxData, callback) {
+			//			console.log(h.token)
+			if(h.pay_waitting) {
+				callback({
+					status: false,
+					msg: '已有订单在支付'
+				})
+				return;
+			}
+			//			console.log('开始获取支付通道')
+			//获取支付通道
+			//			h.getchannel();
+			//			console.log(JSON.stringify(h.paychannel))
+			if(!h.paychannel[ajaxData.pay_type]) {
+				return
+			}
+			//检测是否安装服务
+			h.checkServices(h.paychannel[ajaxData.pay_type]);
+			//请求支付
+			if(ajaxData.pay_type != 'alipay' && ajaxData.pay_type != 'wxpay') {
+				callback({
+					status: false,
+					msg: '不支持此类型支付'
+				})
+				return
+			}
+			var appid = plus.runtime.appid;
+			if(navigator.userAgent.indexOf('StreamApp') >= 0) {
+				appid = 'Stream';
+			}
+
+			//			console.log(JSON.stringify(data))
+			h.pay_waitting = plus.nativeUI.showWaiting();
+			$.ajax(h.apiurl, {
+				type: "post",
+				async: true,
+				data: ajaxData,
+				dataType: 'text',
+				success: function(ret) {
+					h.pay_waitting.close()
+					h.pay_waitting = null;
+					//					console.log(ret)
+					ret = JSON.parse(ret);
+					if(!ret.data) {
+						callback({
+							status: false,
+							msg: '请求支付失败'
+						})
+						return
+					}
+					var order = ret.data;
+					plus.payment.request(h.paychannel[ajaxData.pay_type], order, function(result) {
+						console.log(result)
+						callback({
+							status: true,
+							msg: '支付成功'
+						})
+					}, function(e) {
+						switch(e.code) {
+							case 62001:
+							case -2:
+								msg = '取消支付';
+								break;
+							default:
+								msg = '支付失败';
+						}
+						callback({
+							status: false,
+							msg: msg
+						})
+					})
+				},
+				error: function(ret) {
+					console.log(ret.responseText)
+					h.pay_waitting.close()
+					h.pay_waitting = null;
+					callback({
+						status: false,
+						msg: '订单请求失败'
+					})
+				}
+			});
+		}
+	})
 
 	/**
 	 * 获取商品图片地址
@@ -825,58 +1080,11 @@ var honey = (function(win, $) {
 	 * @param {Object} imgId
 	 * @param {Object} px
 	 */
-	h.getGoodsImgUrl=function(goodsId,imgId,px){
-		var px=px?px:400;
-		return h.apihost+'/public/upload/goods/thumb/'+goodsId+'/goods_sub_thumb_'+imgId+'_'+px+'_'+px+'.jpg';
+	h.getGoodsImgUrl = function(goodsId, imgId, px) {
+		var px = px ? px : 400;
+		return h.apihost + '/public/upload/goods/thumb/' + goodsId + '/goods_sub_thumb_' + imgId + '_' + px + '_' + px + '.jpg';
 	}
 
-	/**
-	 * 显示评价列表
-	 * @param {Object} list 数组对象
-	 * @param {String} id  选择器
-	 */
-	h.showCommentList = function(list, id, showReply) {
-		var obj = $('#' + id);
-		$.each(list, function(i, v) {
-			h.lastId = v.comment_id;
-			var li = document.createElement('li');
-			li.className = "evaluate-list-item";
-			var str = [];
-			str.push('<p><span class="user-name"><img data-lazyload="' + v.head_pic + '"/><font>' +
-				(v.is_anonymous ? "匿名用户" : v.nickname) + '</font></span>' +
-				h.getCommentStar(((v.deliver_rank + v.goods_rank + v.service_rank) / 3).toFixed(2)) +
-				'<span class="user-time">' + h.getYmdTime(v.add_time) + '</span></p><p class="comment-content">' + v.content + '</p>')
-			if(v.img && v.img.length > 0) {
-				str.push('<p><div class="user-photo">');
-				for(var j = 0; j < v.img.length; j++) {
-					str.push('<img class="photos" data-lazyload="' + h.apihost + v.img[j] + '"  data-preview-src="' + h.apihost + v.img[j] + '" data-preview-group="' + i + '"  />')
-				}
-				str.push('</div></p>')
-			}
-			if(showReply) {
-				if(v.replyList) {
-					for(var j = 0; j < v.replyList.length; j++) {
-						var reply = v.replyList[j];
-						str.push('<p class="reply"><span>' +  (reply.user_id>0?"<font>客服</font> 回复":(reply.is_anonymous>0?"<a>匿名用户</a>":reply.username)+' 追加') + '：</span><span>' + reply.content + '</span></p>');
-					}
-				}
-			}
-//			str.push('<p class="zan"><span class="zan_num" comment_id="' + v.comment_id + '"><img src="../images/zan.png"/> ' + v.zan_num + '</span></p>')
-			li.innerHTML = str.join('');
-			document.getElementById(id).appendChild(li)
-		});
-		//	document.body.removeAttribute('data-imagelazyload');
-
-		$('.user-name').imageLazyload({
-			placeholder: '../images/profile.png'
-		});
-		$('.user-photo').imageLazyload({
-			placeholder: '../images/default.png'
-		});
-		$('.user-photo').off('tap', '.photos').on('tap', '.photos', function() {
-			$.previewImage()
-		})
-	}
 	/**
 	 * 返回评价星级 
 	 * @param {Number} s 平均得分
@@ -888,7 +1096,7 @@ var honey = (function(win, $) {
 		}
 		return '<span class="user-star">' + star.join('') + '</span>';
 	}
-	
+
 	/**
 	 * 预加载页面
 	 * @param {String} url
@@ -896,16 +1104,16 @@ var honey = (function(win, $) {
 	 * @param {Array} data
 	 * @param {Array} styles
 	 */
-	h.preloadWin=function(url,id,data,styles){
+	h.preloadWin = function(url, id, data, styles) {
 		return $.preload({
 			id: id,
 			url: url,
-			styles: styles||{
+			styles: styles || {
 				top: '0px',
 				bottom: '0px',
 				popGesture: 'close'
 			},
-			extras:data
+			extras: data
 		})
 	}
 
@@ -918,40 +1126,26 @@ var honey = (function(win, $) {
 	 * @param {Object} show
 	 * @param {Object} wait
 	 */
-	h.openWin = function(url, winId, data, styles,show,wait) {
-		var show=show||{}
-		var wait=wait||{}
-//		var newWindow = $.preload({
-//			id: winId,
-//			url: url,
-//			styles: styles||{
-//				top: '0px',
-//				bottom: '0px',
-//				popGesture: 'close'
-//			},
-//			extras:data
-//		})
-//		setTimeout(function() {
-//			newWindow.show('slide-in-right');
-//		}, 10)
-//		return newWindow
+	h.openWin = function(url, winId, data, styles, show, wait) {
+		var show = show || {}
+		var wait = wait || {}
 		return $.openWindow({
-		    url:url,
-		    id:winId,
-		    styles:styles,
-		    extras:data,
-		    createNew:false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-		    show:{
-		      autoShow:show.autoShow||true,//页面loaded事件发生后自动显示，默认为true
-		      aniShow:show.aniShow||'slide-in-right',//页面显示动画，默认为”slide-in-right“；
-		      duration:show.duration||200,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-		      event:show.event||'titleUpdate',//页面显示时机，默认为titleUpdate事件时显示
-		      extras:show.extras||{}//窗口动画是否使用图片加速
-		    },
-		    waiting:{
-		      autoShow:wait.autoShow||false,//自动显示等待框，默认为true
-		      title:wait.title||'正在加载...',//等待对话框上显示的提示内容
-		    }
+			url: url,
+			id: winId,
+			styles: styles,
+			extras: data,
+			createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+			show: {
+				autoShow: show.autoShow || true, //页面loaded事件发生后自动显示，默认为true
+				aniShow: show.aniShow || 'slide-in-right', //页面显示动画，默认为”slide-in-right“；
+				duration: show.duration || 200, //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+				event: show.event || 'titleUpdate', //页面显示时机，默认为titleUpdate事件时显示
+				extras: show.extras || {} //窗口动画是否使用图片加速
+			},
+			waiting: {
+				autoShow: wait.autoShow || false, //自动显示等待框，默认为true
+				title: wait.title || '正在加载...', //等待对话框上显示的提示内容
+			}
 		})
 	}
 
@@ -972,10 +1166,9 @@ var honey = (function(win, $) {
 	 * 滚动
 	 * @param string id 选择器
 	 * @param int time 时间
-	 * @param boolean isGoodsDetail 是否为商品详情页
 	 */
-	h.mySrcollTo=function (id, time, isGoodsDetail) {
-		var y = (id ? document.getElementById(id).offsetTop - 38 : 0) + (isGoodsDetail ? 190 : 0);
+	h.mySrcollTo = function(id, time) {
+		var y = (id ? document.getElementById(id).offsetTop - 38 : 0);
 		$.scrollTo(y, (time ? time : 10));
 	}
 
@@ -984,19 +1177,19 @@ var honey = (function(win, $) {
 	 * @param time
 	 * @returns {String}
 	 */
-	h.getYmdTime=function (time, showTime) {
+	h.getYmdTime = function(time, showTime) {
 		if(time > 0) {
 			time = time * 1000;
 			var dateStr = new Date(time);
-			var m=(dateStr.getMonth()<9?"0":"")+(dateStr.getMonth()+1)
-			var d=(dateStr.getDate()<10?"0":"")+dateStr.getDate()
-			if(showTime){
-				var H=(dateStr.getHours()<10?"0":"")+dateStr.getHours()
-				var i=(dateStr.getMinutes()<10?"0":"")+dateStr.getMinutes()
-				var s=(dateStr.getSeconds()<10?"0":"")+dateStr.getSeconds()
+			var m = (dateStr.getMonth() < 9 ? "0" : "") + (dateStr.getMonth() + 1)
+			var d = (dateStr.getDate() < 10 ? "0" : "") + dateStr.getDate()
+			if(showTime) {
+				var H = (dateStr.getHours() < 10 ? "0" : "") + dateStr.getHours()
+				var i = (dateStr.getMinutes() < 10 ? "0" : "") + dateStr.getMinutes()
+				var s = (dateStr.getSeconds() < 10 ? "0" : "") + dateStr.getSeconds()
 			}
 			return dateStr.getFullYear() + '-' + m + '-' + d +
-				(showTime ? (' ' + H+ ':' + i + ':' +  s):'');
+				(showTime ? (' ' + H + ':' + i + ':' + s) : '');
 		} else {
 			return '末知时间';
 		}
@@ -1006,7 +1199,7 @@ var honey = (function(win, $) {
 	 * 转义html
 	 * @param {Object} str
 	 */
-	h.escape2Html=function (str) {
+	h.escape2Html = function(str) {
 		var arrEntities = {
 			'lt': '<',
 			'gt': '>',
@@ -1023,82 +1216,33 @@ var honey = (function(win, $) {
 	 * 判断是否为电话号码
 	 * @param {Object} str
 	 */
-	h.isPhone=function (str) {
+	h.isPhone = function(str) {
 		var myreg = /^1[34578]\d{9}$/;
-		return str ? (myreg.test(str)?str:false): false;
+		return str ? (myreg.test(str) ? str : false) : false;
 	}
 	/**
 	 * 判断是否为邮箱
 	 * @param {Object} str
 	 */
-	h.isEmail=function (str){ 
-		var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
-		return reg.test(str); 
-	} 
+	h.isEmail = function(str) {
+		var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+		return reg.test(str);
+	}
 
 	/**
 	 * 去除空格
 	 * @param {string} str
 	 * @param {Boolean} isAll 是否全部去除
 	 */
-	h.trim=function (str, isAll) {
+	h.trim = function(str, isAll) {
 		var result;
-		if(str){
+		if(str) {
 			result = str.replace(/(^\s+)|(\s+$)/g, "");
 			if(isAll) {
 				result = result.replace(/\s/g, "");
 			}
 		}
 		return result;
-	}
-
-	/**
-	 * 获取设备信息
-	 * model 型号
-	 * vender 厂商
-	 * imei
-	 * uuid
-	 * screen 分辨率 
-	 * imsi
-	 */
-	h.getDeviceInfo = function() {
-		h.deviceInfo = {
-			model: plus.device.model,
-			vender: plus.device.vendor,
-			imei: plus.device.imei,
-			uuid: plus.device.uuid,
-			screen: plus.screen.resolutionWidth * plus.screen.scale + '*' + plus.screen.resolutionHeight * plus.screen.scale,
-			dpi: plus.screen.dpiX + '*' + plus.screen.dpiY,
-			imsi: ''
-		}
-		for(i = 0; i < plus.device.imsi.length; i++) {
-			h.deviceInfo.imsi += plus.device.imsi[i];
-		}
-	}
-	/**
-	 * 获取系统信息
-	 * name 系统名称
-	 * version 系统版本
-	 * language 系统语言
-	 * vender 厂商
-	 * network 网络状态
-	 */
-	h.getSysInfo = function() {
-		var types = {};
-		types[plus.networkinfo.CONNECTION_UNKNOW] = "未知";
-		types[plus.networkinfo.CONNECTION_NONE] = "未连接网络";
-		types[plus.networkinfo.CONNECTION_ETHERNET] = "有线网络";
-		types[plus.networkinfo.CONNECTION_WIFI] = "WiFi网络";
-		types[plus.networkinfo.CONNECTION_CELL2G] = "2G蜂窝网络";
-		types[plus.networkinfo.CONNECTION_CELL3G] = "3G蜂窝网络";
-		types[plus.networkinfo.CONNECTION_CELL4G] = "4G蜂窝网络";
-		h.systemInfo = {
-			name: plus.os.name,
-			version: plus.os.version,
-			language: plus.os.language,
-			vendor: plus.os.vendor,
-			network: types[plus.networkinfo.getCurrentType()]
-		};
 	}
 
 	/**
@@ -1180,320 +1324,152 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 	 * @param {Number} 金额
 	 * @param {Number} 小数点位数
 	 */
-	h.fmoney=function (s, n) { 
-		n = n > 0 && n <= 20 ? n : 2; 
-		s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + ""; 
-		var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1]; 
-		t = ""; 
-		for (i = 0; i < l.length; i++) { 
-		t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : ""); 
-		} 
-		return t.split("").reverse().join("") + "." + r; 
-	} 
-	
-	h.getStrLength = function (str) {
-        ///<summary>获得字符串实际长度，中文2，英文1</summary>
-        ///<param name="str">要获得长度的字符串</param>
-        var realLength = 0, len = str.length, charCode = -1;
-        for (var i = 0; i < len; i++) {
-            charCode = str.charCodeAt(i);
-            if (charCode >= 0 && charCode <= 128) realLength += 1;
-            else realLength += 2;
-        }
-        return realLength;
-    };
+	h.fmoney = function(s, n) {
+		n = n > 0 && n <= 20 ? n : 2;
+		s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+		var l = s.split(".")[0].split("").reverse(),
+			r = s.split(".")[1];
+		t = "";
+		for(i = 0; i < l.length; i++) {
+			t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		}
+		return t.split("").reverse().join("") + "." + r;
+	}
 
-    //js截取字符串，中英文都能用  
-    //如果给定的字符串大于指定长度，截取指定长度返回，否者返回源字符串。  
-    //字符串，长度  
+	h.getStrLength = function(str) {
+		///<summary>获得字符串实际长度，中文2，英文1</summary>
+		///<param name="str">要获得长度的字符串</param>
+		var realLength = 0,
+			len = str.length,
+			charCode = -1;
+		for(var i = 0; i < len; i++) {
+			charCode = str.charCodeAt(i);
+			if(charCode >= 0 && charCode <= 128) realLength += 1;
+			else realLength += 2;
+		}
+		return realLength;
+	};
 
-    /** 
-     * js截取字符串，中英文都能用 
-     * @param str：需要截取的字符串 
-     * @param len: 需要截取的长度 
-     */
-    h.cutstr=function (str, len ,tag) {
-    	if(!str){
-    		return '';
-    	}
-        var str_length = 0;
-        var str_len = 0;
-        len=len||56;
-        str_cut = new String();
-        str_len = str.length;
-        for (var i = 0; i < str_len; i++) {
-            a = str.charAt(i);
-            str_length++;
-            if (escape(a).length > 4) {
-                //中文字符的长度经编码之后大于4  
-                str_length++;
-            }
-            str_cut = str_cut.concat(a);
-            if (str_length >= len) {
-                str_cut = str_cut.concat(tag||"...");
-                return str_cut;
-            }
-        }
-        //如果给定字符串小于指定长度，则返回源字符串；  
-        if (str_length < len) {
-            return str;
-        }
-    }
-    /**
-     * 获取地址名称
-     * @param {Object} p 地址对象{province:'',city:'',district:''}
-     * @param {Object} data 地址数组
-     * @param {Object} type 当前类型
-     * @param {Object} tag 地址中间间隔符号
-     */
-    h.getAddressText=function(p,data,type,tag){
-    	var tag=tag||'';
-		for(var i=0;i<data.length;i++){
-			switch(type){
+	//js截取字符串，中英文都能用  
+	//如果给定的字符串大于指定长度，截取指定长度返回，否者返回源字符串。  
+	//字符串，长度  
+
+	/** 
+	 * js截取字符串，中英文都能用 
+	 * @param str：需要截取的字符串 
+	 * @param len: 需要截取的长度 
+	 */
+	h.cutstr = function(str, len, tag) {
+		if(!str) {
+			return '';
+		}
+		var str_length = 0;
+		var str_len = 0;
+		len = len || 56;
+		str_cut = new String();
+		str_len = str.length;
+		for(var i = 0; i < str_len; i++) {
+			a = str.charAt(i);
+			str_length++;
+			if(escape(a).length > 4) {
+				//中文字符的长度经编码之后大于4  
+				str_length++;
+			}
+			str_cut = str_cut.concat(a);
+			if(str_length >= len) {
+				str_cut = str_cut.concat(tag || "...");
+				return str_cut;
+			}
+		}
+		//如果给定字符串小于指定长度，则返回源字符串；  
+		if(str_length < len) {
+			return str;
+		}
+	}
+	/**
+	 * 获取地址名称
+	 * @param {Object} p 地址对象{province:'',city:'',district:''}
+	 * @param {Object} data 地址数组
+	 * @param {Object} type 当前类型
+	 * @param {Object} tag 地址中间间隔符号
+	 */
+	h.getAddressText = function(p, data, type, tag) {
+		var tag = tag || '';
+		for(var i = 0; i < data.length; i++) {
+			switch(type) {
 				case 1:
-					if(data[i].value == p.city){
-						return tag+data[i].text + h.getAddressText(p,data[i].children,2,tag)
+					if(data[i].value == p.city) {
+						return tag + data[i].text + h.getAddressText(p, data[i].children, 2, tag)
 					}
 					break;
 				case 2:
-					if(data[i].value == p.district){
-						return tag+data[i].text;
+					if(data[i].value == p.district) {
+						return tag + data[i].text;
 					}
 					break;
 				default:
-					if(data[i].value == p.province){
-						return data[i].text + h.getAddressText(p,data[i].children,1,tag)
+					if(data[i].value == p.province) {
+						return data[i].text + h.getAddressText(p, data[i].children, 1, tag)
 					}
 			}
 		}
 		return ''
 	}
-    
-    h.fixFooter=function(id){
-    	document.getElementById(id||'footerBar').style.top = (plus.display.resolutionHeight - 95) + "px";
-    }
-    
-    h.swipeClose=function(_win){
-    	_win.addEventListener('swiperight',function(e){
+
+	h.fixFooter = function(id) {
+		document.getElementById(id || 'footerBar').style.top = (plus.display.resolutionHeight - 95) + "px";
+	}
+
+	h.swipeClose = function(_win) {
+		_win.addEventListener('swiperight', function(e) {
 			var angle = Math.abs(e.detail.angle);
-			if(angle<6){
+			if(angle < 6) {
 				$.back()
 			}
 		})
-    }
-    
-    $.plusReady(function(){
-    	h.countCartGoodsNum=function(cart){
-			if(!cart){
-				cart=myStorage.getItem('cart');
-			}
-			var num=0;
-			if(cart&&cart.length>0){
-				for(var i=0;i<cart.length;i++){
-					num+=parseFloat(cart[i].num)
-				}
-			}
-			if(!honey.goodsHeader){
-				honey.goodsHeader=plus.webview.getWebviewById('goods-header');
-			}
-			mui.fire(honey.goodsHeader,'showCartNum',{num:num})
+	}
+
+	h.countCartGoodsNum = function(cart) {
+		if(!cart) {
+			cart = myStorage.getItem('cart');
 		}
-    	/**
-    	 * 拨打电话
-    	 * @param {Object} number
-    	 */
-    	h.call = function(number) {
-	        if(plus.os.name=="Android"){
-	            var Intent = plus.android.importClass("android.content.Intent");
-	            var Uri = plus.android.importClass("android.net.Uri");
-	            var main = plus.android.runtimeMainActivity();
-	            var uri = Uri.parse("tel:"+number);
-	            var call = new Intent("android.intent.action.CALL", uri);
-	            main.startActivity(call);
-	        }else{
-	            //plus.device.dial(number, false);
-	            var UIAPP=plus.ios.importClass("UIApplication");
-	            var NSURL=plus.ios.importClass("NSURL");
-	            var app=UIAPP.sharedApplication();
-	            app.openURL(NSURL.URLWithString("tel://"+number));
-	        }
-	    }
-    	/**
-    	 * 发送短信
-    	 * @param {Object} number
-    	 * @param {Object} text
-    	 */
-    	h.sms=function(number,text){
-	        if (plus.os.name == "Android") {
-	
-	            var Intent = plus.android.importClass("android.content.Intent");
-	            var Uri = plus.android.importClass("android.net.Uri");
-	
-	            var uri = Uri.parse("smsto:"+number);  
-	
-	            var intent = new Intent(Intent.ACTION_SENDTO, uri);  
-	            intent.putExtra("sms_body", "");  
-	
-	            plus.android.runtimeMainActivity().startActivity(intent);  
-	        } else {
-	            var UIAPP=plus.ios.importClass("UIApplication");
-	            var NSURL=plus.ios.importClass("NSURL");
-	            var app=UIAPP.sharedApplication();
-	            app.openURL(NSURL.URLWithString("sms://"+number));
-	        }
-	    }
-    	h.logoutFire=function(){
-	    	if(!honey.indexWin){
-	    		honey.indexWin=plus.webview.getLaunchWebview()
-	    	}
-	    	if(!honey.cartContent){
-	    		honey.cartContent=plus.webview.getWebviewById('cart-content')
-	    	}
-	    	if(!honey.buyContent){
-	    		honey.buyContent=plus.webview.getWebviewById('buy-content')
-	    	}
-	    	if(!honey.detailSubpage){
-	    		honey.detailSubpage=plus.webview.getWebviewById('goods-detail')
-	    	}
-	    	$.fire(honey.indexWin,'logout')
-	    	$.fire(honey.cartContent,'logout')
-	    	$.fire(honey.buyContent,'logout')
-	    	$.fire(honey.detailSubpage,'logout')
-	    }
-    
-	    h.loginFire=function(show){
-	    	if(!honey.mineWin){
-	    		honey.mineWin=plus.webview.getWebviewById('mine')
-	    	}
-	    	$.fire(honey.mineWin,'login',{show:show})
-	    }
-	    
-	    h.getchannel=function(){
-	    	// 获取支付通道
-			plus.payment.getChannels(function(channels){
-				for(var i in channels){
-					var channel=channels[i];
-					if(channel.id=='alipay' || channel.id=='wxpay'){
-						if(!h.paychannel){
-							h.paychannel={}
-						}
-						h.paychannel[channel.id]=channel;
-					}
-				}
-			},function(e){
-				$.toast('获取支付通道失败：'+e.message);
-			});
-	    }
-			
-		// 检测是否安装支付服务
-		h.checkServices=function(pc){
-			if(!pc.serviceReady){
-				var txt=null;
-				switch(pc.id){
-					case 'alipay':
-					txt='检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？';
-					break;
-					default:
-					txt='系统未安装“'+pc.description+'”服务，无法完成支付，是否立即安装？';
-					break;
-				}
-				plus.nativeUI.confirm(txt, function(e){
-					if(e.index==0){
-						pc.installService();
-					}
-				}, pc.description);
+		var num = 0;
+		if(cart && cart.length > 0) {
+			for(var i = 0; i < cart.length; i++) {
+				num += parseFloat(cart[i].num)
 			}
 		}
-	    h.pay_waitting=null;
-		h.pay=function (ajaxData,callback){
-			console.log(h.token)
-			if(h.pay_waitting){
-				callback({status:false,msg:'已有订单在支付'})
-				return;
-			}
-//			console.log('开始获取支付通道')
-			//获取支付通道
-//			h.getchannel();
-//			console.log(JSON.stringify(h.paychannel))
-			if(!h.paychannel[ajaxData.pay_type]){
-				return
-			}
-			//检测是否安装服务
-			h.checkServices(h.paychannel[ajaxData.pay_type]);
-			//请求支付
-			if(ajaxData.pay_type!='alipay'&&ajaxData.pay_type!='wxpay'){
-				callback({status:false,msg:'不支持此类型支付'})
-				return
-			}
-			var appid=plus.runtime.appid;
-			if(navigator.userAgent.indexOf('StreamApp')>=0){
-				appid='Stream';
-			}
-			
-//			console.log(JSON.stringify(data))
-			h.pay_waitting=plus.nativeUI.showWaiting();
-			$.ajax(h.apiurl,{
-				type:"post",
-				async:true,
-				data:ajaxData,
-				dataType:'text',
-				success:function(ret){
-					h.pay_waitting.close()
-					h.pay_waitting=null;
-//					console.log(ret)
-					ret=JSON.parse(ret);
-					if(!ret.data){
-						callback({status:false,msg:'请求支付失败'})
-						return
-					}
-					var order=ret.data;
-					plus.payment.request(h.paychannel[ajaxData.pay_type],order,function(result){
-						console.log(result)
-						callback({status:true,msg:'支付成功'})
-					},function(e){
-						switch(e.code){
-							case 62001:
-							case -2:
-								msg='取消支付';
-								break;
-							default:
-								msg='支付失败';
-						}
-						callback({status:false,msg:msg})
-					})
-				},
-				error:function(ret){
-					console.log(ret.responseText)
-					h.pay_waitting.close()
-					h.pay_waitting=null;
-					callback({status:false,msg:'订单请求失败'})
-				}
-			});
+		if(!honey.goodsHeader) {
+			honey.goodsHeader = plus.webview.getWebviewById('goods-header');
 		}
-    })
- 	/*1.用正则表达式实现html转码*/
-    h.htmlspecialchars_encode=function (str){  
-         var s = "";
-         if(str.length == 0) return "";
-         s = str.replace(/&/g,"&amp;");
-         s = s.replace(/</g,"&lt;");
-         s = s.replace(/>/g,"&gt;");
-         s = s.replace(/ /g,"&nbsp;");
-         s = s.replace(/\'/g,"&#39;");
-         s = s.replace(/\"/g,"&quot;");
-         return s;  
-   },
-     /*2.用正则表达式实现html解码*/
-    h.htmlspecialchars_decode=function(str){           
-		 var s = "";
-         if(str.length == 0) return "";
-         s = str.replace(/&amp;/g,"&");
-         s = s.replace(/&lt;/g,"<");
-         s = s.replace(/&gt;/g,">");
-         s = s.replace(/&nbsp;/g," ");
-         s = s.replace(/&#39;/g,"\'");
-         s = s.replace(/&quot;/g,"\"");
-         return s;  
-    }
+		mui.fire(honey.goodsHeader, 'showCartNum', {
+			num: num
+		})
+	}
+
+	/*1.用正则表达式实现html转码*/
+	h.htmlspecialchars_encode = function(str) {
+			var s = "";
+			if(str.length == 0) return "";
+			s = str.replace(/&/g, "&amp;");
+			s = s.replace(/</g, "&lt;");
+			s = s.replace(/>/g, "&gt;");
+			s = s.replace(/ /g, "&nbsp;");
+			s = s.replace(/\'/g, "&#39;");
+			s = s.replace(/\"/g, "&quot;");
+			return s;
+		},
+		/*2.用正则表达式实现html解码*/
+		h.htmlspecialchars_decode = function(str) {
+			var s = "";
+			if(str.length == 0) return "";
+			s = str.replace(/&amp;/g, "&");
+			s = s.replace(/&lt;/g, "<");
+			s = s.replace(/&gt;/g, ">");
+			s = s.replace(/&nbsp;/g, " ");
+			s = s.replace(/&#39;/g, "\'");
+			s = s.replace(/&quot;/g, "\"");
+			return s;
+		}
 	return h;
 }(window, mui))
