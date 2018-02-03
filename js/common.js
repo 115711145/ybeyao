@@ -467,8 +467,8 @@ var common =
 
 var honey = (function(win, $) {
 	var h = {
-		apiurl: "http://www.ybeyao.com/api/app/data/",
-		apihost: "http://www.ybeyao.com",
+		apiurl: "https://www.ybeyao.com/api/app/data/",
+		apihost: "https://www.ybeyao.com",
 		//		apiurl : "http://192.168.11.226/api/app/data/",
 		//		apihost : "http://192.168.11.226",
 		page: 1,
@@ -597,6 +597,55 @@ var honey = (function(win, $) {
 		})
 
 		h.detailHeader.append(h.detailSubpage)
+	}
+	
+	h.getOrderBtn=function(order){
+		var li=[];
+		var btn_return=((order.return_status==0 ||order.return_status==2)&&(order.confirm_time==0||(order.confirm_time>0&&(order.time_now-order.confirm_time)<24*3600*parseInt(h.config.auto_service_date))));
+		if(order.order_status>=3){//已完成、已取消、已作废
+    		if(order.return_status>0){
+    			li.push('<span class="mui-btn mui-btn-nav btn-return" type="show-order">退款详情</span>')
+    		}
+    		li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
+    	}else{
+    		if(order.pay_status>0){
+    			btn_return&&li.push('<span class="mui-btn mui-btn-warning" type="return-order">申请退款</span>');
+    			if(order.return_status>0){
+					li.push('<span class="mui-btn mui-btn-nav btn-return" type="show-order">退款详情</span>')
+    				if(order.return_status<3 || (order.return_status>2&&order.return_status<5&&order.return_info&&order.return_info.type==0)){
+    					if(order.order_status==2){
+	        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价订单</span>');
+	        			}else{
+	        				if(order.shipping_status>0){
+	        					li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+	        				}
+	        			}
+    				}else{
+    					if(order.return_status==4){
+							li.push('<span class="mui-btn mui-btn-link" type="del-order">删除订单</span></div></li>');
+    					}
+    				}
+    			}else{
+        			if(order.order_status==2){
+        				li.push('<span class="mui-btn mui-btn-nav" type="comment-order">评价订单</span>');
+        			}else{
+        				if(order.shipping_status>0){
+        					li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+        				}
+        			}			        				
+    			}
+        	}else{
+        		if(order.pay_code=='cod'){
+        			if(order.shipping_status>0){
+        				li.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+        			}
+        		}else{
+        			li.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span>');
+        		}
+        		li.push('<span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
+        	}
+    	}
+    	return li.join('');
 	}
 
 	$.plusReady(function() {
@@ -814,7 +863,7 @@ var honey = (function(win, $) {
 		// 获取本地应用资源版本号
 		h.wgtVersionService=function(wgtVer,callback){
 			if(wgtVer){
-				 plus.runtime.getProperty(plus.runtime.appid,function(inf){
+				plus.runtime.getProperty(plus.runtime.appid,function(inf){
 			    	if(wgtVer!=inf.version){
 			    		callback&&callback(inf.version);
 			    	}
@@ -838,10 +887,30 @@ var honey = (function(win, $) {
 				},
 				dataType:'json',
 				success:function(ret){
-					if(ret.code==0&&ret.data.loadSwitch){
-						h.wgtVersionService(ret.data.version,function(version){
-							h.loadApp(ret.data.url);
-						})
+					if(ret.code==0){
+						if(ret.data.loadSwitch){
+							h.wgtVersionService(ret.data.version,function(version){
+								if(ret.data.wgt){//安装补丁
+									h.loadApp(ret.data.wgt,h.installApp)
+								}else{//安装主程序
+									if(plus.os.name=='iOS'){
+										h.loadApp(ret.data.url,h.installApp)
+									}else{
+										$.confirm('检测到有新版本,是否下载安装?','更新提示',['确定','取消'],function(e){
+											if(e.index==0){
+												var w=plus.nativeUI.showWaiting('正在下载安装包')
+												h.loadApp(ret.data.url,h.installApp,function(task){
+													if(task.state==3){
+														var a = task.downloadedSize / task.totalSize * 100;
+							                            w.setTitle("已下载" + parseInt(a) + "%");
+													}
+												})
+											}
+										})
+									}
+								}
+							})
+						}
 					}
 				},
 			});
@@ -850,9 +919,10 @@ var honey = (function(win, $) {
 		 * 加载app
 		 * @param {Object} url
 		 * @param {Object} callback
+		 * @param {Object} stutasChangeFn 
 		 */
-		h.loadApp=function(url,callback){
-			if(!url){
+		h.loadApp=function(url,callback,stutasChangeFn){
+			if(url){
 				var options={
 					path: '_doc/update/',
 					method: 'GET',
@@ -860,25 +930,30 @@ var honey = (function(win, $) {
 				var dtask = plus.downloader.createDownload(url, options, function(d, status) {
 					if(status == 200) {
 						plus.io.resolveLocalFileSystemURL(d.filename, function(entry) {
-							plus.runtime.install(entry.toLocalURL(),{},function(){
-//							 	console.log('install success')
-						    },function(e){
-//						    	console.log('install fail')
-						    });
-						});
+							callback&&callback(entry.toLocalURL());
+						})
 					}
 				});
-				dtask.start();
-				downloader.down(url,function(localUrl){
-					if(localUrl){
-						 plus.runtime.install(localUrl,{},function(){
-//						 	console.log('load success')
-					    },function(e){
-//					    	console.log('load fail')
-					    });
+				dtask.addEventListener("statechanged", function(task, status) {
+					if(status == 404) {
+						callback()
+					} else {
+						stutasChangeFn && stutasChangeFn(task)
 					}
-				})
+				},false)
+				dtask.start();
 			}
+		}
+		/**
+		 * 安装补丁
+		 * @param {Object} path
+		 */
+		h.installApp=function(path){
+			plus.runtime.install(path,{},function(){
+//			 	console.log('install success')
+		    },function(e){
+//		    	console.log('install fail')
+		    });
 		}
 		/**
 		 * 拨打电话
@@ -1416,8 +1491,8 @@ HZq3Xezel+pSNIImRLPFi40EFZzswZ6tQJXDw04Z8IiQdH3MJQI=\
 		return ''
 	}
 
-	h.fixFooter = function(id) {
-		document.getElementById(id || 'footerBar').style.top = (plus.display.resolutionHeight - 95) + "px";
+	h.fixFooter = function(id,top) {
+		document.getElementById(id || 'footerBar').style.top = (plus.display.resolutionHeight - (top?top:95)) + "px";
 	}
 
 	h.swipeClose = function(_win) {

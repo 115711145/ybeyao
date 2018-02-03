@@ -7,7 +7,7 @@
 	"id": "H551622A3",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "友邦到家",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.23",/*应用版本名称*/
+		"name": "1.0.26",/*应用版本名称*/
 		"code": ""
 	},
 	"description": "",/*应用描述信息*/
@@ -313,7 +313,8 @@
 					"goods/goods-list-header.html",
 					"home/map.html",
 					"home/coupon.html",
-					"mine/article.html"
+					"mine/article.html",
+					"home/more-list.html"
 				],
 				"priority": 0
 			},
@@ -968,7 +969,8 @@
 					"mine/login.html",
 					"mine/wallet-record.html",
 					"mine/wallet-recharge.html",
-					"mine/wallet-coupon.html"
+					"mine/wallet-coupon.html",
+					"mine/bind-card.html"
 				],
 				"priority": 0
 			},
@@ -997,6 +999,21 @@
 				"resources": [],
 				"refer": [
 					"home/coupon.html"
+				],
+				"priority": 0
+			},
+			"home/coupon.html": {
+				"resources": [],
+				"refer": [
+					"mine/login.html"
+				],
+				"priority": 0
+			},
+			"home/more-list.html": {
+				"resources": [],
+				"refer": [
+					"home/coupon.html",
+					"mine/article.html"
 				],
 				"priority": 0
 			}

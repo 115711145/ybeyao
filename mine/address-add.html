@@ -245,6 +245,7 @@
 						$.toast('邮政编码有误')
 						return
 					}
+					var name=h.trim(h.d.name.value);
 					$.ajax(h.apiurl,{
 						type:"post",
 						async:true,
@@ -256,7 +257,7 @@
 							mobile:mobile,
 							zipcode:zipcode,
 							adcode:h.address.adcode,
-							name:h.address.name,
+							name:name||h.address.name,
 							addr:h.address.addr,
 							country:h.address.country,
 							province:h.address.province,

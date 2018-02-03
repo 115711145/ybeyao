@@ -22,6 +22,10 @@
 				color: #999;
 				font-size:12px
 			}
+			#fdbs-list .shop_name {
+				font-size: 16px;
+				padding: 5px  ;
+			}
 			#fdbs-list .shop_address,#fdbs-list .phone {
 				padding-left: 20px;
 				margin: 0;
@@ -179,7 +183,7 @@
 		<div id="pay_list" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="wxpay" >
-					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#e33c3f;margin-right:5px ;"></span>微信支付</a>
+					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#08AD13;margin-right:5px ;"></span>微信支付</a>
 				</li>
 				<li class="mui-table-view-cell" type="alipay">
 					<a href="#pay_list" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
@@ -191,7 +195,7 @@
 			</ul>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" type="cansel">
-					<a  style="color: #999;" >取消</a>
+					<a href="#pay_list" style="color: #999;" >取消</a>
 				</li>
 			</ul>
 		</div>
@@ -292,7 +296,7 @@
 							h.d.warm.querySelector('#freight_free').innerText=h.config.freight_free;
 							h.d.warm.querySelector('#ps-hour').innerText=h.config.ps_hour||2;
 						} else {
-							$.toast('获取配置失败')
+//							$.toast('获取配置失败')
 						}
 					},
 					error: function(ret) {
@@ -433,8 +437,7 @@
 				} else {
 					h.d.blance.innerText = "-￥0"
 				}
-				h.pay_amount=h.fmoney(h.pay_amount > 0 ? h.pay_amount : '0.00')
-				h.d.amount.innerText = "￥" + h.pay_amount;
+				h.d.amount.innerText = "￥" + h.fmoney(h.pay_amount > 0 ? h.pay_amount : '0.00');
 			}
 			/**
 			 * 获取优惠券列表
@@ -628,7 +631,7 @@
 					return [distance];
 				}
 				for(var i=0;i<distanceArr.length;i++){
-					if(distance[0]<=distanceArr[i][0]){
+					if(parseFloat(distance[0])<=parseFloat(distanceArr[i][0])){
 						lt.push(distance);
 					}else{
 						gt.push(distance);
@@ -667,12 +670,12 @@
 						var obj=document.getElementById(v.fdbs);
 						obj.setAttribute('distance',v.distance.value)
 						obj.querySelector('.fr').innerText=v.distance.text;
+						h.d.fdbs_list.removeChild(obj);
 						arr=h.sortIntoDistanceArr([v.distance.value||99999999,obj],arr)
 					});
+					var div=h.d.fdbs_list.querySelector('.fdbs-item');
 					$.each(arr, function(i,v) {
-						h.d.fdbs_list.removeChild(v[1])
-//						h.d.fdbs_list.appendChild(v[1]) 
-						h.d.fdbs_list.insertBefore(v[1],h.d.fdbs_list.querySelector('.fdbs-item'))
+						h.d.fdbs_list.insertBefore(v[1],div)
 					});
 				}
 			}
@@ -866,6 +869,7 @@
 									h.orderSuccess();
 								}
 							}else{
+								console.log(JSON.stringify(ret))
 								$.toast(ret.msg||'订单提交失败')
 								switch(ret.code){
 									case 2:
@@ -891,7 +895,6 @@
 											},500)
 											
 										}
-										
 										break;
 									case 3://提交失败，更新配置参数
 										h.getShopConfig()
@@ -907,7 +910,7 @@
 						},
 						error: function(ret) {
 							h._submit.status=false;
-//							alert(ret.responseText)
+							alert(ret.responseText)
 //							alert(JSON.stringify(ret))
 //							$.toast('error')
 						}

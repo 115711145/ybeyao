@@ -530,7 +530,7 @@
 	            </div>
 				<div class="close-btn">完成 </div>
 			</div>
-			<nav class="mui-bar mui-bar-tab footer-bar">
+			<nav class="mui-bar mui-bar-tab footer-bar" id="footerBar">
 				<div class="add-btn" id="add-btn">
 					<span class="submit-btn">申请退款</span>
 				</div>
@@ -649,6 +649,7 @@
 			
 			$.plusReady(function(){
 				h._self=plus.webview.currentWebview();
+				h.fixFooter('footerBar',50)
 				h.parent_win=false
 				if(h._self.parent_id){
 					h.parent_win=plus.webview.getWebviewById(h._self.parent_id)

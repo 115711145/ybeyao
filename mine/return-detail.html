@@ -9,6 +9,7 @@
 		<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />
 		<link type="text/css" rel="stylesheet" href="../css/icons-extra.css" />
 		<link type="text/css" rel="stylesheet" href="../css/order-detail.css" />
+		<link rel="stylesheet" type="text/css" href="../css/previewimage.css" />
 		<style>
 			body{
 				background: #fff;
@@ -72,6 +73,11 @@
 			.btns{
 				text-align: center;
 				padding: 5px;
+			}
+			.line{
+				width: 100%;
+				border-bottom: 1px dashed #ccc;
+				margin-bottom: 10px;
 			}
 		</style>
 	</head>
@@ -183,9 +189,9 @@
 			</ul>
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
-	<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/mui.zoom.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/mui.previewimage.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, d, $, h, ms) {
 			$.init();
@@ -194,6 +200,7 @@
 				loader:d.getElementById('loader'),
 				return_list:d.getElementById('return-list'),
 			}
+			var img_tag=false;
 			h.getOrderDetail=function(){
 				if(!h.order_id>0){
 					h.noContent()
@@ -219,9 +226,12 @@
 							<span class="phone">电话：'+ret.data[0].mobile+'</span></p><p class="address">\
 							收件地址：'+ret.data[0].address+'</p></div>';
 							h.d.return_list.innerHTML=h.getReturnListHtml(h.data)
-							$('#return-list').imageLazyload({
-								placeholder: '../images/default.png'
-							});
+							$('#return-list').off('tap', '.pic').on('tap', '.pic', function() {
+								$.previewImage()
+							})
+//							$('#return-list').on('tap', '.pic', function(e) {
+//								$.previewImage()
+//							})
 //							return
 							//商品列表
 //							var html=[];
@@ -280,6 +290,7 @@
 			h.getReturnListHtml=function(data){
 				var str=[];
 				$.each(data, function(i,v) {
+					str.push('<div class="line"></div>');
 					var color=v.status>1?(v.status>2?"#41cea9":"#FF5053"):"orange";
 					str.push('<div class="return-item"><div class="desc"><span class="fl"><font color="'+color+'">'+v.return_status_desc+'</font></span><span class="fr">'+h.getYmdTime(v.addtime,1)+'</span></div>');
 					str.push(h.getGoodsListHtml(v.goods_list));
@@ -288,13 +299,18 @@
 			       	str.push('<p><span class="title">退款金额</span><span id="sum_amount" class="price">￥'+h.fmoney((v.refund_deposit*100+v.refund_money*100)/100)+'</span></p>')
 			       	v.refund_integral>0&&str.push('<p><span class="title">积分</span><span id="reason">'+v.refund_integral+'</span></p>')
 			       	v.status==2&&str.push('<p><span class="title">审核说明</span><span class="remark">'+v.remark+'</span></p>')
+			       	if(v.pos_lshh){
+			       		str.push('<p><span class="title">退款流水号</span><span id="reason">'+v.pos_lshh+'</span></p>')
+			       	}
 			       	str.push('<p><span class="title">问题描述</span><span></span></p>')
 			       	var img_str=[];
 			       	if(v.imgs){
 			       		img_str.push('<div class="imgs">');
-			       		var imgs=v.imgs.split(',');
-			       		for(var j=0;j<imgs.length;j++){
-			       			img_str.push('<img src="'+h.apihost+imgs[j]+'"/>')
+			       		var arr=v.imgs.split(',');
+			       		for(var j=0;j<arr.length;j++){
+			       			var img=h.apihost+arr[j];
+			       			var src=lazyLoad.getImageLocalUrl(img);
+			       			img_str.push('<img class="lazy pic" src="'+src+'" data-lazyload="'+img+'" onerror="lazyLoad.load(this)" data-preview-src="'+src+'" data-preview-group="'+i+'"  />')
 			       		}
 			       		img_str.push('</div>')
 			       	}
@@ -310,8 +326,9 @@
 			h.getGoodsListHtml=function(list){
 				var html=['<ul class="sc_list">'];
 				$.each(list, function(i,v) {
-					var img=h.apihost+'/public/upload/goods/thumb/'+v.goods_id+'/goods_sub_thumb_'+v.img_id+'_150_150.jpg';
-					html.push('<li><div class="goods-img fl"><img data-lazyload="'+img+'"></div><div class="goods-info fl"><p class="title">'
+					var img = h.getGoodsImgUrl(v.goods_id, v.img_id,150);
+					var src = lazyLoad.getImageLocalUrl(img)
+					html.push('<li><div class="goods-img fl"><img class="lazy" src="'+src+'" data-lazyload="'+img+'" onerror="lazyLoad.load(this)"/></div><div class="goods-info fl"><p class="title">'
 					+v.goods_name+'</p><p class="weight">'+v.spec_key_name+'</p></div><div class="price-num fr">\
         	 <p class="price"><span>￥</span><span>'+v.member_goods_price+'</span></p><p><span>×</span><span>'+v.return_num+'</span></p></div></li>')
 				});

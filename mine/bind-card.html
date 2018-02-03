@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>绑定会员卡</title>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/register.css"/>
+    <style>
+    	.mui-card .mui-input-group{
+    		padding: 6px 0 15px 0;
+    	}
+    	.note{
+    		color: #888;
+    		background: #feddd2;
+    		width: 100%;
+    		border-top-left-radius:10px;
+    		border-top-right-radius:10px;
+    		font-size: 18px;
+    		margin: 0 !important;
+    		padding-left: 15px !important;
+    	}
+    	#note p{
+    		padding: 10px;
+    		color: #FF5053;
+    	}
+    	p{
+    		color: #666;
+    		font-size: 16px;
+    	}
+    	#bind-card{
+    		background: #41CEA9;
+    		border-color: #41CEA9;
+    	}
+    	#create-card{
+    		background: #FF5053;
+    		border-color: #FF5053;
+    	}
+    </style>
+</head>
+<body>
+	
+	<header class="mui-bar mui-bar-nav own-main-background-color">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title" id="header-title">线下会员卡</h1>
+	</header>
+	<div class="mui-content">
+		<div class="mui-button-row register">
+			<p>已有线下会员卡？</p>
+			<button type="button" id="bind-card"  class="mui-btn mui-btn-block own-btn-green">绑定线下卡</button>
+			<br />
+			<br />
+			<p>暂无线下会员卡？</p>
+			<button type="button" id="create-card"  class="mui-btn mui-btn-block own-btn-green">生成线下卡</button>
+		</div>
+	</div>
+	
+	<script src="../js/mui.min.js" charset="UTF-8"></script>
+	<script src="../js/common.js" charset="UTF-8"></script>
+	<script src="../js/jsencrypt.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+	(function(win,$,h,d,ms){
+		$.init()
+		$.plusReady(function(){
+			h.personalWin=plus.webview.getWebviewById('personal');
+			h.token=ms.getItem('token')
+			h.self=plus.webview.currentWebview()
+			h.user=h.self.user;
+			h.d={
+				mobile:d.getElementById('mobile'),
+				bindCard:d.getElementById('bind-card'),
+				createCard:d.getElementById('create-card')
+			}
+			
+			h.d.bindCard.addEventListener('tap',function(){
+				alert('绑定线下卡')
+			},false)
+			
+			h.d.createCard.addEventListener('tap',function(){
+				alert('生成线下卡')
+			},false)
+			
+			
+			$.back=function(){
+				plus.webview.currentWebview().close('slide-out-right')
+			}
+		})
+		
+	}(window,mui,honey,document,myStorage))
+	</script>
+	
+</body>
+</html>

@@ -13,21 +13,12 @@
 			body,p{
 				padding: 0;
 				margin: 0;
-				font-size: 12px;
-			}
-			#no-item{
-				text-align: center;
-				color: #666;
-				width: 100%;
-				margin: 0;
-				padding: 10px 0 0 0;
 				font-size: 14px;
 			}
-			.ad{
-				display: block;
-			}
-			.ad img{
-				width: 100%;
+			#list p{
+				color:#1692F0;
+				padding: 10px 5px;
+				line-height: 15px;
 			}
 			#goTop{ 
 				/*background: #41CEA9;*/
@@ -44,37 +35,29 @@
 				font-size: 30px;
 				color: #e33c3f;
 			}
-			.ad p,.product_np a:first-child{
-				font-size: 13px !important;
+			.red{
+				color: #F10A0F;
 			}
-			/*#goTop img{
-				height: 100%; 
-				text-align: center;
-			}*/
-			
 		</style>
 	</head>
 
 	<body>
+		<header class="mui-bar mui-bar-nav own-main-background-color">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">优惠活动</h1>
+		</header>
 		<div id="content" class="mui-content  detail-content-padding">
-			<div class="twoRankedBox" id="list">
-				<div id="no-item" style="display: none;">没有找到相关产品</div>
-		        <ul class="BoxLeft" id="BoxLeft">
-		        </ul>
-		
-		        <ul class="BoxRight" id="BoxRight">
-		
-		        </ul>
-		    </div>
+		    <ul class="mui-table-view" id="list">
+				 <li class="mui-table-view-cell coupon red">免费领取优惠券</li>
+			</ul>
 			<!-- 商品列表 -->
-			<div id="goTop" >
+			<div id="goTop" style="display: none;">
 				<!--<img src="../images/goTop.png"/>-->
 				<i class="icon iconfont icon-huidaodingbu"></i> 
 			</div>
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/lazyload.imgage.js" charset="UTF-8"></script>
 		<script type="text/javascript" charset="UTF-8">
 		(function(win,$,h,d){
 			$.init({
@@ -108,47 +91,44 @@
 			
 			var count=0;
 			h.sort="default";
-			h.desc="";
 			h.d={
 				goTop:d.getElementById('goTop'),
 				list:d.getElementById('list'),
 				content:$('#content'),
-				boxLeft:d.getElementById('BoxLeft'),
-				boxRight:d.getElementById('BoxRight'),
-				noItem:d.getElementById('no-item')
 			}
 			$.plusReady(function() {
 				h.token=myStorage.getItem('token')
-				if(!h.goodsListHeader) {
-					h.goodsListHeader = plus.webview.getWebviewById('goods-list-header');
-				}
-				
-				$('#list').on('tap','.goods-list',function(){
-					var goods_id = this.getAttribute('goods_id');
-					if(!h.detailWebView) {
-						h.detailWebView = plus.webview.getWebviewById('goods-header');
-					}
-					if(!h.detailSubpage) {
-						h.detailSubpage = plus.webview.getWebviewById('goods-detail');
-					}
-					$.fire(h.detailWebView, 'goodsId', {
-						goods_id:goods_id,
-						f:h.f
-					})
-					h.detailWebView.show('slide-in-right', 300)
+				$('#list').on('tap','.article-list',function(){
+					var id=this.getAttribute('article_id');
+					h.openWin('../mine/article.html', 'article', {
+						article_id: id,
+						f: 'more-list'
+					});
 				})
 				
-				$('#list').on('tap','.ad',function(){
-					var ad_link=this.getAttribute('ad_link');
-					var ad_type=this.getAttribute('ad_type');
-					var name=this.innerText
-					var f=this.getAttribute('f')
-					h.openAd(ad_type,ad_link,name,f)
+				$('#list').on('tap','.coupon',function(){
+					h.openWin('coupon.html','coupon');
 				})
+				
 				
 				h.d.goTop.addEventListener('tap',function(){
 					h.mySrcollTo('',200)
 				})
+				
+				h.showArticle=function(data){
+					if(data&&data.length>0){
+						var html=[];
+						if(h.page==1){
+							html.push('<li class="mui-table-view-cell coupon red">免费领取优惠券</li>');
+						}
+						$.each(data, function(i,v) {
+							html.push('<li class="mui-table-view-cell article-list" article_id="'+v.article_id+'">'+v.title+'</li>')
+						});
+						h.d.list.innerHTML=html.join('')
+					}
+				}
+				
+				ajaxGetData()
 				
 				/**
 				 * 监听滚动时间
@@ -156,7 +136,8 @@
 				d.addEventListener('scroll',function(){
 					var h1=win.innerHeight;
 					var h=d.body.scrollTop;
-					if(h>(h1-74*2)){
+					console.log('h1='+h1+',h='+h)
+					if(h>(h1-44)){
 						d.getElementById('goTop').setAttribute('style','')
 					}else{
 						d.getElementById('goTop').setAttribute('style','display: none;')
@@ -169,72 +150,27 @@
 				
 			})
 			
-			win.addEventListener('GoodsListSort',function(e){
-				if(h.sort!=e.detail.sort || h.desc!=e.detail.desc){
-					if(h.page>1 && h.total==0){
-						return
-					}
-					h.d.content.pullRefresh().refresh(true);
-					h.sort=e.detail.sort;
-					h.desc=e.detail.desc;
-					h.page=1;
-					h.total=0;
-					ajaxGetData()
-					h.mySrcollTo()
-				}
-			})
-			
-			win.addEventListener('showGoodsList',function(e){
-				if(plus.navigator.isFullscreen()){
-					plus.navigator.setFullscreen(false);
-				}
-				h.d.goTop.setAttribute('style','display: none;')
-				h.d.noItem.setAttribute('style','display: none;')
-				h.d.boxLeft.innerHTML='';
-				h.d.boxRight.innerHTML='';
-				h.d.content.pullRefresh().refresh(true);
-				h.page=1;
-				h.total=0;
-				h.cate=e.detail.cate||'';
-				h.cid=e.detail.cid||'';
-				h.f=e.detail.f||'';
-				h.keyword=e.detail.keyword||'';
-				h.sort="";
-				h.desc="";
-				ajaxGetData()
-			})
 			function ajaxGetData(o){
 				if(h.page>1 &&(h.page*h.pageSize>=h.total)){
 					h.d.content.pullRefresh().endPullupToRefresh(true)
 				}else{
 					$.ajax(h.apiurl,{
 						data:{
-							m:'goods_list',
+							m:'article_list',
 							page:h.page,
 							size:h.pageSize,
-							cate:h.cate,
-							cid:h.cid,
-							sort:h.sort,
-							desc:h.desc,
 							f:h.f,
 							token:h.token,
-							keywords:h.keyword
 						},
 						type:'post',
 						dataType:'json',
 						success:function(ret){
 							if(ret.code==0){
 								if(h.page==1){
-									h.d.boxLeft.innerHTML='';
-									h.d.boxRight.innerHTML='';
-									if(ret.data.length==0){
-										h.d.noItem.setAttribute('style','')
-									}
+									h.d.list.innerHTML='';
 								}
 								if(ret.data.length>0){
-//									var ad=[];
-//									ad.push({name:'广告名称广告名称广告名称广告名称广告名称',type:1,src:'../images/ad'+honey.page+'.jpg'});
-									h.showGoodsList(ret.data,'list',ret.ad,h.f)
+									h.showArticle(ret.data)
 								}
 								h.total=ret.total;
 								if(h.page==1&&honey.total<=honey.pageSize){

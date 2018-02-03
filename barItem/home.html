@@ -9,6 +9,49 @@
 		<link type="text/css" rel="stylesheet" href="../css/own.css" />
 		<!--<link type="text/css" rel="stylesheet" href="../css/iconfont/iconfont.css" />-->
 		<link type="text/css" rel="stylesheet" href="../css/home.css" />
+		<style>
+			#scrolllayer {
+				background: #fff;
+				float: left;
+				overflow: hidden;
+				max-height: 75px;
+				width: 100%;
+				display: block;
+				margin-top: 1px;
+				margin-bottom: 6px;
+			}
+			
+			#scrollmessage {
+				float: left;
+				padding: 0 10px;
+				text-align: left;
+				width: 100%;
+				font-size: 14px;
+				font-family: "宋体";
+				margin: 0;
+			}
+			
+			#scrollmessage ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			
+			#scrollmessage li {
+				line-height: 25px;
+				color: #FF0000;
+				margin: 0;
+			}
+			
+			#scrollmessage li a {
+				margin: 0 !important;
+				padding: 0 !important;
+				color: #333;
+			}
+			.red{
+				color: #F10A0F;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -60,9 +103,9 @@
 						</a>
 					</li>
 					<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3">
-						<a href="#" cate="8" name="优惠券">
+						<a href="#" cate="8" name="更多优惠">
 							<span><img src="../images/youhuiquan.png" height="40"/></span>
-							<div class="mui-media-body">免费领券</div>
+							<div class="mui-media-body">更多优惠</div>
 						</a>
 					</li>
 				</ul>
@@ -75,6 +118,10 @@
 					<!--<img src="../images/ad-default.png" f="home-ad2" class="lazy ad"/>
 					<img src="../images/ad-default.png" f="home-ad3" class="lazy ad"/>-->
 				</p>
+			</div>
+			<div id="scrolllayer">
+				<div id="scrollmessage">
+				</div>
 			</div>
 			<div class="yb-ad4" id="yb-ad4">
 				<!--<img src="../images/ad-default.png" f="home-ad4" class="lazy ad"/>
@@ -139,6 +186,83 @@
 				h.d = {
 					homeDiv: d.getElementById('homeDiv')
 				}
+				
+				h.showArticle=function(){
+					$.ajax(h.apiurl, {
+							data: {
+								m: 'article_list',
+							},
+							type: 'post',
+							dataType: 'json',
+							success: function(ret) {
+								if(ret.code == 0) {
+									var html=['<ul>']
+									$.each(ret.data, function(i,v) {
+										html.push('<li article_id="'+v.article_id+'"><a '+(v.is_top?'class="red"':'')+'>'+v.title+'</a></li>')
+									});
+									html.push('</ul>')
+									d.getElementById('scrollmessage').innerHTML=html.join('')
+									if(ret.data&&ret.data.length>2){
+										h.articleScroll()
+									}
+									$('#scrolllayer').on('tap','li',function(){
+										var id=this.getAttribute('article_id');
+										h.openWin('../mine/article.html', 'article', {
+											article_id: id,
+											f: 'home'
+										});
+									})
+								}
+							},
+							error: function(ret) {
+							}
+						})
+				}
+
+				h.articleScroll = function() {
+					try {
+						var marqueesHeight = 50; //高度
+						var stopscroll = false;
+						var scrollElem = d.getElementById("scrolllayer");
+						with(scrollElem) {
+							//							style.width = 500; //宽度
+							style.height = marqueesHeight;
+							style.overflow = 'hidden';
+							noWrap = true;
+						}
+						//						scrollElem.onmouseover = new Function('stopscroll = true');
+						//						scrollElem.onmouseout = new Function('stopscroll = false');
+						var preTop = 0;
+						var currentTop = 0;
+						var stoptime = 0;
+						var leftElem = d.getElementById("scrollmessage");
+						scrollElem.appendChild(leftElem.cloneNode(true));
+						init_srolltext();
+					} catch(e) {}
+
+					function init_srolltext() {
+						scrollElem.scrollTop = 0;
+						setInterval(function() {
+							if(stopscroll) return;
+							currentTop += 1;
+							if(currentTop == 51) { //滚动距离
+								stoptime += 1;
+								currentTop -= 1;
+								if(stoptime == 220) { //停顿时间
+									currentTop = 0;
+									stoptime = 0;
+								}
+							} else {
+								preTop = scrollElem.scrollTop;
+								scrollElem.scrollTop += 1;
+								if(preTop == scrollElem.scrollTop) {
+									scrollElem.scrollTop = 0;
+									scrollElem.scrollTop += 1;
+								}
+							}
+						}, 15); //滚动速度
+					}
+				}
 
 				$.plusReady(function() {
 					if(!honey.goodsListHeader) {
@@ -149,7 +273,7 @@
 					 * 自动加载广告
 					 */
 					h.autoAd = function() {
-						mui.ajax(h.apiurl, {
+						$.ajax(h.apiurl, {
 							data: {
 								m: 'ad_list'
 							},
@@ -292,7 +416,7 @@
 							var f = 'home-icon' + cate;
 							if(cate == '8') {
 								//							alert('优惠券')
-								h.openWin('../home/coupon.html', 'coupon', {
+								h.openWin('../home/more-list.html', 'more-list', {
 									f: f
 								})
 							} else {
@@ -306,11 +430,12 @@
 							}
 						})
 					}
-					
-					honey.autoAd()
-					honey.bindIconMenuTap()
-					honey.loadGoods()
-					honey.bindListTap()
+
+					h.autoAd()
+					h.bindIconMenuTap()
+					h.loadGoods()
+					h.bindListTap()
+					h.showArticle()
 					d.addEventListener("plusscrollbottom", function(e) {
 						if(!h.loadEnd) {
 							h.loadGoods()

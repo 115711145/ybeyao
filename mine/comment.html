@@ -147,10 +147,12 @@
 				padding: 10px;
 				margin-top: 5px;
 			}
-			.row .mui-btn-success{
-				padding: 10px;
-				background: #41CEA9;
-				border-color: #41CEA9;
+			#footerBar{
+				background: #e33c3f;
+				border-color: #e33c3f;
+				color: #ffffff;
+				text-align: center;
+				line-height: 50px;
 			}
 			.row .mui-btn-success:active{
 				background: #ccc;
@@ -177,7 +179,7 @@
 				top:3px;
 			}
 			.mui-checkbox input:before{
-				color: #41CEA9 !important;
+				color: #F10A0F !important;
 			}
 			#progress{
 				padding: 1px 0 !important;
@@ -259,10 +261,12 @@
 						<span class="mui-icon mui-icon-close"></span>
 					</div>-->
 				</div>
-				<div class="row">
-					<button type="button" class="mui-btn mui-btn-success mui-btn-block" id="submit-btn">提交评价</button>
-				</div>
 			</div>
+			<nav class="mui-bar mui-bar-tab footer-bar" id="footerBar">
+				<div class="add-btn" id="submit-btn">
+					<span class="submit-btn">提交评价</span>
+				</div>
+			</nav>
 		</div>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
@@ -316,7 +320,7 @@
 					is_anonymous:0
 				}
 				h.showGoodsInfo(h._self)
-				
+				h.fixFooter('submit-btn')
 				 //应用评分
 				$('.icons').on('tap','i',function(){
 				  	var index = parseInt(this.getAttribute("data-index"));
