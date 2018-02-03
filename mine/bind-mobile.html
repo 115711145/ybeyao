@@ -22,6 +22,10 @@
     		margin: 0 !important;
     		padding-left: 15px !important;
     	}
+    	#note p{
+    		padding: 14px;
+    		color: #FF5053;
+    	}
     	/*.grey{
     		background: #ccc !important;
     		border-color: #ccc !important;
@@ -58,6 +62,7 @@
 			<span class="mui-spinner" id="loader" style="display: none;"></span>
 			</button>
 		</div>
+		<div id="note"><p>* 特别提醒：修改绑定手机后,原手机号不能登录,请使用新手机号进行登陆。</p></div>
 	</div>
 	<!--<div class="mui-content" id="step2" style="display: none;">
 		<div class="mui-card"> 
@@ -153,7 +158,8 @@
 						data:{
 							m:'get_bind_code',
 							mobile:h.d.mobile.value,
-							token:h.token
+							token:h.token,
+							step:h.step,
 						},
 						type:'post',
 						dataType:'text',
@@ -226,10 +232,6 @@
 						h.is_submit=false;
 						h.d._submit.removeAttribute('style')
 						h.d.loader.setAttribute('style','display: none;')
-//						console.log(ret)
-//						return
-//						ret=JSON.parse(ret);
-//						h.is_submit=false;
 						if(ret.code==0){
 							$.toast(ret.msg)
 							if(h.step==1){

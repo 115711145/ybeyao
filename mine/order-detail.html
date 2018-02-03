@@ -69,16 +69,22 @@
 	       		<p><span class="title">订单状态</span><span id="status"></span></p>
 	       		<p style="display: none;"><span class="title">退款状态</span><span id="return-status"></span></p>
 	       		<p><span class="title">下单时间</span><span id="add_time"></span></p>
-	       		<div id="times">
-		       		<p><span class="title">支付时间</span><span></span></p>
-		       		<p><span class="title">发货时间</span><span></span></p>
-		       		<p><span class="title">确认收货</span><span></span></p>
-	       		</div>
+	       		<p><span class="title">支付时间</span><span id="pay_time"></span></p>
 	       		<p><span class="title">支付方式</span><span id="pay_name"></span></p>
-	       		<p><span class="title">配送方式</span><span id="shipping_name"></span></p>
-	       		<p style="display: none;"><span class="title">自取门店</span><span id="shop_name"></span></p>
 	       		<p><span class="title">买家留言</span><span></span></p>
 	       		<p id="note"></p>
+	       </div>
+	       <div class="amout-list">
+	       		<p class="bold-title">配送信息</p>
+	       		<p><span class="title">配送方式</span><span id="shipping_name"></span></p>
+	       		<p><span class="title">派单门店</span><span id="shop_name">友邦大药房</span></p>
+	       		<div id="shipping" style="display: none;">
+	       			<p><span class="title">发货时间</span><span id="pstime"></span></p>
+	       			<p><span class="title">确认收货</span><span id="confirm-time"></span></p>
+	       			<p><span class="title">小 票 号</span><span id="lshh"></span></p>
+	       			<p><span class="title">配 送 员</span><span id="psy"></span>
+	       			<p><span class="title">联系电话</span><span id="psy-phone"></span></p>
+	       		</div>
 	       </div>
 	       <div class="amout-list">
 	       		<p class="bold-title">价格信息</p>
@@ -89,6 +95,8 @@
 	       		<!--<p><span class="title">折扣优惠:</span><span id="discount">-￥0</span></p>-->
 	       		<p><span class="title">优&nbsp;&nbsp;惠&nbsp;&nbsp;券</span><span id="coupon">-￥0</span></p>
 	       		<p><span class="title" id="pay-title">应付金额</span><span class="price" id="order_amount">￥0</span></p>
+		       	<p id="pay-warm">* 请在1小时内完成付款,否则系统将自动取消当前订单</p>
+		       	<p id="return-warm">* 门店退货请提供"小票号"</p>
 		       	<div class="btns" id="btns"></div>
 	       </div>
 		</div>
@@ -122,7 +130,7 @@
 					<a style="color:#999">选择支付方式</a>
 				</li>
 				<li class="mui-table-view-cell pay" type="wxpay" >
-					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#41CEA9;margin-right:5px ;"></span>微信支付</a>
+					<a href="#pay_list" ><span class="mui-icon mui-icon-weixin" style="color:#08AD13;margin-right:5px ;"></span>微信支付</a>
 				</li>
 				<li class="mui-table-view-cell pay" type="alipay">
 					<a href="#pay_list" ><span class="mui-icon-extra mui-icon-extra-alipay" style="font-size: 20px;"></span>
@@ -208,25 +216,28 @@
 //							}
 							d.getElementById('add_time').innerText=h.getYmdTime(ret.data.add_time,1)
 							var time_p=[];
-							if(ret.data.pay_time>0){
-								time_p.push('<p><span class="title">支付时间</span><span>'+h.getYmdTime(ret.data.pay_time,1)+'</span></p>');
+							if(ret.data.pay_status>0&&ret.data.pay_time>0){
+								d.getElementById('pay_time').innerText=h.getYmdTime(ret.data.pay_time,1)
+								d.getElementById('pay-warm').style.display='none'
+							}else{
+								if(ret.data.order_status<2){
+									d.getElementById('pay-warm').style.display='block'
+								}
 							}
 							if(ret.data.shipping_code!='ybeyaoshop'&&ret.data.shipping_time>0){
-								time_p.push('<p><span class="title">发货时间</span><span>'+h.getYmdTime(ret.data.shipping_time,1)+'</span></p>');
+								d.getElementById('pstime').innerText=h.getYmdTime(ret.data.shipping_time,1)
 							}
 							if(ret.data.confirm_time>0){
-								time_p.push('<p><span class="title">确认收货</span><span>'+h.getYmdTime(ret.data.confirm_time,1)+'</span></p>');
+								d.getElementById('confirm-time').innerText=h.getYmdTime(ret.data.confirm_time,1)
 							}
-							d.getElementById('times').innerHTML=time_p.join('')
 							d.getElementById('pay_name').innerText=ret.data.pay_name
 							d.getElementById('shipping_name').innerText=ret.data.shipping_name
 							d.getElementById('note').innerText=ret.data.user_note
 							//配送门店
 							if(ret.data.shop_info){
 								h.d.shop_name.innerText=ret.data.shop_info.shop_name;
-								h.d.shop_name.parentElement.style.display='block';
 							}else{
-								h.d.shop_name.parentElement.style.display='none';
+								h.d.shop_name.innerText='友邦大药房';
 							}
 							
 							d.getElementById('sum_amount').innerText="￥"+h.fmoney(ret.data.goods_price-ret.data.discount_money)
@@ -235,60 +246,70 @@
 							h.showPriceText(h.d.point,ret.data.integral_money,'(-'+ret.data.integral+'积分)-')
 							h.showPriceText(h.d.coupon,ret.data.coupon_price,'-')
 							h.showPriceText(h.d.order_amount,ret.data.order_amount)
+							if(ret.data.shipping_status>0&&ret.data.shipping_time>0){
+								d.getElementById('shipping').style.display='block'
+								d.getElementById('lshh').innerText=ret.data.pos_lshh
+								d.getElementById('psy').innerText=ret.data.shipper?ret.data.shipper.name:''
+								d.getElementById('psy-phone').innerText=ret.data.shipper?ret.data.shipper.phone:''
+							}
 //							d.getElementById('blance').innerText="-￥"+ret.data.user_money
 //							d.getElementById('point').innerText="-￥"+ret.data.integral_money
 //							d.getElementById('coupon').innerText="-￥"+ret.data.coupon_price
 //							d.getElementById('order_amount').innerText="￥"+ret.data.order_amount
 							d.getElementById('pay-title').innerText=(ret.data.pay_code=='alipay'||ret.data.pay_code=='wxpay')?"已付金额":"未付金额";
-							var btn=[]
-							if(ret.data.order_status>=3){//已完成、已取消、已关闭交易、已全部退款单
-//								if(ret.data.order_status==4){//已完成
-//									btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+							if(ret.data.return_status!=0&&ret.data.return_status!=2){
+								d.getElementById('return-warm').style.display="block"
+							}
+							
+//							var btn=[]
+//							if(ret.data.order_status>=3){//已完成、已取消、已关闭交易、已全部退款单
+////								if(ret.data.order_status==4){//已完成
+////									btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+////								}
+//								if(ret.data.return_status>0){
+//									btn.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
 //								}
-								if(ret.data.return_status>0){
-									btn.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
-								}
-			        			btn.push('<span class="mui-btn mui-btn-link del-order" type="del-order">删除订单</span>');
-				        	}else{
-				        		if(ret.data.pay_status>0){
-				        			btn.push('<span class="mui-btn mui-btn-warning" type="return-order">申请退款</span>');
-				        			if(ret.data.return_status>0){
-				        				if(ret.data.return_status<3 ||(ret.data.return_status>2&&ret.data.return_status<5&&ret.data.return_info.type==0)){//待审核，已拒绝，订单可进行后续操作
-				        					if(ret.data.order_status==2){
-						        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
-						        			}else{
-						        				if(ret.data.shipping_status>0){
-						        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-						        				}
-						        			}
-//						        			btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
-				        				}else{
-				        					if(ret.data.return_status==4){
-					        					btn.push('<span class="mui-btn mui-btn-link del-order" style="border: 1px solid #007aff;" type="del-order">删除订单</span>');
-				        					}
-				        				}
-				        				btn.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
-				        			}else{
-				        				if(ret.data.order_status==2){
-					        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
-					        			}else{
-					        				if(ret.data.shipping_status>0){
-					        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-					        				}
-					        			}
-				        			}
-					        	}else{
-					        		if(ret.data.pay_code=='cod'){
-					        			if(ret.data.shipping_status>0){
-					        				btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
-					        			}
-					        		}else{
-					        			btn.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span>');
-					        		}
-					        		btn.push('<span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
-					        	}
-				        	}
-				        	d.getElementById('btns').innerHTML=btn.join('')
+//			        			btn.push('<span class="mui-btn mui-btn-link del-order" type="del-order">删除订单</span>');
+//				        	}else{
+//				        		if(ret.data.pay_status>0){
+//				        			btn.push('<span class="mui-btn mui-btn-warning" type="return-order">申请退款</span>');
+//				        			if(ret.data.return_status>0){
+//				        				if(ret.data.return_status<3 ||(ret.data.return_status>2&&ret.data.return_status<5&&ret.data.return_info.type==0)){//待审核，已拒绝，订单可进行后续操作
+//				        					if(ret.data.order_status==2){
+//						        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
+//						        			}else{
+//						        				if(ret.data.shipping_status>0){
+//						        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+//						        				}
+//						        			}
+////						        			btn.push('<span class="mui-btn mui-btn-warning" type="return-order">退款/货</span>');
+//				        				}else{
+//				        					if(ret.data.return_status==4){
+//					        					btn.push('<span class="mui-btn mui-btn-link del-order" style="border: 1px solid #007aff;" type="del-order">删除订单</span>');
+//				        					}
+//				        				}
+//				        				btn.push('<span class="mui-btn mui-btn-nav" type="show-order">退款详情</span>')
+//				        			}else{
+//				        				if(ret.data.order_status==2){
+//					        				btn.push('<span class="mui-btn mui-btn-nav comment-order" type="comment-order"><span class="mui-icon mui-icon-compose"></span>评价订单</span>');
+//					        			}else{
+//					        				if(ret.data.shipping_status>0){
+//					        					btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+//					        				}
+//					        			}
+//				        			}
+//					        	}else{
+//					        		if(ret.data.pay_code=='cod'){
+//					        			if(ret.data.shipping_status>0){
+//					        				btn.push('<span class="mui-btn mui-btn-success" type="confirm-order">确认收货</span>')
+//					        			}
+//					        		}else{
+//					        			btn.push('<span class="mui-btn mui-btn-red" type="pay-order">立即付款</span>');
+//					        		}
+//					        		btn.push('<span class="mui-btn mui-btn-grey" type="cansel-order">取消订单</span>');
+//					        	}
+//				        	}
+				        	d.getElementById('btns').innerHTML=h.getOrderBtn(ret.data)
 						}else{
 							h.noContent()
 						}
@@ -345,6 +366,7 @@
 				h.order_id=h._self.order_id
 				h.service=h._self.btn
 				h.token=ms.getItem('token')
+				h.config=ms.getItem('conf_shopping');
 				h.getOrderDetail()
 				h.getchannel()
 				

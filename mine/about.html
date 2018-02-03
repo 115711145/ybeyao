@@ -72,9 +72,11 @@
 		</ul>
 		<div class="bottom">
 		<p class="copy">
-			Copyright ©2016-<font id="year"></font>
+			Copyright ©2017-<font id="year"></font>
 		</p>
 		<p class="copy">赣州友邦大药房零售连锁有限公司</p>
+		<p class="copy" id="version">
+		</p>
 		</div>
 	</div>
 	<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
@@ -227,11 +229,16 @@
 			$.init();
 			$.plusReady(function(){
 				d.getElementById('year').innerText=new Date().getFullYear()
+				h.wgtVersionService(-1,function(v){
+					d.getElementById('version').innerText='当前版本 v'+v;
+				})
 				$('.mui-table-view').on('tap','li',function(){
 					var id=this.getAttribute('id');
 					switch(id){
 						case 'version':
-							$.toast('当前版本为最新版本') 
+							h.wgtVersionService(-1,function(v){
+								$.toast('当前版本为'+v) 
+							})
 							break;
 						default:
 							h.openWin(id+'.html',id)

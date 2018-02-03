@@ -141,7 +141,7 @@
 //				//预加载搜索
 				h.searchWin=h.preloadWin('home/search.html','search')
 //				//预加载搜索
-				h.mapWin=h.preloadWin('mine/map.html','map')
+//				h.mapWin=h.preloadWin('mine/map.html','map')
 			}
 			h.preloadWebViews=function(){//预加载页面
 				h.mainWebview = plus.webview.currentWebview();
@@ -248,7 +248,6 @@
 						dataType:'json',
 						timeout:h.ajaxTimeout,
 						success:function(ret){
-//							console.log(ret.data)
 							if(ret.code==0&&ret.data>0){
 								if(time>0&&ret.data!=h.msgCount){
 									(time+=parseInt(time*0.2));
@@ -270,6 +269,9 @@
 					h.getMessageCount(time)
 				},time)
 			}
+			/**
+			 * 显示引导
+			 */
 			h.showGuide=function(){
 				h.version=ms.getItem('version');
 				if(h.version!=plus.runtime.version){

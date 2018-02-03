@@ -252,7 +252,7 @@
 				});
 			}
 			h.showUserInfo=function(){
-				if(h.user.head_pic){
+				if(h.user&&h.user.head_pic){
 					var head_pic=h.trim(h.user.head_pic)?(h.user.head_pic.indexOf('http://')>=0?h.user.head_pic:h.apihost+h.user.head_pic)+'?v='+Math.random():'../images/profile.png';
 					h.d.head_pic.src=head_pic
 				}
@@ -313,7 +313,7 @@
 							title+='[只能设置一次]';
 							txt='姓名设置后将不得修改';
 						}
-						$.prompt(title, txt, '设置', ['取消','确定'], function(e) {
+						$.prompt(title, txt, '个人资料', ['取消','确定'], function(e) {
 							if (e.index == 1) {
 								var value=h.trim(e.value)
 								if(value){
