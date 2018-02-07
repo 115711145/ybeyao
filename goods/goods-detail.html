@@ -16,8 +16,19 @@
 			.mui-content .footer-bar{
 				border: 0 !important;
 			}
-			#slider-loop img{
-				/*width: 100%;*/
+			.mui-popover a{
+				font-size: 16px;
+			}
+			#share {
+				float: right;
+				font-size: 14px;
+				padding: 0 5px;
+				border: 1px solid #999;
+				border-radius: 3px;
+			}
+			#share span:first-child{
+				line-height: 25px;
+				font-size: 14px;
 			}
 		</style>
 	</head>
@@ -37,12 +48,13 @@
 			<div id="attr">
 				<div class="goods-title">
 					<div class="fl title">
-						<h5 id="goods_title"></h5></div>
+						<h5 id="goods_title"></h5>
+					</div>
 					<div class="fr icon">
-						<!--<a href="#" id="share">
+						<a id="share">
 		                    <span class="mui-icon-extra mui-icon-extra-share fl"></span>
 		                    <span class="fr">分享</span>
-		            	</a>-->
+		            	</a>
 					</div>
 				</div>
 				<div class="goods-attr">
@@ -192,6 +204,24 @@
 		<div id="no-content">
 			<p><img src="../images/kuqi.png" /></p>
 			<p id="no-content-text">很抱歉,此商品已下架或不存在!</p>
+		</div>
+		<div id="share_list" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a style="color:#999">分享</a>
+				</li>
+				<li class="mui-table-view-cell share" type="WXSceneSession" >
+					<a href="#share_list" >微信好友</a>
+				</li>
+				<li class="mui-table-view-cell share" type="WXSceneTimeline">
+					<a href="#share_list" >微信朋友圈</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" type="cansel">
+					<a href="#share_list" style="color: #999;" >取消</a>
+				</li>
+			</ul>
 		</div>
 		<nav class="mui-bar mui-bar-tab footer-bar" id="footerBar">
 			<a id="consult">
@@ -420,7 +450,7 @@
 //									honey.d.evaluateMore.innerText="此商品暂无评价";
 //								}
 							//简介
-							honey.d.remark.innerText = data.base.goods_remark;
+							honey.d.remark.innerText =honey.goods.remark= data.base.goods_remark;
 							//详情
 							data.base.goods_content = honey.escape2Html(data.base.goods_content)
 							honey.d.content.innerHTML = data.base.goods_content;
@@ -627,7 +657,102 @@
 				if(!honey.detailSubpage) {
 					honey.detailSubpage = plus.webview.currentWebview();
 				}
-
+				
+				var shares=null;
+				/**
+				 * 更新分享服务
+				 */
+				plus.share.getServices(function(s){
+					shares={};
+					for(var i in s){
+						var t=s[i];
+						shares[t.id]=t;
+					}
+				}, function(e){
+					
+				});
+				/**
+				 * 打开微信分享列表
+				 */
+				document.getElementById('share').addEventListener('tap',function(){
+					mui('#share_list').popover('toggle')
+				},false)
+				
+				/**
+				 * 监听微信分享事件
+				 */
+				mui('#share_list').on('tap','.share',function(){
+					if(!honey.user){
+						honey.user = myStorage.getItem('user')
+					}
+					var type=this.getAttribute('type')
+					var msg={title:honey.goods.name+' ￥'+honey.goods.price,extra:{scene:type},content:honey.goods.remark};
+					msg.thumbs=msg.pictures=[lazyLoad.getImageLocalUrl(honey.goods.img)];
+					msg.href=honey.apihost+'/mobile/goods/goodsinfo/id/'+honey.goods.goods_id+'/type/share/uid/'+honey.user.user_id;
+					// 发送分享
+					if(shares['weixin'].authenticated){
+						honey.shareMessage(msg, shares['weixin']);
+					}else{
+						shares['weixin'].authorize(function(){
+							honey.shareMessage(msg,shares['weixin']);
+						}, function(e){
+//							mui.toast('认证授权失败')
+						});
+					}
+				})
+			
+				/**
+				   * 发送分享消息
+				   * @param {JSON} msg
+				   * @param {plus.share.ShareService} s
+				   */
+				honey.shareMessage=function (msg, s){
+					s.send(msg, function(){
+						mui.toast('分享到"'+s.description+'"成功！');
+					}, function(e){
+						mui.toast('分享到"'+s.description+'"失败 ');
+					});
+				}
+				/**
+				   * 分享操作
+				   * @param {JSON} sb 分享操作对象s.s为分享通道对象(plus.share.ShareService)
+				   * @param {Boolean} bh 是否分享链接
+				   */
+				function shareAction(sb,bh) {
+					outSet('分享操作：');
+					if(!sb||!sb.s){
+						outLine('无效的分享服务！');
+						return;
+					}
+					var msg={content:sharecontent.value,extra:{scene:sb.x}};
+					if(bh){
+						msg.href=sharehref.value;
+						if(sharehrefTitle&&sharehrefTitle.value!=''){
+							msg.title=sharehrefTitle.value;
+						}
+						if(sharehrefDes&&sharehrefDes.value!=''){
+							msg.content=sharehrefDes.value;
+						}
+						msg.thumbs=['_www/logo.png'];
+						msg.pictures=['_www/logo.png'];
+					}else{
+						if(pic&&pic.realUrl){
+							msg.pictures=[pic.realUrl];
+						}
+					}
+					// 发送分享
+					if(sb.s.authenticated){
+						outLine('---已授权---');
+						shareMessage(msg, sb.s);
+					}else{
+						outLine('---未授权---');
+						sb.s.authorize(function(){
+							shareMessage(msg,sb.s);
+						}, function(e){
+							outLine('认证授权失败：'+e.code+' - '+e.message);
+						});
+					}
+				}
 				/**
 				 * 查看更多评论
 				 */
@@ -805,6 +930,7 @@
 					honey.preloadBuyWin()
 					honey.countCartGoodsNum()
 				})
+				
 
 				/**
 				 * 滚动事件

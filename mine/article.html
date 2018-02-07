@@ -8,53 +8,92 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="../css/mui.min.css">
-		<link rel="stylesheet" type="text/css" href="../css/own.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/own.css" />
+		<link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
 		<style>
-			body{
+			body {
 				color: #fff !important;
 			}
-			#list p{
+			
+			#list p {
 				color: #333;
 			}
-			#list .mui-navigate-right{
+			
+			#list .mui-navigate-right {
 				color: dodgerblue;
 			}
-			.mui-collapse-content p,.mui-collapse-content span,.mui-collapse-content img,.mui-collapse-content div{
+			
+			.mui-collapse-content p,
+			.mui-collapse-content span,
+			.mui-collapse-content img,
+			.mui-collapse-content div {
 				max-width: 100% !important;
 			}
-			#content{
-				padding:15px 10px;
+			
+			#content {
+				padding: 15px 10px;
 			}
-			#content img{
+			
+			#content img {
 				max-width: 100% !important;
 			}
-			h4{
+			
+			h4 {
 				color: #1692F0;
 				font-size: 14px;
 			}
-			.attr{
+			
+			.attr {
 				margin: 0;
 			}
-			.attr span{
-				font-size:12px;
+			
+			.attr span {
+				font-size: 12px;
 				padding-right: 5px;
 			}
-			#cate{
+			
+			#cate {
 				color: #ff6633;
 			}
-			#con,#con p,#con span,#con a{
+			
+			#con,
+			#con p,
+			#con span,
+			#con a {
 				clear: both;
-				font-size:12px;
+				font-size: 12px;
 				color: #666;
 			}
+			
+			#share {
+				color: #666;
+				border: 1px solid #999;
+				padding: 0px 5px;
+				border-radius: 3px;
+				float: right;
+			}
+			
+			#share span {
+				padding: 0;
+			}
+			
+			#share span:first-child {
+				font-size: 12px;
+			}
+			
+			#share span:last-child {
+				line-height: 20px;
+				padding: 0;
+			}
 		</style>
-		
+
 	</head>
+
 	<body>
 		<header class="mui-bar mui-bar-nav own-main-background-color">
-		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
-		<h1 class="mui-title" id="header-title">详情</h1>
-	</header>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+			<h1 class="mui-title" id="header-title">详情</h1>
+		</header>
 		<div class="mui-content" style="padding-top:35px ;">
 			<div class="loader" id="loader">
 				<a>
@@ -66,51 +105,75 @@
 			<div class="content" id="content">
 				<div>
 					<h4 id="title"></h4>
-					<p class="attr"><span id="cate"></span><span id="date"></span></p>
+					<p class="attr"><span id="cate"></span><span id="date"></span>
+						<a id="share">
+							<span class="mui-icon-extra mui-icon-extra-share"></span>
+							<span>分享</span>
+						</a>
+					</p>
 				</div>
-				
+
 				<div id="con"></div>
 			</div>
+		</div>
+		<div id="share_list" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a style="color:#999">分享</a>
+				</li>
+				<li class="mui-table-view-cell share" type="WXSceneSession">
+					<a href="#share_list">微信好友</a>
+				</li>
+				<li class="mui-table-view-cell share" type="WXSceneTimeline">
+					<a href="#share_list">微信朋友圈</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" type="cansel">
+					<a href="#share_list" style="color: #999;">取消</a>
+				</li>
+			</ul>
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js"></script>
 		<script type="text/javascript" src="../js/common.js"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<!--<script type="text/javascript" src="../js/lazyloadimages.js" charset="UTF-8"></script>-->
-		
+
 		<script>
-			(function(win,$,d,h){
+			(function(win, $, d, h) {
 				$.init({
-					swipeBack:true //启用右滑关闭功能
+					swipeBack: true //启用右滑关闭功能
 				});
-				h.d={
-					list:d.getElementById('content'),
-					loader:d.getElementById('loader'),
-					title:d.getElementById('title'),
-					con:d.getElementById('con')
+				h.d = {
+					list: d.getElementById('content'),
+					loader: d.getElementById('loader'),
+					title: d.getElementById('title'),
+					con: d.getElementById('con')
 				}
-				h.getArticle=function(){
-					$.ajax(h.apiurl,{
-						type:"post",
-						async:true,
-						data:{
-							m:'article_info',
-							article_id:h.self.article_id,
-							f:h.self.f
+				h.getArticle = function() {
+					$.ajax(h.apiurl, {
+						type: "post",
+						async: true,
+						data: {
+							m: 'article_info',
+							article_id: h.self.article_id,
+							f: h.self.f
 						},
-						success:function(ret){
-							if(ret.code==0&&ret.data){
-								h.d.loader.style.display="none"
-								h.d.title.innerHTML=ret.data.title
-								d.getElementById('cate').innerText='['+ret.data.cat_name+']';
-								d.getElementById('date').innerText=h.getYmdTime(ret.data.add_time)
-								h.d.con.innerHTML=h.htmlspecialchars_decode(ret.data.content);
-								var imgs=h.d.con.querySelectorAll('img')
-								$.each(imgs, function(i,v) {
-									var u=v.getAttribute('src')
-									if(u.indexOf('http://')<0){
-//										v.setAttribute('src','../images/default.png')
-										v.setAttribute('data-lazyload',h.apihost+u)
+						success: function(ret) {
+							if(ret.code == 0 && ret.data) {
+								h.d.loader.style.display = "none"
+								h.article = ret.data;
+								h.d.title.innerHTML = ret.data.title
+								d.getElementById('cate').innerText = '[' + ret.data.cat_name + ']';
+								d.getElementById('date').innerText = h.getYmdTime(ret.data.add_time)
+								h.d.con.innerHTML = h.htmlspecialchars_decode(ret.data.content);
+								var imgs = h.d.con.querySelectorAll('img')
+								$.each(imgs, function(i, v) {
+									var u = v.getAttribute('src')
+									if(u.indexOf('http://') < 0) {
+										//										v.setAttribute('src','../images/default.png')
+										v.setAttribute('data-lazyload', h.apihost + u)
 										v.removeAttribute('src')
 										v.removeAttribute('style')
 									}
@@ -120,22 +183,89 @@
 								});
 							}
 						},
-						error:function(ret){
+						error: function(ret) {
 							alert(ret.responseText)
 						}
 					});
 				}
-				$.plusReady(function(){
-					h.self=plus.webview.currentWebview();
+				$.plusReady(function() {
+					h.self = plus.webview.currentWebview();
 					h.getArticle()
-					
-					$.back=function(){
+
+					var shares = null;
+					/**
+					 * 更新分享服务
+					 */
+					plus.share.getServices(function(s) {
+						shares = {};
+						for(var i in s) {
+							var t = s[i];
+							shares[t.id] = t;
+						}
+					}, function(e) {
+
+					});
+					/**
+					 * 打开微信分享列表
+					 */
+					d.getElementById('share').addEventListener('tap', function() {
+						mui('#share_list').popover('toggle')
+						var img = '../images/logo_s.png';
+						if(h.article.thumb) {
+							// 使用Logo图片分享
+							img = h.apihost + h.article.thumb;
+						}
+						plus.io.resolveLocalFileSystemURL(img, function(entry) {
+							h.article.img= entry.toLocalURL();
+						}, function(e) {
+						});
+					}, false)
+
+					$('#share_list').on('tap', '.share', function() {
+						if(!h.user) {
+							h.user = myStorage.getItem('user')
+						}
+						var type = this.getAttribute('type')
+						var msg = {
+							title: h.article.title,
+							extra: {
+								scene: type
+							},
+							content: h.article.description
+						};
+						msg.thumbs=msg.pictures=[h.article.img];
+						msg.href = honey.apihost + '/mobile/article/index/article_id/' + honey.article.article_id + '/type/share/uid/' + honey.user.user_id;
+						// 发送分享
+						if(shares['weixin'].authenticated) {
+							h.shareMessage(msg, shares['weixin']);
+						} else {
+							shares['weixin'].authorize(function() {
+								h.shareMessage(msg, shares['weixin']);
+							}, function(e) {
+//								$.toast('认证授权失败')
+							});
+						}
+					})
+					/**
+					 * 发送分享消息
+					 * @param {JSON} msg
+					 * @param {plus.share.ShareService} s
+					 */
+					h.shareMessage = function(msg, s) {
+						s.send(msg, function() {
+							$.toast('分享到"' + s.description + '"成功！');
+						}, function(e) {
+							$.toast('分享到"' + s.description + '"失败');
+						});
+					}
+
+					$.back = function() {
 						h.self.close('slide-out-right')
 					}
+
 				})
-				
-			}(window,mui,document,honey))
-			
+
+			}(window, mui, document, honey))
 		</script>
 	</body>
 
