@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的钱包</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/own.css"/>
+    <style>
+    	header .mui-title{
+    		color: #fff;
+    	}
+    	.banner{
+    		height: 100%;
+    		background: url(../images/mine-bg.png) no-repeat;
+    		background-size: 100% 130%;
+    		text-align: center;
+    	}
+    	.banner img{
+    		width: 70px;
+    		height: 70px;
+    		border-radius:70px ;
+    		margin-top:50px;
+    	}
+    	.banner p,.banner div{
+    		width: 50%;
+    	}
+    	.banner p{
+    		color: #fff;
+    	}
+    	.banner p a{
+    		color: #ff6633;
+    		border: 1px solid #FF6633;
+    		padding: 5px 30px;
+    		border-radius: 5px;
+    		font-size: 12px;
+    		background: #fff;
+    		opacity:0.9
+    	}
+    	ul{
+    		list-style: none;
+    	}
+    	.wallet{
+    		padding: 2px 0 10px 3px;
+    		background: #eee;
+    	}
+    	.wallet li{
+    		padding:8px 5px;
+    		border: 1px solid #fff;
+    		background: #fff;
+    		width: 48%;
+    		margin: 1%;
+    		float: left;
+    	}
+    	.item-info{
+    		width: 85%;
+    		display: block;
+    		text-align: center;
+    	}
+    	.price{
+    		color: #FF6633;
+    	}
+    	.title{
+    		color: #333;
+    	}
+    	.fl{
+			float: left;
+		}
+		.fr{
+			float: right;
+		}
+		.record-box{
+			clear: both;
+			padding: 1px 5px;
+		}
+		.record-box .note{
+			font-size: 13px;
+			color: #666;
+			padding: 2px;
+			margin: 0 !important;
+		}
+		.record-item {
+			margin: 0 0 5px 0 !important;
+			background: #fff;
+		}
+		.record-item span{
+			width: 40%;
+		}
+		.record-item span:first-child{
+			width: 60%;
+		}
+		.record-item p{
+			padding:3px 5px;
+			margin: 0;
+			color: #333;
+			font-size: 12px;
+		}
+		.record-item p:first-child{
+			float: left;
+			width: 100%;
+		}
+		.record-item p:last-child{
+			clear: both;
+		}
+		.no-content{
+			height: 50px;
+			line-height: 50px;
+			font-size: 12px;
+			text-align: center;
+			color: #666;
+		}
+		.mui-bar-transparent {
+			background-color: rgba(241, 10, 15, 0.0);
+		}
+		.mui-content{
+			padding: 0 !important;
+		}
+		#card{
+			color: #999;
+			font-weight: 700;
+		}
+    </style>
+</head>
+<body>
+	<header id="header" class="mui-bar mui-bar-transparent">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id="back"></a>
+		<h1 class="mui-title">我的钱包</h1>
+	</header>
+	<div class="mui-content">
+		<!--<div class="loader" id="loader">
+			<a>
+				<span class="mui-spinner"></span>
+			</a>
+			<br />
+			<span>加载中...</span>
+		</div>-->
+		<div class="banner">
+			<div><img id="head_pic" src="../images/default.png"/></div>
+			<p id="nickname">哈喽</p>
+			<p id="recharge"><a>充 值</a></p>
+		</div>
+		<ul class="wallet">
+			<li class="wallet-item link-btn" type="card">
+				<span class="item-info">
+					<p class="title">线下会员卡</p>
+					<p id="card">15083579839</p>
+				</span>
+			</li>
+			<li class="wallet-item" id="coupon">
+				<span class="item-info">
+					<p class="title">优惠券</p>
+					<p class="price" id="quan">5</p>
+				</span>
+			</li>
+			<li class="wallet-item link-btn" type="amount">
+				<span class="item-info">
+					<p class="title">余额</p>
+					<p class="price" id="money">123456.00</p>
+				</span>
+			</li>
+			<li class="wallet-item link-btn" type="points">
+				<span class="item-info">
+					<p class="title">积分</p>
+					<p class="price" id="points">123456.00</p>
+				</span>
+			</li>
+		</ul>
+		<div class="record-box">
+			<p class="note">最近明细记录</p>
+			<ul class="record-list" id="list">
+				<li class="record-item no-content">
+					没有明细记录
+				</li>
+			</ul>
+		</div>
+		
+	</div>
+	<script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/photo.js" charset="UTF-8"></script>
+	<script type="text/javascript" charset="UTF-8">
+		(function(win,h,$,d,ms) {
+			$.init();
+			$.plusReady(function(){
+				h.token=ms.getItem('token');
+				h.self=plus.webview.currentWebview();
+				h.user=h.self.user;
+				h.d={
+					money:d.getElementById('money'),
+					amount:d.getElementById('amount'),
+					points:d.getElementById('points'),
+					quan:d.getElementById('quan'),
+					list:d.getElementById('list')
+				}
+				
+				d.getElementById('money').innerText='￥'+h.user.user_money;
+				d.getElementById('card').innerText=h.user.offline_cardid||'未绑卡';
+				d.getElementById('points').innerText=h.user.pay_points;
+				d.getElementById('quan').innerText=h.user.coupon_count;
+				if(h.user.head_pic){
+					d.getElementById('head_pic').src=(h.user.head_pic.indexOf('http://')>=0?h.user.head_pic:h.apihost+h.user.head_pic);
+				}
+				d.getElementById('nickname').innerText=h.user.nickname;
+				
+				
+				$.back=function(){
+					h.self.close('slide-out-right')
+				}
+				
+				h.getRecordList=function(){
+					$.ajax(h.apiurl,{
+						type:"post",
+						async:true,
+						dataType:'json',
+						data:{
+							m:'get_record',
+							token:h.token,
+							type:'cost',
+							page:h.page,
+							size:10
+						},
+						success:function(ret){
+							if(ret.code==-1){
+								$.fire(plus.webview.getWebviewById('mine'),'logout')
+								h.openWin('login.html','login')
+								$.back()
+								return
+							}
+							if(ret.code==0){
+								if(ret.data&&ret.data.length>0){
+									var html=[];
+									$.each(ret.data, function(i,v) {
+									html.push('<li class="record-item"><p><span class="fl">'+h.getYmdTime(v.time)+'</span>\
+										<span class="fr"> '+(v.user_money!=0?'金额 <font color="'+(v.user_money>0?"green":"red")+'">'+v.user_money+'</font>':'')
+										+(v.pay_points!=0?' 积分 <font color="'+(v.pay_points>0?"green":"red")+'">'+v.pay_points+'</font>':'')+'</span>\
+									</p><p>'+v.desc+'</p></li>');
+									});
+									h.d.list.innerHTML=html.join('')
+								}else{
+									h.d.list.innerHTML='<li class="record-item no-content">没有明细记录</li>';
+								}
+								
+							}
+						},
+						error:function(ret){
+						}
+					});
+				}
+				
+				h.getRecordList()
+				d.getElementById('recharge').addEventListener('tap',function(){
+					h.openWin('wallet-recharge.html','wallte-recharge',{user:h.user})
+				})
+				
+				d.getElementById('coupon').addEventListener('tap',function(){
+					h.openWin('wallet-coupon.html','wallet-coupon')
+				})
+				
+				$('.wallet').on('tap','.link-btn',function(){
+					var type=this.getAttribute('type')
+					if(type!='card'){
+						h.openWin('wallet-record.html','wallet-record',{type:type})
+					}else{
+						if(!h.user.offline_cardid){
+							h.openWin('bind-card.html','bind-card')
+						}
+					}
+					
+				})
+				h.swipeClose(win)
+			})
+		})(window,honey,mui,document,myStorage);
+		
+	</script>
+	
+</body>
+</html>

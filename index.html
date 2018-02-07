@@ -339,8 +339,76 @@
 						h.cartNum.style.display="none"
 					}
 				})
-			})
-		}(window,honey,mui,document,myStorage))
-	</script>
+				
+			 	// 监听点击消息事件
+			    plus.push.addEventListener( "click", function( msg ) {
+			    	if(typeof(msg.payload)=='string'){
+			    		msg.payload=JSON.parse(msg.payload);
+			    	}
+			        // 判断是从本地创建还是离线推送的消息
+					switch(parseInt(msg.payload.type)){
+						case 0://查看商品分类
+							$.fire(h.goodsListHeader, 'cateId', {
+								name: msg.payload.name,
+								cate: msg.payload.id,
+								f: 'push'
+							})
+							h.goodsListHeader.show('slide-in-right', 300)
+							break;
+						case 1://查看商品详情
+							if(!h.detailWebView) {
+								h.detailWebView = plus.webview.getWebviewById('goods-header');
+							}
+							if(!h.detailSubpage) {
+								h.detailSubpage = plus.webview.getWebviewById('goods-detail');
+							}
+							$.fire(h.detailWebView, 'goodsId', {
+								goods_id: msg.payload.id,
+								f: 'push'
+							})
+							h.detailWebView.show('slide-in-right', 300)
+							break;
+						case 2://查看文章
+							h.openWin('./mine/article.html', 'article', {
+								article_id: msg.payload.id,
+								f: 'push'
+							});
+							break;
+						case 3://查看订单详情
+							if(!h.token){
+								h.openWin('mine/login.html','login')
+								return
+							}
+							h.openWin('./mine/order-detail.html','order-detail',{order_id:msg.payload.id})
+							break;
+					}
+			    }, false );
+				// 监听在线消息事件
+				plus.push.addEventListener("receive", function(msg) {
+					if(msg.payload) {
+						if(typeof(msg.payload) == "string") {
+//							alert( "payload(String): "+msg.payload );
+							msg.payload=JSON.parse(msg.payload);
+						}
+						var options = {cover:false};
+						plus.push.createMessage(msg.payload.title, msg.payload, options );
+					} else {
+						//alert( "payload: undefined" );
+					}
+				}, false);
+				
+				h.checkArguments=function(){
+				    var args= plus.runtime.arguments;
+				    if(args){
+//				    	console.log(typeof(args=="string")?args:JSON.stringify(args))
+				        // 处理args参数，如打开新页面等
+				    }
+				}
+			    d.addEventListener('newintent',function(){
+				    h.checkArguments();
+				},false);
+})
+
+}(window, honey, mui, document, myStorage))</script>
 </body>
 </html>
