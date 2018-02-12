@@ -688,7 +688,7 @@
 					var type=this.getAttribute('type')
 					var msg={title:honey.goods.name+' ￥'+honey.goods.price,extra:{scene:type},content:honey.goods.remark};
 					msg.thumbs=msg.pictures=[lazyLoad.getImageLocalUrl(honey.goods.img)];
-					msg.href=honey.apihost+'/mobile/goods/goodsinfo/id/'+honey.goods.goods_id+'/type/share/uid/'+honey.user.user_id;
+					msg.href=honey.sharehost+'/mobile/goods/goodsinfo/id/'+honey.goods.goods_id+'/type/share/uid/'+honey.user.user_id;
 					// 发送分享
 					if(shares['weixin'].authenticated){
 						honey.shareMessage(msg, shares['weixin']);
@@ -1010,6 +1010,10 @@
 				})
 				
 				honey.d.buynow.addEventListener('tap',function(){
+					if(!honey.token){
+						honey.openWin('../mine/login.html', 'login')
+						return
+					}
 					if(honey.goods.store==0){
 						if(honey.goods.store==0){
 							mui.toast('该商品已售罄')
@@ -1023,7 +1027,13 @@
 					mui.fire(honey.buyContent,'showBuyList',[honey.goods])
         			honey.buyHeader.show('slide-in-right',300);
 				})
+				window.addEventListener('logout',function(){
+					honey.token=null;
+				})
 				
+				window.addEventListener('login',function(){
+					honey.token=myStorage.getItem('token')
+				})
 				honey.swipeClose(window)
 			})
 		</script>

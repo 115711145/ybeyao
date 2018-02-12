@@ -321,7 +321,7 @@
 					h.d.pay_points.innerText=0;
 					h.d.coupon_num.innerText=0;
 					h.d.level_name.innerText="游客";
-					h.d.head_pic.setAttribute('src','../images/profile.png')
+					h.d.head_pic.setAttribute('src','../images/default.png')
 //					h.d.head_pic.style.background="url(../images/profile.png) no-repeat"
 				}else{
 					h.d.nickname.innerText=user.truename||user.nickname;
@@ -329,7 +329,7 @@
 					h.d.pay_points.innerText=user.pay_points;
 					h.d.coupon_num.innerText=user.coupon_count;
 					h.d.level_name.innerText=user.level.level_name+((user.level.discount<100)?'(尊享'+user.level.discount+'折)':"");
-					var head_pic=h.trim(user.head_pic)?(user.head_pic.indexOf('http://')>=0?user.head_pic:h.apihost+user.head_pic)+'?v='+Math.random():'../images/profile.png';
+					var head_pic=h.trim(user.head_pic)?(user.head_pic.indexOf('http://')>=0?user.head_pic:h.apihost+user.head_pic)+'?v='+Math.random():'../images/default.png';
 //					h.d.head_pic.style.background="url("+head_pic+") no-repeat"
 					h.d.head_pic.setAttribute('src',head_pic)
 				}
