@@ -210,8 +210,6 @@
 		</nav>
     <script type="text/javascript" src="../js/mui.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="../js/common.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
-    <script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
     <script type="text/javascript">
     	(function(win, $, h, ms) {
 			$.init();
@@ -347,7 +345,8 @@
 						if(v.exchange_integral) {
 							h._sum.exchange_integral += parseInt(v.exchange_integral) * parseFloat(v.num)
 						}
-						var li = '<li><div class="goods-img fl"><img data-lazyload="' + v.img + '"></div>\
+						var src = v.img?lazyLoad.getImageLocalUrl(v.img):"../images/default.png";
+						var li = '<li><div class="goods-img fl"><img data-lazyload="' + v.img + '" src="'+src+'" default-src="../images/default.png" onerror="lazyLoad.load(this)"></div>\
 			                <div class="goods-info fl"><p class="title">' + h.cutstr(v.name, 50) + '</p>\
 			                    <p class="weight">' + (v.spec_name ? v.spec_name.join('  ') : '') + '</p></div>\
 			                <div class="price-num fr"><p class="price">\
@@ -357,9 +356,6 @@
 					});
 				}
 				h.d.list.innerHTML = html.join('')
-				$('#buy-list').imageLazyload({
-					placeholder:'../images/default.png',
-				})
 				h.d.warm.querySelector('#free').style.display=(h._sum.amount>h.config.freight_free?"none":"block");
 			}
 			/**
@@ -475,6 +471,9 @@
 							if(ret.code == -1) {
 								$.toast(ret.msg)
 								honey.openWin('../mine/login.html', 'login')
+								setTimeout(function(){
+									honey.back()
+								})
 								return
 							}
 							h.d.quan_list.innerHTML = '<div class="no-quan">没有可用的券</div>';
@@ -763,6 +762,10 @@
 				h.getPeisongfs()
 				h.getShopList()
 				
+				h.back=function(){
+					h.buyWin.hide('none',300) 
+				}
+				
 				/**
 				 * 输入优惠券码事件
 				 */
@@ -985,7 +988,12 @@
 				win.addEventListener('showBuyList', function(o) {
 					h.token = ms.getItem('token')
 					h.user = ms.getItem('user')
-					h.user.ye = parseFloat(h.user.user_money) - parseFloat(h.user.frozen_money);
+					if(h.user){
+						h.user.ye = parseFloat(h.user.user_money) - parseFloat(h.user.frozen_money);
+					}else{
+						h.user={}
+					}
+					
 //					h.d.ye.value=h.user.ye || 0;
 //					h.d.jf.value=h.user.pay_points || 0
 //					h.d.ye.setAttribute('placeholder', '您的当前余额为' + (h.user.ye || 0))
@@ -1018,9 +1026,12 @@
 				
 				win.addEventListener('logout',function(){
 					h.discount=100;
+					h.user={}
+					h.token=null;
 				})
 				
 				win.addEventListener('login',function(){
+					h.token=myStorage.getItem('token')
 					h.user=myStorage.getItem('user')
 		    		if(h.user&&h.user.level.discount>0){
 		    			h.discount=parseInt(h.user.level.discount);

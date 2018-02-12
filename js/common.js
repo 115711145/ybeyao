@@ -469,6 +469,7 @@ var honey = (function(win, $) {
 	var h = {
 		apiurl: "https://www.ybeyao.com/api/app/data/",
 		apihost: "https://www.ybeyao.com",
+		sharehost:"http://ybeyao.com",
 		//		apiurl : "http://192.168.11.226/api/app/data/",
 		//		apihost : "http://192.168.11.226",
 		page: 1,
@@ -1022,9 +1023,14 @@ var honey = (function(win, $) {
 			if(!honey.mineWin) {
 				honey.mineWin = plus.webview.getWebviewById('mine')
 			}
+			if(!honey.detailSubpage) {
+				honey.detailSubpage = plus.webview.getWebviewById('goods-detail')
+			}
 			$.fire(honey.mineWin, 'login', {
 				show: show
 			})
+			$.fire(honey.detailSubpage, 'login')
+			
 		}
 
 		h.getchannel = function() {

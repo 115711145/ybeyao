@@ -136,8 +136,6 @@
 		</div>
 		<script type="text/javascript" src="../js/mui.min.js"></script>
 		<script type="text/javascript" src="../js/common.js"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/mui.lazyload.img.js" charset="UTF-8"></script>
 		<!--<script type="text/javascript" src="../js/lazyloadimages.js" charset="UTF-8"></script>-->
 
 		<script>
@@ -174,13 +172,15 @@
 									if(u.indexOf('http://') < 0) {
 										//										v.setAttribute('src','../images/default.png')
 										v.setAttribute('data-lazyload', h.apihost + u)
+										v.setAttribute('onerror','lazyLoad.load(this)');
 										v.removeAttribute('src')
 										v.removeAttribute('style')
+										
 									}
 								});
-								$('#content').imageLazyload({
-									placeholder: '../images/default.png'
-								});
+//								$('#content').imageLazyload({
+//									placeholder: '../images/default.png'
+//								});
 							}
 						},
 						error: function(ret) {
@@ -234,7 +234,7 @@
 							content: h.article.description
 						};
 						msg.thumbs=msg.pictures=[h.article.img];
-						msg.href = honey.apihost + '/mobile/article/index/article_id/' + honey.article.article_id + '/type/share/uid/' + honey.user.user_id;
+						msg.href = honey.sharehost + '/mobile/article/index/article_id/' + honey.article.article_id + '/type/share/uid/' + honey.user.user_id;
 						// 发送分享
 						if(shares['weixin'].authenticated) {
 							h.shareMessage(msg, shares['weixin']);

@@ -193,7 +193,8 @@
 					}
 				})
 				$('#search').on('search','#search-input', function(){
-					h.openGoodsList()
+					var keyword=this.querySelector('.key').innerText;
+					h.openGoodsList(keyword)
 				});
 				
 				$('#content').on('tap','li',function(){
