@@ -7,7 +7,7 @@
 	"id": "H551622A3",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "友邦到家",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.30",/*应用版本名称*/
+		"name": "1.0.31",/*应用版本名称*/
 		"code": ""
 	},
 	"description": "",/*应用描述信息*/
@@ -387,7 +387,9 @@
 					"js/mui.previewimage.js",
 					"images/default.png",
 					"css/home.css",
-					null
+					null,
+					"images/ad-default.png",
+					"js/mui.min.js"
 				],
 				"refer": [
 					"goods/goods-list-header.html",
@@ -671,7 +673,8 @@
 				"resources": [
 					"js/mui.min.js",
 					"css/mui.min.css",
-					"images/logo.png"
+					"images/logo.png",
+					"js/common.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -818,7 +821,8 @@
 					"js/buy-content.js",
 					"css/buy-content.css",
 					"fonts/mui-icons-extra.ttf",
-					"css/icons-extra.css"
+					"css/icons-extra.css",
+					"images/call.png"
 				],
 				"refer": [
 					"cart/quan.html",
@@ -1095,6 +1099,15 @@
 					"home/coupon.html",
 					"mine/article.html"
 				],
+				"priority": 0
+			},
+			"goods/shop-list.html": {
+				"resources": [
+					"js/city.js",
+					"images/call.png",
+					"js/mui.min.js"
+				],
+				"refer": [],
 				"priority": 0
 			}
 		},

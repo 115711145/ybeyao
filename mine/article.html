@@ -147,7 +147,8 @@
 					list: d.getElementById('content'),
 					loader: d.getElementById('loader'),
 					title: d.getElementById('title'),
-					con: d.getElementById('con')
+					con: d.getElementById('con'),
+					share:d.getElementById('share')
 				}
 				h.getArticle = function() {
 					$.ajax(h.apiurl, {
@@ -190,6 +191,9 @@
 				}
 				$.plusReady(function() {
 					h.self = plus.webview.currentWebview();
+					if(plus.os.name=="iOS"){
+						h.d.share.setAttribute('display',h.isInstallWX()?"":"none")
+					}
 					h.getArticle()
 
 					var shares = null;
@@ -222,6 +226,10 @@
 					}, false)
 
 					$('#share_list').on('tap', '.share', function() {
+						if(plus.os.name=="iOS"&&!honey.isInstallWX()){
+							$.toast('未安装微信客户端')
+							return
+						}
 						if(!h.user) {
 							h.user = myStorage.getItem('user')
 						}

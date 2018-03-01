@@ -836,6 +836,16 @@ var honey = (function(win, $) {
 				h.deviceInfo.imsi += plus.device.imsi[i];
 			}
 		}
+		
+		/**
+		 * 判断是否安装微信
+		 */
+		h.isInstallWX=function(){
+			var WXApi = plus.ios.import("WXApi");
+			var isWXInstalled = WXApi.isWXAppInstalled();
+			return isWXInstalled
+		}
+		
 		/**
 		 * 获取系统信息
 		 * name 系统名称

@@ -649,6 +649,9 @@
 			}
 			
 			mui.plusReady(function() {
+				if(plus.os.name=="iOS"){
+					honey.d.share.setAttribute('display',honey.isInstallWX()?"":"none")
+				}
 				honey.token = myStorage.getItem('token')
 //				if(honey.token&&(honey.user=myStorage.getItem('user'))){
 //					honey.discount=parseInt(honey.user.level.discount)
@@ -682,6 +685,10 @@
 				 * 监听微信分享事件
 				 */
 				mui('#share_list').on('tap','.share',function(){
+					if(plus.os.name=="iOS"&&!honey.isInstallWX()){
+						mui.toast('未安装微信客户端')
+						return
+					}
 					if(!honey.user){
 						honey.user = myStorage.getItem('user')
 					}
