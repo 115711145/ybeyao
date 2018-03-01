@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>E3不是父子模版，考虑其为模态视图</title>
+		<title>登录</title>
 		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
 		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../css/own.css" />
@@ -40,7 +40,7 @@
 				<button id="register" type="button" class="mui-btn mui-btn-link">快速注册</button>
 				<button id="forgot" type="button" class="mui-btn mui-btn-link">忘记密码</button>
 			</div>
-			<div class="third">
+			<div class="third" id="third">
 				<p class="line"><span class="fl"></span>第三方账号登录<span class="fr"></span></p>
 				<p class="icon"><span class="mui-icon mui-icon-weixin" id="wxdl"></span></p>
 				
@@ -59,7 +59,8 @@
 				mobile:document.getElementById('mobile'),
 				wxdl:document.getElementById('wxdl'),
 				register:document.getElementById('register'),
-				forgot:document.getElementById('forgot')
+				forgot:document.getElementById('forgot'),
+				third:document.getElementById('third')
 			};
 			honey.is_wxlogin=false;
 			honey.user={
@@ -91,7 +92,8 @@
 								resolution:honey.deviceInfo.screen,
 								imei:honey.deviceInfo.imei,
 								uuid:honey.deviceInfo.uuid,
-								app_version:plus.runtime.version
+								app_version:honey.version||plus.runtime.version,
+								push_cid:honey.push_cid
 							},
 							type:'post',
 							dataType:'json',
@@ -144,6 +146,9 @@
 				})
 			}
 			mui.plusReady(function(){
+				if(plus.os.name=="iOS"){
+					honey.d.third.setAttribute('display',h.isInstallWX()?"":"none")
+				}
 				if(!honey.loginWin){
 					honey.loginWin=plus.webview.currentWebview();
 				}
@@ -153,11 +158,18 @@
 				honey.getSysInfo()
 				honey.getDeviceInfo()
 				honey.bindEvent()
+				honey.push_cid=plus.push.getClientInfo().clientid
+				plus.runtime.getProperty(plus.runtime.appid,function(inf){
+			    	honey.version=inf.version
+			    });
 				if(!honey.service){
 					plus.oauth.getServices(function(services){
 						for(var i in services){
 							var service=services[i];
 							if(service.id=='weixin'){
+								if(plus.os.name=="iOS"&&!honey.isInstallWX()){
+									break;
+								}
 								honey.service=service;
 								break;
 							}
@@ -182,11 +194,17 @@
 					honey.service.login(function(){
 						honey.service.getUserInfo(honey.login,honey.logErr);
 					},honey.logErr);
+				}else{
+					mui.toast('登录失败:未安装微信客户端')
 				}
 			}
 			honey.logErr=function(e){
 				honey.d.wxdl.setAttribute('style','')
-				mui.toast('登录失败:'+e.message)
+				if(e.code==-8){
+					mui.toast('登录失败:未安装微信客户端')
+				}else{
+					mui.toast('登录失败')
+				}
 			}
 			// 获取用户信息
 			honey.login=function(){
@@ -205,7 +223,8 @@
 						resolution:honey.deviceInfo.screen,
 						imei:honey.deviceInfo.imei,
 						uuid:honey.deviceInfo.uuid,
-						app_version:plus.runtime.version
+						app_version:honey.version||plus.runtime.version,
+						push_cid:honey.push_cid
 					},
 					type:'post',
 					dataType:'json',
