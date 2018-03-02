@@ -1163,6 +1163,55 @@ var honey = (function(win, $) {
 				}
 			});
 		}
+		/**
+		 * 准备发送分享
+		 * @param {Object} msg
+		 * @param {Object} s
+		 */
+		h.shareReady=function(msg,s){
+			// 发送分享
+			if(s.authenticated){
+				honey.shareMessage(msg, s);
+			}else{
+				s.authorize(function(){
+					honey.shareMessage(msg,s);
+				}, function(e){
+//							mui.toast('认证授权失败')
+				});
+			}
+		}
+		/**
+	     * 发送分享消息
+	     * @param {JSON} msg
+	     * @param {plus.share.ShareService} s
+	     */
+		h.shareMessage=function (msg, s){
+			s.send(msg, function(){
+				mui.toast('分享到"'+s.description+'"成功！');
+			}, function(e){
+				mui.toast('分享到"'+s.description+'"失败 ');
+			});
+		}
+		
+		/**
+		 * 压缩图片
+		 * @param {Object} options
+		 * @param {Object} callback
+		 */
+		h.thumbImg=function(options,callback){
+			plus.zip.compressImage({
+				src: options.src,
+				dst: '_doc/'+options.name,
+				overwrite: true,
+				quality: 50,
+				width:options.width||'50%',
+				height:options.height||'50%',
+			}, function(zip) {
+				callback&&callback(zip.target)
+			}, function(zipe) {
+				callback&&callback(false)
+			});
+		}
 	})
 
 	/**
