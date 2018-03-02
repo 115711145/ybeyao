@@ -214,19 +214,24 @@
 					 */
 					d.getElementById('share').addEventListener('tap', function() {
 						mui('#share_list').popover('toggle')
-						var img = '../images/logo_s.png';
-						if(h.article.thumb) {
-							// 使用Logo图片分享
-							img = h.apihost + h.article.thumb;
+						if(!h.thumb){
+							if(h.article.thumb){
+								var img = (h.apihost + h.article.thumb)
+								plus.io.resolveLocalFileSystemURL(img, function(entry) {
+									img= entry.toLocalURL();
+									h.thumbImg({src:img,width:'150px',height:'150px',name:'article_'+h.article.article_id},function(ret){
+										h.thumb=ret;
+									})
+								}, function(e) {
+								});
+							}else{
+								h.thumb='file://'+plus.io.convertLocalFileSystemURL('../images/logo.png');
+							}
 						}
-						plus.io.resolveLocalFileSystemURL(img, function(entry) {
-							h.article.img= entry.toLocalURL();
-						}, function(e) {
-						});
 					}, false)
 
 					$('#share_list').on('tap', '.share', function() {
-						if(plus.os.name=="iOS"&&!honey.isInstallWX()){
+						if(plus.os.name=="iOS"&&!h.isInstallWX()){
 							$.toast('未安装微信客户端')
 							return
 						}
@@ -241,31 +246,30 @@
 							},
 							content: h.article.description
 						};
-						msg.thumbs=msg.pictures=[h.article.img];
-						msg.href = honey.sharehost + '/mobile/article/index/article_id/' + honey.article.article_id + '/type/share/uid/' + honey.user.user_id;
-						// 发送分享
-						if(shares['weixin'].authenticated) {
-							h.shareMessage(msg, shares['weixin']);
-						} else {
-							shares['weixin'].authorize(function() {
-								h.shareMessage(msg, shares['weixin']);
-							}, function(e) {
-//								$.toast('认证授权失败')
-							});
+						msg.href = h.sharehost + '/mobile/article/index/article_id/' + h.article.article_id + '/type/share/uid/' + (h.user?h.user.user_id:0);
+						if(!h.thumb){
+							if(h.article.thumb){
+								var img = (h.apihost + h.article.thumb)
+								plus.io.resolveLocalFileSystemURL(img, function(entry) {
+									img= entry.toLocalURL();
+									h.thumbImg({src:img,width:'150px',height:'150px',name:'article_'+h.article.article_id},function(ret){
+										h.thumb=ret;
+										msg.thumbs=msg.pictures=[h.thumb];
+										h.shareReady(msg,shares['weixin'])
+										
+									})
+								}, function(e) {
+								});
+							}else{
+								h.thumb='file://'+plus.io.convertLocalFileSystemURL('../images/logo.png');
+								msg.thumbs=msg.pictures=[h.thumb];
+								h.shareReady(msg,shares['weixin'])
+							}
+						}else{
+							msg.thumbs=msg.pictures=[h.thumb];
+							h.shareReady(msg,shares['weixin'])
 						}
 					})
-					/**
-					 * 发送分享消息
-					 * @param {JSON} msg
-					 * @param {plus.share.ShareService} s
-					 */
-					h.shareMessage = function(msg, s) {
-						s.send(msg, function() {
-							$.toast('分享到"' + s.description + '"成功！');
-						}, function(e) {
-							$.toast('分享到"' + s.description + '"失败');
-						});
-					}
 
 					$.back = function() {
 						h.self.close('slide-out-right')

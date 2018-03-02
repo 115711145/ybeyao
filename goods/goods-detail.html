@@ -679,7 +679,21 @@
 				 */
 				document.getElementById('share').addEventListener('tap',function(){
 					mui('#share_list').popover('toggle')
+					var img=lazyLoad.getImageLocalUrl(honey.goods.img);
+					if(!honey.thumb){
+						honey.thumbImg({src:img,width:'100px',height:'100px',name:'goods_'+honey.goods.goods_id+'.jpg'},function(ret){
+							if(ret){
+								honey.thumb=ret;
+							}else{
+								plus.io.resolveLocalFileSystemURL('../images/logo_s.png', function(entry) {
+									honey.thumb=entry.toLocalURL();
+								}, function(e) {
+								});
+							}
+						});
+					}
 				},false)
+				
 				
 				/**
 				 * 监听微信分享事件
@@ -694,32 +708,28 @@
 					}
 					var type=this.getAttribute('type')
 					var msg={title:honey.goods.name+' ￥'+honey.goods.price,extra:{scene:type},content:honey.goods.remark};
-					msg.thumbs=msg.pictures=[lazyLoad.getImageLocalUrl(honey.goods.img)];
-					msg.href=honey.sharehost+'/mobile/goods/goodsinfo/id/'+honey.goods.goods_id+'/type/share/uid/'+honey.user.user_id;
-					// 发送分享
-					if(shares['weixin'].authenticated){
-						honey.shareMessage(msg, shares['weixin']);
+					msg.href=honey.sharehost+'/mobile/goods/goodsinfo/id/'+honey.goods.goods_id+'/type/share/uid/'+(honey.user?honey.user.user_id:0);
+					if(honey.thumb){
+						msg.thumbs=msg.pictures=[honey.thumb];
+						honey.shareReady(msg,shares['weixin'])
 					}else{
-						shares['weixin'].authorize(function(){
-							honey.shareMessage(msg,shares['weixin']);
-						}, function(e){
-//							mui.toast('认证授权失败')
+						var img=lazyLoad.getImageLocalUrl(honey.goods.img);
+						honey.thumbImg({src:img,width:'100px',height:'100px',name:'goods_'+honey.goods.goods_id+'.jpg'},function(ret){
+							if(ret){
+								msg.thumbs=msg.pictures=[ret];
+								honey.shareReady(msg,shares['weixin'])
+							}else{
+								plus.io.resolveLocalFileSystemURL('../images/logo_s.png', function(entry) {
+									msg.thumbs=msg.pictures=[entry.toLocalURL()];
+									honey.shareReady(msg,shares['weixin'])
+								}, function(e) {
+								});
+							}
 						});
 					}
+					
 				})
-			
-				/**
-				   * 发送分享消息
-				   * @param {JSON} msg
-				   * @param {plus.share.ShareService} s
-				   */
-				honey.shareMessage=function (msg, s){
-					s.send(msg, function(){
-						mui.toast('分享到"'+s.description+'"成功！');
-					}, function(e){
-						mui.toast('分享到"'+s.description+'"失败 ');
-					});
-				}
+				
 				/**
 				   * 分享操作
 				   * @param {JSON} sb 分享操作对象s.s为分享通道对象(plus.share.ShareService)
@@ -936,6 +946,7 @@
 					honey.goodsDetail.show()
 					honey.preloadBuyWin()
 					honey.countCartGoodsNum()
+					honey.thumb=null
 				})
 				
 
