@@ -146,8 +146,8 @@
 				})
 			}
 			mui.plusReady(function(){
-				if(plus.os.name=="iOS"){
-					honey.d.third.setAttribute('display',honey.isInstallWX()?"":"none")
+				if(plus.os.name=='Android' || (plus.os.name=='iOS' && honey.isInstallWX())){
+					honey.d.third.style.display="block"
 				}
 				if(!honey.loginWin){
 					honey.loginWin=plus.webview.currentWebview();
