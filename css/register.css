@@ -42,6 +42,7 @@
 
 .third {
 	margin: 40px 10px;
+	display: none;
 }
 
 .third .line {

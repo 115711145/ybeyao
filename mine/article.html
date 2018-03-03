@@ -106,7 +106,7 @@
 				<div>
 					<h4 id="title"></h4>
 					<p class="attr"><span id="cate"></span><span id="date"></span>
-						<a id="share">
+						<a id="share" style="display: none;">
 							<span class="mui-icon-extra mui-icon-extra-share"></span>
 							<span>分享</span>
 						</a>
@@ -191,8 +191,8 @@
 				}
 				$.plusReady(function() {
 					h.self = plus.webview.currentWebview();
-					if(plus.os.name=="iOS"){
-						h.d.share.setAttribute('display',h.isInstallWX()?"":"none")
+					if(plus.os.name=='Android' || (plus.os.name=='iOS' && honey.isInstallWX())){
+						h.d.share.removeAttribute('style')
 					}
 					h.getArticle()
 

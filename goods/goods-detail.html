@@ -51,7 +51,7 @@
 						<h5 id="goods_title"></h5>
 					</div>
 					<div class="fr icon">
-						<a id="share">
+						<a id="share" style="display: none;">
 		                    <span class="mui-icon-extra mui-icon-extra-share fl"></span>
 		                    <span class="fr">分享</span>
 		            	</a>
@@ -649,8 +649,8 @@
 			}
 			
 			mui.plusReady(function() {
-				if(plus.os.name=="iOS"){
-					honey.d.share.setAttribute('display',honey.isInstallWX()?"":"none")
+				if(plus.os.name=='Android' || (plus.os.name=='iOS' && honey.isInstallWX())){
+					honey.d.share.removeAttribute('style')
 				}
 				honey.token = myStorage.getItem('token')
 //				if(honey.token&&(honey.user=myStorage.getItem('user'))){
